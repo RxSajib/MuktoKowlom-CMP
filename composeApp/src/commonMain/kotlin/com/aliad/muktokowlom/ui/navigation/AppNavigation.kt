@@ -9,6 +9,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.aliad.muktokowlom.ui.screen.category.CategoryScreen
+import com.aliad.muktokowlom.ui.screen.category.CategoryWiseBook
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.loginScreen.SignInScreen
 import kotlinx.serialization.modules.SerializersModule
@@ -25,6 +26,7 @@ fun AppNavigation() {
                 subclass(AppDestination.SignUpScreen::class, AppDestination.SignUpScreen.serializer())
                 subclass(AppDestination.HomeScreen::class, AppDestination.HomeScreen.serializer())
                 subclass(AppDestination.CategoryScreen::class, AppDestination.CategoryScreen.serializer())
+                subclass(AppDestination.CategoryWiseBook::class, AppDestination.CategoryWiseBook.serializer())
             }
         }
     }
@@ -52,6 +54,9 @@ fun AppNavigation() {
             }
             entry<AppDestination.CategoryScreen> {
                 CategoryScreen(backStack = backStack)
+            }
+            entry<AppDestination.CategoryWiseBook> {category ->
+                CategoryWiseBook(backStack = backStack, category = category)
             }
         },
     )

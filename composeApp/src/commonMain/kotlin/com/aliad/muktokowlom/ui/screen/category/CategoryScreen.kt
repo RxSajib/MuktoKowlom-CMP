@@ -31,14 +31,14 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CategoryScreen(backStack: NavBackStack<NavKey>) {
-    val viewModel : CategoryViewModel = koinViewModel()
+    val viewModel: CategoryViewModel = koinViewModel()
     val categoryData = viewModel.categoryData.collectAsStateWithLifecycle()
 
 
     Scaffold(
         topBar = {
-            MyCustomAppBar(title = stringResource(Res.string.all_category), onBackPress = {backStack.remove(
-                AppDestination.CategoryScreen)})
+            MyCustomAppBar(title = stringResource(Res.string.all_category), onBackPress = {
+            })
         }
     ) { innerPadding ->
         Box(
@@ -46,9 +46,11 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>) {
                 .background(color = MaterialTheme.colorScheme.surface)
         ) {
 
-            LazyVerticalGrid(columns = GridCells.Fixed(2)){
-                items(categoryData.value){categoryData ->
-                    CategoryItem(category = categoryData, onClick = {})
+            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+                items(categoryData.value) { categoryData ->
+                    CategoryItem(category = categoryData, onClick = {
+                        backStack.add(AppDestination.CategoryWiseBook(category = categoryData))
+                    })
                 }
             }
         }
