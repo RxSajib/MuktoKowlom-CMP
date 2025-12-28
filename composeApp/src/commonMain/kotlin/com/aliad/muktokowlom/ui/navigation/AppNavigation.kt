@@ -32,7 +32,7 @@ fun AppNavigation() {
     }
 
 
-    val element = arrayOf<AppDestination>(AppDestination.CategoryScreen)
+    val element = arrayOf<AppDestination>(AppDestination.SignInScreen)
     val backStack = rememberNavBackStack(configuration = appConfig, elements = element)
 
     NavDisplay(
