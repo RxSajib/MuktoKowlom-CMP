@@ -16,6 +16,6 @@ val presentationModule = module {
     }
 
     viewModel {
-        CategoryViewModel()
+        CategoryViewModel(categoryUseCase = get())
     }
 }

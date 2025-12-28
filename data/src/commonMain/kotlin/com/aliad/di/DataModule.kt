@@ -2,7 +2,9 @@ package com.aliad.di
 
 import com.aliad.dataSource.RemoteDataSources
 import com.aliad.repository.AccountRepository
+import com.aliad.repository.CategoryRepository
 import com.aliad.repositoryImpl.AccountRepositoryImpl
+import com.aliad.repositoryImpl.CategoryRepositoryImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -48,5 +50,9 @@ val dataModule = module {
 
     single {
         RemoteDataSources(httpClient = get())
+    }
+
+    single<CategoryRepository> {
+        CategoryRepositoryImpl(dataSources = get())
     }
 }

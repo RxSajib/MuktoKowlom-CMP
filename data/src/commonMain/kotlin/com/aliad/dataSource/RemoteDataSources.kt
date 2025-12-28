@@ -1,10 +1,13 @@
 package com.aliad.dataSource
 
+import com.aliad.model.CategoryDto
 import com.aliad.model.GenericResponse
 import com.aliad.model.User
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
+import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.statement.bodyAsText
@@ -16,6 +19,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
 
     private val BASEURL = "https://muktokowlom.com/api/"
     private val LOGINACCOUNT = "${BASEURL}user/login"
+    private val CATEGORYURL = "${BASEURL}all-category"
 
     suspend fun loginAccount(email: String, password: String) {
         try {
@@ -24,14 +28,14 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                 parameter("password", password)
             }
 
-            if(response.status.isSuccess()){
+            if (response.status.isSuccess()) {
                 println("login success")
-            }else {
-               val errorText = response.bodyAsText()
-              //  val errorResponse = Json.decodeFromString<GenericResponse<Boolean>>(errorText)
+            } else {
+                val errorText = response.bodyAsText()
+                //  val errorResponse = Json.decodeFromString<GenericResponse<Boolean>>(errorText)
                 println("error response with ${errorText.toString()}")
             }
-          //
+            //
 
         } catch (e: ClientRequestException) {
             // 4xx error
@@ -47,4 +51,25 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
     }
 
+
+    // get category
+    suspend fun getCategory() : Result<GenericResponse<List<CategoryDto>>> {
+        try {
+            val response = httpClient.get(urlString = CATEGORYURL)
+            if (response.status.isSuccess()) {
+                val body = response.body<GenericResponse<List<CategoryDto>>>()
+                println("success fetch category body $body")
+                return Result.success(body)
+            } else {
+                return Result.failure(Exception("error fetch category"))
+            }
+
+        } catch (e: ClientRequestException) {
+            return Result.failure(e)
+        } catch (e: ServerResponseException) {
+            return Result.failure(e)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
 }

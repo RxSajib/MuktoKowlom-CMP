@@ -8,7 +8,8 @@ data class GenericResponse<T : Any>(
     val success: Boolean = false,
     val message_bn: String ?= null,
     val message_en: String ?= null,
-    val message: String,
+    val message: String ?= null,
+    val status : Boolean ?= null,
     val data: T? = null,
     val errorResponse : ErrorResponse? = null
 )
