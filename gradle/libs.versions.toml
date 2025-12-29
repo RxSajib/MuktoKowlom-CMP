@@ -58,7 +58,7 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilNe
 coil3-coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttpVersion" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koinCore" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
-
+coil-network-ktor = {module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilNetworkOkhttpVersion"}
 
 # ktor dependency
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }

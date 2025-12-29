@@ -67,11 +67,11 @@ kotlin {
 
             // coil compose
             implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
             // coil compose
 
             //kotlin x serilization json
             implementation(libs.kotlin.serialization.json)
-
             //kotlin x serilization json
 
             implementation(project(":data"))
