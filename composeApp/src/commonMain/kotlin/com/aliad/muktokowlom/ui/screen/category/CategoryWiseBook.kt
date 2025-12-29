@@ -1,14 +1,26 @@
 package com.aliad.muktokowlom.ui.screen.category
 
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
+import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CategoryWiseBook(backStack: NavBackStack<NavKey>, category: AppDestination.CategoryWiseBook) {
+
+    val viewModel : CategoryWiseBookViewModel = koinViewModel()
+  //  val x = viewModel.data.collectAsLazyPagingItems()
+
+
+
     Scaffold(
         topBar = {
             MyCustomAppBar(
@@ -17,7 +29,9 @@ fun CategoryWiseBook(backStack: NavBackStack<NavKey>, category: AppDestination.C
                 onBackPress = { backStack.remove(AppDestination.CategoryWiseBook(category = category.category)) })
         }
     ) {
+        LazyColumn {
 
+        }
     }
 }
 

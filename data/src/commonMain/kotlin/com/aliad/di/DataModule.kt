@@ -1,6 +1,7 @@
 package com.aliad.di
 
 import com.aliad.dataSource.RemoteDataSources
+import com.aliad.pager.CategoryWiseBookPagingSource
 import com.aliad.repository.AccountRepository
 import com.aliad.repository.CategoryRepository
 import com.aliad.repositoryImpl.AccountRepositoryImpl
@@ -19,6 +20,7 @@ import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
+import kotlin.math.sin
 
 val dataModule = module {
 
@@ -52,7 +54,12 @@ val dataModule = module {
         RemoteDataSources(httpClient = get())
     }
 
+    factory {
+        CategoryWiseBookPagingSource(remoteDataSources = get())
+    }
+
     single<CategoryRepository> {
         CategoryRepositoryImpl(dataSources = get())
     }
+
 }

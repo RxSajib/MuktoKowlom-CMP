@@ -56,6 +56,10 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose.viewmodel)
                 implementation(libs.kotlin.serialization.json)
+
+                //paging3 dependency
+                implementation("androidx.paging:paging-common:3.3.6")
+                //paging3 dependency
             }
         }
 

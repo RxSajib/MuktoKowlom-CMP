@@ -1,6 +1,7 @@
 package com.aliad.dataSource
 
 import com.aliad.model.CategoryDto
+import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.GenericResponse
 import com.aliad.model.User
 import io.ktor.client.HttpClient
@@ -20,6 +21,8 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val BASEURL = "https://muktokowlom.com/api/"
     private val LOGINACCOUNT = "${BASEURL}user/login"
     private val CATEGORYURL = "${BASEURL}all-category"
+    private val CATEGORYWISEBOOK = "${BASEURL}get-story-by-category"
+
 
     suspend fun loginAccount(email: String, password: String) {
         try {
@@ -53,7 +56,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
 
 
     // get category
-    suspend fun getCategory() : Result<GenericResponse<List<CategoryDto>>> {
+    suspend fun getCategory(): Result<GenericResponse<List<CategoryDto>>> {
         try {
             val response = httpClient.get(urlString = CATEGORYURL)
             if (response.status.isSuccess()) {
@@ -71,5 +74,19 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         } catch (e: Exception) {
             return Result.failure(e)
         }
+    }
+
+    suspend fun getCategoryWiseBook(
+        categoryID: String,
+        searchBy: String,
+        page: Int = 0
+    ): GenericResponse<CategoryWiseBookDto> {
+        val myResponse = httpClient.get(urlString = CATEGORYWISEBOOK) {
+            parameter("category_id", categoryID)
+            parameter("page", page)
+            parameter("search", searchBy)
+        }
+
+        return myResponse.body<GenericResponse<CategoryWiseBookDto>>()
     }
 }

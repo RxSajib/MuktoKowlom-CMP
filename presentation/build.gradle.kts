@@ -50,6 +50,8 @@ kotlin {
 
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose.viewmodel)
+
+                implementation("androidx.paging:paging-common:3.3.6")
             }
         }
 
