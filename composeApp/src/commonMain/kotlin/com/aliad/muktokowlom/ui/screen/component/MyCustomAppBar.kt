@@ -21,6 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.aliad.muktokowlom.platform.backButtonIcon
+import io.ktor.util.Platform
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.left_arrow_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.notification_svgrepo_com
@@ -101,7 +103,7 @@ fun MyCustomAppBar(
                     onBackPress.invoke()
                 }) {
                     Icon(
-                        painter = painterResource(Res.drawable.left_arrow_svgrepo_com),
+                        imageVector = backButtonIcon(),
                         contentDescription = null
                     )
                 }
