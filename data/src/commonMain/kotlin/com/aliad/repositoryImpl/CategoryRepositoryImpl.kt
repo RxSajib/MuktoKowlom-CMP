@@ -12,8 +12,10 @@ import com.aliad.model.mapper.DataMapper
 import com.aliad.model.mapper.DataMapper.toBookModel
 import com.aliad.pager.CategoryWiseBookPagingSource
 import com.aliad.repository.CategoryRepository
+import io.ktor.websocket.FrameType.Companion.get
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlin.coroutines.EmptyCoroutineContext.get
 
 class CategoryRepositoryImpl constructor(val dataSources: RemoteDataSources) : CategoryRepository {
     override suspend fun getCategory(): Result<GenericResponse<List<Category>>> {
@@ -42,7 +44,7 @@ class CategoryRepositoryImpl constructor(val dataSources: RemoteDataSources) : C
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                CategoryWiseBookPagingSource(remoteDataSources = dataSources, categoryID = categoryID, searchBy = searchBy)
+                CategoryWiseBookPagingSource(remoteDataSources = dataSources)
             }
         ).flow.map {pagingData ->
           pagingData.map { bookItem ->

@@ -54,10 +54,6 @@ val dataModule = module {
         RemoteDataSources(httpClient = get())
     }
 
-    factory {
-        CategoryWiseBookPagingSource(remoteDataSources = get())
-    }
-
     single<CategoryRepository> {
         CategoryRepositoryImpl(dataSources = get())
     }

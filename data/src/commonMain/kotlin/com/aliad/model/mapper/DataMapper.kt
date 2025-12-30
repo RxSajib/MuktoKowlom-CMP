@@ -29,7 +29,7 @@ object DataMapper {
     fun toBookModel(bookItem: BookItem): MyBookItem {
         return MyBookItem(
             category_name = bookItem.category_name,
-            category_name_bn = bookItem.category_name_bn,
+        category_name_bn = bookItem.category_name_bn,
             created_at = bookItem.created_at
         )
     }
