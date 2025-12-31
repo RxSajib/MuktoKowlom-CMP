@@ -7,3 +7,6 @@ val White : Color = Color(0xFFFFFFFF)
 
 val colorPrimaryLight = Color(0xFFFF4646)
 val colorPrimaryDark = Color(0xFF2F2F2F)
+
+val colorSurfaceTintLight = Color(0x0A2F2F2F)
+val colorSurfaceTintDark = Color(0x0AE7E7E7)

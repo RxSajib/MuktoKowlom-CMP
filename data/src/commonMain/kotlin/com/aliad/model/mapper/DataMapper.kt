@@ -29,8 +29,12 @@ object DataMapper {
     fun toBookModel(bookItem: BookItem): MyBookItem {
         return MyBookItem(
             category_name = bookItem.category_name,
-        category_name_bn = bookItem.category_name_bn,
-            created_at = bookItem.created_at
+            category_name_bn = bookItem.category_name_bn,
+            created_at = bookItem.created_at,
+            titleBn = bookItem.title_bn,
+            image = bookItem.image,
+            rating = bookItem.rating,
+            authorName = bookItem.user_name
         )
     }
 }

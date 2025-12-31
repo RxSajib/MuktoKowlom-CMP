@@ -10,5 +10,5 @@ interface CategoryRepository {
 
     suspend fun getCategory() : Result<GenericResponse<List<Category>>>
 
-    fun getCategoryWiseBook(categoryID : String, searchBy : String) : Flow<PagingData<MyBookItem>>
+    fun getCategoryWiseBook(categoryID : Int, searchBy : String) : Flow<PagingData<MyBookItem>>
 }

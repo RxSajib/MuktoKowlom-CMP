@@ -34,7 +34,7 @@ class CategoryRepositoryImpl constructor(val dataSources: RemoteDataSources) : C
     }
 
     override  fun getCategoryWiseBook(
-        categoryID: String,
+        categoryID: Int,
         searchBy: String
     ): Flow<PagingData<MyBookItem>> {
       return Pager(
@@ -44,7 +44,7 @@ class CategoryRepositoryImpl constructor(val dataSources: RemoteDataSources) : C
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                CategoryWiseBookPagingSource(remoteDataSources = dataSources)
+                CategoryWiseBookPagingSource(remoteDataSources = dataSources, categoryID = categoryID, searchKey = searchBy)
             }
         ).flow.map {pagingData ->
           pagingData.map { bookItem ->

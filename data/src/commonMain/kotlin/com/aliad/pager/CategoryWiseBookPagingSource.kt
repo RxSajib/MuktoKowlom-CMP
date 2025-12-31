@@ -7,11 +7,7 @@ import com.aliad.log.appLogger
 import com.aliad.model.BookItem
 import com.aliad.model.MyBookItem
 
-class CategoryWiseBookPagingSource constructor(val remoteDataSources: RemoteDataSources) : PagingSource<Int, BookItem>() {
-
-    init {
-        appLogger("CategoryWiseBookPagingSource", "init")
-    }
+class CategoryWiseBookPagingSource constructor(val remoteDataSources: RemoteDataSources, val categoryID : Int, val searchKey : String) : PagingSource<Int, BookItem>() {
 
     override fun getRefreshKey(state: PagingState<Int, BookItem>): Int? {
         appLogger("CategoryWiseBookPagingSource", "getRefreshKey")
@@ -27,8 +23,8 @@ class CategoryWiseBookPagingSource constructor(val remoteDataSources: RemoteData
         return try {
             val page = params.key?: 1
             val response = remoteDataSources.getCategoryWiseBook(
-                categoryID = 29,
-                searchBy = "All",
+                categoryID = categoryID,
+                searchBy = searchKey,
                 page = page
             )
             LoadResult.Page(

@@ -6,19 +6,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CategoryWiseBookDto(
-    val current_page: Int,
+    val current_page: Int?= null,
     val `data`: List<BookItem> = emptyList(),
-    val first_page_url: String,
-    val from: Int,
-    val last_page: Int,
+    val first_page_url: String?= null,
+    val from: Int? = null,
+    val last_page: Int?= null,
     val last_page_url: String,
-    val links: List<Link>,
+    val links: List<Link> = emptyList(),
     val next_page_url: String?= null,
     val path: String? = null,
-    val per_page: Int,
+    val per_page: Int ?= null,
     val prev_page_url: String?= null,
-    val to: Int,
-    val total: Int
+    val to: Int ?= null,
+    val total: Int ?= null
 )
 
 @Serializable
