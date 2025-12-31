@@ -38,6 +38,7 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>) {
     Scaffold(
         topBar = {
             MyCustomAppBar(title = stringResource(Res.string.all_category), onBackPress = {
+                backStack.remove(AppDestination.CategoryScreen)
             })
         }
     ) { innerPadding ->

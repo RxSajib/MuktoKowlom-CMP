@@ -33,6 +33,7 @@ import com.aliad.log.appLogger
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.EmptyStoryMessage
 import com.aliad.muktokowlom.ui.screen.component.LoadStateAppendError
+import com.aliad.muktokowlom.ui.screen.component.LoadStateRefreshError
 import com.aliad.muktokowlom.ui.screen.component.Loader
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.StoryItem
@@ -71,6 +72,10 @@ fun CategoryWiseBook(backStack: NavBackStack<NavKey>, category: AppDestination.C
             ) {
                 CircularProgressIndicator()
             }
+        }
+        if(pagingUiState.value.refreshError != null){
+            LoadStateRefreshError(onRetry = {storyItem.retry()})
+
         }
         if(pagingUiState.value.isEmpty){
             EmptyStoryMessage()
