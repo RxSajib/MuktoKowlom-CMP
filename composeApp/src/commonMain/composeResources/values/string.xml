@@ -29,4 +29,8 @@
     <string name="loas_state_append_error">Something went wrong pleas try again or check your internet connection</string>
     <string name="retry">Retry</string>
 
+    <string name="most_popular">Most Popular</string>
+    <string name="new_release">New Release</string>
+    <string name="all_release">All Release</string>
+
 </resources>

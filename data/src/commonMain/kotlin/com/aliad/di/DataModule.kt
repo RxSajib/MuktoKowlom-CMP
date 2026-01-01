@@ -4,8 +4,10 @@ import com.aliad.dataSource.RemoteDataSources
 import com.aliad.pager.CategoryWiseBookPagingSource
 import com.aliad.repository.AccountRepository
 import com.aliad.repository.CategoryRepository
+import com.aliad.repository.DashBordRepository
 import com.aliad.repositoryImpl.AccountRepositoryImpl
 import com.aliad.repositoryImpl.CategoryRepositoryImpl
+import com.aliad.repositoryImpl.DashBoardRepositoryImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -56,6 +58,10 @@ val dataModule = module {
 
     single<CategoryRepository> {
         CategoryRepositoryImpl(dataSources = get())
+    }
+
+    single<DashBordRepository> {
+        DashBoardRepositoryImpl(remoteDataSources = get())
     }
 
 }

@@ -5,6 +5,8 @@ import com.aliad.model.MyBookItem
 import com.aliad.model.Category
 import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
+import com.aliad.model.DashBord
+import com.aliad.model.DashboardDto
 
 object DataMapper {
 
@@ -35,6 +37,14 @@ object DataMapper {
             image = bookItem.image,
             rating = bookItem.rating,
             authorName = bookItem.user_name
+        )
+    }
+
+    fun toDashBoardModel(dashboardDto: DashboardDto) : DashBord{
+        return DashBord(
+            lisOfPopularStories = dashboardDto.mostPopularStories.map { toBookModel(it) },
+            lifOfAllStories = dashboardDto.allStories.map { story -> toBookModel(story) },
+            listOfNewReleaseStories = dashboardDto.newReleaseStories.map { story -> toBookModel(story) }
         )
     }
 }

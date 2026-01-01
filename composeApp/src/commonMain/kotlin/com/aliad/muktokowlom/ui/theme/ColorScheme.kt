@@ -6,11 +6,13 @@ import androidx.compose.material3.lightColorScheme
 val darkColorScheme = darkColorScheme(
     surface = Black,
     primary = colorPrimaryDark,
-    inverseSurface = colorSurfaceTintDark
+    inverseSurface = colorSurfaceTintDark,
+    onSurface = White
 )
 
 val lightColorScheme = lightColorScheme(
     surface = White,
     primary = colorPrimaryLight,
-    inverseSurface = colorSurfaceTintLight
+    inverseSurface = colorSurfaceTintLight,
+    onSurface = Black
 )

@@ -2,6 +2,7 @@ package com.aliad.dataSource
 
 import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
+import com.aliad.model.DashboardDto
 import com.aliad.model.GenericResponse
 import com.aliad.model.User
 import io.ktor.client.HttpClient
@@ -22,6 +23,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val LOGINACCOUNT = "${BASEURL}user/login"
     private val CATEGORYURL = "${BASEURL}all-category"
     private val CATEGORYWISEBOOK = "${BASEURL}get-story-by-category"
+    private val DASHBOARDSTORIES = "${BASEURL}get-dashboard-stories"
 
 
     suspend fun loginAccount(email: String, password: String) {
@@ -88,5 +90,23 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
 
         return myResponse.body<GenericResponse<CategoryWiseBookDto>>()
+    }
+
+    suspend fun getDashBoard() : Result<DashboardDto>{
+        try {
+            val response = httpClient.get(urlString = DASHBOARDSTORIES)
+            if(response.status.isSuccess()){
+                val data = response.body<DashboardDto>()
+                return Result.success(data)
+            }else {
+                return Result.failure(Exception("error fetch category"))
+            }
+        } catch (e: ClientRequestException) {
+            return Result.failure(e)
+        } catch (e: ServerResponseException) {
+            return Result.failure(e)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 }
