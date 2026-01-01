@@ -3,14 +3,12 @@ package com.aliad.pager
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.aliad.dataSource.RemoteDataSources
-import com.aliad.log.appLogger
 import com.aliad.model.BookItem
 import com.aliad.model.MyBookItem
 
 class CategoryWiseBookPagingSource constructor(val remoteDataSources: RemoteDataSources, val categoryID : Int, val searchKey : String) : PagingSource<Int, BookItem>() {
 
     override fun getRefreshKey(state: PagingState<Int, BookItem>): Int? {
-        appLogger("CategoryWiseBookPagingSource", "getRefreshKey")
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
@@ -18,7 +16,6 @@ class CategoryWiseBookPagingSource constructor(val remoteDataSources: RemoteData
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BookItem> {
-        appLogger("CategoryWiseBookPagingSource", "load")
 
         return try {
             val page = params.key?: 1
@@ -33,7 +30,6 @@ class CategoryWiseBookPagingSource constructor(val remoteDataSources: RemoteData
                 nextKey = if(response.data?.last_page == page) null else page + 1
             )
         }catch (e : Exception){
-            appLogger("CategoryWiseBookPagingSource", "exception ${e.message}")
             print("error paging 3 ${e.message}")
             LoadResult.Error(e)
         }

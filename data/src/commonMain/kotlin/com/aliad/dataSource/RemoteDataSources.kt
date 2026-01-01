@@ -1,6 +1,5 @@
 package com.aliad.dataSource
 
-import com.aliad.log.appLogger
 import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.GenericResponse

@@ -29,7 +29,6 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.aliad.log.appLogger
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.EmptyStoryMessage
 import com.aliad.muktokowlom.ui.screen.component.LoadStateAppendError
