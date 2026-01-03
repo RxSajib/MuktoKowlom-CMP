@@ -4,6 +4,7 @@ import com.aliad.usecase.CategoryUseCase
 import com.aliad.usecase.CategoryWiseBookUseCase
 import com.aliad.usecase.DashBoardUseCase
 import com.aliad.usecase.LoginUseCase
+import com.aliad.usecase.StoryTypeUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -27,5 +28,9 @@ val domainModule = module {
 
     factory {
         DashBoardUseCase(dashBordRepository = get())
+    }
+
+    factory {
+        StoryTypeUseCase(storyType = get())
     }
 }

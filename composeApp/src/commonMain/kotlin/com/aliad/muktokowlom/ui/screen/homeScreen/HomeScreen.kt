@@ -51,6 +51,9 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
     val dashBoardData = dashBoardViewModel.dashBoard.collectAsStateWithLifecycle()
 
     print("dashboard data ${dashBoardData.value}")
+    val mostPopularStory = stringResource(Res.string.most_popular)
+    val newReleaseStory = stringResource(Res.string.new_release)
+    val allStory = stringResource(Res.string.all_release)
 
     Scaffold(
         topBar = {
@@ -59,10 +62,8 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
                 isBackButtonEnable = false,
                 title = stringResource(Res.string.muktokowlom),
                 homeHeaderEnable = true,
-                onBackPress = {}
-            )
-        },
-        modifier = Modifier.background(MaterialTheme.colorScheme.surface)
+                onBackPress = {})
+        }, modifier = Modifier.background(MaterialTheme.colorScheme.surface)
     ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding).fillMaxSize()
@@ -71,24 +72,27 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
         ) {
 
             StoryCategoryWithAllButton(
-                categoryTitle = stringResource(Res.string.most_popular),
-                onClick = {})
+                categoryTitle = stringResource(Res.string.most_popular), onClick = {
+                    backStack.add(AppDestination.StoryTypeWiseBook(typeName = mostPopularStory))
+                })
             LazyRow {
                 items(dashBoardData.value?.lisOfPopularStories ?: emptyList()) { bookItem ->
                     StoryItemFixedSize(item = bookItem)
                 }
             }
             StoryCategoryWithAllButton(
-                categoryTitle = stringResource(Res.string.new_release),
-                onClick = {})
+                categoryTitle = stringResource(Res.string.new_release), onClick = {
+                    backStack.add(AppDestination.StoryTypeWiseBook(typeName = newReleaseStory))
+                })
             LazyRow {
                 items(dashBoardData.value?.listOfNewReleaseStories ?: emptyList()) { bookItem ->
                     StoryItemFixedSize(item = bookItem)
                 }
             }
             StoryCategoryWithAllButton(
-                categoryTitle = stringResource(Res.string.all_release),
-                onClick = {})
+                categoryTitle = stringResource(Res.string.all_release), onClick = {
+                    backStack.add(AppDestination.StoryTypeWiseBook(typeName = allStory))
+                })
             LazyRow {
                 items(dashBoardData.value?.lifOfAllStories ?: emptyList()) { bookItem ->
                     StoryItemFixedSize(item = bookItem)

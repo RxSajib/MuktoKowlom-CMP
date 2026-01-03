@@ -21,4 +21,7 @@ sealed class AppDestination : NavKey {
 
     @Serializable
     data class CategoryWiseBook(val category: Category?= null) : AppDestination()
+
+    @Serializable
+    data class StoryTypeWiseBook(val typeName : String?= null) : AppDestination()
 }

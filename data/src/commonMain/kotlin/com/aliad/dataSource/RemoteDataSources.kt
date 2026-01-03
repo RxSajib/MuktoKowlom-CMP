@@ -24,7 +24,9 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val CATEGORYURL = "${BASEURL}all-category"
     private val CATEGORYWISEBOOK = "${BASEURL}get-story-by-category"
     private val DASHBOARDSTORIES = "${BASEURL}get-dashboard-stories"
-
+    private val MOSTPOPULARSTORY = "${BASEURL}get-popular-story"
+    private val ALLSTORY = "${BASEURL}get-all-story-with-allSearch"
+    private val NEWRELEASESTORY = "${BASEURL}get-new-realeses-story"
 
     suspend fun loginAccount(email: String, password: String) {
         try {
@@ -108,5 +110,14 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         } catch (e: Exception) {
             return Result.failure(e)
         }
+    }
+
+    suspend fun getStoryType(storyType : String, page : Int, searchKey : String = "All") : GenericResponse<CategoryWiseBookDto>{
+       val response = httpClient.get(urlString = MOSTPOPULARSTORY){
+           parameter("page", page)
+           parameter("search", searchKey)
+       }
+        val body = response.body<GenericResponse<CategoryWiseBookDto>>()
+        return body
     }
 }
