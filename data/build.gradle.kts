@@ -66,6 +66,9 @@ kotlin {
                 // kotlin-serialization
                 implementation(libs.kotlin.serialization.json)
 
+                //datastore
+                implementation(libs.datastore)
+
                 //paging3 dependency
                 implementation("androidx.paging:paging-common:3.3.6")
                 //paging3 dependency

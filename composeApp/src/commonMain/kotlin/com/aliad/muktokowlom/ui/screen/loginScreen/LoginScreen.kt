@@ -17,6 +17,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.dataSource.CacheDataStore
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.BackButton
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
@@ -32,6 +37,8 @@ import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import io.ktor.http.HttpHeaders.Destination
+import io.ktor.util.logging.Logger
+import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.dont_have_an_account
 import muktokowlomcmp.composeapp.generated.resources.enter_email
@@ -42,10 +49,24 @@ import muktokowlomcmp.composeapp.generated.resources.sign_in_now
 import muktokowlomcmp.composeapp.generated.resources.sign_in_now_details
 import muktokowlomcmp.composeapp.generated.resources.sign_up
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SignInScreen(backStack: NavBackStack<NavKey>) {
+
+    val koin = getKoin()
+    val scope = rememberCoroutineScope()
+    val dataStore = remember { koin.get<CacheDataStore>() }
+    val data = remember { mutableStateOf("") }
+
+    scope.launch {
+        dataStore.saveAnyData("ABCDESD")
+    }
+
+    LaunchedEffect(Unit){
+        data.value =  dataStore.getAnyData().toString()
+    }
 
     val viewModel : SignInViewModel = koinViewModel()
 
@@ -54,6 +75,9 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
             BackButton(imageVector = Icons.AutoMirrored.Default.ArrowBack, onclick = {})
 
             HeightGap(height = 20.dp)
+            Text(
+                text =  data.value
+            )
             Text(
                 text = stringResource(Res.string.sign_in_now),
                 style = MaterialTheme.typography.titleLarge.copy(

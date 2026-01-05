@@ -1,5 +1,8 @@
 package com.aliad.di
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import com.aliad.dataSource.CacheDataStore
 import com.aliad.dataSource.RemoteDataSources
 import com.aliad.pager.CategoryWiseBookPagingSource
 import com.aliad.repository.AccountRepository
@@ -56,6 +59,11 @@ val dataModule = module {
 
     single {
         RemoteDataSources(httpClient = get())
+    }
+
+    // dataStore create
+    single {
+        CacheDataStore(datstore = get<DataStore<Preferences>>())
     }
 
     single<CategoryRepository> {

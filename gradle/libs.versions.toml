@@ -30,6 +30,7 @@ coilNetworkOkhttpVersion = "3.3.0"
 kotlinStdlibVersion = "2.3.0"
 runnerVersion = "1.7.0"
 coreVersion = "1.7.0"
+datastore = "1.2.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -70,7 +71,8 @@ ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", 
 
 # kotlin serialization
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
-
+# datastore
+datastore = {module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
 
 
 

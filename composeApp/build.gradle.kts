@@ -78,10 +78,11 @@ kotlin {
 
             //paging3 dependency
             implementation("androidx.paging:paging-common:3.3.6")
-        //    implementation("androidx.paging:paging-runtime:3.3.6")
             implementation("androidx.paging:paging-compose:3.4.0-beta01")
-
             //paging3 dependency
+
+            //dataStore
+            implementation(libs.datastore)
 
             implementation(project(":data"))
             implementation(project(":domain"))
