@@ -49,6 +49,7 @@ val dataModule = module {
             install(DefaultRequest){
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
+
         }
     }
     // implement ktor clint
@@ -77,5 +78,7 @@ val dataModule = module {
     single<StoryType> {
         StoryTypeImpl(remoteDataSources = get())
     }
+
+
 
 }

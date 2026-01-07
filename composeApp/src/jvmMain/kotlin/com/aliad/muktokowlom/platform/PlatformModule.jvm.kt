@@ -1,5 +1,7 @@
 package com.aliad.muktokowlom.platform
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.aliad.dataSource.createDataStore
 import com.aliad.dataSource.dataStoreFileName
 import kotlinx.coroutines.NonCancellable.get
@@ -11,19 +13,22 @@ import javax.naming.Context
 
 actual fun platformModule(): Module {
    return module {
-       createDataStore(
-           producerPath = {
-               val dir = Paths.get(
-                   System.getProperty("user.home"),
-                   ".MuktoKowlomCMP"
-               )
 
-               Files.createDirectories(dir) // ✅ important
+       single<DataStore<Preferences>> {
+           createDataStore(
+               producerPath = {
+                   val dir = Paths.get(
+                       System.getProperty("user.home"),
+                       ".MuktoKowlomCMP"
+                   )
 
-               dir.resolve(dataStoreFileName)
-                   .toAbsolutePath()
-                   .toString()
-           }
-       )
+                   Files.createDirectories(dir)
+                   dir.resolve(dataStoreFileName)
+                       .toAbsolutePath()
+                       .toString()
+               }
+           )
+       }
+
    }
 }

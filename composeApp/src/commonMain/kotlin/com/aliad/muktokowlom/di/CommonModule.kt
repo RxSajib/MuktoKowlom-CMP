@@ -5,13 +5,16 @@ import com.aliad.di.domainModule
 import com.aliad.muktokowlom.platform.platformModule
 import com.aliad.presentation.signIn.di.presentationModule
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
+
+val platformKoinModule: Module by lazy { platformModule() }
 
 val commonModule = listOf(
     dataModule,
     domainModule,
     presentationModule,
-    platformModule()
+    platformKoinModule
 )
 
 fun initKoin(koinAppDeclaration: KoinAppDeclaration = {}){

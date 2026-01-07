@@ -1,5 +1,7 @@
 package com.aliad.muktokowlom.platform
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.aliad.dataSource.createDataStore
 import com.aliad.dataSource.dataStoreFileName
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -11,22 +13,22 @@ import platform.Foundation.NSUserDomainMask
 
 actual fun platformModule(): Module {
    return module {
-       createDataStore(
-           producerPath = {
-               "${getDocumentPath()}/$dataStoreFileName"
-           }
-       )
+       single<DataStore<Preferences>> {
+           createDataStore(
+               producerPath = { "${getDocumentPath()}/$dataStoreFileName" }
+           )
+       }
    }
 }
 
 @OptIn(ExperimentalForeignApi::class)
-fun getDocumentPath() : String {
-    val documentPath = NSFileManager.defaultManager.URLForDirectory(
+fun getDocumentPath(): String {
+    val url = NSFileManager.defaultManager.URLForDirectory(
         directory = NSDocumentDirectory,
         inDomain = NSUserDomainMask,
         appropriateForURL = null,
-        create = false,
-        error = null,
-    )
-    return requireNotNull(documentPath!!.path)
+        create = true,
+        error = null
+    ) ?: error("Could not resolve Documents directory")
+    return url.path ?: error("Documents URL has no path")
 }
