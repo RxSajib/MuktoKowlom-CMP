@@ -64,19 +64,23 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
         dataStore.saveAnyData("ABCDESD")
     }
 
-    LaunchedEffect(Unit){
-        data.value =  dataStore.getAnyData().toString()
+    LaunchedEffect(Unit) {
+        data.value = dataStore.getAnyData().toString()
     }
 
-    val viewModel : SignInViewModel = koinViewModel()
+    val viewModel: SignInViewModel = koinViewModel()
 
     Scaffold { innerPadding ->
-        Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).fillMaxSize().padding(16.dp).verticalScroll(state = rememberScrollState())) {
+        Column(
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)
+                .padding(innerPadding).fillMaxSize().padding(16.dp)
+                .verticalScroll(state = rememberScrollState())
+        ) {
             BackButton(imageVector = Icons.AutoMirrored.Default.ArrowBack, onclick = {})
 
             HeightGap(height = 20.dp)
             Text(
-                text =  data.value
+                text = data.value
             )
             Text(
                 text = stringResource(Res.string.sign_in_now),
@@ -135,7 +139,8 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                 onClickButton = {
                     backStack.add(AppDestination.HomeScreen)
                 },
-                isEnable = viewModel.isButtonEnableForSignIn)
+                isEnable = viewModel.isButtonEnableForSignIn
+            )
 
             HeightGap(height = 20.dp)
             Row(
