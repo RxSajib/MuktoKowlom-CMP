@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.dataSource.CacheDataStore
@@ -35,9 +36,11 @@ import com.aliad.muktokowlom.ui.screen.component.BackButton
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
+import com.aliad.presentation.signIn.ui.datastore.DataStore
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import io.ktor.http.HttpHeaders.Destination
 import io.ktor.util.logging.Logger
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.dont_have_an_account
@@ -69,6 +72,13 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
     }
 
     val viewModel: SignInViewModel = koinViewModel()
+    val dataStoreViewModel : DataStore = koinViewModel()
+    val token = dataStoreViewModel.getStringData("Token").collectAsStateWithLifecycle("")
+
+    LaunchedEffect(Unit){
+        delay(3000L)
+        dataStoreViewModel.saveStringData(key = "Token", value = "my token is ABCD")
+    }
 
     Scaffold { innerPadding ->
         Column(
@@ -80,7 +90,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
 
             HeightGap(height = 20.dp)
             Text(
-                text = data.value
+                text = token.value
             )
             Text(
                 text = stringResource(Res.string.sign_in_now),
