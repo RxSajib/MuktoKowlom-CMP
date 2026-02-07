@@ -24,6 +24,7 @@ import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomMenu
 import com.aliad.muktokowlom.ui.screen.component.UserInfo
 import com.aliad.muktokowlom.ui.screen.component.UserInfoItem
+import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.basic_info
 import muktokowlomcmp.composeapp.generated.resources.calender_svgrepo_com
@@ -56,9 +57,13 @@ import muktokowlomcmp.composeapp.generated.resources.view_all_story
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ProfileScreen() {
+
+    val viewModel : ProfileViewModel = koinViewModel()
+
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding).verticalScroll(state = rememberScrollState())
