@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -17,10 +18,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun MyCustomButton(
     isEnable: Boolean = true,
     title: String,
-    backgroundColor: Color = Color.Black,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = Color.White,
     modifier: Modifier,
-    onClickButton: () -> Unit
+    onClickButton: () -> Unit,
+    padding : Dp = 7.dp
 ) {
     Button(
         onClick = {
@@ -29,7 +31,7 @@ fun MyCustomButton(
         enabled = isEnable,
         colors = ButtonDefaults.buttonColors(
             contentColor = textColor,
-            containerColor = if(isEnable) MaterialTheme.colorScheme.primary else Color.Gray
+            containerColor = if(isEnable) backgroundColor else Color.Gray
         ),
         modifier = modifier.fillMaxWidth()
     ) {
@@ -38,7 +40,7 @@ fun MyCustomButton(
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.W500
             ),
-            modifier = Modifier.padding(7.dp)
+            modifier = Modifier.padding(padding)
         )
     }
 }

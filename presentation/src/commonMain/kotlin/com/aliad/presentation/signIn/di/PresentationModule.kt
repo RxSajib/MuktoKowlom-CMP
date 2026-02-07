@@ -5,6 +5,7 @@ import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewMod
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import com.aliad.presentation.signIn.ui.signup.SignUpViewModel
+import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
 import com.aliad.presentation.signIn.ui.storytype.StoryTypeViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -32,5 +33,8 @@ val presentationModule = module {
 
     viewModel {
         StoryTypeViewModel(storyTypeUseCase = get())
+    }
+    viewModel {
+        StoryDetailsViewModel()
     }
 }

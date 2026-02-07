@@ -78,7 +78,9 @@ fun StoryTypeScreen(backStack: NavBackStack<NavKey>, type: AppDestination.StoryT
                     ) {
 
                         items(storyItem.itemCount) { position ->
-                            StoryItem(storyItem[position])
+                            StoryItem(storyItem[position]){bookItem ->
+                                backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
+                            }
                         }
 
                         if (pagingUiState.value.isAppending) {

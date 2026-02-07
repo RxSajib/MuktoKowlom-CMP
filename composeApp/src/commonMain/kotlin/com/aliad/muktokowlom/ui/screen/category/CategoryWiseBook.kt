@@ -88,7 +88,9 @@ fun CategoryWiseBook(backStack: NavBackStack<NavKey>, category: AppDestination.C
             ) {
 
                 items(storyItem.itemCount) { position ->
-                    StoryItem(storyItem[position])
+                    StoryItem(storyItem[position]){bookItem ->
+
+                    }
                 }
 
                 if (pagingUiState.value.isAppending) {

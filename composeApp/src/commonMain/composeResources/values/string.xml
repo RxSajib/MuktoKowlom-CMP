@@ -33,4 +33,22 @@
     <string name="new_release">New Release</string>
     <string name="all_release">All Release</string>
 
+    <string name="send_rating">Send Rating</string>
+    <string name="read_full_story">Read Full Story</string>
+
+    <string name="published">Published</string>
+    <string name="views">Views</string>
+    <string name="rating">Rating</string>
+    <string name="about_author">About Author</string>
+
+    <string name="see_more">…see more</string>
+    <string name="see_less">\u0020 See less</string>
+
+    <string name="sampleText">Bangladesh, to the east of India on the Bay of Bengal, is a South Asian country marked by lush greenery and many waterways. Its Padma (Ganges), Meghna and Jamuna rivers create fertile plains, and travel by boat is common. On the southern coast, the Sundarbans, an enormous mangrove forest shared with Eastern India, is home to the royal Bengal tiger. </string>
+    <string name="about_book">About Book</string>
+    <string name="add_favorites">Add Favorites</string>
+    <string name="category">Category</string>
+    <string name="similar_story">Similar Story</string>
+    <string name="view_all_story">View All Story</string>
+
 </resources>

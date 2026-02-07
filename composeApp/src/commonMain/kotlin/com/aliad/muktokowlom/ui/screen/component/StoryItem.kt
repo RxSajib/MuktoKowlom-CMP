@@ -1,5 +1,6 @@
 package com.aliad.muktokowlom.ui.screen.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,8 +23,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun StoryItem(item: MyBookItem?) {
-    Column(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
+fun StoryItem(item: MyBookItem?, onClick: (data : MyBookItem) -> Unit) {
+    Column(modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(10.dp)).clickable{onClick.invoke(item!!)}.padding(10.dp)) {
         AsyncImage(
             modifier = Modifier.fillMaxWidth().height(100.dp)
                 .clip(shape = RoundedCornerShape(10.dp)),

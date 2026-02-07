@@ -76,6 +76,9 @@ kotlin {
             implementation(libs.kotlin.serialization.json)
             //kotlin x serilization json
 
+            implementation(libs.seymour.text)
+
+
             //paging3 dependency
             implementation("androidx.paging:paging-common:3.3.6")
             implementation("androidx.paging:paging-compose:3.4.0-beta01")
