@@ -63,9 +63,6 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
     val dataStore = remember { koin.get<CacheDataStore>() }
     val data = remember { mutableStateOf("") }
 
-    scope.launch {
-        dataStore.saveAnyData("ABCDESD")
-    }
 
     LaunchedEffect(Unit) {
         data.value = dataStore.getAnyData().toString()
@@ -75,10 +72,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
     val dataStoreViewModel : DataStore = koinViewModel()
     val token = dataStoreViewModel.getStringData("Token").collectAsStateWithLifecycle("")
 
-    LaunchedEffect(Unit){
-        delay(3000L)
-        dataStoreViewModel.saveStringData(key = "Token", value = "my token is ABCD")
-    }
+
 
     Scaffold { innerPadding ->
         Column(
