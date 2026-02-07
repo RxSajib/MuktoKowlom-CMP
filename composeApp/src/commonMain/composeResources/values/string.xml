@@ -43,6 +43,11 @@
 
     <string name="see_more">…see more</string>
     <string name="see_less">\u0020 See less</string>
+    <string name="basic_info">Basic information</string>
+    <string name="joined_since">Joined Since</string>
+    <string name="pending">Pending</string>
+    <string name="published_story">Published Story</string>
+    <string name="profile">Profile</string>
 
     <string name="sampleText">Bangladesh, to the east of India on the Bay of Bengal, is a South Asian country marked by lush greenery and many waterways. Its Padma (Ganges), Meghna and Jamuna rivers create fertile plains, and travel by boat is common. On the southern coast, the Sundarbans, an enormous mangrove forest shared with Eastern India, is home to the royal Bengal tiger. </string>
     <string name="about_book">About Book</string>
@@ -50,5 +55,25 @@
     <string name="category">Category</string>
     <string name="similar_story">Similar Story</string>
     <string name="view_all_story">View All Story</string>
+    <string name="premium">Premium</string>
+    <string name="premium_details">Purchase your Premium plan and enjoy more stories all time</string>
+
+    <string name="subscription_history">Subscription History</string>
+    <string name="subscription_history_details">Click here and check your all subscription history you purchase before</string>
+
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_details">Follow Privacy policy and terms and conditions for more security</string>
+
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_details">Ensuring that the user understands the consequences of deleting their account (loss of data, subscriptions, ect.)</string>
+
+    <string name="logout">Logout</string>
+    <string name="logout_details">Top here and logout your account</string>
+    <string name="upload_stories">Upload Stories</string>
+    <string name="upload_stories_details">Upload your awesome story and enjoy earning every day</string>
+    <string name="earningHistory">Earning History</string>
+    <string name="earningHistoryDetails">Upload your story and earning every day</string>
+    <string name="edit">Edit</string>
+    <string name="copyright_muktokowlom_all_right_reserved">© Copyright মুক্তকলম (MuktoKowlom) All Right Reserved</string>
 
 </resources>
