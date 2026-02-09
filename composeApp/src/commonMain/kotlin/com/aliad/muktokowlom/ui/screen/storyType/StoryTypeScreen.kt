@@ -47,7 +47,8 @@ fun StoryTypeScreen(backStack: NavBackStack<NavKey>, type: AppDestination.StoryT
             MyCustomAppBar(
                 isBackButtonEnable = true,
                 onBackPress = { backStack.remove(AppDestination.StoryTypeWiseBook(typeName = type.typeName)) },
-                title =type.typeName ?: ""
+                title =type.typeName ?: "",
+                editProfile = {}
             )
         }
     ) { innerPadding ->

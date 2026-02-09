@@ -29,4 +29,10 @@ sealed class AppDestination : NavKey {
 
     @Serializable
     data class StoryDetails(val myBookItem: MyBookItem) : AppDestination()
+
+    @Serializable
+    data object Profile : AppDestination()
+
+    @Serializable
+    data object EditProfile : AppDestination()
 }

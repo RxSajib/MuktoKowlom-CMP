@@ -75,5 +75,29 @@
     <string name="earningHistoryDetails">Upload your story and earning every day</string>
     <string name="edit">Edit</string>
     <string name="copyright_muktokowlom_all_right_reserved">© Copyright মুক্তকলম (MuktoKowlom) All Right Reserved</string>
+    <string name="edit_profile">Edit Profile</string>
+
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="second_number">Second Number</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="age">Age</string>
+    <string name="address">Address</string>
+    <string name="save">Save</string>
+    <string name="password_update">Password Update</string>
+
+    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="enter_email_address">Enter email address</string>
+    <string name="enter_phone_number">Enter phone number</string>
+    <string name="enter_second_phone_number">Enter second phone number</string>
+    <string name="enter_date_of_birth">Enter date of birth</string>
+    <string name="enter_age">Enter age</string>
+    <string name="enter_address">Enter address</string>
+
+    <string name="logout_dialog_title">Do you want to logout?</string>
+    <string name="logout_dialog_details">If you logout your account press logout button Thanks for using our application stay with us</string>
 
 </resources>

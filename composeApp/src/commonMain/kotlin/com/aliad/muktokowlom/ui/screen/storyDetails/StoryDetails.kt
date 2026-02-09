@@ -72,7 +72,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
         topBar = {
             MyCustomAppBar(title = myBookItem.titleBn ?: "Unknown", onBackPress = {
                 backStack.remove(AppDestination.StoryDetails(myBookItem = myBookItem))
-            })
+            }, editProfile = {})
         }
     ) { innerPadding ->
         Column(

@@ -39,7 +39,8 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>) {
         topBar = {
             MyCustomAppBar(title = stringResource(Res.string.all_category), onBackPress = {
                 backStack.remove(AppDestination.CategoryScreen)
-            })
+            },
+                editProfile = {})
         }
     ) { innerPadding ->
         Box(

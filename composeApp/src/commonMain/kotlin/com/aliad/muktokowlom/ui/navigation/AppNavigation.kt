@@ -13,8 +13,10 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.aliad.muktokowlom.ui.screen.category.CategoryScreen
 import com.aliad.muktokowlom.ui.screen.category.CategoryWiseBook
+import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.loginScreen.SignInScreen
+import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
 import kotlinx.serialization.modules.SerializersModule
@@ -34,6 +36,8 @@ fun AppNavigation() {
                 subclass(AppDestination.CategoryWiseBook::class, AppDestination.CategoryWiseBook.serializer())
                 subclass(AppDestination.StoryTypeWiseBook::class, AppDestination.StoryTypeWiseBook.serializer())
                 subclass(AppDestination.StoryDetails::class, AppDestination.StoryDetails.serializer())
+                subclass(AppDestination.Profile::class, AppDestination.Profile.serializer())
+                subclass(AppDestination.EditProfile::class, AppDestination.EditProfile.serializer())
             }
         }
     }
@@ -70,6 +74,12 @@ fun AppNavigation() {
             }
             entry<AppDestination.StoryDetails> { type ->
                 StoryDetailsScreen(myBookItem = type.myBookItem, backStack = backStack)
+            }
+            entry<AppDestination.Profile> {
+                ProfileScreen(backStack = backStack)
+            }
+            entry<AppDestination.EditProfile> {
+                EditProfileScreen(navBackStack = backStack)
             }
         },
 

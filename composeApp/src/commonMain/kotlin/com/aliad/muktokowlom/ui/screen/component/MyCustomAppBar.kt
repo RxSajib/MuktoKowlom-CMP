@@ -1,6 +1,7 @@
 package com.aliad.muktokowlom.ui.screen.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,7 +39,8 @@ fun MyCustomAppBar(
     isBackButtonEnable: Boolean = true,
     isActonButtonEnable: Boolean = false,
     title: String,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    editProfile: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -47,7 +49,10 @@ fun MyCustomAppBar(
                     Image(
                         painter = painterResource(Res.drawable.user),
                         contentDescription = null,
-                        modifier = Modifier.size(40.dp).clip(shape = CircleShape),
+                        modifier = Modifier.size(40.dp).clip(shape = CircleShape)
+                            .clickable{
+                                editProfile.invoke()
+                            },
                         contentScale = ContentScale.Crop
                     )
                     WidthGap(15.dp)
@@ -121,6 +126,7 @@ fun MyCustomAppBarPreview() {
         isActonButtonEnable = true,
         title = "Details 01",
         homeHeaderEnable = true,
-        onBackPress = {}
+        onBackPress = {},
+        editProfile = {}
     )
 }

@@ -62,7 +62,10 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
                 isBackButtonEnable = false,
                 title = stringResource(Res.string.muktokowlom),
                 homeHeaderEnable = true,
-                onBackPress = {})
+                onBackPress = {},
+                editProfile = {
+                    backStack.add(AppDestination.Profile)
+                })
         }, modifier = Modifier.background(MaterialTheme.colorScheme.surface)
     ) { innerPadding ->
         Column(

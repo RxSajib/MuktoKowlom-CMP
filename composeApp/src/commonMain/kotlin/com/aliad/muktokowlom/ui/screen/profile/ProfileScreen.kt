@@ -12,7 +12,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,7 +19,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
+import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
+import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomMenu
 import com.aliad.muktokowlom.ui.screen.component.UserInfo
 import com.aliad.muktokowlom.ui.screen.component.UserInfoItem
@@ -47,24 +51,30 @@ import muktokowlomcmp.composeapp.generated.resources.premium_details
 import muktokowlomcmp.composeapp.generated.resources.premium_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.privacy_policy
 import muktokowlomcmp.composeapp.generated.resources.privacy_policy_details
+import muktokowlomcmp.composeapp.generated.resources.profile
 import muktokowlomcmp.composeapp.generated.resources.subscription_history
 import muktokowlomcmp.composeapp.generated.resources.subscription_history_details
 import muktokowlomcmp.composeapp.generated.resources.ticket
 import muktokowlomcmp.composeapp.generated.resources.upload_cloud_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.upload_stories
 import muktokowlomcmp.composeapp.generated.resources.upload_stories_details
-import muktokowlomcmp.composeapp.generated.resources.view_all_story
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(backStack: NavBackStack<NavKey>) {
 
-    val viewModel : ProfileViewModel = koinViewModel()
+    val viewModel: ProfileViewModel = koinViewModel()
 
-    Scaffold { innerPadding ->
+    Scaffold(
+        topBar = {
+            MyCustomAppBar(onBackPress = {
+                backStack.remove(AppDestination.Profile)
+            }, title = stringResource(Res.string.profile), editProfile = {})
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding).verticalScroll(state = rememberScrollState())
                 .padding(16.dp)
@@ -79,7 +89,10 @@ fun ProfileScreen() {
             )
 
             HeightGap(height = 10.dp)
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            ) {
                 Text(
                     text = stringResource(Res.string.basic_info),
                     modifier = Modifier.weight(1f),
@@ -94,7 +107,7 @@ fun ProfileScreen() {
                     ),
                     modifier = Modifier.clip(shape = CircleShape)
                         .background(color = MaterialTheme.colorScheme.primary).clickable {
-
+                            backStack.add(AppDestination.EditProfile)
                         }
                         .padding(horizontal = 10.dp, vertical = 5.dp)
                 )
@@ -202,8 +215,3 @@ fun ProfileScreen() {
     }
 }
 
-@Composable
-@Preview
-fun ProfileScreenPreview() {
-    ProfileScreen()
-}

@@ -4,6 +4,7 @@ import com.aliad.presentation.signIn.ui.category.CategoryViewModel
 import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewModel
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStore
+import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import com.aliad.presentation.signIn.ui.signup.SignUpViewModel
@@ -53,5 +54,8 @@ val presentationModule = module {
     }
     viewModel {
         ProfileViewModel()
+    }
+    viewModel {
+        EditProfileViewModel()
     }
 }

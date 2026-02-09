@@ -58,7 +58,7 @@ fun CategoryWiseBook(backStack: NavBackStack<NavKey>, category: AppDestination.C
             MyCustomAppBar(
                 title = category.category?.name ?: "",
                 isBackButtonEnable = true,
-                onBackPress = { backStack.remove(AppDestination.CategoryWiseBook(category = category.category)) })
+                onBackPress = { backStack.remove(AppDestination.CategoryWiseBook(category = category.category)) }, editProfile = {})
         }
     ) {innerPadding ->
 
