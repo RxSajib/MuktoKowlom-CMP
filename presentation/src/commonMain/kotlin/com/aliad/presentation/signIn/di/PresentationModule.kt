@@ -10,6 +10,7 @@ import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import com.aliad.presentation.signIn.ui.signup.SignUpViewModel
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
 import com.aliad.presentation.signIn.ui.storytype.StoryTypeViewModel
+import com.aliad.presentation.signIn.ui.subscriptionPlan.SubscriptionPlanViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -57,5 +58,10 @@ val presentationModule = module {
     }
     viewModel {
         EditProfileViewModel()
+    }
+    viewModel {
+        SubscriptionPlanViewModel(
+            premiumPlanUseCase = get()
+        )
     }
 }

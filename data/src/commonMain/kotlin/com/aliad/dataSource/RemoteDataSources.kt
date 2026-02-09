@@ -4,6 +4,7 @@ import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashboardDto
 import com.aliad.model.GenericResponse
+import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -27,6 +28,8 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val MOSTPOPULARSTORY = "${BASEURL}get-popular-story"
     private val ALLSTORY = "${BASEURL}get-all-story-with-allSearch"
     private val NEWRELEASESTORY = "${BASEURL}get-new-realeses-story"
+    private val SUBSCRIPTION_PLANS = "${BASEURL}get-subscription-plans"
+
 
     suspend fun loginAccount(email: String, password: String) {
         try {
@@ -119,5 +122,25 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
        }
         val body = response.body<GenericResponse<CategoryWiseBookDto>>()
         return body
+    }
+
+    suspend fun getSubscriptionPlans() : Result<GenericResponse<List<SubscriptionDto>>>{
+        try {
+            val response = httpClient.get(urlString = SUBSCRIPTION_PLANS)
+            if(response.status.isSuccess()){
+
+                val data = response.body<GenericResponse<List<SubscriptionDto>>>()
+
+                return Result.success(data)
+            }else {
+                return Result.failure(Exception("error fetch category"))
+            }
+        } catch (e: ClientRequestException) {
+            return Result.failure(e)
+        } catch (e: ServerResponseException) {
+            return Result.failure(e)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 }

@@ -35,4 +35,7 @@ sealed class AppDestination : NavKey {
 
     @Serializable
     data object EditProfile : AppDestination()
+
+    @Serializable
+    data object Premium : AppDestination()
 }

@@ -99,5 +99,9 @@
 
     <string name="logout_dialog_title">Do you want to logout?</string>
     <string name="logout_dialog_details">If you logout your account press logout button Thanks for using our application stay with us</string>
+    <string name="amount">Amount</string>
+    <string name="buy">Buy</string>
+
+    <string name="membership_valid_days">Membership is valid for %1$s days</string>
 
 </resources>

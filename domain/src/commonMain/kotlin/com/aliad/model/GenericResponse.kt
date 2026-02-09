@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GenericResponse<T : Any>(
     val access_token : String?= null,
-    val success: Boolean = false,
+    val success: Boolean? = null,
     val message_bn: String ?= null,
     val message_en: String ?= null,
     val message: String ?= null,

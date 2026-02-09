@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
+import com.aliad.muktokowlom.ui.bottomSheet.LogoutBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
@@ -144,7 +145,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.premium_details),
                 painter = painterResource(Res.drawable.premium_svgrepo_com)
             ) {
-
+                backStack.add(AppDestination.Premium)
             }
 
             HeightGap(height = 10.dp)
@@ -198,7 +199,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.logout_details),
                 painter = painterResource(Res.drawable.electricity_energy_off_on_power_switch_svgrepo_com)
             ) {
-
+                viewModel.logoutDialogShow = true
             }
 
             HeightGap(height = 10.dp)
@@ -212,6 +213,14 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 textAlign = TextAlign.Center
             )
         }
+    }
+
+    if(viewModel.logoutDialogShow){
+        LogoutBottomSheet(onDismissRequest = {
+            viewModel.logoutDialogShow = false
+        }, logoutButtonClick = {
+            viewModel.logoutDialogShow = false
+        })
     }
 }
 

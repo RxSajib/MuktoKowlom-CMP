@@ -15,4 +15,5 @@ class EditProfileViewModel : ViewModel() {
     var dateOfBirthInput by mutableStateOf("")
     var ageInput by mutableStateOf("")
     var addressInput by mutableStateOf("")
+
 }

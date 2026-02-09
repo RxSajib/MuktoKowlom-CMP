@@ -16,6 +16,7 @@ import com.aliad.muktokowlom.ui.screen.category.CategoryWiseBook
 import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.loginScreen.SignInScreen
+import com.aliad.muktokowlom.ui.screen.premium.PremiumScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
@@ -38,6 +39,7 @@ fun AppNavigation() {
                 subclass(AppDestination.StoryDetails::class, AppDestination.StoryDetails.serializer())
                 subclass(AppDestination.Profile::class, AppDestination.Profile.serializer())
                 subclass(AppDestination.EditProfile::class, AppDestination.EditProfile.serializer())
+                subclass(AppDestination.Premium::class, AppDestination.Premium.serializer())
             }
         }
     }
@@ -80,6 +82,9 @@ fun AppNavigation() {
             }
             entry<AppDestination.EditProfile> {
                 EditProfileScreen(navBackStack = backStack)
+            }
+            entry<AppDestination.Premium> {
+                PremiumScreen(backStack = backStack)
             }
         },
 

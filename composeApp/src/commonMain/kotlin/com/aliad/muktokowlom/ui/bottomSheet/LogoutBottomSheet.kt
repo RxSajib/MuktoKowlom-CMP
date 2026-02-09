@@ -11,6 +11,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,24 +19,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
+import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.logout
 import muktokowlomcmp.composeapp.generated.resources.logout_dialog_details
 import muktokowlomcmp.composeapp.generated.resources.logout_dialog_title
-import muktokowlomcmp.composeapp.generated.resources.password_update
 import muktokowlomcmp.composeapp.generated.resources.save
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LogoutBottomSheet(onDismissRequest: () -> Unit) {
+fun LogoutBottomSheet(onDismissRequest: () -> Unit, logoutButtonClick: () -> Unit) {
 
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(onDismissRequest = { onDismissRequest.invoke() }, sheetState = state) {
         Column(
@@ -68,13 +69,17 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit) {
 
             Row(
                 modifier = Modifier.fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f))
+                    .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f))
                     .padding(16.dp)
             ) {
                 MyCustomButton(
                     title = stringResource(Res.string.save),
                     modifier = Modifier.weight(1f),
                     onClickButton = {
+                        scope.launch {
+                            state.hide()
+                            onDismissRequest.invoke()
+                        }
 
                     },
                     isEnable = true,
@@ -86,7 +91,11 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit) {
                     title = stringResource(Res.string.logout),
                     modifier = Modifier.weight(1f),
                     onClickButton = {
-
+                        scope.launch {
+                            state.hide()
+                            logoutButtonClick.invoke()
+                            onDismissRequest.invoke()
+                        }
                     },
                     isEnable = true,
                     padding = 0.dp
@@ -99,5 +108,8 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit) {
 @Composable
 @Preview
 fun LogoutBottomSheetPreview() {
-    LogoutBottomSheet(onDismissRequest = {})
+    LogoutBottomSheet(
+        onDismissRequest = {},
+        logoutButtonClick = {}
+    )
 }

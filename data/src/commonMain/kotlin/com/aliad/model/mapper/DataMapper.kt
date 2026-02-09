@@ -7,6 +7,8 @@ import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashBord
 import com.aliad.model.DashboardDto
+import com.aliad.model.Subscription
+import com.aliad.model.SubscriptionDto
 
 object DataMapper {
 
@@ -46,5 +48,23 @@ object DataMapper {
             lifOfAllStories = dashboardDto.allStories.map { story -> toBookModel(story) },
             listOfNewReleaseStories = dashboardDto.newReleaseStories.map { story -> toBookModel(story) }
         )
+    }
+
+    fun toSubscriptionPlan(subscriptionDto: SubscriptionDto) : Subscription{
+        return Subscription(
+            days = subscriptionDto.days,
+            id = subscriptionDto.id,
+            name = subscriptionDto.name,
+            name_bn = subscriptionDto.name_bn,
+            price = subscriptionDto.price,
+            status = subscriptionDto.status
+        )
+    }
+    fun toSubscriptionPlanList(subscriptionDto: List<SubscriptionDto>) : List<Subscription>{
+        val subscriptionPlanList = mutableListOf<Subscription>()
+        subscriptionDto.forEach {subscription ->
+            subscriptionPlanList.add(toSubscriptionPlan(subscription))
+        }
+        return subscriptionPlanList
     }
 }
