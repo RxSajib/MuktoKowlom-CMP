@@ -87,6 +87,9 @@ kotlin {
             //dataStore
             implementation(libs.datastore)
 
+            // html converter
+            implementation(libs.be.htmlconverter)
+
             implementation(project(":data"))
             implementation(project(":domain"))
             implementation(project(":presentation"))

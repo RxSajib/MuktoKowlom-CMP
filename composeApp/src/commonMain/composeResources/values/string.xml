@@ -101,7 +101,12 @@
     <string name="logout_dialog_details">If you logout your account press logout button Thanks for using our application stay with us</string>
     <string name="amount">Amount</string>
     <string name="buy">Buy</string>
+    <string name="earning_history">Earning History</string>
 
     <string name="membership_valid_days">Membership is valid for %1$s days</string>
-
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="delete_account_dialog_title">You want to delete your account permanently?</string>
+    <string name="delete_account_dialog_details">Ensuring that the user understands the consequences of deleting their account (loss of data, subscriptions, ect.)</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
 </resources>

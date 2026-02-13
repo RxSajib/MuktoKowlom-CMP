@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
+import com.aliad.muktokowlom.ui.bottomSheet.DeleteAccountBottomSheet
 import com.aliad.muktokowlom.ui.bottomSheet.LogoutBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
@@ -135,7 +136,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.upload_stories_details),
                 painter = painterResource(Res.drawable.upload_cloud_svgrepo_com)
             ) {
-
+                backStack.add(AppDestination.UploadStories)
             }
             HeightGap(height = 10.dp)
 
@@ -156,7 +157,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.subscription_history_details),
                 painter = painterResource(Res.drawable.ticket)
             ) {
-
+                backStack.add(AppDestination.SubscriptionHistory)
             }
 
             HeightGap(height = 10.dp)
@@ -167,7 +168,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.earningHistoryDetails),
                 painter = painterResource(Res.drawable.money_cash)
             ) {
-
+                backStack.add(AppDestination.EarningHistory)
             }
             HeightGap(height = 10.dp)
 
@@ -177,7 +178,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.privacy_policy_details),
                 painter = painterResource(Res.drawable.policy)
             ) {
-
+                backStack.add(AppDestination.PrivacyPolicy)
             }
 
             HeightGap(height = 10.dp)
@@ -188,7 +189,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.delete_account_details),
                 painter = painterResource(Res.drawable.delete_svgrepo_com)
             ) {
-
+                viewModel.deleteAccountDialogShow = true
             }
 
             HeightGap(height = 10.dp)
@@ -215,12 +216,20 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
         }
     }
 
-    if(viewModel.logoutDialogShow){
+    if (viewModel.logoutDialogShow) {
         LogoutBottomSheet(onDismissRequest = {
             viewModel.logoutDialogShow = false
         }, logoutButtonClick = {
             viewModel.logoutDialogShow = false
         })
+    }
+
+    if (viewModel.deleteAccountDialogShow) {
+        DeleteAccountBottomSheet(deleteAccountButtonClick = {
+            viewModel.deleteAccountDialogShow = false
+        }) {
+            viewModel.deleteAccountDialogShow = false
+        }
     }
 }
 

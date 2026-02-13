@@ -13,13 +13,17 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.aliad.muktokowlom.ui.screen.category.CategoryScreen
 import com.aliad.muktokowlom.ui.screen.category.CategoryWiseBook
+import com.aliad.muktokowlom.ui.screen.earning_history.EarningHistoryScreen
 import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.loginScreen.SignInScreen
 import com.aliad.muktokowlom.ui.screen.premium.PremiumScreen
+import com.aliad.muktokowlom.ui.screen.privacy_policy.PrivacyPolicyScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
+import com.aliad.muktokowlom.ui.screen.subscription_history.SubscriptionHistoryScreen
+import com.aliad.muktokowlom.ui.upload_stories.UploadStoriesScreen
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.example.project.ui.screen.signupScreen.SignUpScreen
@@ -40,6 +44,10 @@ fun AppNavigation() {
                 subclass(AppDestination.Profile::class, AppDestination.Profile.serializer())
                 subclass(AppDestination.EditProfile::class, AppDestination.EditProfile.serializer())
                 subclass(AppDestination.Premium::class, AppDestination.Premium.serializer())
+                subclass(AppDestination.PrivacyPolicy::class, AppDestination.PrivacyPolicy.serializer())
+                subclass(AppDestination.EarningHistory::class, AppDestination.EarningHistory.serializer())
+                subclass(AppDestination.UploadStories::class, AppDestination.UploadStories.serializer())
+                subclass(AppDestination.SubscriptionHistory::class, AppDestination.SubscriptionHistory.serializer())
             }
         }
     }
@@ -85,6 +93,18 @@ fun AppNavigation() {
             }
             entry<AppDestination.Premium> {
                 PremiumScreen(backStack = backStack)
+            }
+            entry<AppDestination.PrivacyPolicy> {
+                PrivacyPolicyScreen(backStack = backStack)
+            }
+            entry<AppDestination.EarningHistory> {
+                EarningHistoryScreen(backStack = backStack)
+            }
+            entry<AppDestination.UploadStories> {
+                UploadStoriesScreen(backStack = backStack)
+            }
+            entry<AppDestination.SubscriptionHistory> {
+                SubscriptionHistoryScreen(backStack = backStack)
             }
         },
 

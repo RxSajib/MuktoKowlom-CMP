@@ -10,6 +10,15 @@ import kotlinx.serialization.Serializable
 sealed class AppDestination : NavKey {
 
     @Serializable
+    data object UploadStories: AppDestination()
+
+    @Serializable
+    data object SubscriptionHistory : AppDestination()
+
+    @Serializable
+    data object EarningHistory : AppDestination()
+
+    @Serializable
     object SignInScreen : AppDestination()
 
     @Serializable
@@ -38,4 +47,8 @@ sealed class AppDestination : NavKey {
 
     @Serializable
     data object Premium : AppDestination()
+
+    @Serializable
+    data object PrivacyPolicy : AppDestination()
+
 }
