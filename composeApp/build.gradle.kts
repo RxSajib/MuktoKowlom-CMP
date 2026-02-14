@@ -90,6 +90,10 @@ kotlin {
             // html converter
             implementation(libs.be.htmlconverter)
 
+            // time date converter
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
+
+
             implementation(project(":data"))
             implementation(project(":domain"))
             implementation(project(":presentation"))

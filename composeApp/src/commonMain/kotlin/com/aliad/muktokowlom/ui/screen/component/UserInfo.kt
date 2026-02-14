@@ -17,13 +17,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.joined_since
 import muktokowlomcmp.composeapp.generated.resources.pending
+import muktokowlomcmp.composeapp.generated.resources.placeholder
 import muktokowlomcmp.composeapp.generated.resources.published_story
 import muktokowlomcmp.composeapp.generated.resources.sajib
 import org.jetbrains.compose.resources.painterResource
@@ -34,9 +37,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun UserInfo(
     userName: String,
     emailAddress: String,
+    userProfileImage : String,
     publishedStoryCount: Int,
     pendingStoryCount: Int,
-    joinedSince: String
+    joinedSince: String,
+
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(size = 10.dp))
@@ -44,10 +49,13 @@ fun UserInfo(
 
     ) {
         Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(
-                painter = painterResource(Res.drawable.sajib),
+            AsyncImage(
+                model = userProfileImage,
                 modifier = Modifier.size(80.dp).clip(shape = CircleShape),
                 contentDescription = null,
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(Res.drawable.placeholder),
+                error = painterResource(Res.drawable.placeholder)
             )
             HeightGap(height = 10.dp)
             Text(
@@ -160,6 +168,7 @@ fun UserInfoPreview() {
         emailAddress = "Sajibroy206@gmail.com",
         publishedStoryCount = 45,
         pendingStoryCount = 52,
-        joinedSince = "20 Apr 2025"
+        joinedSince = "20 Apr 2025",
+        userProfileImage = ""
     )
 }

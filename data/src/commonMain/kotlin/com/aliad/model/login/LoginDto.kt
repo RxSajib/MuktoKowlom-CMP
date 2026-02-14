@@ -40,4 +40,7 @@ data class LoginDto(
     val twitter: String?= null,
     val updated_at: String?= null,
     val verification_code: String?= null
-)
+){
+    val completedProfileImage = "https://muktokowlom.com/$image"
+}
+

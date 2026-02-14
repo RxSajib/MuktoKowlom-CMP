@@ -11,7 +11,7 @@ import com.aliad.usecase.dataStore.SaveStringData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class DataStore constructor(
+class DataStoreViewModel constructor(
     private val saveStringData: SaveStringData,
     private val getStringData: GetStringData,
     private val saveIntData: SaveIntData,

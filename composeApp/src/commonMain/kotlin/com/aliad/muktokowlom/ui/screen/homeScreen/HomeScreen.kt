@@ -33,6 +33,8 @@ import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.StoryCategoryWithAllButton
 import com.aliad.muktokowlom.ui.screen.component.StoryItemFixedSize
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
+import com.sajib.data.appConstant.AppConstant
 import io.ktor.http.HttpHeaders.Destination
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.all_release
@@ -55,6 +57,12 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
     val newReleaseStory = stringResource(Res.string.new_release)
     val allStory = stringResource(Res.string.all_release)
 
+    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
+    val userName = dataStoreViewModel.getStringData(key = AppConstant.USER_NAME).collectAsStateWithLifecycle(null)
+    val userEmailAddress = dataStoreViewModel.getStringData(key = AppConstant.USER_EMAIL_ADDRESS).collectAsStateWithLifecycle(null)
+    val userProfileImage = dataStoreViewModel.getStringData(key = AppConstant.USER_PROFILE_IMAGE).collectAsStateWithLifecycle(null)
+
+
     Scaffold(
         topBar = {
             MyCustomAppBar(
@@ -62,6 +70,9 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
                 isBackButtonEnable = false,
                 title = stringResource(Res.string.muktokowlom),
                 homeHeaderEnable = true,
+                userProfileImage = userProfileImage.value,
+                userName = userName.value,
+                userEmailAddress = userEmailAddress.value,
                 onBackPress = {},
                 editProfile = {
                     backStack.add(AppDestination.Profile)

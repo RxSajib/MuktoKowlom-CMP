@@ -3,7 +3,7 @@ package com.aliad.presentation.signIn.di
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
 import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewModel
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
-import com.aliad.presentation.signIn.ui.datastore.DataStore
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
@@ -18,7 +18,7 @@ import org.koin.dsl.module
 val presentationModule = module {
     
     viewModel {
-        DataStore(
+        DataStoreViewModel(
             saveStringData = get(),
             getStringData = get(),
             saveIntData = get(),

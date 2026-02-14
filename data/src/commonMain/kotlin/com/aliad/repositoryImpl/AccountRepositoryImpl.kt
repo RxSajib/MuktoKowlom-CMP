@@ -18,7 +18,7 @@ class AccountRepositoryImpl constructor(val httpClient: HttpClient) : AccountRep
         )
         if(response.isSuccess){
             val userDto = response.getOrNull()
-            return Result.success(toUser(loginDto = userDto?.data?: LoginDto()))
+            return Result.success(toUser(loginDto = userDto?.data?: LoginDto(), accessToken = response.getOrNull()?.access_token?: ""))
         }else {
             return Result.failure(response.exceptionOrNull()?: Exception("Something went wrong"))
         }

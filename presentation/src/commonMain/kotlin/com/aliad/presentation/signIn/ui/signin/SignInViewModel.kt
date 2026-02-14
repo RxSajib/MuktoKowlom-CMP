@@ -70,13 +70,21 @@ class SignInViewModel constructor(
             val job4 = async {
                 saveStringData.saveStringData(
                     AppConstant.USER_PROFILE_IMAGE,
-                    user.completedProfileImage ?: ""
+                    user.profileImage ?: ""
                 )
+            }
+            val job5 = async {
+                saveStringData.saveStringData(AppConstant.ACCESS_TOKEN, user.accessToken?: "")
+            }
+            val job6 = async {
+                saveStringData.saveStringData(AppConstant.USER_REGISTER_DATE, user.createAtDate?: "")
             }
             job1.join()
             job2.join()
             job3.join()
             job4.join()
+            job5.join()
+            job6.join()
         }
 
     }

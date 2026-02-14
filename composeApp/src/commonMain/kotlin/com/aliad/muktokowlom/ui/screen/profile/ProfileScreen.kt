@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -30,7 +31,9 @@ import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomMenu
 import com.aliad.muktokowlom.ui.screen.component.UserInfo
 import com.aliad.muktokowlom.ui.screen.component.UserInfoItem
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
+import com.sajib.data.appConstant.AppConstant
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.basic_info
 import muktokowlomcmp.composeapp.generated.resources.calender_svgrepo_com
@@ -69,6 +72,13 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ProfileScreen(backStack: NavBackStack<NavKey>) {
 
     val viewModel: ProfileViewModel = koinViewModel()
+    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
+    val userName = dataStoreViewModel.getStringData(key = AppConstant.USER_NAME).collectAsStateWithLifecycle(null)
+    val userEmailAddress = dataStoreViewModel.getStringData(key = AppConstant.USER_EMAIL_ADDRESS).collectAsStateWithLifecycle(null)
+    val userProfileImage = dataStoreViewModel.getStringData(key = AppConstant.USER_PROFILE_IMAGE).collectAsStateWithLifecycle(null)
+    val userPhoneNumber = dataStoreViewModel.getStringData(key = AppConstant.USER_PHONE).collectAsStateWithLifecycle(null)
+    val userRegisterDate = dataStoreViewModel.getStringData(key = AppConstant.USER_REGISTER_DATE).collectAsStateWithLifecycle(null)
+
 
     Scaffold(
         topBar = {
@@ -83,11 +93,12 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
         ) {
 
             UserInfo(
-                userName = "Sajib Roy",
-                emailAddress = "Sajibroy206@gmail.com",
+                userName = userName.value?: "",
+                emailAddress = userEmailAddress.value?: "",
+                userProfileImage = userProfileImage.value?: "",
                 publishedStoryCount = 45,
                 pendingStoryCount = 52,
-                joinedSince = "20 Apr 2025"
+                joinedSince = AppConstant.formatDate(input = userRegisterDate.value?: "")
             )
 
             HeightGap(height = 10.dp)
@@ -117,15 +128,15 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
             HeightGap(height = 5.dp)
             UserInfoItem(
                 icon = painterResource(Res.drawable.phone_svgrepo_com),
-                title = "+8801771330378"
+                title = userPhoneNumber.value?: ""
             )
             UserInfoItem(
                 icon = painterResource(Res.drawable.mail_svgrepo_com),
-                title = "Sajibroy206@gmail.com"
+                title = userEmailAddress.value?: ""
             )
             UserInfoItem(
                 icon = painterResource(Res.drawable.calender_svgrepo_com),
-                title = "20 Feb 2025",
+                title = AppConstant.formatDate(input = userRegisterDate.value?: ""),
                 isDivider = false
             )
             HeightGap(height = 10.dp)

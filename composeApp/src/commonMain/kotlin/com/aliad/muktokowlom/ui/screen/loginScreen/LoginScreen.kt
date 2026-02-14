@@ -39,13 +39,8 @@ import com.aliad.muktokowlom.ui.screen.component.BackButton
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
-import com.aliad.presentation.signIn.ui.datastore.DataStore
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
-import com.sajib.data.appConstant.AppConstant
-import io.ktor.http.HttpHeaders.Destination
-import io.ktor.util.logging.Logger
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.dont_have_an_account
 import muktokowlomcmp.composeapp.generated.resources.enter_email
@@ -73,7 +68,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
     }
 
     val viewModel: SignInViewModel = koinViewModel()
-    val dataStoreViewModel : DataStore = koinViewModel()
+    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
     val token = dataStoreViewModel.getStringData("Token").collectAsStateWithLifecycle("")
     val lifecycle = LocalLifecycleOwner.current
 

@@ -22,11 +22,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.aliad.muktokowlom.platform.backButtonIcon
 import io.ktor.util.Platform
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.left_arrow_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.notification_svgrepo_com
+import muktokowlomcmp.composeapp.generated.resources.placeholder
 import muktokowlomcmp.composeapp.generated.resources.search_alt_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.user
 import org.jetbrains.compose.resources.painterResource
@@ -40,25 +42,30 @@ fun MyCustomAppBar(
     isActonButtonEnable: Boolean = false,
     title: String,
     onBackPress: () -> Unit,
-    editProfile: () -> Unit
+    editProfile: () -> Unit,
+    userName : String?= null,
+    userEmailAddress : String?= null,
+    userProfileImage : String?= null
 ) {
     TopAppBar(
         title = {
             if (homeHeaderEnable) {
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    Image(
-                        painter = painterResource(Res.drawable.user),
+                    AsyncImage(
+                        model = userProfileImage,
                         contentDescription = null,
                         modifier = Modifier.size(40.dp).clip(shape = CircleShape)
                             .clickable{
                                 editProfile.invoke()
                             },
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
+                        placeholder = painterResource(Res.drawable.placeholder),
+                        error = painterResource(Res.drawable.placeholder)
                     )
                     WidthGap(15.dp)
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = "Sajib Roy",
+                            text = userName?: "",
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -68,7 +75,7 @@ fun MyCustomAppBar(
                         )
 
                         Text(
-                            text = "sajibroy206@gmail.com",
+                            text = userEmailAddress?: "",
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,

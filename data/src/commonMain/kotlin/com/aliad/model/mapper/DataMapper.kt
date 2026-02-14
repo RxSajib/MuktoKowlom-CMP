@@ -16,7 +16,7 @@ import com.aliad.model.login.LoginDto
 
 object DataMapper {
 
-    fun toUser(loginDto: LoginDto) : User{
+    fun toUser(loginDto: LoginDto, accessToken : String) : User{
         return User(
             name = loginDto.name,
             id = loginDto.id,
@@ -25,7 +25,9 @@ object DataMapper {
             phone = loginDto.phone,
             phoneTwo = loginDto.phone_two,
             address = loginDto.address,
-            profileImage = loginDto.image
+            profileImage = loginDto.completedProfileImage,
+            accessToken = accessToken,
+            createAtDate = loginDto.created_at
         )
     }
 
