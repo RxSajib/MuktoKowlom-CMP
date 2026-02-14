@@ -74,7 +74,7 @@ kotlin {
                 //paging3 dependency
 
                 // time date converter
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
+                implementation(libs.kotlinx.datetime)
             }
         }
     }

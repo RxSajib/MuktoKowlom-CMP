@@ -91,7 +91,12 @@ kotlin {
             implementation(libs.be.htmlconverter)
 
             // time date converter
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
+            implementation(libs.kotlinx.datetime)
+
+            // lottie compose multiplatform
+            implementation("io.github.alexzhirkevich:compottie:2.0.2")
+            implementation("io.github.alexzhirkevich:compottie-dot:2.0.2")
+            implementation("io.github.alexzhirkevich:compottie-network:2.0.2")
 
 
             implementation(project(":data"))
