@@ -11,8 +11,23 @@ import com.aliad.model.PrivacyPolicy
 import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.Subscription
 import com.aliad.model.SubscriptionDto
+import com.aliad.model.User
+import com.aliad.model.login.LoginDto
 
 object DataMapper {
+
+    fun toUser(loginDto: LoginDto) : User{
+        return User(
+            name = loginDto.name,
+            id = loginDto.id,
+            email = loginDto.email,
+            isVerified = loginDto.is_verified,
+            phone = loginDto.phone,
+            phoneTwo = loginDto.phone_two,
+            address = loginDto.address,
+            profileImage = loginDto.image
+        )
+    }
 
     fun toCategory(categoryDto: CategoryDto): Category {
         return Category(

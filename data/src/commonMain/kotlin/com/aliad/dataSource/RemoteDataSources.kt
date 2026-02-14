@@ -7,6 +7,7 @@ import com.aliad.model.GenericResponse
 import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
+import com.aliad.model.login.LoginDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -33,7 +34,8 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val PRIVACY_POLICY = "${BASEURL}privacy-policy"
 
 
-    suspend fun loginAccount(email: String, password: String) {
+
+    suspend fun loginAccount(email: String, password: String) : Result<GenericResponse<LoginDto>> {
         try {
             val response = httpClient.post(LOGINACCOUNT) {
                 parameter("email", email)
@@ -41,25 +43,29 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             }
 
             if (response.status.isSuccess()) {
-                println("login success")
+                return Result.success(response.body<GenericResponse<LoginDto>>())
             } else {
                 val errorText = response.bodyAsText()
-                //  val errorResponse = Json.decodeFromString<GenericResponse<Boolean>>(errorText)
-                println("error response with ${errorText.toString()}")
+                println("error body is $errorText")
+                return Result.failure(Exception("error response with ${errorText}"))
+               // println("error response with ${errorText.toString()}")
             }
             //
 
         } catch (e: ClientRequestException) {
             // 4xx error
             val errorBody = e.response.bodyAsText()
-            println("Client Error (${e.response.status}): $errorBody")
+            return Result.failure(Exception("error response with ${errorBody}"))
+       //     println("Client Error (${e.response.status}): $errorBody")
 
         } catch (e: ServerResponseException) {
             val errorBody = e.response.bodyAsText()
-            println("Server Error (${e.response.status}): $errorBody")
+            return Result.failure(Exception("error response with ${errorBody}"))
+         //   println("Server Error (${e.response.status}): $errorBody")
 
         } catch (e: Exception) {
-            println("Unknown Error: ${e.message}")
+            return Result.failure(Exception("error response with ${e.message}"))
+          //  println("Unknown Error: ${e.message}")
         }
     }
 

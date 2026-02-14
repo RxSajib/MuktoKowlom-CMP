@@ -28,7 +28,7 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>) {
 
     val viewModel: PrivacyPolicyViewModel = koinViewModel()
     val privacyPolicy = viewModel.privacyPolicy.collectAsStateWithLifecycle()
-     val privacyPolicyDetails = htmlToString(privacyPolicy.value?.description ?: "Unknown")
+     val privacyPolicyDetails = htmlToString(privacyPolicy.value?.description ?: "")
 
 
     Scaffold(

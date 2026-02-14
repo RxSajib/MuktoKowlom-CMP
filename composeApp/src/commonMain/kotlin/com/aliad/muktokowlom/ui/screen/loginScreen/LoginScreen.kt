@@ -27,7 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.dataSource.CacheDataStore
@@ -38,6 +41,7 @@ import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
 import com.aliad.presentation.signIn.ui.datastore.DataStore
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
+import com.sajib.data.appConstant.AppConstant
 import io.ktor.http.HttpHeaders.Destination
 import io.ktor.util.logging.Logger
 import kotlinx.coroutines.delay
@@ -71,7 +75,15 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
     val viewModel: SignInViewModel = koinViewModel()
     val dataStoreViewModel : DataStore = koinViewModel()
     val token = dataStoreViewModel.getStringData("Token").collectAsStateWithLifecycle("")
+    val lifecycle = LocalLifecycleOwner.current
 
+    LaunchedEffect(lifecycle.lifecycle){
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED){
+            viewModel.userMutableSharedFlow.collect { user ->
+                backStack.add(AppDestination.HomeScreen)
+            }
+        }
+    }
 
 
     Scaffold { innerPadding ->
@@ -81,6 +93,8 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                 .verticalScroll(state = rememberScrollState())
         ) {
             BackButton(imageVector = Icons.AutoMirrored.Default.ArrowBack, onclick = {})
+
+
 
             HeightGap(height = 20.dp)
             Text(
@@ -141,7 +155,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                 title = stringResource(Res.string.sign_in_account),
                 modifier = Modifier,
                 onClickButton = {
-                    backStack.add(AppDestination.HomeScreen)
+                    viewModel.loginAccount()
                 },
                 isEnable = viewModel.isButtonEnableForSignIn
             )

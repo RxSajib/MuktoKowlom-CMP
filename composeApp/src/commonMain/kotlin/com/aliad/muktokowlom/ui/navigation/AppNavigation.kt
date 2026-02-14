@@ -20,6 +20,7 @@ import com.aliad.muktokowlom.ui.screen.loginScreen.SignInScreen
 import com.aliad.muktokowlom.ui.screen.premium.PremiumScreen
 import com.aliad.muktokowlom.ui.screen.privacy_policy.PrivacyPolicyScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
+import com.aliad.muktokowlom.ui.screen.splashScreen.SplashScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
 import com.aliad.muktokowlom.ui.screen.subscription_history.SubscriptionHistoryScreen
@@ -30,6 +31,8 @@ import org.example.project.ui.screen.signupScreen.SignUpScreen
 
 @Composable
 fun AppNavigation() {
+
+
 
     val appConfig = SavedStateConfiguration {
         serializersModule = SerializersModule {
@@ -48,12 +51,13 @@ fun AppNavigation() {
                 subclass(AppDestination.EarningHistory::class, AppDestination.EarningHistory.serializer())
                 subclass(AppDestination.UploadStories::class, AppDestination.UploadStories.serializer())
                 subclass(AppDestination.SubscriptionHistory::class, AppDestination.SubscriptionHistory.serializer())
+                subclass(AppDestination.SplashScreen::class, AppDestination.SplashScreen.serializer())
             }
         }
     }
 
 
-    val element = arrayOf<AppDestination>(AppDestination.SignInScreen)
+    val element = arrayOf<AppDestination>(AppDestination.SplashScreen)
     val backStack = rememberNavBackStack(configuration = appConfig, elements = element)
 
     NavDisplay(
@@ -105,6 +109,9 @@ fun AppNavigation() {
             }
             entry<AppDestination.SubscriptionHistory> {
                 SubscriptionHistoryScreen(backStack = backStack)
+            }
+            entry<AppDestination.SplashScreen> {
+                SplashScreen(backStack = backStack)
             }
         },
 

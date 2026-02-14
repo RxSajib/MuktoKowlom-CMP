@@ -2,6 +2,8 @@ package com.aliad.repositoryImpl
 
 import com.aliad.dataSource.RemoteDataSources
 import com.aliad.model.User
+import com.aliad.model.login.LoginDto
+import com.aliad.model.mapper.DataMapper.toUser
 import com.aliad.repository.AccountRepository
 import io.ktor.client.HttpClient
 
@@ -14,17 +16,12 @@ class AccountRepositoryImpl constructor(val httpClient: HttpClient) : AccountRep
             email = email,
             password = password
         )
-        return Result.success(
-            User(
-                name = "sajib",
-                id = 41,
-                email = "sajib",
-                isVerified = 1,
-                phone = "01771330378",
-                phoneTwo = "01724541206",
-                address = "mirpur 1",
-                profileImage = ""
-            )
-        )
+        if(response.isSuccess){
+            val userDto = response.getOrNull()
+            return Result.success(toUser(loginDto = userDto?.data?: LoginDto()))
+        }else {
+            return Result.failure(response.exceptionOrNull()?: Exception("Something went wrong"))
+        }
+
     }
 }
