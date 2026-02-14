@@ -4,6 +4,7 @@ import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashboardDto
 import com.aliad.model.GenericResponse
+import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
 import io.ktor.client.HttpClient
@@ -29,6 +30,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val ALLSTORY = "${BASEURL}get-all-story-with-allSearch"
     private val NEWRELEASESTORY = "${BASEURL}get-new-realeses-story"
     private val SUBSCRIPTION_PLANS = "${BASEURL}get-subscription-plans"
+    private val PRIVACY_POLICY = "${BASEURL}privacy-policy"
 
 
     suspend fun loginAccount(email: String, password: String) {
@@ -140,6 +142,30 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         } catch (e: ServerResponseException) {
             return Result.failure(e)
         } catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
+
+    suspend fun getPrivacyPolicy() : Result<GenericResponse<PrivacyPolicyDto>> {
+        try {
+            val response = httpClient.get(urlString = PRIVACY_POLICY)
+            if(response.status.isSuccess()){
+
+                val data = response.body<GenericResponse<PrivacyPolicyDto>>()
+             //   print("privacy policy ${data.data}")
+                return Result.success(data)
+            }else {
+             //   print("error fetch privacy policy")
+                return Result.failure(Exception("error fetch privacy policy"))
+            }
+        } catch (e: ClientRequestException) {
+          //  print("error fetch privacy policy ${e.message}")
+            return Result.failure(e)
+        } catch (e: ServerResponseException) {
+         //   print("error fetch privacy policy ${e.message}")
+            return Result.failure(e)
+        } catch (e: Exception) {
+          //  print("error fetch privacy policy ${e.message}")
             return Result.failure(e)
         }
     }

@@ -7,6 +7,8 @@ import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashBord
 import com.aliad.model.DashboardDto
+import com.aliad.model.PrivacyPolicy
+import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.Subscription
 import com.aliad.model.SubscriptionDto
 
@@ -66,5 +68,15 @@ object DataMapper {
             subscriptionPlanList.add(toSubscriptionPlan(subscription))
         }
         return subscriptionPlanList
+    }
+
+    fun toPrivacyPolicy(privacyPolicyDto: PrivacyPolicyDto) : PrivacyPolicy {
+        return PrivacyPolicy(
+            description = privacyPolicyDto.description?: "",
+            descriptionBn = privacyPolicyDto.description_bn?: "",
+            id = privacyPolicyDto.id?: 0,
+            title = privacyPolicyDto.title?: "",
+            titleBn = privacyPolicyDto.title_bn?: ""
+        )
     }
 }

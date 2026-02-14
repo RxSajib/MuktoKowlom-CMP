@@ -5,6 +5,7 @@ import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewMod
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStore
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
+import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import com.aliad.presentation.signIn.ui.signup.SignUpViewModel
@@ -63,5 +64,8 @@ val presentationModule = module {
         SubscriptionPlanViewModel(
             premiumPlanUseCase = get()
         )
+    }
+    viewModel {
+        PrivacyPolicyViewModel(privacyPolicyUseCase = get())
     }
 }

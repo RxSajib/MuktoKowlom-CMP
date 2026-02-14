@@ -5,6 +5,7 @@ import com.aliad.usecase.CategoryWiseBookUseCase
 import com.aliad.usecase.DashBoardUseCase
 import com.aliad.usecase.LoginUseCase
 import com.aliad.usecase.PremiumPlanUseCase
+import com.aliad.usecase.PrivacyPolicyUseCase
 import com.aliad.usecase.StoryTypeUseCase
 import com.aliad.usecase.dataStore.GetBoolData
 import com.aliad.usecase.dataStore.GetIntData
@@ -65,6 +66,12 @@ val domainModule = module {
     
     factory {
         PremiumPlanUseCase(
+            profileRepository = get()
+        )
+    }
+
+    factory {
+        PrivacyPolicyUseCase(
             profileRepository = get()
         )
     }
