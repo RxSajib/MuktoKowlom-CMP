@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aliad.helper.SnackBarEvent
+import com.aliad.model.SnackBarDetails
 import com.aliad.model.User
 import com.aliad.usecase.LoginUseCase
 import com.aliad.usecase.dataStore.SaveStringData
@@ -32,6 +34,8 @@ class SignInViewModel constructor(
                 response.getOrNull()?.let {
                     saveUserInfo(user = it)
                     userMutableSharedFlow.emit(it)
+
+
                 }
                 //   print("login success")
             } else {

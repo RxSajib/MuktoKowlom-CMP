@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,6 +36,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.dataSource.CacheDataStore
+import com.aliad.helper.SnackBarEvent
+import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.BackButton
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
@@ -46,6 +50,7 @@ import muktokowlomcmp.composeapp.generated.resources.dont_have_an_account
 import muktokowlomcmp.composeapp.generated.resources.enter_email
 import muktokowlomcmp.composeapp.generated.resources.enter_password
 import muktokowlomcmp.composeapp.generated.resources.forgot_password
+import muktokowlomcmp.composeapp.generated.resources.muktokowlom
 import muktokowlomcmp.composeapp.generated.resources.sign_in_account
 import muktokowlomcmp.composeapp.generated.resources.sign_in_now
 import muktokowlomcmp.composeapp.generated.resources.sign_in_now_details
@@ -75,6 +80,14 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
     LaunchedEffect(lifecycle.lifecycle){
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED){
             viewModel.userMutableSharedFlow.collect { user ->
+
+                SnackBarEvent.save(
+                    details = SnackBarDetails(
+                        details = "Login success",
+                        show = true,
+                        leftIcon = Icons.Default.LockOpen
+                    )
+                )
                 backStack.add(AppDestination.HomeScreen)
             }
         }
