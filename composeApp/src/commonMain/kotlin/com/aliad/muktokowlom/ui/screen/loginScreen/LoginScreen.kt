@@ -165,7 +165,8 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                 onClickButton = {
                     viewModel.loginAccount()
                 },
-                isEnable = viewModel.isButtonEnableForSignIn
+                isEnable = viewModel.isButtonEnableForSignIn,
+                showProgress = viewModel.showProgress
             )
 
             HeightGap(height = 20.dp)

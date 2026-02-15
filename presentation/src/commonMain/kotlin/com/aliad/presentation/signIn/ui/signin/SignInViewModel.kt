@@ -22,12 +22,13 @@ class SignInViewModel constructor(
 
 
     val userMutableSharedFlow = MutableSharedFlow<User>()
-
+    var showProgress by mutableStateOf(false)
 
     // aliadpolok@gmail.com
     // Aliad321@@
     fun loginAccount() {
         viewModelScope.launch {
+            showProgress = true
             val response =
                 loginUseCase.loginAccount(email = inputEmailAddressInput, password = passwordInput)
             if (response.isSuccess) {
@@ -37,8 +38,10 @@ class SignInViewModel constructor(
 
 
                 }
+                showProgress = false
                 //   print("login success")
             } else {
+                showProgress = false
                 //      print("login failed ${response.exceptionOrNull()?.message?: "Something went wrong"}")
             }
         }
