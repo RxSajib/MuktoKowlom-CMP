@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -38,6 +40,8 @@ import com.aliad.model.SnackBarDetails
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import muktokowlomcmp.composeapp.generated.resources.Res
+import muktokowlomcmp.composeapp.generated.resources.muktokowlom
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -47,12 +51,11 @@ enum class MySnackPosition {
 }
 
 
-
 @Composable
 fun MyCustomNotifySnackBar(
     modifier: Modifier = Modifier.fillMaxSize(),
     message: String,
-    leftIcon: ImageVector? = null,
+    //  leftIcon: ImageVector? = null,
     position: MySnackPosition = MySnackPosition.TOP,
     onDismiss: (() -> Unit)? = null
 ) {
@@ -103,7 +106,7 @@ fun MyCustomNotifySnackBar(
         ) {
             CustomSnackBar(
                 message = message,
-                leftIcon = leftIcon,
+                //  leftIcon = leftIcon,
                 modifier = Modifier
                     .padding(
                         horizontal = 16.dp,
@@ -119,7 +122,7 @@ fun MyCustomNotifySnackBar(
 @Composable
 fun CustomSnackBar(
     message: String,
-    leftIcon: ImageVector? = null,
+    //   leftIcon: ImageVector? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -133,25 +136,25 @@ fun CustomSnackBar(
         shape = RoundedCornerShape(size = 6.dp)
     ) {
         Row(
-            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
+            modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
-            leftIcon?.let { iconImage ->
-                Image(
-                    painter = rememberVectorPainter(iconImage),
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
+
+            Image(
+                painter = painterResource(Res.drawable.muktokowlom),
+                contentDescription = null,
+                modifier = Modifier.size(25.dp).clip(shape = CircleShape)
+            )
+
 
             Spacer(modifier = Modifier.width(12.dp))
 
             Text(
                 text = message,
                 modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodyLarge
             )
 
             Spacer(modifier = Modifier.width(12.dp))

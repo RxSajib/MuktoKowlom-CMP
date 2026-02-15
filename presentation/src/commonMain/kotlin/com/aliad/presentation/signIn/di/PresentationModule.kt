@@ -24,7 +24,10 @@ val presentationModule = module {
             saveIntData = get(),
             getIntData = get(),
             saveBoolData = get(),
-            getBoolData = get()
+            getBoolData = get(),
+            deleteStringDataUseCase = get(),
+            deleteIntDataUseCase = get(),
+            deleteBoolDataUseCase = get()
         )
     }
     

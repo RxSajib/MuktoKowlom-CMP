@@ -1,13 +1,20 @@
 package com.aliad.presentation.signIn.ui.datastore
 
+import androidx.compose.runtime.key
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aliad.model.User
+import com.aliad.usecase.dataStore.DeleteBoolDataUseCase
+import com.aliad.usecase.dataStore.DeleteIntDataUseCase
+import com.aliad.usecase.dataStore.DeleteStringDataUseCase
 import com.aliad.usecase.dataStore.GetBoolData
 import com.aliad.usecase.dataStore.GetIntData
 import com.aliad.usecase.dataStore.GetStringData
 import com.aliad.usecase.dataStore.SaveBoolData
 import com.aliad.usecase.dataStore.SaveIntData
 import com.aliad.usecase.dataStore.SaveStringData
+import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -17,7 +24,10 @@ class DataStoreViewModel constructor(
     private val saveIntData: SaveIntData,
     private val getIntData: GetIntData,
     private val saveBoolData: SaveBoolData,
-    private val getBoolData: GetBoolData
+    private val getBoolData: GetBoolData,
+    private val deleteStringDataUseCase: DeleteStringDataUseCase,
+    private val deleteIntDataUseCase: DeleteIntDataUseCase,
+    private val deleteBoolDataUseCase: DeleteBoolDataUseCase
 ) : ViewModel() {
 
 
@@ -44,4 +54,55 @@ class DataStoreViewModel constructor(
     fun getIntData(key: String): Flow<Int> = getIntData.getIntData(key = key)
 
     fun getStringData(key: String): Flow<String> = getStringData.getStringData(key = key)
+
+
+    fun deleteStringData(key : String){
+        viewModelScope.launch {
+            deleteStringDataUseCase.removeStringData(key = key)
+        }
+    }
+
+    fun deleteIntData(key : String){
+        viewModelScope.launch {
+            deleteIntDataUseCase.deleteIntData(key = key)
+        }
+    }
+
+    fun deleteBoolData(key : String){
+        viewModelScope.launch {
+            deleteBoolDataUseCase.deleteBoolData(key = key)
+        }
+    }
+
+
+    fun deleteUser(){
+        viewModelScope.launch {
+            val job1 = async {
+                deleteStringData(key = AppConstant.USER_NAME)
+            }
+            val job2 = async {
+                deleteStringData(key = AppConstant.USER_PHONE)
+            }
+            val job3 = async {
+                deleteStringData(key = AppConstant.USER_REGISTER_DATE)
+            }
+            val job4 = async {
+                deleteStringData(key = AppConstant.USER_PROFILE_IMAGE)
+            }
+            val job5 = async {
+                deleteStringData(key = AppConstant.USER_EMAIL_ADDRESS)
+            }
+            val job6 = async {
+                deleteStringData(key = AppConstant.ACCESS_TOKEN)
+            }
+
+            job1.join()
+            job2.join()
+            job3.join()
+            job4.join()
+            job5.join()
+            job6.join()
+        }
+    }
+
 }

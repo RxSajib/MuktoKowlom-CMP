@@ -109,4 +109,6 @@
     <string name="delete_account_dialog_details">Ensuring that the user understands the consequences of deleting their account (loss of data, subscriptions, ect.)</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+
+    <string name="logout_success">Logout success</string>
 </resources>

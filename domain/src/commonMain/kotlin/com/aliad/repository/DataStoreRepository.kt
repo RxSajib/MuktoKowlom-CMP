@@ -12,4 +12,9 @@ interface DataStoreRepository{
 
     suspend fun saveBoolData(key : String, value : Boolean)
     fun getBoolData(key : String) : Flow<Boolean>
+
+
+    suspend fun deleteStringData(key : String)
+    suspend fun deleteIntData(key : String)
+    suspend fun deleteBoolData(key : String)
 }

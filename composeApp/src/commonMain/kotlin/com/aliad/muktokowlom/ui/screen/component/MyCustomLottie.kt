@@ -1,10 +1,12 @@
 package com.aliad.muktokowlom.ui.screen.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.alexzhirkevich.compottie.DotLottie
@@ -31,7 +33,7 @@ fun MyCustomLottieAnim(lottieFile : String, size : Dp){
             progress = { progress },
         ),
         contentDescription = "Lottie animation",
-        modifier = Modifier.size(size)
+        modifier = Modifier.size(size).background(color = Color.Transparent)
     )
 }
 

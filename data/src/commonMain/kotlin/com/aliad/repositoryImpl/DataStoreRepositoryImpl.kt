@@ -46,4 +46,22 @@ class DataStoreRepositoryImpl constructor(val datastore : DataStore<Preferences>
             it[booleanPreferencesKey(key)] ?: false
         }
     }
+
+    override suspend fun deleteStringData(key: String) {
+        datastore.edit {
+            it.remove(stringPreferencesKey(key))
+        }
+    }
+
+    override suspend fun deleteIntData(key: String) {
+        datastore.edit {
+            it.remove(intPreferencesKey(key))
+        }
+    }
+
+    override suspend fun deleteBoolData(key: String) {
+        datastore.edit {
+            it.remove(booleanPreferencesKey(key))
+        }
+    }
 }

@@ -146,7 +146,7 @@ fun AppNavigation() {
             MyCustomNotifySnackBar(
                 modifier = Modifier.fillMaxSize(),
                 message = snackBarEvent.value.details ?: "",
-                leftIcon = snackBarEvent.value.leftIcon, //  painterResource(snackBarEvent.value.leftIcon ?: Res.drawable.muktokowlom),
+           //     leftIcon = snackBarEvent.value.leftIcon, //  painterResource(snackBarEvent.value.leftIcon ?: Res.drawable.muktokowlom),
                 onDismiss = {
                     SnackBarEvent.save(
                         details = snackBarEvent.value.copy(

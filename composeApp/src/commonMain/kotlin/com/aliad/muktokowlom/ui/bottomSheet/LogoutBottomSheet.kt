@@ -24,6 +24,7 @@ import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
+import muktokowlomcmp.composeapp.generated.resources.cancel
 import muktokowlomcmp.composeapp.generated.resources.logout
 import muktokowlomcmp.composeapp.generated.resources.logout_dialog_details
 import muktokowlomcmp.composeapp.generated.resources.logout_dialog_title
@@ -73,7 +74,7 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit, logoutButtonClick: () -> Uni
                     .padding(16.dp)
             ) {
                 MyCustomButton(
-                    title = stringResource(Res.string.save),
+                    title = stringResource(Res.string.cancel),
                     modifier = Modifier.weight(1f),
                     onClickButton = {
                         scope.launch {

@@ -7,9 +7,12 @@ import com.aliad.usecase.LoginUseCase
 import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.PrivacyPolicyUseCase
 import com.aliad.usecase.StoryTypeUseCase
+import com.aliad.usecase.dataStore.DeleteBoolDataUseCase
+import com.aliad.usecase.dataStore.DeleteIntDataUseCase
 import com.aliad.usecase.dataStore.GetBoolData
 import com.aliad.usecase.dataStore.GetIntData
 import com.aliad.usecase.dataStore.GetStringData
+import com.aliad.usecase.dataStore.DeleteStringDataUseCase
 import com.aliad.usecase.dataStore.SaveBoolData
 import com.aliad.usecase.dataStore.SaveIntData
 import com.aliad.usecase.dataStore.SaveStringData
@@ -60,6 +63,15 @@ val domainModule = module {
     }
     factory {
         GetBoolData(dataStoreRepository = get())
+    }
+    factory {
+        DeleteStringDataUseCase(dataStoreRepository = get())
+    }
+    factory {
+        DeleteIntDataUseCase(dataStoreRepository = get())
+    }
+    factory {
+        DeleteBoolDataUseCase(dataStoreRepository = get())
     }
     //datastore instace cereate use csase
     
