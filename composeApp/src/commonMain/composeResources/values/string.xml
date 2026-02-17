@@ -112,4 +112,9 @@
 
     <string name="logout_success">Logout success</string>
     <string name="or_continue_with">Or continue with</string>
+
+    <string name="title_dashboard">লিখুন এবং আয় করুন মুক্তকলম থেকে</string>
+    <string name="details_dashboard">আপনার লেখা পাবলিশ করুন</string>
+    <string name="dashboard_web_link"><a href="https://muktokowlom.com/"> <b> <font fgcolor="#2E70B8"> muktokowlom.com </font> </b>  </a>   </string>
+
 </resources>

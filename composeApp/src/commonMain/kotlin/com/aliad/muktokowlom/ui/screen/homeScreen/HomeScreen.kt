@@ -2,6 +2,7 @@ package com.aliad.muktokowlom.ui.screen.homeScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -29,11 +31,15 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
+import com.aliad.muktokowlom.ui.screen.component.HomeSeaBanner
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.screen.component.MyCustomBannerItem
 import com.aliad.muktokowlom.ui.screen.component.StoryCategoryWithAllButton
 import com.aliad.muktokowlom.ui.screen.component.StoryItemFixedSize
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
+import com.lt.compose_views.banner.Banner
+import com.lt.compose_views.banner.rememberBannerState
 import com.sajib.data.appConstant.AppConstant
 import io.ktor.http.HttpHeaders.Destination
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -45,6 +51,7 @@ import muktokowlomcmp.composeapp.generated.resources.new_release
 import muktokowlomcmp.composeapp.generated.resources.view_all
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.collections.get
 
 @Composable
 fun HomeScreen(backStack: NavBackStack<NavKey>) {
@@ -84,6 +91,22 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
                 .background(MaterialTheme.colorScheme.surface)
                 .verticalScroll(state = rememberScrollState())
         ) {
+
+
+            HomeSeaBanner{}
+
+            HeightGap(height = 20.dp)
+
+            Banner(
+                pageCount = 10,
+                autoScrollTime = 5000L,
+                bannerState = rememberBannerState(),
+                orientation = Orientation.Horizontal,
+                bannerKey = { index ->  }) {
+
+                MyCustomBannerItem()
+            }
+
 
             StoryCategoryWithAllButton(
                 categoryTitle = stringResource(Res.string.most_popular), onClick = {

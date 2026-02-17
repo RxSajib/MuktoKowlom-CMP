@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -98,6 +99,8 @@ kotlin {
             implementation("io.github.alexzhirkevich:compottie-dot:2.0.2")
             implementation("io.github.alexzhirkevich:compottie-network:2.0.2")
 
+            //banner
+            implementation(libs.composeviews)
 
             implementation(project(":data"))
             implementation(project(":domain"))

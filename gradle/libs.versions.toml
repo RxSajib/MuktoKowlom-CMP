@@ -34,6 +34,7 @@ runnerVersion = "1.7.0"
 coreVersion = "1.7.0"
 datastore = "1.2.0"
 seymourText = "0.0.20"
+composeviews = "1.10.0.1"
 
 [libraries]
 be-htmlconverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlconverterVersion" }
@@ -80,6 +81,7 @@ kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializat
 datastore = {module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
 seymour-text = { module = "com.eygraber:seymour-text", version.ref = "seymourText" }
 
+composeviews = { module = "io.github.ltttttttttttt:ComposeViews", version.ref = "composeviews" }
 
 
 [plugins]
