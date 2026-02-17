@@ -11,8 +11,14 @@ data class GenericResponse<T : Any>(
     val message: String ?= null,
     val status : Boolean ?= null,
     val data: T? = null,
-    val errorResponse : ErrorResponse? = null
+    val errorResponse : ErrorResponse? = null,
 )
 
 @Serializable
-data class ErrorResponse(val code: Int = 400, val path: String = "", val message: String = "")
+data class ErrorResponse(val success : Boolean  =false, val message_en : String?= null, val message_bn : String?= null)
+
+
+class ApiException(
+    val error: ErrorResponse,
+    message: String? = error.message_en
+) : Exception(message)

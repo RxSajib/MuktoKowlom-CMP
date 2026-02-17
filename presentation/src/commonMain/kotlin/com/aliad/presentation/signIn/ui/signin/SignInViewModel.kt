@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliad.helper.SnackBarEvent
+import com.aliad.ApiResult
+import com.aliad.model.ErrorResponse
 import com.aliad.model.SnackBarDetails
 import com.aliad.model.User
 import com.aliad.usecase.LoginUseCase
@@ -21,31 +23,46 @@ class SignInViewModel constructor(
 ) : ViewModel() {
 
 
+    val isLoginSuccess = MutableSharedFlow<Boolean>()
     val userMutableSharedFlow = MutableSharedFlow<User>()
     var showProgress by mutableStateOf(false)
+    var errorResponse by mutableStateOf(ErrorResponse())
 
     // aliadpolok@gmail.com
     // Aliad321@@
     fun loginAccount() {
         viewModelScope.launch {
+
             showProgress = true
-            val response =
-                loginUseCase.loginAccount(email = inputEmailAddressInput, password = passwordInput)
-            if (response.isSuccess) {
-                response.getOrNull()?.let {
-                    saveUserInfo(user = it)
-                    userMutableSharedFlow.emit(it)
 
+            val result = loginUseCase.loginAccount(
+                email = inputEmailAddressInput,
+                password = passwordInput
+            )
 
+            showProgress = false
+
+            when (result) {
+
+                is ApiResult.Success -> {
+                    val user = result.data
+                    saveUserInfo(user)
+                    userMutableSharedFlow.emit(user)
+                    print("login success ______________$user")
+                    isLoginSuccess.emit(true)
                 }
-                showProgress = false
-                //   print("login success")
-            } else {
-                showProgress = false
-                //      print("login failed ${response.exceptionOrNull()?.message?: "Something went wrong"}")
+
+                is ApiResult.Error -> {
+                    isLoginSuccess.emit(false)
+                    errorResponse = errorResponse.copy(
+                        message_bn = result.messageBn,
+                        message_en = result.messageEn
+                    )
+                }
             }
         }
     }
+
 
     var inputEmailAddressInput by mutableStateOf("")
 
@@ -81,10 +98,13 @@ class SignInViewModel constructor(
                 )
             }
             val job5 = async {
-                saveStringData.saveStringData(AppConstant.ACCESS_TOKEN, user.accessToken?: "")
+                saveStringData.saveStringData(AppConstant.ACCESS_TOKEN, user.accessToken ?: "")
             }
             val job6 = async {
-                saveStringData.saveStringData(AppConstant.USER_REGISTER_DATE, user.createAtDate?: "")
+                saveStringData.saveStringData(
+                    AppConstant.USER_REGISTER_DATE,
+                    user.createAtDate ?: ""
+                )
             }
             job1.join()
             job2.join()

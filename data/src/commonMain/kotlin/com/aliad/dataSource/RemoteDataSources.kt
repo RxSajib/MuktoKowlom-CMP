@@ -1,8 +1,11 @@
 package com.aliad.dataSource
 
+import com.aliad.model.ApiException
+import com.aliad.ApiResult
 import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashboardDto
+import com.aliad.model.ErrorResponse
 import com.aliad.model.GenericResponse
 import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
@@ -35,37 +38,70 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
 
 
 
-    suspend fun loginAccount(email: String, password: String) : Result<GenericResponse<LoginDto>> {
-        try {
+
+    suspend fun loginAccount(
+        email: String,
+        password: String
+    ): ApiResult<GenericResponse<LoginDto>> {
+
+        return try {
+
             val response = httpClient.post(LOGINACCOUNT) {
                 parameter("email", email)
                 parameter("password", password)
             }
 
             if (response.status.isSuccess()) {
-                return Result.success(response.body<GenericResponse<LoginDto>>())
+
+                ApiResult.Success(
+                    response.body()
+                )
+
             } else {
-                val errorText = response.bodyAsText()
-                println("error body is $errorText")
-                return Result.failure(Exception("error response with ${errorText}"))
-               // println("error response with ${errorText.toString()}")
+
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message?: "Something went wrong",
+                        message_bn = e.message?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+
+                        messageBn = errorResponse.message_bn,
+                        messageEn = errorResponse.message_en
+
+                )
             }
-            //
 
         } catch (e: ClientRequestException) {
-            // 4xx error
+
             val errorBody = e.response.bodyAsText()
-            return Result.failure(Exception("error response with ${errorBody}"))
-       //     println("Client Error (${e.response.status}): $errorBody")
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
 
         } catch (e: ServerResponseException) {
+
             val errorBody = e.response.bodyAsText()
-            return Result.failure(Exception("error response with ${errorBody}"))
-         //   println("Server Error (${e.response.status}): $errorBody")
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
 
         } catch (e: Exception) {
-            return Result.failure(Exception("error response with ${e.message}"))
-          //  println("Unknown Error: ${e.message}")
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
         }
     }
 
@@ -105,13 +141,13 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         return myResponse.body<GenericResponse<CategoryWiseBookDto>>()
     }
 
-    suspend fun getDashBoard() : Result<DashboardDto>{
+    suspend fun getDashBoard(): Result<DashboardDto> {
         try {
             val response = httpClient.get(urlString = DASHBOARDSTORIES)
-            if(response.status.isSuccess()){
+            if (response.status.isSuccess()) {
                 val data = response.body<DashboardDto>()
                 return Result.success(data)
-            }else {
+            } else {
                 return Result.failure(Exception("error fetch category"))
             }
         } catch (e: ClientRequestException) {
@@ -123,24 +159,28 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
     }
 
-    suspend fun getStoryType(storyType : String, page : Int, searchKey : String = "All") : GenericResponse<CategoryWiseBookDto>{
-       val response = httpClient.get(urlString = MOSTPOPULARSTORY){
-           parameter("page", page)
-           parameter("search", searchKey)
-       }
+    suspend fun getStoryType(
+        storyType: String,
+        page: Int,
+        searchKey: String = "All"
+    ): GenericResponse<CategoryWiseBookDto> {
+        val response = httpClient.get(urlString = MOSTPOPULARSTORY) {
+            parameter("page", page)
+            parameter("search", searchKey)
+        }
         val body = response.body<GenericResponse<CategoryWiseBookDto>>()
         return body
     }
 
-    suspend fun getSubscriptionPlans() : Result<GenericResponse<List<SubscriptionDto>>>{
+    suspend fun getSubscriptionPlans(): Result<GenericResponse<List<SubscriptionDto>>> {
         try {
             val response = httpClient.get(urlString = SUBSCRIPTION_PLANS)
-            if(response.status.isSuccess()){
+            if (response.status.isSuccess()) {
 
                 val data = response.body<GenericResponse<List<SubscriptionDto>>>()
 
                 return Result.success(data)
-            }else {
+            } else {
                 return Result.failure(Exception("error fetch category"))
             }
         } catch (e: ClientRequestException) {
@@ -152,26 +192,26 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
     }
 
-    suspend fun getPrivacyPolicy() : Result<GenericResponse<PrivacyPolicyDto>> {
+    suspend fun getPrivacyPolicy(): Result<GenericResponse<PrivacyPolicyDto>> {
         try {
             val response = httpClient.get(urlString = PRIVACY_POLICY)
-            if(response.status.isSuccess()){
+            if (response.status.isSuccess()) {
 
                 val data = response.body<GenericResponse<PrivacyPolicyDto>>()
-             //   print("privacy policy ${data.data}")
+                //   print("privacy policy ${data.data}")
                 return Result.success(data)
-            }else {
-             //   print("error fetch privacy policy")
+            } else {
+                //   print("error fetch privacy policy")
                 return Result.failure(Exception("error fetch privacy policy"))
             }
         } catch (e: ClientRequestException) {
-          //  print("error fetch privacy policy ${e.message}")
+            //  print("error fetch privacy policy ${e.message}")
             return Result.failure(e)
         } catch (e: ServerResponseException) {
-         //   print("error fetch privacy policy ${e.message}")
+            //   print("error fetch privacy policy ${e.message}")
             return Result.failure(e)
         } catch (e: Exception) {
-          //  print("error fetch privacy policy ${e.message}")
+            //  print("error fetch privacy policy ${e.message}")
             return Result.failure(e)
         }
     }

@@ -59,7 +59,7 @@ val dataModule = module {
     // implement ktor clint
 
     single<AccountRepository> {
-        AccountRepositoryImpl(httpClient = get())
+        AccountRepositoryImpl(remoteDataSources = get())
     }
 
     single {
