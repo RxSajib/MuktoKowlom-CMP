@@ -2,6 +2,7 @@ package com.aliad.muktokowlom.ui.screen.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -17,24 +18,36 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import com.aliad.model.MyBookItem
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.muktokowlom
+import muktokowlomcmp.composeapp.generated.resources.placeholder
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MyCustomBannerItem(){
-    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(shape = RoundedCornerShape(10.dp)).background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f)).padding(16.dp)) {
-        Image(
-            painter = painterResource(Res.drawable.muktokowlom),
+fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clickable {
+            onclick.invoke(myBookItem)
+        }.clip(shape = RoundedCornerShape(10.dp))
+            .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f))
+            .padding(10.dp)
+    ) {
+        AsyncImage(
+            model = myBookItem.completedImageUri,
             contentDescription = null,
-            modifier = Modifier.weight(0.2f).aspectRatio(1f).clip(shape = RoundedCornerShape(10.dp)),
-            contentScale = ContentScale.Crop
+            modifier = Modifier.weight(0.2f).aspectRatio(1f)
+                .clip(shape = RoundedCornerShape(10.dp)),
+            contentScale = ContentScale.Crop,
+            error = painterResource(Res.drawable.placeholder),
+            placeholder = painterResource(Res.drawable.placeholder)
         )
 
-        Column(modifier = Modifier.weight(1f).padding(start = 16.dp)) {
+        Column(modifier = Modifier.weight(1f).padding(start = 10.dp)) {
             Text(
-                text = "Bangladesh",
+                text = myBookItem.titleBn ?: "",
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold
@@ -42,22 +55,26 @@ fun MyCustomBannerItem(){
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
 
-            )
+                )
 
             Text(
-                text = "Bangladesh, to the east of India on the Bay of Bengal, is a South Asian country marked by lush greenery and many waterways. Its Padma (Ganges), Meghna and Jamuna rivers create fertile plains, and travel by boat",
+                text = myBookItem.summaryBn ?: "",
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontWeight = FontWeight.Normal,
                     color = MaterialTheme.colorScheme.inverseSurface,
                 ),
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 4,
+            )
+
+            HeightGap(height = 10.dp)
+            MyRatingBar(
+                rating = myBookItem.ratingToInt?.toFloat() ?: 0f,
+                starSize = 15.dp,
+                onStarClick = {},
+                isIndicator = true
             )
         }
     }
 }
 
-@Composable
-@Preview
-fun MyCustomBannerItemPreview(){
-    MyCustomBannerItem()
-}

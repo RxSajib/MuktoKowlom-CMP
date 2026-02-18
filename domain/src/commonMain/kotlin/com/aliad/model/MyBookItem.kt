@@ -12,7 +12,9 @@ data class MyBookItem(
     val titleEn: String? = null,
     val image : String ?= null,
     val rating : String ?= null,
-    val authorName : String?= null
+    val authorName : String?= null,
+    val summaryBn : String? = null,
+    val summaryEn : String?= null
 ){
     val completedImageUri = "https://muktokowlom.com/$image"
     val ratingToInt = convertStringToInt(rating?:"0")

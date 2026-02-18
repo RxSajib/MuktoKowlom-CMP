@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.HomeSeaBanner
@@ -95,28 +96,26 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
 
             HomeSeaBanner{}
 
-            HeightGap(height = 20.dp)
-
-            Banner(
-                pageCount = 10,
-                autoScrollTime = 5000L,
-                bannerState = rememberBannerState(),
-                orientation = Orientation.Horizontal,
-                bannerKey = { index ->  }) {
-
-                MyCustomBannerItem()
-            }
-
+            HeightGap(height = 10.dp)
 
             StoryCategoryWithAllButton(
                 categoryTitle = stringResource(Res.string.most_popular), onClick = {
                     backStack.add(AppDestination.StoryTypeWiseBook(typeName = mostPopularStory))
                 })
-            LazyRow {
-                items(dashBoardData.value?.lisOfPopularStories ?: emptyList()) { bookItem ->
-                    StoryItemFixedSize(item = bookItem)
+            Banner(
+                pageCount = dashBoardData.value?.lisOfPopularStories?.size?: 0,
+                autoScrollTime = 5000L,
+                bannerState = rememberBannerState(),
+                orientation = Orientation.Horizontal,
+                bannerKey = { index -> dashBoardData.value?.lisOfPopularStories[index].toString() }) {
+
+                MyCustomBannerItem(myBookItem = dashBoardData.value?.lisOfPopularStories[index]?: MyBookItem()){myBookItem ->
+                    print("my book item $myBookItem")
                 }
             }
+
+            HeightGap(height = 10.dp)
+
             StoryCategoryWithAllButton(
                 categoryTitle = stringResource(Res.string.new_release), onClick = {
                     backStack.add(AppDestination.StoryTypeWiseBook(typeName = newReleaseStory))

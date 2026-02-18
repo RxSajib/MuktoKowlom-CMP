@@ -50,6 +50,7 @@ import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -150,18 +151,34 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                     )
                     Text(
                         text = stringResource(Res.string.sign_in_now),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.W400
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.W500
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
-                    HeightGap(height = 10.dp)
-                    Text(
-                        text = stringResource(Res.string.sign_in_now_details),
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.dont_have_an_account),
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = adjustedFontSize(10.0f)
+                            )
+                        )
+                        WidthGap(width = 4.dp)
+                        Text(
+                            text = stringResource(Res.string.sign_up),
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontWeight = FontWeight.W500,
+                                color = Color.Red,
+                                fontSize = adjustedFontSize(10.0f)
+                            ), modifier = Modifier.clickable {
+                                backStack.add(AppDestination.SignUpScreen)
+                            })
+                    }
                     HeightGap(height = 20.dp)
 
                     MyCustomInputFiled(

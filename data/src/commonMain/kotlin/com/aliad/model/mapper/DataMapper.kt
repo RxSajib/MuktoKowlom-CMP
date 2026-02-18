@@ -57,7 +57,9 @@ object DataMapper {
             titleBn = bookItem.title_bn,
             image = bookItem.image,
             rating = bookItem.rating,
-            authorName = bookItem.user_name
+            authorName = bookItem.user_name,
+            summaryBn = bookItem.summary_bn,
+            summaryEn = bookItem.story_bn
         )
     }
 
