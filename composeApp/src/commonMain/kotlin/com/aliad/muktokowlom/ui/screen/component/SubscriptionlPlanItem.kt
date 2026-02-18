@@ -27,39 +27,50 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun SubscriptionPlanItem(selected : Boolean = false, subscription: Subscription, onClick: () -> Unit) {
+fun SubscriptionPlanItem(
+    selected: Boolean = false,
+    subscription: Subscription,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth()
             .border(
                 width = 0.5.dp,
-                color = if(selected) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.inverseSurface.copy(0.2f),
+                color = if (selected) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.inverseSurface.copy(
+                    0.2f
+                ),
                 shape = CircleShape
             )
             .clip(shape = CircleShape)
-            .clickable{onClick.invoke()}
+            .clickable { onClick.invoke() }
 
 
-            .padding(10.dp) , verticalAlignment = Alignment.CenterVertically
+            .padding(10.dp), verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             painter = painterResource(Res.drawable.premium_svgrepo_com),
-            contentDescription = null
+            contentDescription = null,
+            tint = if (selected) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.inverseSurface.copy(
+                alpha = 0.7f
+            )
         )
         WidthGap(width = 10.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = subscription.name?:"",
+                text = subscription.name ?: "",
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.W500
+                    fontWeight = if (selected) FontWeight.W500 else FontWeight.W400
                 )
             )
             HeightGap(height = 4.dp)
             Text(
-                text = stringResource(Res.string.membership_valid_days, subscription.days?: "0"),
+                text = stringResource(Res.string.membership_valid_days, subscription.days ?: "0"),
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(0.5f)
+                    color = if (selected) MaterialTheme.colorScheme.inverseSurface.copy(0.5f) else MaterialTheme.colorScheme.inverseSurface.copy(
+                        0.3f
+                    )
                 )
             )
         }
@@ -69,14 +80,15 @@ fun SubscriptionPlanItem(selected : Boolean = false, subscription: Subscription,
             Text(
                 text = "$",
                 style = MaterialTheme.typography.bodyLarge.copy(
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(0.5f),
+                    // color = MaterialTheme.colorScheme.inverseSurface.copy(0.5f),
+                    fontWeight = if (selected) FontWeight.W500 else FontWeight.W300
                 )
             )
             WidthGap(width = 1.dp)
             Text(
-                text = subscription.price?: "0",
+                text = subscription.price ?: "0",
                 style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.W500
+                    fontWeight = if (selected) FontWeight.W500 else FontWeight.W300
                 )
             )
         }

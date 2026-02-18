@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
@@ -23,6 +24,9 @@ import androidx.compose.ui.text.style.TextOverflow
 @Composable
 fun MyCustomInputFiled(placeHolderText : String, text : String, onValueChange : (String) -> Unit, isPasswordInput : Boolean = false, isPasswordVisibility: Boolean = false, isVisiblePasswordChange : () -> Unit){
     OutlinedTextField(
+        textStyle = MaterialTheme.typography.bodyMedium.copy(
+            fontWeight = FontWeight.W400
+        ),
         value = text, onValueChange = { passwordInput ->
            onValueChange.invoke(passwordInput)
         },
@@ -44,7 +48,9 @@ fun MyCustomInputFiled(placeHolderText : String, text : String, onValueChange : 
 
         },
         placeholder = {
-            Text(text = placeHolderText, maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.bodyMedium)
+            Text(text = placeHolderText, maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.W400
+            ))
         },
         maxLines = 1,
 

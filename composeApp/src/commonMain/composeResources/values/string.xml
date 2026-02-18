@@ -96,13 +96,15 @@
     <string name="enter_date_of_birth">Enter date of birth</string>
     <string name="enter_age">Enter age</string>
     <string name="enter_address">Enter address</string>
-
+    <string name="terms_and_conditions">Terms &amp; conditions</string>
+    <string name="t_and_c">T&amp;C</string>
     <string name="logout_dialog_title">Do you want to logout?</string>
     <string name="logout_dialog_details">If you logout your account press logout button Thanks for using our application stay with us</string>
     <string name="amount">Amount</string>
     <string name="buy">Buy</string>
     <string name="earning_history">Earning History</string>
-
+    <string name="by_continuing_you_agree_to_the">By continuing, you agree to the</string>
+<string name="and">and</string>
     <string name="membership_valid_days">Membership is valid for %1$s days</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="delete_account_dialog_title">You want to delete your account permanently?</string>

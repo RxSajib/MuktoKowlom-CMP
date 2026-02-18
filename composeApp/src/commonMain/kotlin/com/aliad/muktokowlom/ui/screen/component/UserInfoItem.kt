@@ -39,7 +39,7 @@ fun UserInfoItem(icon : Painter, title : String, isDivider : Boolean = true){
             )
         }
         if(isDivider){
-            HorizontalDivider(modifier = Modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)))
+            HorizontalDivider(modifier = Modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f)))
         }
     }
 

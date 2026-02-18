@@ -17,17 +17,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
+import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MyCustomButton(
     isEnable: Boolean = true,
     title: String,
-    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    backgroundColor: Color = onPrimaryLight,
     textColor: Color = Color.White,
     modifier: Modifier = Modifier,
     onClickButton: () -> Unit,
-    padding: Dp = 7.dp,
+    padding: Dp = 5.dp,
     showProgress: Boolean = false
 ) {
 
@@ -50,15 +52,16 @@ fun MyCustomButton(
                 CircularProgressIndicator(
                     color = Color.Red,
                     strokeWidth = 2.dp,
-                    modifier = Modifier.padding(7.dp)
+                    modifier = Modifier.padding(3.dp)
                         .size(20.dp),
 
                 )
             } else {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.W500
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.W500,
+                        fontSize = adjustedFontSize(12f)
                     ),
                     modifier = Modifier.padding(padding)
                 )

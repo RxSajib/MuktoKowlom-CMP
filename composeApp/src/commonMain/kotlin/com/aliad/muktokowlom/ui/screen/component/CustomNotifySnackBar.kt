@@ -154,12 +154,12 @@ fun CustomSnackBar(
             Text(
                 text = message,
                 modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodySmall
             )
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            MyCustomLottieAnim(lottieFile = "files/success_check.lottie", size = 25.dp)
+            MyCustomLottieAnim(lottieFile = "files/checkmark.lottie", size = 25.dp)
         }
     }
 }

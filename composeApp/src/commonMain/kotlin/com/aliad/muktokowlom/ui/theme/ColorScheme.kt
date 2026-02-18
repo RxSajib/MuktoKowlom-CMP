@@ -7,12 +7,14 @@ val darkColorScheme = darkColorScheme(
     surface = Black,
     primary = colorPrimaryDark,
     inverseSurface = colorSurfaceTintDark,
-    onSurface = White
+    onSurface = White,
+    onPrimary = onPrimaryDark
 )
 
 val lightColorScheme = lightColorScheme(
     surface = White,
     primary = colorPrimaryLight,
     inverseSurface = colorSurfaceTintLight,
-    onSurface = Black
+    onSurface = Black,
+    onPrimary = onPrimaryLight
 )

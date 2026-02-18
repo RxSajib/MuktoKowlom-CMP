@@ -40,7 +40,7 @@ fun MyCustomMenu(
         modifier = modifier.border(
             width = 0.5.dp,
             shape = RoundedCornerShape(size = 10.dp),
-            color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f)
         ).clip(shape = RoundedCornerShape(size = 10.dp)).clickable { onClick.invoke() }
             .padding(horizontal = 10.dp, vertical = 8.dp)
             .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
@@ -48,7 +48,8 @@ fun MyCustomMenu(
         Icon(
             painter = painter,
             contentDescription = null,
-            modifier = Modifier.size(22.dp)
+            modifier = Modifier.size(22.dp),
+            tint = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.7f)
         )
         WidthGap(width = 10.dp)
         Column(modifier = Modifier.weight(1f).padding(end = 10.dp)) {
@@ -65,7 +66,7 @@ fun MyCustomMenu(
             Text(
                 text = details,
                 style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.inverseSurface
+                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.6f)
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
