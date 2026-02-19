@@ -24,11 +24,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.aliad.muktokowlom.platform.backButtonIcon
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import io.ktor.util.Platform
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.left_arrow_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.notification_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.placeholder
+import muktokowlomcmp.composeapp.generated.resources.premium_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.search_alt_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.user
 import org.jetbrains.compose.resources.painterResource
@@ -88,7 +90,9 @@ fun MyCustomAppBar(
                     }
                 }
             } else {
-                Text(text = title)
+                Text(text = title, style = MaterialTheme.typography.titleLarge.copy(
+                    fontSize = adjustedFontSize(18f)
+                ))
             }
 
         },
@@ -96,7 +100,7 @@ fun MyCustomAppBar(
             if (isActonButtonEnable) {
                 IconButton(onClick = {}) {
                     Icon(
-                        painter = painterResource(Res.drawable.search_alt_svgrepo_com),
+                        painter = painterResource(Res.drawable.premium_svgrepo_com),
                         contentDescription = null
                     )
                 }
