@@ -10,6 +10,12 @@ import kotlinx.serialization.Serializable
 sealed class AppDestination : NavKey {
 
     @Serializable
+    data class OtpView(val emailOrPhoneNumber : String = "") : AppDestination()
+
+    @Serializable
+    data object RecoveryPassword : AppDestination()
+
+    @Serializable
     data object SplashScreen : AppDestination()
 
     @Serializable

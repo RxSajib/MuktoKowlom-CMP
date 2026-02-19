@@ -7,6 +7,7 @@ import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
+import com.aliad.presentation.signIn.ui.recoveryPassword.RecoveryPasswordViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import com.aliad.presentation.signIn.ui.signup.SignUpViewModel
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
@@ -70,5 +71,9 @@ val presentationModule = module {
     }
     viewModel {
         PrivacyPolicyViewModel(privacyPolicyUseCase = get())
+    }
+
+    viewModel {
+        RecoveryPasswordViewModel()
     }
 }

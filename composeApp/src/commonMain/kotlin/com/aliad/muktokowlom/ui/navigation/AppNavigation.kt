@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -24,9 +23,11 @@ import com.aliad.muktokowlom.ui.screen.earning_history.EarningHistoryScreen
 import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.loginScreen.SignInScreen
+import com.aliad.muktokowlom.ui.screen.otpView.OtpViewScreen
 import com.aliad.muktokowlom.ui.screen.premium.PremiumScreen
 import com.aliad.muktokowlom.ui.screen.privacy_policy.PrivacyPolicyScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
+import com.aliad.muktokowlom.ui.screen.recoveryPassword.RecoveryPasswordScreen
 import com.aliad.muktokowlom.ui.screen.splashScreen.SplashScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
@@ -34,10 +35,7 @@ import com.aliad.muktokowlom.ui.screen.subscription_history.SubscriptionHistoryS
 import com.aliad.muktokowlom.ui.upload_stories.UploadStoriesScreen
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import muktokowlomcmp.composeapp.generated.resources.Res
-import muktokowlomcmp.composeapp.generated.resources.muktokowlom
 import org.example.project.ui.screen.signupScreen.SignUpScreen
-import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun AppNavigation() {
@@ -62,6 +60,8 @@ fun AppNavigation() {
                 subclass(AppDestination.UploadStories::class, AppDestination.UploadStories.serializer())
                 subclass(AppDestination.SubscriptionHistory::class, AppDestination.SubscriptionHistory.serializer())
                 subclass(AppDestination.SplashScreen::class, AppDestination.SplashScreen.serializer())
+                subclass(AppDestination.RecoveryPassword::class, AppDestination.RecoveryPassword.serializer())
+                subclass(AppDestination.OtpView::class, AppDestination.OtpView.serializer())
             }
         }
     }
@@ -123,6 +123,12 @@ fun AppNavigation() {
                 }
                 entry<AppDestination.SplashScreen> {
                     SplashScreen(backStack = backStack)
+                }
+                entry<AppDestination.RecoveryPassword> {
+                    RecoveryPasswordScreen(backStack = backStack)
+                }
+                entry<AppDestination.OtpView> {
+                    OtpViewScreen(backStack = backStack, emailOrPhoneNumber = it.emailOrPhoneNumber)
                 }
             },
 

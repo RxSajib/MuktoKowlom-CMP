@@ -143,6 +143,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.surface)
                     .imePadding()
             ) {
 
@@ -220,7 +221,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                             text = stringResource(Res.string.forgot_password),
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.clickable {
-
+                                backStack.add(AppDestination.RecoveryPassword)
                             })
                     }
                     HeightGap(height = 20.dp)

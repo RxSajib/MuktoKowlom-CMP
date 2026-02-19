@@ -112,11 +112,21 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
 
+    <string name="recovery_password">Recovery Password</string>
+    <string name="recovery_password_details">Enter your valid email for recovery password</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="enter_otp">Enter OTP</string>
+
     <string name="logout_success">Logout success</string>
     <string name="or_continue_with">Or continue with</string>
 
     <string name="title_dashboard">লিখুন এবং আয় করুন মুক্তকলম থেকে</string>
     <string name="details_dashboard">আপনার লেখা পাবলিশ করুন</string>
     <string name="dashboard_web_link"><a href="https://muktokowlom.com/"> <b> <font fgcolor="#2E70B8"> muktokowlom.com </font> </b>  </a>   </string>
+
+    <string name="verification_code">Verification Code</string>
+    <string name="resent_code">Resent Code</string>
+    <string name="Please_type_the_verification_code_send_to">We send a verification code the following address</string>
+    <string name="Send">Send</string>
 
 </resources>
