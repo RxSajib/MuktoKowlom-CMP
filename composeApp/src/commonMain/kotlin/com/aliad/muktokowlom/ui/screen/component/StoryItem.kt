@@ -17,39 +17,51 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.aliad.model.MyBookItem
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun StoryItem(item: MyBookItem?, onClick: (data : MyBookItem) -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(10.dp)).clickable{onClick.invoke(item!!)}.padding(10.dp)) {
+fun StoryItem(item: MyBookItem?, onClick: (data: MyBookItem) -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(10.dp))
+            .clickable { onClick.invoke(item!!) }.padding(10.dp)
+    ) {
         AsyncImage(
             modifier = Modifier.fillMaxWidth().height(100.dp)
                 .clip(shape = RoundedCornerShape(10.dp)),
-            model = item?.completedImageUri?: "",
+            model = item?.completedImageUri ?: "",
             contentDescription = null,
             contentScale = ContentScale.Crop,
             placeholder = painterResource(Res.drawable.placeholder),
             error = painterResource(Res.drawable.placeholder)
         )
         HeightGap(10.dp)
-        MyRatingBar(rating = item?.ratingToInt?.toFloat()?: 0f, starSize = 15.dp, onStarClick = {}, isIndicator = true)
+        MyRatingBar(
+            rating = item?.ratingToInt?.toFloat() ?: 0f,
+            starSize = 15.dp,
+            onStarClick = {},
+            isIndicator = true
+        )
         HeightGap(2.dp)
         Text(
-            text = item?.titleBn?: "Unknow Story",
+            text = item?.titleBn ?: "Unknow Story",
             modifier = Modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.W500,
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontWeight = FontWeight.W600,
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Text(text = item?.authorName?: "Unknow Author", modifier = Modifier.fillMaxWidth(),
+        Text(
+            text = item?.authorName ?: "Unknow Author", modifier = Modifier.fillMaxWidth(),
             maxLines = 1, overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.inverseSurface,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall.copy(
+                color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f),
+                fontSize = adjustedFontSize(10f)
+            )
         )
 
     }

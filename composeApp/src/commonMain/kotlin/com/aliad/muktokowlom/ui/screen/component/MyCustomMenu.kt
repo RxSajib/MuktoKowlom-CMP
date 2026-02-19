@@ -74,7 +74,9 @@ fun MyCustomMenu(
 
         Icon(
             painter = painterResource(Res.drawable.arrow_right_svgrepo_com),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.size(22.dp),
+            tint = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.7f)
         )
     }
 }

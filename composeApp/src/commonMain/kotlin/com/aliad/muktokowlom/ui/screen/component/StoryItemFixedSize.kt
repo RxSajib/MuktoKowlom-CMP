@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.aliad.model.MyBookItem
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import org.jetbrains.compose.resources.painterResource
@@ -37,18 +38,21 @@ fun StoryItemFixedSize(item: MyBookItem?){
         MyRatingBar(rating = item?.ratingToInt?.toFloat()?: 0f, starSize = 15.dp, onStarClick = {}, isIndicator = true)
         HeightGap(2.dp)
         Text(
-            text = item?.titleBn?: "Unknow Story",
+            text = item?.titleBn ?: "Unknow Story",
             modifier = Modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.W500,
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontWeight = FontWeight.W600,
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Text(text = item?.authorName?: "Unknow Author", modifier = Modifier.fillMaxWidth(),
+        Text(
+            text = item?.authorName ?: "Unknow Author", modifier = Modifier.fillMaxWidth(),
             maxLines = 1, overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.inverseSurface,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall.copy(
+                color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f),
+                fontSize = adjustedFontSize(10f)
+            )
         )
 
     }

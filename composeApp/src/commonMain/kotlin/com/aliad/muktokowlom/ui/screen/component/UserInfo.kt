@@ -26,6 +26,7 @@ import coil3.compose.AsyncImage
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.joined_since
 import muktokowlomcmp.composeapp.generated.resources.pending
+import muktokowlomcmp.composeapp.generated.resources.person_circle
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import muktokowlomcmp.composeapp.generated.resources.published_story
 import muktokowlomcmp.composeapp.generated.resources.sajib
@@ -54,8 +55,8 @@ fun UserInfo(
                 modifier = Modifier.size(80.dp).clip(shape = CircleShape),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(Res.drawable.placeholder),
-                error = painterResource(Res.drawable.placeholder)
+                placeholder = painterResource(Res.drawable.person_circle),
+                error = painterResource(Res.drawable.person_circle)
             )
             HeightGap(height = 10.dp)
             Text(

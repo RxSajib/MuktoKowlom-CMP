@@ -29,7 +29,7 @@ fun MyCustomButton(
     textColor: Color = Color.White,
     modifier: Modifier = Modifier,
     onClickButton: () -> Unit,
-    padding: Dp = 5.dp,
+    padding: Dp = 6.dp,
     showProgress: Boolean = false
 ) {
 
@@ -52,7 +52,7 @@ fun MyCustomButton(
                 CircularProgressIndicator(
                     color = Color.Red,
                     strokeWidth = 2.dp,
-                    modifier = Modifier.padding(3.dp)
+                    modifier = Modifier.padding(4.dp)
                         .size(20.dp),
 
                 )
