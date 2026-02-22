@@ -11,6 +11,7 @@ androidx-lifecycle = "2.9.6"
 androidx-testExt = "1.3.0"
 composeHotReload = "1.0.0"
 composeMultiplatform = "1.9.3"
+composeShimmer = "1.3.3"
 htmlconverterVersion = "1.1.0"
 junit = "4.13.2"
 kotlin = "2.3.0"
@@ -38,6 +39,7 @@ composeviews = "1.10.0.1"
 
 [libraries]
 be-htmlconverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlconverterVersion" }
+compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { module = "junit:junit", version.ref = "junit" }

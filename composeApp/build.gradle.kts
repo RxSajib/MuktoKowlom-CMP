@@ -101,8 +101,10 @@ kotlin {
 
             //banner
             implementation(libs.composeviews)
-
             // otp view
+
+            // shimmer effect
+            implementation(libs.compose.shimmer)
 
             implementation(project(":data"))
             implementation(project(":domain"))

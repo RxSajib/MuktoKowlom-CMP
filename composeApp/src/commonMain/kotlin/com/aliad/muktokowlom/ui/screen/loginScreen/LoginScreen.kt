@@ -46,6 +46,8 @@ import androidx.navigation3.runtime.NavKey
 import com.aliad.dataSource.CacheDataStore
 import com.aliad.helper.SnackBarEvent
 import com.aliad.model.SnackBarDetails
+import com.aliad.muktokowlom.ui.bottomSheet.PrivacyPolicyBottomSheet
+import com.aliad.muktokowlom.ui.bottomSheet.TermsAndConditionBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.BackButton
 import com.aliad.muktokowlom.ui.screen.component.CustomSocialButton
@@ -95,23 +97,23 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
     }
 
     val viewModel: SignInViewModel = koinViewModel()
-    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
+    val dataStoreViewModel: DataStoreViewModel = koinViewModel()
     val token = dataStoreViewModel.getStringData("Token").collectAsStateWithLifecycle("")
     val lifecycle = LocalLifecycleOwner.current
 
     print("error response with ${viewModel.errorResponse.message_en}")
 
-    LaunchedEffect(lifecycle.lifecycle){
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED){
+    LaunchedEffect(lifecycle.lifecycle) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             viewModel.userMutableSharedFlow.collect { user ->
                 backStack.add(AppDestination.HomeScreen)
             }
         }
     }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.isLoginSuccess.collect { loginSuccess ->
-            if(loginSuccess){
+            if (loginSuccess) {
                 SnackBarEvent.save(
                     details = SnackBarDetails(
                         details = "Login success",
@@ -119,7 +121,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                         leftIcon = Icons.Default.LockOpen
                     )
                 )
-            }else {
+            } else {
                 SnackBarEvent.save(
                     details = SnackBarDetails(
                         details = viewModel.errorResponse.message_bn,
@@ -149,7 +151,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
 
                 Column(
                     modifier = Modifier
-                       .weight(1f)
+                        .weight(1f)
                         .verticalScroll(rememberScrollState()),
 
                     ) {
@@ -227,37 +229,46 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                     HeightGap(height = 20.dp)
 
 
-                        Text(
-                            text = stringResource(Res.string.or_continue_with),
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center
-                        )
+                    Text(
+                        text = stringResource(Res.string.or_continue_with),
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
                     HeightGap(height = 10.dp)
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                        CustomSocialButton(icon = painterResource(Res.drawable.facebook_icon), backGroundColor = onPrimaryLight){
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CustomSocialButton(
+                            icon = painterResource(Res.drawable.facebook_icon),
+                            backGroundColor = onPrimaryLight
+                        ) {
 
                         }
                         WidthGap(width = 10.dp)
-                        CustomSocialButton(icon = painterResource(Res.drawable.google_icon), backGroundColor = Color.Red){
+                        CustomSocialButton(
+                            icon = painterResource(Res.drawable.google_icon),
+                            backGroundColor = Color.Red
+                        ) {
 
                         }
                     }
                     HeightGap(height = 10.dp)
 
                 }
-                    HeightGap(height = 20.dp)
-                    MyCustomButton(
-                        title = stringResource(Res.string.sign_in_account),
-                        modifier = Modifier,
-                        onClickButton = {
-                            viewModel.loginAccount()
-                        },
-                        isEnable = viewModel.isButtonEnableForSignIn,
-                        showProgress = viewModel.showProgress
-                    )
+                HeightGap(height = 20.dp)
+                MyCustomButton(
+                    title = stringResource(Res.string.sign_in_account),
+                    modifier = Modifier,
+                    onClickButton = {
+                        viewModel.loginAccount()
+                    },
+                    isEnable = viewModel.isButtonEnableForSignIn,
+                    showProgress = viewModel.showProgress
+                )
 
-                    HeightGap(height = 10.dp)
+                HeightGap(height = 10.dp)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -295,6 +306,9 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                                         start = Offset(0f, verticalOffset),
                                         end = Offset(size.width, verticalOffset)
                                     )
+                                }
+                                .clickable{
+                                    viewModel.isOpenTermsAndConditionBottomSheet = true
                                 }
                         )
                     }
@@ -335,11 +349,25 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                                         start = Offset(0f, verticalOffset),
                                         end = Offset(size.width, verticalOffset)
                                     )
+                                }.clickable {
+                                    viewModel.isOpenPrivacyPolicyBottomSheet = true
                                 }
                         )
                     }
                 }
+            }
+
+            if (viewModel.isOpenPrivacyPolicyBottomSheet) {
+                PrivacyPolicyBottomSheet {
+                    viewModel.isOpenPrivacyPolicyBottomSheet = false
                 }
             }
+
+            if(viewModel.isOpenTermsAndConditionBottomSheet){
+                TermsAndConditionBottomSheet {
+                    viewModel.isOpenTermsAndConditionBottomSheet = false
+                }
+            }
+        }
     }
 }

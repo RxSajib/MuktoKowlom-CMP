@@ -22,11 +22,14 @@ class SignInViewModel constructor(
     val saveStringData: SaveStringData
 ) : ViewModel() {
 
+    var isOpenPrivacyPolicyBottomSheet by mutableStateOf(false)
 
     val isLoginSuccess = MutableSharedFlow<Boolean>()
     val userMutableSharedFlow = MutableSharedFlow<User>()
     var showProgress by mutableStateOf(false)
     var errorResponse by mutableStateOf(ErrorResponse())
+
+    var isOpenTermsAndConditionBottomSheet by mutableStateOf(false)
 
     // aliadpolok@gmail.com
     // Aliad321@@

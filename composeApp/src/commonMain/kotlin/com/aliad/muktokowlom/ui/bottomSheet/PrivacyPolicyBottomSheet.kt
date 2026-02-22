@@ -1,0 +1,100 @@
+package com.aliad.muktokowlom.ui.bottomSheet
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Backup
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.aliad.muktokowlom.ui.screen.component.HeightGap
+import com.aliad.muktokowlom.ui.screen.component.WidthGap
+import kotlinx.coroutines.launch
+import muktokowlomcmp.composeapp.generated.resources.Res
+import muktokowlomcmp.composeapp.generated.resources.privacy_policy
+import muktokowlomcmp.composeapp.generated.resources.test
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PrivacyPolicyBottomSheet(onDismissRequest: () -> Unit) {
+
+    val coroutineScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    )
+
+    ModalBottomSheet(
+        onDismissRequest = { onDismissRequest.invoke() },
+        containerColor = MaterialTheme.colorScheme.surface,
+        sheetState = sheetState,
+    ) {
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = {
+                    coroutineScope.launch { 
+                        sheetState.hide()
+                        onDismissRequest.invoke()
+                    }
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null
+                    )
+                }
+
+                WidthGap(width = 10.dp)
+
+                Text(
+                    text = stringResource(Res.string.privacy_policy),
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.W500
+                    )
+                )
+            }
+
+
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
+                    .verticalScroll(state = rememberScrollState())
+            ) {
+                Text(
+                    text = stringResource(Res.string.test)
+                )
+            }
+
+
+        }
+
+    }
+}
+
+@Composable
+@Preview
+fun PrivacyPolicyBottomSheetPreview() {
+    PrivacyPolicyBottomSheet(onDismissRequest = {})
+
+}
