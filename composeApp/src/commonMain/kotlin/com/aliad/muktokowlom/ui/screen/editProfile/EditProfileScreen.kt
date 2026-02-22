@@ -1,6 +1,7 @@
 package com.aliad.muktokowlom.ui.screen.editProfile
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,6 +38,7 @@ import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
+import com.aliad.muktokowlom.ui.screen.component.WheelDatePickerDialog
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -101,7 +103,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>) {
                         model = "dd",
                         error = painterResource(Res.drawable.ic_placeholder),
                         placeholder = painterResource(Res.drawable.ic_placeholder),
-                        modifier = Modifier.size(80.dp).clip(shape = CircleShape),
+                        modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable{
+                            viewModel.isOpenDatePicker = true
+                        },
                         contentScale = ContentScale.Crop
                     )
                     HeightGap(height = 20.dp)
@@ -343,6 +347,17 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>) {
             }
         }
 
+        
+        if(viewModel.isOpenDatePicker){
+            WheelDatePickerDialog(
+                onDismissRequest = {
+                    viewModel.isOpenDatePicker = false
+                },
+                onDateSelected = {
+                    viewModel.isOpenDatePicker = false
+                }
+            )
+        }
 
     }
 }

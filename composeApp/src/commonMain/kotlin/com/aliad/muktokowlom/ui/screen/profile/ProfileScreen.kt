@@ -104,7 +104,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 userProfileImage = userProfileImage.value?: "",
                 publishedStoryCount = 45,
                 pendingStoryCount = 52,
-                joinedSince = AppConstant.formatDate(input = userRegisterDate.value?: "")
+                joinedSince = AppConstant.formatDate(input = userRegisterDate.value?: ""),
             )
 
             HeightGap(height = 10.dp)

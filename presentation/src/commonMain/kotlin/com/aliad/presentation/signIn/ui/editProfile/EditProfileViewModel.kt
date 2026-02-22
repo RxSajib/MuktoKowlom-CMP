@@ -16,4 +16,8 @@ class EditProfileViewModel : ViewModel() {
     var ageInput by mutableStateOf("")
     var addressInput by mutableStateOf("")
 
+
+    var isOpenDatePicker by mutableStateOf(false)
+
+
 }

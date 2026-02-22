@@ -10,4 +10,5 @@ class ProfileViewModel : ViewModel() {
 
     var logoutDialogShow by mutableStateOf(false)
     var deleteAccountDialogShow by mutableStateOf(false)
+
 }

@@ -79,6 +79,9 @@ kotlin {
 
             implementation(libs.seymour.text)
 
+            // cmp date time picker
+            implementation("network.chaintech:kmp-date-time-picker:1.1.1")
+
 
             //paging3 dependency
             implementation("androidx.paging:paging-common:3.3.6")
