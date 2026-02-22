@@ -11,6 +11,7 @@ import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
 import com.aliad.model.login.LoginDto
+import com.aliad.muktokowlom.BuildKonfig
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -25,7 +26,7 @@ import kotlinx.serialization.json.Json
 
 class RemoteDataSources constructor(val httpClient: HttpClient) {
 
-    private val BASEURL = "https://muktokowlom.com/api/"
+    private val BASEURL = BuildKonfig.BASE_URL
     private val LOGINACCOUNT = "${BASEURL}user/login"
     private val CATEGORYURL = "${BASEURL}all-category"
     private val CATEGORYWISEBOOK = "${BASEURL}get-story-by-category"
@@ -35,8 +36,6 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val NEWRELEASESTORY = "${BASEURL}get-new-realeses-story"
     private val SUBSCRIPTION_PLANS = "${BASEURL}get-subscription-plans"
     private val PRIVACY_POLICY = "${BASEURL}privacy-policy"
-
-
 
 
     suspend fun loginAccount(

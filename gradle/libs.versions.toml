@@ -37,6 +37,8 @@ datastore = "1.2.0"
 seymourText = "0.0.20"
 composeviews = "1.10.0.1"
 
+buildkonfig = "0.17.1"
+
 [libraries]
 be-htmlconverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlconverterVersion" }
 compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
@@ -95,3 +97,5 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 androidKotlinMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 androidLint = { id = "com.android.lint", version.ref = "agp" }
+
+buildkonfig = {id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig"}

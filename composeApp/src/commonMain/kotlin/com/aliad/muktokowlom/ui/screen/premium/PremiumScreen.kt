@@ -25,6 +25,7 @@ import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.SubscriptionPlanItem
+import com.aliad.muktokowlom.ui.screen.component.SubscriptionPlanItemShimmer
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
 import com.aliad.presentation.signIn.ui.subscriptionPlan.SubscriptionPlanViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -64,44 +65,53 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>) {
                 }
             }
 
-            if(list.value.isNotEmpty()){
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f))
-                        .padding(horizontal = 16.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            if(viewModel.loading){
+                Column(modifier = Modifier.fillMaxSize()) {
+                    repeat(20){
+                        SubscriptionPlanItemShimmer()
+                    }
+                }
+            }else {
+                if(list.value.isNotEmpty()){
                     Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.fillMaxWidth()
+                            .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f))
+                            .padding(horizontal = 16.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = stringResource(Res.string.amount),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        WidthGap(width = 5.dp)
-                        Text(
-                            text = "$",
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                        WidthGap(width = 1.dp)
-                        Text(
-                            text = viewModel.selectedPackage.price?: "0",
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.W500
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.amount),
+                                style = MaterialTheme.typography.bodySmall
                             )
+                            WidthGap(width = 5.dp)
+                            Text(
+                                text = "$",
+                                style = MaterialTheme.typography.bodyLarge,
+                            )
+                            WidthGap(width = 1.dp)
+                            Text(
+                                text = viewModel.selectedPackage.price?: "0",
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    fontWeight = FontWeight.W500
+                                )
+                            )
+                        }
+
+                        MyCustomButton(
+                            isEnable = true,
+                            onClickButton = {},
+                            title = stringResource(Res.string.buy),
+                            modifier = Modifier.weight(1f),
+                            padding = 0.dp
                         )
                     }
-
-                    MyCustomButton(
-                        isEnable = true,
-                        onClickButton = {},
-                        title = stringResource(Res.string.buy),
-                        modifier = Modifier.weight(1f),
-                        padding = 0.dp
-                    )
                 }
             }
+
 
         }
     }

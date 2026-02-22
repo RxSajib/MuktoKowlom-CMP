@@ -1,9 +1,38 @@
+import org.gradle.declarative.dsl.schema.FqName.Empty.packageName
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
+    alias(libs.plugins.buildkonfig)
     kotlin("plugin.serialization") version "2.3.0"
 }
+
+
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
+val apiKey: String = localProperties.getProperty("BASE_URL") ?: ""
+
+
+buildkonfig {
+    packageName = "com.aliad.muktokowlom"
+
+    defaultConfigs {
+        buildConfigField(
+            com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING,
+            "BASE_URL",
+            apiKey
+        )
+    }
+}
+
 
 kotlin {
     jvm()

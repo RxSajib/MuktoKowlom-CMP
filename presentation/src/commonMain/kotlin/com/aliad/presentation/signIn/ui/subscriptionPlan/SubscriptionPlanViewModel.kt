@@ -18,7 +18,7 @@ class SubscriptionPlanViewModel constructor(val premiumPlanUseCase: PremiumPlanU
 
     var selectedSubscriptionIndex by mutableStateOf(1)
     var selectedPackage by mutableStateOf(Subscription())
-
+    var loading by mutableStateOf(false)
 
     init {
         getPremiumPlanList()
@@ -26,7 +26,9 @@ class SubscriptionPlanViewModel constructor(val premiumPlanUseCase: PremiumPlanU
 
     fun getPremiumPlanList() {
         viewModelScope.launch {
+            loading = true
            val response = premiumPlanUseCase.getPremiumPlanList()
+            loading = false
             if(response.isSuccess){
                 premiumPlanMutableStateFlow.value = response.getOrNull()?: emptyList()
                 selectedPackage = response.getOrNull()?.get(0)?: Subscription()
