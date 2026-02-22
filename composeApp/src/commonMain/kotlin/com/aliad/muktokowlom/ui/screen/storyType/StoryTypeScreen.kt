@@ -25,6 +25,7 @@ import com.aliad.muktokowlom.ui.screen.component.LoadStateRefreshError
 import com.aliad.muktokowlom.ui.screen.component.Loader
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.StoryItem
+import com.aliad.muktokowlom.ui.screen.component.StoryLoaderShimmer
 import com.aliad.presentation.signIn.ui.storytype.StoryTypeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -55,14 +56,9 @@ fun StoryTypeScreen(backStack: NavBackStack<NavKey>, type: AppDestination.StoryT
         Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
 
                 if (pagingUiState.value.isRefreshing) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
+
+                        StoryLoaderShimmer()
+
                 }
                 if(pagingUiState.value.refreshError != null){
                     LoadStateRefreshError(onRetry = {storyItem.retry()})
