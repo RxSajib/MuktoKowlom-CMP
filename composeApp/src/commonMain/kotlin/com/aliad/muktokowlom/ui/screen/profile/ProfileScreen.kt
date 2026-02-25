@@ -16,6 +16,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -34,6 +36,7 @@ import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomMenu
+import com.aliad.muktokowlom.ui.screen.component.SignUpSignInMenu
 import com.aliad.muktokowlom.ui.screen.component.UserInfo
 import com.aliad.muktokowlom.ui.screen.component.UserInfoItem
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
@@ -85,6 +88,10 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
     val userProfileImage = dataStoreViewModel.getStringData(key = AppConstant.USER_PROFILE_IMAGE).collectAsStateWithLifecycle(null)
     val userPhoneNumber = dataStoreViewModel.getStringData(key = AppConstant.USER_PHONE).collectAsStateWithLifecycle(null)
     val userRegisterDate = dataStoreViewModel.getStringData(key = AppConstant.USER_REGISTER_DATE).collectAsStateWithLifecycle(null)
+    val token by dataStoreViewModel.getStringData(key = AppConstant.ACCESS_TOKEN).collectAsStateWithLifecycle("")
+
+    print("access token is $token")
+
     val logoutText = stringResource(Res.string.logout_success)
 
 
@@ -93,53 +100,70 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 .padding(16.dp)
         ) {
 
-            UserInfo(
-                userName = userName.value?: "",
-                emailAddress = userEmailAddress.value?: "",
-                userProfileImage = userProfileImage.value?: "",
-                publishedStoryCount = 45,
-                pendingStoryCount = 52,
-                joinedSince = AppConstant.formatDate(input = userRegisterDate.value?: ""),
-            )
-
-            HeightGap(height = 10.dp)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(Res.string.basic_info),
-                    modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.W500
-                    )
+            if(!token.isEmpty()) {
+                UserInfo(
+                    userName = userName.value?: "",
+                    emailAddress = userEmailAddress.value?: "",
+                    userProfileImage = userProfileImage.value?: "",
+                    publishedStoryCount = 45,
+                    pendingStoryCount = 52,
+                    joinedSince = AppConstant.formatDate(input = userRegisterDate.value?: ""),
                 )
-                Text(
-                    text = stringResource(Res.string.edit),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = Color.White
-                    ),
-                    modifier = Modifier.clip(shape = CircleShape)
-                        .background(color = MaterialTheme.colorScheme.primary).clickable {
-                            backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.EditProfile::class.simpleName?: ""))
-                        }
-                        .padding(horizontal = 10.dp, vertical = 5.dp)
+            }else {
+                SignUpSignInMenu(
+                    signIn = {},
+                    signUp = {}
                 )
             }
-            HeightGap(height = 5.dp)
-            UserInfoItem(
-                icon = painterResource(Res.drawable.phone_svgrepo_com),
-                title = userPhoneNumber.value?: ""
-            )
-            UserInfoItem(
-                icon = painterResource(Res.drawable.mail_svgrepo_com),
-                title = userEmailAddress.value?: ""
-            )
-            UserInfoItem(
-                icon = painterResource(Res.drawable.calender_svgrepo_com),
-                title = AppConstant.formatDate(input = userRegisterDate.value?: ""),
-                isDivider = false
-            )
+
+            HeightGap(height = 10.dp)
+
+            if(!token.isEmpty()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(Res.string.basic_info),
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.W500
+                        )
+                    )
+                    Text(
+                        text = stringResource(Res.string.edit),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = Color.White
+                        ),
+                        modifier = Modifier.clip(shape = CircleShape)
+                            .background(color = MaterialTheme.colorScheme.primary).clickable {
+                                backStack.add(
+                                    AppDestination.Dest(
+                                        firstDestName = AppDestination.Dest.EditProfile::class.simpleName
+                                            ?: ""
+                                    )
+                                )
+                            }
+                            .padding(horizontal = 10.dp, vertical = 5.dp)
+                    )
+                }
+
+
+                HeightGap(height = 5.dp)
+                UserInfoItem(
+                    icon = painterResource(Res.drawable.phone_svgrepo_com),
+                    title = userPhoneNumber.value ?: ""
+                )
+                UserInfoItem(
+                    icon = painterResource(Res.drawable.mail_svgrepo_com),
+                    title = userEmailAddress.value ?: ""
+                )
+                UserInfoItem(
+                    icon = painterResource(Res.drawable.calender_svgrepo_com),
+                    title = AppConstant.formatDate(input = userRegisterDate.value ?: ""),
+                    isDivider = false
+                )
+            }
             HeightGap(height = 10.dp)
 
             MyCustomMenu(
