@@ -24,7 +24,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>) {
+fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: PrivacyPolicyViewModel = koinViewModel()
     val privacyPolicy = viewModel.privacyPolicy.collectAsStateWithLifecycle()
@@ -36,7 +36,15 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>) {
             MyCustomAppBar(
                 title = stringResource(Res.string.privacy_policy),
                 onBackPress = {
-                    backStack.remove(AppDestination.PrivacyPolicy)
+                    try {
+                        if (backStack.size > 1) {
+                            backStack.removeLastOrNull()
+                        }else {
+                            rootBackStack.removeLastOrNull()
+                        }
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
                 },
                 editProfile = {}
             )

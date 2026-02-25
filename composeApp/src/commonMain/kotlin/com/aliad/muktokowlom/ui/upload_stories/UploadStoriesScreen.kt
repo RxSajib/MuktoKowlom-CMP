@@ -15,10 +15,23 @@ import muktokowlomcmp.composeapp.generated.resources.upload_stories
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun UploadStoriesScreen(backStack: NavBackStack<NavKey>){
+fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
     Scaffold(
         topBar = {
-            MyCustomAppBar(onBackPress = {backStack.remove(AppDestination.UploadStories)}, title = stringResource(Res.string.upload_stories), editProfile = {})
+            MyCustomAppBar(
+                onBackPress = {
+                    try {
+                        if (backStack.size > 1) {
+                            backStack.removeLastOrNull()
+                        }else {
+                            rootBackStack.removeLastOrNull()
+                        }
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
+                },
+                title = stringResource(Res.string.upload_stories),
+                editProfile = {})
         }
     ) { innerPadding ->
         Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {

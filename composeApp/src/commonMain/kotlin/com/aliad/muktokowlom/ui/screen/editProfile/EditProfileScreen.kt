@@ -4,13 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -32,8 +29,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
-import com.aliad.muktokowlom.ui.bottomSheet.LogoutBottomSheet
-import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
@@ -50,7 +45,6 @@ import muktokowlomcmp.composeapp.generated.resources.email
 import muktokowlomcmp.composeapp.generated.resources.enter_address
 import muktokowlomcmp.composeapp.generated.resources.enter_age
 import muktokowlomcmp.composeapp.generated.resources.enter_date_of_birth
-import muktokowlomcmp.composeapp.generated.resources.enter_email
 import muktokowlomcmp.composeapp.generated.resources.enter_email_address
 import muktokowlomcmp.composeapp.generated.resources.enter_first_name
 import muktokowlomcmp.composeapp.generated.resources.enter_last_name
@@ -69,7 +63,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import kotlin.collections.removeLastOrNull
 
 @Composable
-fun EditProfileScreen(navBackStack: NavBackStack<NavKey>) {
+fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: EditProfileViewModel = koinViewModel()
 
@@ -77,7 +71,15 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>) {
         modifier = Modifier.fillMaxWidth(),
         topBar = {
             MyCustomAppBar(title = stringResource(Res.string.edit_profile), onBackPress = {
-                navBackStack.remove(AppDestination.Dest.EditProfile)
+                try {
+                    if (navBackStack.size > 1) {
+                        navBackStack.removeLastOrNull()
+                    }else {
+                        rootBackStack.removeLastOrNull()
+                    }
+                }catch (e : Exception){
+                    e.printStackTrace()
+                }
             }, editProfile = {})
         }) { innerPadding ->
 

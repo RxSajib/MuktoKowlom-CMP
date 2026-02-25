@@ -30,7 +30,7 @@ import com.aliad.presentation.signIn.ui.storytype.StoryTypeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun StoryTypeScreen(backStack: NavBackStack<NavKey>, type: AppDestination.StoryTypeWiseBook) {
+fun StoryTypeScreen(backStack: NavBackStack<NavKey>, type: AppDestination.Dest.StoryTypeWiseBook) { //
 
     val viewModel : StoryTypeViewModel = koinViewModel()
     val storyItem = viewModel.storysData.collectAsLazyPagingItems()
@@ -47,8 +47,8 @@ fun StoryTypeScreen(backStack: NavBackStack<NavKey>, type: AppDestination.StoryT
         topBar = {
             MyCustomAppBar(
                 isBackButtonEnable = true,
-                onBackPress = { backStack.remove(AppDestination.StoryTypeWiseBook(typeName = type.typeName)) },
-                title =type.typeName ?: "",
+                onBackPress = {  },
+                title ="Story",//type.typeName ?: "",
                 editProfile = {}
             )
         }

@@ -4,6 +4,7 @@ import androidx.navigation3.runtime.NavKey
 import com.aliad.model.BookItem
 import com.aliad.model.Category
 import com.aliad.model.MyBookItem
+import com.aliad.repository.StoryType
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -33,6 +34,20 @@ sealed class AppDestination : NavKey {
     data class Dest(val firstDestName : String) : AppDestination() {
 
         @Serializable
+        data class StoryTypeWiseBook(
+            val typeName : String? = null
+        ) : AppDestination()
+
+        @Serializable
+        data object SubscriptionHistory : AppDestination()
+
+        @Serializable
+        data object UploadStories: AppDestination()
+
+        @Serializable
+        data object PrivacyPolicy : AppDestination()
+
+        @Serializable
         data object Premium : AppDestination()
 
         @Serializable
@@ -54,11 +69,9 @@ sealed class AppDestination : NavKey {
     @Serializable
     data object SplashScreen : AppDestination()
 
-    @Serializable
-    data object UploadStories: AppDestination()
 
-    @Serializable
-    data object SubscriptionHistory : AppDestination()
+
+
 
 
 
@@ -76,8 +89,7 @@ sealed class AppDestination : NavKey {
 
 
 
-    @Serializable
-    data class StoryTypeWiseBook(val typeName : String?= null) : AppDestination()
+
 
     @Serializable
     data class StoryDetails(val myBookItem: MyBookItem) : AppDestination()
@@ -89,7 +101,6 @@ sealed class AppDestination : NavKey {
 
 
 
-    @Serializable
-    data object PrivacyPolicy : AppDestination()
+
 
 }

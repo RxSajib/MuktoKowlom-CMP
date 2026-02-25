@@ -50,15 +50,15 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
               //  subclass(AppDestination.HomeScreen::class, AppDestination.HomeScreen.serializer())
               //  subclass(AppDestination.CategoryScreen::class, AppDestination.CategoryScreen.serializer())
                 subclass(AppDestination.Dest.CategoryWiseBook::class, AppDestination.Dest.CategoryWiseBook.serializer())
-              //  subclass(AppDestination.StoryTypeWiseBook::class, AppDestination.StoryTypeWiseBook.serializer())
+                subclass(AppDestination.Dest.StoryTypeWiseBook::class, AppDestination.Dest.StoryTypeWiseBook.serializer())
               //  subclass(AppDestination.StoryDetails::class, AppDestination.StoryDetails.serializer())
              //   subclass(AppDestination.Profile::class, AppDestination.Profile.serializer())
                 subclass(AppDestination.Dest.EditProfile::class, AppDestination.Dest.EditProfile.serializer())
                 subclass(AppDestination.Dest.Premium::class, AppDestination.Dest.Premium.serializer())
-              //  subclass(AppDestination.PrivacyPolicy::class, AppDestination.PrivacyPolicy.serializer())
+                subclass(AppDestination.Dest.PrivacyPolicy::class, AppDestination.Dest.PrivacyPolicy.serializer())
                 subclass(AppDestination.Dest.EarningHistory::class, AppDestination.Dest.EarningHistory.serializer())
-             //   subclass(AppDestination.UploadStories::class, AppDestination.UploadStories.serializer())
-            //    subclass(AppDestination.SubscriptionHistory::class, AppDestination.SubscriptionHistory.serializer())
+                subclass(AppDestination.Dest.UploadStories::class, AppDestination.Dest.UploadStories.serializer())
+                subclass(AppDestination.Dest.SubscriptionHistory::class, AppDestination.Dest.SubscriptionHistory.serializer())
              //   subclass(AppDestination.SplashScreen::class, AppDestination.SplashScreen.serializer())
              //   subclass(AppDestination.RecoveryPassword::class, AppDestination.RecoveryPassword.serializer())
               //  subclass(AppDestination.OtpView::class, AppDestination.OtpView.serializer())
@@ -71,7 +71,11 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
         startDest.firstDestName == AppDestination.Dest.EditProfile::class.simpleName -> AppDestination.Dest.EditProfile
         startDest.firstDestName == AppDestination.Dest.EarningHistory::class.simpleName -> AppDestination.Dest.EarningHistory
         startDest.firstDestName == AppDestination.Dest.CategoryWiseBook::class.simpleName -> AppDestination.Dest.CategoryWiseBook
+        startDest.firstDestName == AppDestination.Dest.PrivacyPolicy::class.simpleName -> AppDestination.Dest.PrivacyPolicy
         startDest.firstDestName == AppDestination.Dest.Premium::class.simpleName -> AppDestination.Dest.Premium
+        startDest.firstDestName == AppDestination.Dest.UploadStories::class.simpleName -> AppDestination.Dest.UploadStories
+        startDest.firstDestName == AppDestination.Dest.SubscriptionHistory::class.simpleName -> AppDestination.Dest.SubscriptionHistory
+        startDest.firstDestName == AppDestination.Dest.StoryTypeWiseBook::class.simpleName -> AppDestination.Dest.StoryTypeWiseBook(typeName = "")
         else -> throw Exception("Invalid destination")
     }
 
@@ -102,7 +106,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 entry<AppDestination.Dest.CategoryWiseBook> {
                     CategoryWiseBook(backStack = backStack)
                 }
-                entry<AppDestination.StoryTypeWiseBook> { type ->
+                entry<AppDestination.Dest.StoryTypeWiseBook> { type ->
                     StoryTypeScreen(backStack = backStack, type = type)
                 }
                 entry<AppDestination.StoryDetails> { type ->
@@ -112,22 +116,22 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                     ProfileScreen(backStack = backStack)
                 }
                 entry<AppDestination.Dest.EditProfile> {
-                    EditProfileScreen(navBackStack = backStack)
+                    EditProfileScreen(navBackStack = backStack, rootBackStack =rootBackStack)
                 }
                 entry<AppDestination.Dest.Premium> {
                     PremiumScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
-                entry<AppDestination.PrivacyPolicy> {
-                    PrivacyPolicyScreen(backStack = backStack)
+                entry<AppDestination.Dest.PrivacyPolicy> {
+                    PrivacyPolicyScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.Dest.EarningHistory> {
                     EarningHistoryScreen(backStack = backStack)
                 }
-                entry<AppDestination.UploadStories> {
-                    UploadStoriesScreen(backStack = backStack)
+                entry<AppDestination.Dest.UploadStories> {
+                    UploadStoriesScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
-                entry<AppDestination.SubscriptionHistory> {
-                    SubscriptionHistoryScreen(backStack = backStack)
+                entry<AppDestination.Dest.SubscriptionHistory> {
+                    SubscriptionHistoryScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.SplashScreen> {
                     SplashScreen(backStack = backStack)

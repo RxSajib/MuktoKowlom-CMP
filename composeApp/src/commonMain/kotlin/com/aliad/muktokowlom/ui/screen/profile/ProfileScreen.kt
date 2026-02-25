@@ -148,7 +148,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.upload_stories_details),
                 painter = painterResource(Res.drawable.upload_cloud_svgrepo_com)
             ) {
-                backStack.add(AppDestination.UploadStories)
+                backStack.add(AppDestination.Dest(AppDestination.Dest.UploadStories::class.simpleName?: ""))
             }
             HeightGap(height = 10.dp)
 
@@ -169,7 +169,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.subscription_history_details),
                 painter = painterResource(Res.drawable.ticket)
             ) {
-                backStack.add(AppDestination.SubscriptionHistory)
+                backStack.add(AppDestination.Dest(AppDestination.Dest.SubscriptionHistory::class.simpleName?: ""))
             }
 
             HeightGap(height = 10.dp)
@@ -190,7 +190,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.privacy_policy_details),
                 painter = painterResource(Res.drawable.policy)
             ) {
-                backStack.add(AppDestination.PrivacyPolicy)
+                backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.PrivacyPolicy::class.simpleName?: ""))
             }
 
             HeightGap(height = 10.dp)
