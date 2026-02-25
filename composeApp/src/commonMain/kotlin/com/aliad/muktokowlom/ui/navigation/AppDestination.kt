@@ -10,6 +10,26 @@ import kotlinx.serialization.Serializable
 sealed class AppDestination : NavKey {
 
     @Serializable
+    data object BottomAppBar : AppDestination() {
+
+        @Serializable
+        data object DashBoard : AppDestination()
+
+        @Serializable
+        data object Category : AppDestination()
+
+        @Serializable
+        data object Search : AppDestination()
+
+        @Serializable
+        data object FavoriteStory : AppDestination()
+
+        @Serializable
+        data object Profile : AppDestination()
+    }
+
+
+    @Serializable
     data class OtpView(val emailOrPhoneNumber : String = "") : AppDestination()
 
     @Serializable

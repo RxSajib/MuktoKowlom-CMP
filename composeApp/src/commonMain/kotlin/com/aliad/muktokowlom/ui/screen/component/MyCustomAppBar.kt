@@ -29,6 +29,7 @@ import io.ktor.util.Platform
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.left_arrow_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.notification_svgrepo_com
+import muktokowlomcmp.composeapp.generated.resources.person_circle
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import muktokowlomcmp.composeapp.generated.resources.premium_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.search_alt_svgrepo_com
@@ -61,8 +62,8 @@ fun MyCustomAppBar(
                                 editProfile.invoke()
                             },
                         contentScale = ContentScale.Crop,
-                        placeholder = painterResource(Res.drawable.placeholder),
-                        error = painterResource(Res.drawable.placeholder)
+                        placeholder = painterResource(Res.drawable.person_circle),
+                        error = painterResource(Res.drawable.person_circle)
                     )
                     WidthGap(15.dp)
                     Column(modifier = Modifier.fillMaxWidth()) {

@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.aliad.muktokowlom.ui.navigation.AppNavigation
+import com.aliad.muktokowlom.ui.navigation.rootNavigation.RootNavigation
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -24,6 +25,6 @@ import muktokowlomcmp.composeapp.generated.resources.compose_multiplatform
 @Preview
 fun App() {
     MaterialTheme {
-        AppNavigation()
+        RootNavigation()
     }
 }

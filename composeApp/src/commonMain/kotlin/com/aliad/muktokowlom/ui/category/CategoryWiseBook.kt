@@ -1,4 +1,4 @@
-package com.aliad.muktokowlom.ui.screen.category
+package com.aliad.muktokowlom.ui.category
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

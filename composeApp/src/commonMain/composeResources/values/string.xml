@@ -2,6 +2,10 @@
 
 <resources>
 
+    <string name="search">Search</string>
+    <string name="dashBoard">DashBoard</string>
+    <string name="favorite">Favorite</string>
+
     <string name="sign_in_now">Sign In Now</string>
     <string name="sign_in_now_details">Please sign in to continue our app</string>
     <string name = "enter_email">Enter email</string>

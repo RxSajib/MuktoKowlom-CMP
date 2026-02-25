@@ -16,8 +16,8 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.aliad.helper.SnackBarEvent
-import com.aliad.muktokowlom.ui.screen.category.CategoryScreen
-import com.aliad.muktokowlom.ui.screen.category.CategoryWiseBook
+import com.aliad.muktokowlom.ui.category.CategoryScreen
+import com.aliad.muktokowlom.ui.category.CategoryWiseBook
 import com.aliad.muktokowlom.ui.screen.component.MyCustomNotifySnackBar
 import com.aliad.muktokowlom.ui.screen.earning_history.EarningHistoryScreen
 import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen

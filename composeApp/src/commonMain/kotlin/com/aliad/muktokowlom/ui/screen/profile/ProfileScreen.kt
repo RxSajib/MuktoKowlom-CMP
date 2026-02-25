@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -86,15 +87,9 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
     val userRegisterDate = dataStoreViewModel.getStringData(key = AppConstant.USER_REGISTER_DATE).collectAsStateWithLifecycle(null)
     val logoutText = stringResource(Res.string.logout_success)
 
-    Scaffold(
-        topBar = {
-            MyCustomAppBar(onBackPress = {
-                backStack.remove(AppDestination.Profile)
-            }, title = stringResource(Res.string.profile), editProfile = {})
-        }
-    ) { innerPadding ->
+
         Column(
-            modifier = Modifier.padding(innerPadding).verticalScroll(state = rememberScrollState())
+            modifier = Modifier.fillMaxSize().verticalScroll(state = rememberScrollState())
                 .padding(16.dp)
         ) {
 
@@ -230,7 +225,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 ),
                 textAlign = TextAlign.Center
             )
-        }
+
     }
     if (viewModel.logoutDialogShow) {
         LogoutBottomSheet(onDismissRequest = {
