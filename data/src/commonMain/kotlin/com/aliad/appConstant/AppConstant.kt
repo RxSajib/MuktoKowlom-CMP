@@ -12,6 +12,10 @@ object AppConstant {
     const val USER_PHONE = "userLastName"
     const val USER_PROFILE_IMAGE = "userProfileImage"
     const val USER_REGISTER_DATE = "userRegisterDate"
+    const val USER_SECOND_NUMBER = "userSecondNumber"
+    const val USER_DATE_OF_BIRTH = "userDateOfBirth"
+    const val USER_AGE = "userAge"
+    const val USER_ADDRESS = "userAddress"
 
 
     fun formatDate(input: String): String {

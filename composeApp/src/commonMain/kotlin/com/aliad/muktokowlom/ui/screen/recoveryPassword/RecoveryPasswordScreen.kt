@@ -103,7 +103,7 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
                             isPasswordInput = false,
                             isVisiblePasswordChange = {},
                             isPasswordVisibility = true,
-                        )
+                        ){}
 
                     }
 

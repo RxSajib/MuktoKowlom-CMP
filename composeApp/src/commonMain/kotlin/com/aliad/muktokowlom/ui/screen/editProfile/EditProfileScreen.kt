@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
@@ -35,7 +37,9 @@ import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.screen.component.WheelDatePickerDialog
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
+import com.sajib.data.appConstant.AppConstant
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.address
 import muktokowlomcmp.composeapp.generated.resources.age
@@ -66,6 +70,31 @@ import kotlin.collections.removeLastOrNull
 fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: EditProfileViewModel = koinViewModel()
+    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
+
+    val userEmailAddress by dataStoreViewModel.getStringData(key = AppConstant.USER_EMAIL_ADDRESS).collectAsStateWithLifecycle(null)
+    val userProfileImage by dataStoreViewModel.getStringData(key = AppConstant.USER_PROFILE_IMAGE).collectAsStateWithLifecycle(null)
+    val userPhoneNumber by dataStoreViewModel.getStringData(key = AppConstant.USER_PHONE).collectAsStateWithLifecycle(null)
+    val userName by dataStoreViewModel.getStringData(key = AppConstant.USER_NAME).collectAsStateWithLifecycle(null)
+    val userSecondNumber by dataStoreViewModel.getStringData(key = AppConstant.USER_SECOND_NUMBER).collectAsStateWithLifecycle(null)
+    val userDateOfBirth by dataStoreViewModel.getStringData(key = AppConstant.USER_DATE_OF_BIRTH).collectAsStateWithLifecycle(null)
+    val userAge by dataStoreViewModel.getStringData(key = AppConstant.USER_AGE).collectAsStateWithLifecycle(null)
+    val userAddress by dataStoreViewModel.getStringData(key = AppConstant.USER_ADDRESS).collectAsStateWithLifecycle(null)
+
+    val parts = userName?.trim()?.split(" ")
+    val firstName = parts?.firstOrNull() ?: ""
+    val lastName = parts?.lastOrNull() ?: ""
+
+    viewModel.emailAddressInput = userEmailAddress?: ""
+    viewModel.phoneNumberInput = userPhoneNumber?: ""
+    viewModel.firstNameInput = firstName
+    viewModel.lastNameInput = lastName
+    viewModel.secondNumberInput = userSecondNumber?: ""
+    viewModel.dateOfBirthInput = userDateOfBirth?: ""
+    viewModel.ageInput = userAge?: ""
+    viewModel.addressInput = userAddress?: ""
+
+
 
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
@@ -103,7 +132,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                     HeightGap(height = 20.dp)
                     AsyncImage(
                         contentDescription = null,
-                        model = "dd",
+                        model = userProfileImage,
                         error = painterResource(Res.drawable.ic_placeholder),
                         placeholder = painterResource(Res.drawable.ic_placeholder),
                         modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable{
@@ -113,7 +142,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                     )
                     HeightGap(height = 20.dp)
                     Text(
-                        text = "Mr Sajib Roy",
+                        text = userName?: "",
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium.copy(
@@ -142,7 +171,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            )
+                            ){}
                         }
                         WidthGap(width = 10.dp)
 
@@ -166,7 +195,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            )
+                            ){}
                         }
                     }
 
@@ -192,7 +221,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            )
+                            ){}
                         }
                         WidthGap(width = 10.dp)
 
@@ -216,7 +245,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            )
+                            ){}
                         }
                     }
 
@@ -242,7 +271,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            )
+                            ){}
                         }
                         WidthGap(width = 10.dp)
 
@@ -266,7 +295,11 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            )
+                                readOnly = true
+                            ){
+                                print("click date of birth")
+                                viewModel.isOpenDatePicker = true
+                            }
                         }
                     }
 
@@ -291,8 +324,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
+                                isNumberType = true,
                                 isPasswordVisibility = true,
-                            )
+                            ){}
                         }
                         WidthGap(width = 10.dp)
 
@@ -316,7 +350,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            )
+                            ){}
                         }
                     }
 
@@ -356,8 +390,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                 onDismissRequest = {
                     viewModel.isOpenDatePicker = false
                 },
-                onDateSelected = {
+                onDateSelected = {localDate ->
                     viewModel.isOpenDatePicker = false
+                    viewModel.dateOfBirthInput = localDate.toString()
                 }
             )
         }

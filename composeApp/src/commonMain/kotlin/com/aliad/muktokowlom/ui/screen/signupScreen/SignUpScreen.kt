@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.muktokowlom.ui.bottomSheet.PrivacyPolicyBottomSheet
+import com.aliad.muktokowlom.ui.bottomSheet.TermsAndConditionBottomSheet
 import com.aliad.muktokowlom.ui.screen.component.CustomSocialButton
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
@@ -134,7 +136,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                                 color = Color.Red,
                                 fontSize = adjustedFontSize(10.0f)
                             ), modifier = Modifier.clickable {
-                              //  backStack.remove(AppDestination.SignUpScreen)
+                                viewModel.isOpenPrivacyPolicyBottomSheet = true
                             })
                     }
                     HeightGap(height = 20.dp)
@@ -147,7 +149,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
                         isPasswordVisibility = true,
-                    )
+                    ){}
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_email),
@@ -158,7 +160,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
                         isPasswordVisibility = true
-                    )
+                    ){}
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_password),
@@ -171,7 +173,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                             viewModel.isPasswordShows.value = !viewModel.isPasswordShows.value
                         },
                         isPasswordVisibility = viewModel.isPasswordShows.value
-                    )
+                    ){}
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.confirm_password),
@@ -185,7 +187,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                                 !viewModel.isConfirmPasswordShows.value
                         },
                         isPasswordVisibility = viewModel.isConfirmPasswordShows.value
-                    )
+                    ){}
                     HeightGap(height = 20.dp)
 
 
@@ -264,6 +266,8 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                                         start = Offset(0f, verticalOffset),
                                         end = Offset(size.width, verticalOffset)
                                     )
+                                }.clickable{
+                                    viewModel.isOpenTermsAndConditionBottomSheet = true
                                 }
                         )
                     }
@@ -304,9 +308,23 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                                         start = Offset(0f, verticalOffset),
                                         end = Offset(size.width, verticalOffset)
                                     )
+                                }.clickable{
+                                    viewModel.isOpenPrivacyPolicyBottomSheet = true
                                 }
                         )
                     }
+                }
+            }
+
+            if (viewModel.isOpenPrivacyPolicyBottomSheet) {
+                PrivacyPolicyBottomSheet {
+                    viewModel.isOpenPrivacyPolicyBottomSheet = false
+                }
+            }
+
+            if(viewModel.isOpenTermsAndConditionBottomSheet){
+                TermsAndConditionBottomSheet {
+                    viewModel.isOpenTermsAndConditionBottomSheet = false
                 }
             }
         }

@@ -55,6 +55,7 @@ import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
+import com.sajib.data.appConstant.AppConstant
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.and
 import muktokowlomcmp.composeapp.generated.resources.by_continuing_you_agree_to_the
@@ -79,24 +80,12 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
-    val koin = getKoin()
-    val scope = rememberCoroutineScope()
-    val dataStore = remember { koin.get<CacheDataStore>() }
-    val data = remember { mutableStateOf("") }
-
-
-
-
-    LaunchedEffect(Unit) {
-        data.value = dataStore.getAnyData().toString()
-    }
-
     val viewModel: SignInViewModel = koinViewModel()
     val dataStoreViewModel: DataStoreViewModel = koinViewModel()
     val token = dataStoreViewModel.getStringData("Token").collectAsStateWithLifecycle("")
     val lifecycle = LocalLifecycleOwner.current
 
-    print("error response with ${viewModel.errorResponse.message_en}")
+
 
     LaunchedEffect(lifecycle.lifecycle) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
@@ -214,7 +203,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
                         isPasswordVisibility = true
-                    )
+                    ){}
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_password),
@@ -227,7 +216,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                             viewModel.isPasswordVisible = !viewModel.isPasswordVisible
                         },
                         isPasswordVisibility = viewModel.isPasswordVisible
-                    )
+                    ){}
                     HeightGap(height = 5.dp)
                     Row {
                         Spacer(modifier = Modifier.weight(1f))

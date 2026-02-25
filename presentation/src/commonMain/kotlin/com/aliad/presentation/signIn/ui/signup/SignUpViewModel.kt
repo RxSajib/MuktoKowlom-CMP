@@ -9,6 +9,8 @@ import com.sajib.data.appConstant.AppConstant
 
 class SignUpViewModel : ViewModel() {
 
+    var isOpenPrivacyPolicyBottomSheet by mutableStateOf(false)
+    var isOpenTermsAndConditionBottomSheet by mutableStateOf(false)
 
     var nameInput by mutableStateOf("")
     var emailInput by mutableStateOf("")
