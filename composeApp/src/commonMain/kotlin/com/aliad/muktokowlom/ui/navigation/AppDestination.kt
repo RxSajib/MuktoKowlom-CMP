@@ -61,10 +61,24 @@ sealed class AppDestination : NavKey {
     }
 
     @Serializable
-    data class OtpView(val emailOrPhoneNumber : String = "") : AppDestination()
+    data class Auth(val firstDestName : String) : AppDestination(){
 
-    @Serializable
-    data object RecoveryPassword : AppDestination()
+        @Serializable
+        object SignUp : AppDestination()
+
+        @Serializable
+        object SignIn : AppDestination()
+
+        @Serializable
+        data object RecoveryPassword : AppDestination()
+
+        @Serializable
+        data class Otp(val emailOrPhoneNumber : String = "") : AppDestination()
+    }
+
+
+
+
 
     @Serializable
     data object SplashScreen : AppDestination()
@@ -75,14 +89,12 @@ sealed class AppDestination : NavKey {
 
 
 
-    @Serializable
-    object SignInScreen : AppDestination()
+
 
     @Serializable
     object HomeScreen : AppDestination()
 
-    @Serializable
-    object SignUpScreen : AppDestination()
+
 
     @Serializable
     object CategoryScreen : AppDestination()

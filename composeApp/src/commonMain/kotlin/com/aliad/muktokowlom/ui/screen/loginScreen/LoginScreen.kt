@@ -3,7 +3,6 @@ package com.aliad.muktokowlom.ui.screen.loginScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,12 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,9 +45,9 @@ import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.PrivacyPolicyBottomSheet
 import com.aliad.muktokowlom.ui.bottomSheet.TermsAndConditionBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.BackButton
 import com.aliad.muktokowlom.ui.screen.component.CustomSocialButton
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
+import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
@@ -68,12 +64,11 @@ import muktokowlomcmp.composeapp.generated.resources.enter_password
 import muktokowlomcmp.composeapp.generated.resources.facebook_icon
 import muktokowlomcmp.composeapp.generated.resources.forgot_password
 import muktokowlomcmp.composeapp.generated.resources.google_icon
-import muktokowlomcmp.composeapp.generated.resources.muktokowlom
 import muktokowlomcmp.composeapp.generated.resources.or_continue_with
 import muktokowlomcmp.composeapp.generated.resources.privacy_policy
+import muktokowlomcmp.composeapp.generated.resources.sign_in
 import muktokowlomcmp.composeapp.generated.resources.sign_in_account
 import muktokowlomcmp.composeapp.generated.resources.sign_in_now
-import muktokowlomcmp.composeapp.generated.resources.sign_in_now_details
 import muktokowlomcmp.composeapp.generated.resources.sign_up
 import muktokowlomcmp.composeapp.generated.resources.t_and_c
 import org.jetbrains.compose.resources.painterResource
@@ -82,7 +77,7 @@ import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun SignInScreen(backStack: NavBackStack<NavKey>) {
+fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val koin = getKoin()
     val scope = rememberCoroutineScope()
@@ -134,7 +129,24 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
     }
 
 
-    Scaffold { innerPadding ->
+    Scaffold(
+        topBar = {
+            MyCustomAppBar(
+                title = stringResource(Res.string.sign_in),
+                onBackPress = {
+                    try {
+                        if (backStack.size > 1) {
+                            backStack.removeLastOrNull()
+                        }else {
+                            rootBackStack.removeLastOrNull()
+                        }
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
+                },
+                editProfile = {})
+        }
+    ) { innerPadding ->
         Surface(
             modifier = Modifier
                 .padding(innerPadding)
@@ -187,7 +199,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                                 color = Color.Red,
                                 fontSize = adjustedFontSize(10.0f)
                             ), modifier = Modifier.clickable {
-                                backStack.add(AppDestination.SignUpScreen)
+                                backStack.add(AppDestination.Auth.SignUp)
                             })
                     }
                     HeightGap(height = 20.dp)
@@ -223,7 +235,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>) {
                             text = stringResource(Res.string.forgot_password),
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.clickable {
-                                backStack.add(AppDestination.RecoveryPassword)
+                                backStack.add(AppDestination.Auth.RecoveryPassword)
                             })
                     }
                     HeightGap(height = 20.dp)

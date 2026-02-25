@@ -41,7 +41,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
 
-    val viewModel : RecoveryPasswordViewModel = koinViewModel()
+    val viewModel: RecoveryPasswordViewModel = koinViewModel()
 
     Surface(
         modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
@@ -50,7 +50,9 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
             topBar = {
                 MyCustomAppBar(
                     editProfile = {},
-                    onBackPress = { backStack.remove(AppDestination.RecoveryPassword) },
+                    onBackPress = {
+                        backStack.remove(AppDestination.Auth.RecoveryPassword)
+                                  },
                     title = stringResource(Res.string.recovery_password)
                 )
             }
@@ -110,7 +112,9 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
                         title = stringResource(Res.string.send_otp),
                         modifier = Modifier,
                         onClickButton = {
-                            backStack.add(AppDestination.OtpView(emailOrPhoneNumber = viewModel.inputEmailAddress))
+                            backStack.add(
+                                AppDestination.Auth.Otp(emailOrPhoneNumber = viewModel.inputEmailAddress)
+                            )
                         },
                         isEnable = viewModel.isButtonValid,
                         showProgress = false

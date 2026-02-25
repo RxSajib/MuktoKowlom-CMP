@@ -12,6 +12,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.aliad.muktokowlom.ui.navigation.AppDestination
+import com.aliad.muktokowlom.ui.navigation.auth.AuthNavigation
 import com.aliad.muktokowlom.ui.navigation.bottomAppBar.BottomAppBarNavigation
 import com.aliad.muktokowlom.ui.navigation.dest.DestNavigation
 import kotlinx.serialization.modules.SerializersModule
@@ -43,6 +44,9 @@ fun RootNavigation (){
             }
             entry<AppDestination.Dest> {dest ->
                 DestNavigation(startDest = dest, rootBackStack = rootBackStack)
+            }
+            entry<AppDestination.Auth> {
+                AuthNavigation(startDest = it, rootBackStack = rootBackStack)
             }
         },
 

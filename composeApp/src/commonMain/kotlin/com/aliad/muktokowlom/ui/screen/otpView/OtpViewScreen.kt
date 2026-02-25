@@ -42,7 +42,7 @@ fun OtpViewScreen(backStack: NavBackStack<NavKey>, emailOrPhoneNumber: String) {
                 MyCustomAppBar(
                     title = stringResource(Res.string.enter_otp),
                     onBackPress = {
-                        backStack.remove(AppDestination.OtpView(emailOrPhoneNumber = emailOrPhoneNumber))
+                        backStack.remove(AppDestination.Auth.Otp(emailOrPhoneNumber = emailOrPhoneNumber))
                     },
                     editProfile = {})
             }

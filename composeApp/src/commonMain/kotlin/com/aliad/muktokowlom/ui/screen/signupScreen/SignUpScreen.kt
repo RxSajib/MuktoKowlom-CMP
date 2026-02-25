@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -28,13 +26,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.BackButton
 import com.aliad.muktokowlom.ui.screen.component.CustomSocialButton
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
+import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
@@ -46,7 +42,6 @@ import muktokowlomcmp.composeapp.generated.resources.already_have_account
 import muktokowlomcmp.composeapp.generated.resources.and
 import muktokowlomcmp.composeapp.generated.resources.by_continuing_you_agree_to_the
 import muktokowlomcmp.composeapp.generated.resources.confirm_password
-import muktokowlomcmp.composeapp.generated.resources.dont_have_an_account
 import muktokowlomcmp.composeapp.generated.resources.enter_email
 import muktokowlomcmp.composeapp.generated.resources.enter_name
 import muktokowlomcmp.composeapp.generated.resources.enter_password
@@ -58,7 +53,6 @@ import muktokowlomcmp.composeapp.generated.resources.sign_in
 import muktokowlomcmp.composeapp.generated.resources.sign_up
 import muktokowlomcmp.composeapp.generated.resources.sign_up_account
 import muktokowlomcmp.composeapp.generated.resources.sign_up_now
-import muktokowlomcmp.composeapp.generated.resources.sign_up_now_details
 import muktokowlomcmp.composeapp.generated.resources.t_and_c
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -67,11 +61,28 @@ import org.koin.compose.viewmodel.koinViewModel
 
 private const val TAG = "SignUpScreen"
 @Composable
-fun SignUpScreen(backStack: NavBackStack<NavKey>) {
+fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: SignUpViewModel = koinViewModel()
 
-    Scaffold { innerPadding ->
+    Scaffold(
+        topBar = {
+            MyCustomAppBar(
+                title = stringResource(Res.string.sign_up),
+                onBackPress = {
+                    try {
+                        if (backStack.size > 1) {
+                            backStack.removeLastOrNull()
+                        }else {
+                            rootBackStack.removeLastOrNull()
+                        }
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
+                },
+                editProfile = {})
+        }
+    ) { innerPadding ->
 
 
         Surface(
@@ -123,7 +134,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>) {
                                 color = Color.Red,
                                 fontSize = adjustedFontSize(10.0f)
                             ), modifier = Modifier.clickable {
-                                backStack.remove(AppDestination.SignUpScreen)
+                              //  backStack.remove(AppDestination.SignUpScreen)
                             })
                     }
                     HeightGap(height = 20.dp)

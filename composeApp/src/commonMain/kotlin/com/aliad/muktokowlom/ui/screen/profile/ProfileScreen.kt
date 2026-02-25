@@ -111,8 +111,12 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 )
             }else {
                 SignUpSignInMenu(
-                    signIn = {},
-                    signUp = {}
+                    signIn = {
+                        backStack.add(AppDestination.Auth(AppDestination.Auth.SignIn::class.simpleName?: ""))
+                    },
+                    signUp = {
+                        backStack.add(AppDestination.Auth(AppDestination.Auth.SignUp::class.simpleName?: ""))
+                    }
                 )
             }
 
@@ -258,7 +262,6 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
             viewModel.logoutDialogShow = false
             dataStoreViewModel.deleteUser()
             backStack.clear()
-            backStack.add(AppDestination.SignInScreen)
 
 
             SnackBarEvent.save(

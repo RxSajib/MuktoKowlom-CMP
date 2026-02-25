@@ -36,7 +36,7 @@ fun SplashScreen(backStack: NavBackStack<NavKey>){
         viewModel.getStringData(key = AppConstant.ACCESS_TOKEN).collect {accessToken ->
             if (accessToken.isEmpty()){
                 backStack.clear()
-                backStack.add(AppDestination.SignInScreen)
+            //    backStack.add(AppDestination.SignInScreen)
             }else {
                 backStack.clear()
                 backStack.add(AppDestination.HomeScreen)

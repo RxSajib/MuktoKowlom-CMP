@@ -91,12 +91,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 rememberViewModelStoreNavEntryDecorator()
             ),
             entryProvider = entryProvider {
-                entry<AppDestination.SignInScreen> {
-                    SignInScreen(backStack = backStack)
-                }
-                entry<AppDestination.SignUpScreen> {
-                    SignUpScreen(backStack = backStack)
-                }
+
                 entry<AppDestination.HomeScreen> {
                     HomeScreen(backStack = backStack)
                 }
@@ -136,12 +131,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 entry<AppDestination.SplashScreen> {
                     SplashScreen(backStack = backStack)
                 }
-                entry<AppDestination.RecoveryPassword> {
-                    RecoveryPasswordScreen(backStack = backStack)
-                }
-                entry<AppDestination.OtpView> {
-                    OtpViewScreen(backStack = backStack, emailOrPhoneNumber = it.emailOrPhoneNumber)
-                }
+
             },
 
             transitionSpec = {
