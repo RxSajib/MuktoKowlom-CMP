@@ -41,7 +41,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 private const val TAG = "CategoryWiseBook"
 @Composable
-fun CategoryWiseBook(backStack: NavBackStack<NavKey>, category: AppDestination.CategoryWiseBook) {
+fun CategoryWiseBook(backStack: NavBackStack<NavKey>) {
 
     val viewModel: CategoryWiseBookViewModel = koinViewModel()
     val storyItem = viewModel.data.collectAsLazyPagingItems()
@@ -56,9 +56,9 @@ fun CategoryWiseBook(backStack: NavBackStack<NavKey>, category: AppDestination.C
     Scaffold(
         topBar = {
             MyCustomAppBar(
-                title = category.category?.name ?: "",
+                title =  "Unknown",
                 isBackButtonEnable = true,
-                onBackPress = { backStack.remove(AppDestination.CategoryWiseBook(category = category.category)) }, editProfile = {})
+                onBackPress = { backStack.remove(AppDestination.Dest.CategoryWiseBook) }, editProfile = {})
         }
     ) {innerPadding ->
 

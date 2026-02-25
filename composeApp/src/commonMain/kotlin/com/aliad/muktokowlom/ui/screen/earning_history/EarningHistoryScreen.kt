@@ -18,7 +18,7 @@ import org.jetbrains.compose.resources.stringResource
 fun EarningHistoryScreen(backStack: NavBackStack<NavKey>){
     Scaffold(
         topBar = {
-            MyCustomAppBar(onBackPress = {backStack.remove(AppDestination.EarningHistory)}, title = stringResource(Res.string.earning_history), editProfile = {})
+         //   MyCustomAppBar(onBackPress = {backStack.remove(AppDestination.EarningHistory)}, title = stringResource(Res.string.earning_history), editProfile = {})
         }
     ) {innerPadding ->
         Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {

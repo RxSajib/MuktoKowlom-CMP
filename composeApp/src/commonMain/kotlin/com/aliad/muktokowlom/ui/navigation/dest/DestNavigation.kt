@@ -1,4 +1,4 @@
-package com.aliad.muktokowlom.ui.navigation
+package com.aliad.muktokowlom.ui.navigation.dest
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -18,6 +19,7 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.aliad.helper.SnackBarEvent
 import com.aliad.muktokowlom.ui.category.CategoryScreen
 import com.aliad.muktokowlom.ui.category.CategoryWiseBook
+import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.MyCustomNotifySnackBar
 import com.aliad.muktokowlom.ui.screen.earning_history.EarningHistoryScreen
 import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen
@@ -38,37 +40,43 @@ import kotlinx.serialization.modules.polymorphic
 import org.example.project.ui.screen.signupScreen.SignUpScreen
 
 @Composable
-fun AppNavigation() {
+fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<NavKey>) {
 
     val snackBarEvent = SnackBarEvent.state.collectAsState()
 
     val appConfig = SavedStateConfiguration {
         serializersModule = SerializersModule {
             polymorphic(NavKey::class) {
-                subclass(AppDestination.SignInScreen::class, AppDestination.SignInScreen.serializer())
-                subclass(AppDestination.SignUpScreen::class, AppDestination.SignUpScreen.serializer())
-                subclass(AppDestination.HomeScreen::class, AppDestination.HomeScreen.serializer())
-                subclass(AppDestination.CategoryScreen::class, AppDestination.CategoryScreen.serializer())
-                subclass(AppDestination.CategoryWiseBook::class, AppDestination.CategoryWiseBook.serializer())
-                subclass(AppDestination.StoryTypeWiseBook::class, AppDestination.StoryTypeWiseBook.serializer())
-                subclass(AppDestination.StoryDetails::class, AppDestination.StoryDetails.serializer())
-                subclass(AppDestination.Profile::class, AppDestination.Profile.serializer())
-                subclass(AppDestination.EditProfile::class, AppDestination.EditProfile.serializer())
-                subclass(AppDestination.Premium::class, AppDestination.Premium.serializer())
-                subclass(AppDestination.PrivacyPolicy::class, AppDestination.PrivacyPolicy.serializer())
-                subclass(AppDestination.EarningHistory::class, AppDestination.EarningHistory.serializer())
-                subclass(AppDestination.UploadStories::class, AppDestination.UploadStories.serializer())
-                subclass(AppDestination.SubscriptionHistory::class, AppDestination.SubscriptionHistory.serializer())
-                subclass(AppDestination.SplashScreen::class, AppDestination.SplashScreen.serializer())
-                subclass(AppDestination.RecoveryPassword::class, AppDestination.RecoveryPassword.serializer())
-                subclass(AppDestination.OtpView::class, AppDestination.OtpView.serializer())
+              //  subclass(AppDestination.HomeScreen::class, AppDestination.HomeScreen.serializer())
+              //  subclass(AppDestination.CategoryScreen::class, AppDestination.CategoryScreen.serializer())
+                subclass(AppDestination.Dest.CategoryWiseBook::class, AppDestination.Dest.CategoryWiseBook.serializer())
+              //  subclass(AppDestination.StoryTypeWiseBook::class, AppDestination.StoryTypeWiseBook.serializer())
+              //  subclass(AppDestination.StoryDetails::class, AppDestination.StoryDetails.serializer())
+             //   subclass(AppDestination.Profile::class, AppDestination.Profile.serializer())
+                subclass(AppDestination.Dest.EditProfile::class, AppDestination.Dest.EditProfile.serializer())
+                subclass(AppDestination.Dest.Premium::class, AppDestination.Dest.Premium.serializer())
+              //  subclass(AppDestination.PrivacyPolicy::class, AppDestination.PrivacyPolicy.serializer())
+                subclass(AppDestination.Dest.EarningHistory::class, AppDestination.Dest.EarningHistory.serializer())
+             //   subclass(AppDestination.UploadStories::class, AppDestination.UploadStories.serializer())
+            //    subclass(AppDestination.SubscriptionHistory::class, AppDestination.SubscriptionHistory.serializer())
+             //   subclass(AppDestination.SplashScreen::class, AppDestination.SplashScreen.serializer())
+             //   subclass(AppDestination.RecoveryPassword::class, AppDestination.RecoveryPassword.serializer())
+              //  subclass(AppDestination.OtpView::class, AppDestination.OtpView.serializer())
             }
         }
     }
 
 
-    val element = arrayOf<AppDestination>(AppDestination.SplashScreen)
-    val backStack = rememberNavBackStack(configuration = appConfig, elements = element)
+    val firstDest = when{
+        startDest.firstDestName == AppDestination.Dest.EditProfile::class.simpleName -> AppDestination.Dest.EditProfile
+        startDest.firstDestName == AppDestination.Dest.EarningHistory::class.simpleName -> AppDestination.Dest.EarningHistory
+        startDest.firstDestName == AppDestination.Dest.CategoryWiseBook::class.simpleName -> AppDestination.Dest.CategoryWiseBook
+        startDest.firstDestName == AppDestination.Dest.Premium::class.simpleName -> AppDestination.Dest.Premium
+        else -> throw Exception("Invalid destination")
+    }
+
+
+    val backStack = rememberNavBackStack(appConfig, firstDest)
 
     Box(modifier = Modifier.fillMaxSize()){
         NavDisplay(
@@ -91,8 +99,8 @@ fun AppNavigation() {
                 entry<AppDestination.CategoryScreen> {
                     CategoryScreen(backStack = backStack)
                 }
-                entry<AppDestination.CategoryWiseBook> {category ->
-                    CategoryWiseBook(backStack = backStack, category = category)
+                entry<AppDestination.Dest.CategoryWiseBook> {
+                    CategoryWiseBook(backStack = backStack)
                 }
                 entry<AppDestination.StoryTypeWiseBook> { type ->
                     StoryTypeScreen(backStack = backStack, type = type)
@@ -103,16 +111,16 @@ fun AppNavigation() {
                 entry<AppDestination.Profile> {
                     ProfileScreen(backStack = backStack)
                 }
-                entry<AppDestination.EditProfile> {
+                entry<AppDestination.Dest.EditProfile> {
                     EditProfileScreen(navBackStack = backStack)
                 }
-                entry<AppDestination.Premium> {
-                    PremiumScreen(backStack = backStack)
+                entry<AppDestination.Dest.Premium> {
+                    PremiumScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.PrivacyPolicy> {
                     PrivacyPolicyScreen(backStack = backStack)
                 }
-                entry<AppDestination.EarningHistory> {
+                entry<AppDestination.Dest.EarningHistory> {
                     EarningHistoryScreen(backStack = backStack)
                 }
                 entry<AppDestination.UploadStories> {

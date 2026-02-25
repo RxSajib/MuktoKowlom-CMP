@@ -66,6 +66,7 @@ import muktokowlomcmp.composeapp.generated.resources.second_number
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.collections.removeLastOrNull
 
 @Composable
 fun EditProfileScreen(navBackStack: NavBackStack<NavKey>) {
@@ -76,7 +77,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>) {
         modifier = Modifier.fillMaxWidth(),
         topBar = {
             MyCustomAppBar(title = stringResource(Res.string.edit_profile), onBackPress = {
-                navBackStack.remove(AppDestination.EditProfile)
+                navBackStack.remove(AppDestination.Dest.EditProfile)
             }, editProfile = {})
         }) { innerPadding ->
 

@@ -36,7 +36,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun PremiumScreen(backStack: NavBackStack<NavKey>) {
+fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel : SubscriptionPlanViewModel = koinViewModel()
     val list = viewModel.premiumPlanStateFlow.collectAsStateWithLifecycle()
@@ -44,7 +44,16 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>) {
     Scaffold(
         topBar = {
             MyCustomAppBar(title = stringResource(Res.string.premium), onBackPress = {
-                backStack.remove(AppDestination.Premium)
+                try {
+                    if (backStack.size > 1) {
+                        backStack.removeLastOrNull()
+                    }else {
+                        rootBackStack.removeLastOrNull()
+                    }
+                }catch (e : Exception){
+                    e.printStackTrace()
+                }
+
             }, editProfile = {})
         }
     ) { innerPadding ->

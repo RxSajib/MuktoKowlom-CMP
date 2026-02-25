@@ -121,7 +121,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                     ),
                     modifier = Modifier.clip(shape = CircleShape)
                         .background(color = MaterialTheme.colorScheme.primary).clickable {
-                            backStack.add(AppDestination.EditProfile)
+                            backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.EditProfile::class.simpleName?: ""))
                         }
                         .padding(horizontal = 10.dp, vertical = 5.dp)
                 )
@@ -158,7 +158,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.premium_details),
                 painter = painterResource(Res.drawable.premium_svgrepo_com)
             ) {
-                backStack.add(AppDestination.Premium)
+                backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.Premium::class.simpleName?: ""))
             }
 
             HeightGap(height = 10.dp)
@@ -180,7 +180,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
                 details = stringResource(Res.string.earningHistoryDetails),
                 painter = painterResource(Res.drawable.money_cash)
             ) {
-                backStack.add(AppDestination.EarningHistory)
+                backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.EarningHistory::class.simpleName?: ""))
             }
             HeightGap(height = 10.dp)
 

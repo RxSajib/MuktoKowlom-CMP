@@ -30,6 +30,22 @@ sealed class AppDestination : NavKey {
 
 
     @Serializable
+    data class Dest(val firstDestName : String) : AppDestination() {
+
+        @Serializable
+        data object Premium : AppDestination()
+
+        @Serializable
+        data object CategoryWiseBook : AppDestination()
+
+        @Serializable
+        data object EditProfile : AppDestination()
+
+        @Serializable
+        data object EarningHistory : AppDestination()
+    }
+
+    @Serializable
     data class OtpView(val emailOrPhoneNumber : String = "") : AppDestination()
 
     @Serializable
@@ -44,8 +60,7 @@ sealed class AppDestination : NavKey {
     @Serializable
     data object SubscriptionHistory : AppDestination()
 
-    @Serializable
-    data object EarningHistory : AppDestination()
+
 
     @Serializable
     object SignInScreen : AppDestination()
@@ -59,8 +74,7 @@ sealed class AppDestination : NavKey {
     @Serializable
     object CategoryScreen : AppDestination()
 
-    @Serializable
-    data class CategoryWiseBook(val category: Category?= null) : AppDestination()
+
 
     @Serializable
     data class StoryTypeWiseBook(val typeName : String?= null) : AppDestination()
@@ -71,11 +85,9 @@ sealed class AppDestination : NavKey {
     @Serializable
     data object Profile : AppDestination()
 
-    @Serializable
-    data object EditProfile : AppDestination()
 
-    @Serializable
-    data object Premium : AppDestination()
+
+
 
     @Serializable
     data object PrivacyPolicy : AppDestination()

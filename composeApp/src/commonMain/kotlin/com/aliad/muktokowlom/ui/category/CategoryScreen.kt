@@ -35,26 +35,24 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>) {
     val categoryData = viewModel.categoryData.collectAsStateWithLifecycle()
 
 
-    Scaffold(
-        topBar = {
-            MyCustomAppBar(title = stringResource(Res.string.all_category), onBackPress = {
-                backStack.remove(AppDestination.CategoryScreen)
-            },
-                editProfile = {})
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier.padding(innerPadding).fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.surface)
-        ) {
 
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                items(categoryData.value) { categoryData ->
-                    CategoryItem(category = categoryData, onClick = {
-                        backStack.add(AppDestination.CategoryWiseBook(category = categoryData))
-                    })
-                }
+    Box(
+        modifier = Modifier.fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.surface)
+    ) {
+
+        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+            items(categoryData.value) { categoryData ->
+                CategoryItem(category = categoryData, onClick = {
+                    backStack.add(
+                        AppDestination.Dest(
+                            firstDestName = AppDestination.Dest.CategoryWiseBook::class.simpleName
+                                ?: ""
+                        )
+                    )
+                })
             }
         }
     }
+
 }

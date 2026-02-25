@@ -1,11 +1,10 @@
-package com.aliad.muktokowlom.ui.navigation.bottomAppBarNavigation
+package com.aliad.muktokowlom.ui.navigation.bottomAppBar
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -18,7 +17,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
@@ -28,6 +26,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
+import com.aliad.muktokowlom.ui.category.CategoryScreen
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
@@ -36,7 +35,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import muktokowlomcmp.composeapp.generated.resources.Res
-import muktokowlomcmp.composeapp.generated.resources.compose_multiplatform
 import muktokowlomcmp.composeapp.generated.resources.dashBoard
 import muktokowlomcmp.composeapp.generated.resources.favorite
 import muktokowlomcmp.composeapp.generated.resources.ic_fav_unselected
@@ -213,11 +211,7 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>) {
                     HomeScreen(backStack = rootBackStack)
                 }
                 entry<AppDestination.BottomAppBar.Category> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = "Category",
-                        )
-                    }
+                    CategoryScreen(backStack = activeBackStack)
                 }
                 entry<AppDestination.BottomAppBar.Search> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
