@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
+import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
@@ -373,7 +374,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             title = stringResource(Res.string.password_update),
                             modifier = Modifier.weight(1f),
                             onClickButton = {
-
+                                navBackStack.add(AppDestination.Dest.UpdatePassword)
                             },
                             isEnable = true
                         )

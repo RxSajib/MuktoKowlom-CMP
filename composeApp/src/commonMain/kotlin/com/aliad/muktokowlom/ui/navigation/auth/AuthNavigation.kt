@@ -3,7 +3,11 @@ package com.aliad.muktokowlom.ui.navigation.auth
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -16,6 +20,7 @@ import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.loginScreen.SignInScreen
 import com.aliad.muktokowlom.ui.screen.otpView.OtpViewScreen
 import com.aliad.muktokowlom.ui.screen.recoveryPassword.RecoveryPasswordScreen
+import com.aliad.muktokowlom.ui.screen.updatePassword.UpdatePasswordScreen
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.example.project.ui.screen.signupScreen.SignUpScreen
@@ -60,6 +65,9 @@ fun AuthNavigation(startDest: AppDestination.Auth, rootBackStack: NavBackStack<N
             }
             entry<AppDestination.Auth.Otp> {
                 OtpViewScreen(backStack = backStack, emailOrPhoneNumber = it.emailOrPhoneNumber)
+            }
+            entry<AppDestination.Dest.UpdatePassword> {
+                UpdatePasswordScreen(backStack = backStack)
             }
         },
 

@@ -34,6 +34,9 @@ sealed class AppDestination : NavKey {
     data class Dest(val firstDestName : String) : AppDestination() {
 
         @Serializable
+        data object UpdatePassword : AppDestination()
+
+        @Serializable
         data class StoryTypeWiseBook(
             val typeName : String? = null
         ) : AppDestination()

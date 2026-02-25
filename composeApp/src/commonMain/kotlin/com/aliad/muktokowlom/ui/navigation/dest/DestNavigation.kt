@@ -34,6 +34,7 @@ import com.aliad.muktokowlom.ui.screen.splashScreen.SplashScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
 import com.aliad.muktokowlom.ui.screen.subscription_history.SubscriptionHistoryScreen
+import com.aliad.muktokowlom.ui.screen.updatePassword.UpdatePasswordScreen
 import com.aliad.muktokowlom.ui.upload_stories.UploadStoriesScreen
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -58,6 +59,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 subclass(AppDestination.Dest.EarningHistory::class, AppDestination.Dest.EarningHistory.serializer())
                 subclass(AppDestination.Dest.UploadStories::class, AppDestination.Dest.UploadStories.serializer())
                 subclass(AppDestination.Dest.SubscriptionHistory::class, AppDestination.Dest.SubscriptionHistory.serializer())
+                subclass(AppDestination.Dest.UpdatePassword::class, AppDestination.Dest.UpdatePassword.serializer())
              //   subclass(AppDestination.SplashScreen::class, AppDestination.SplashScreen.serializer())
              //   subclass(AppDestination.RecoveryPassword::class, AppDestination.RecoveryPassword.serializer())
               //  subclass(AppDestination.OtpView::class, AppDestination.OtpView.serializer())
@@ -129,6 +131,9 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 }
                 entry<AppDestination.SplashScreen> {
                     SplashScreen(backStack = backStack)
+                }
+                entry<AppDestination.Dest.UpdatePassword> {
+                    UpdatePasswordScreen(backStack = backStack)
                 }
 
             },
