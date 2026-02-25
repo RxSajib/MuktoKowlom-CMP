@@ -170,15 +170,18 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
             }
             HeightGap(height = 10.dp)
 
-            MyCustomMenu(
-                modifier = Modifier,
-                title = stringResource(Res.string.upload_stories),
-                details = stringResource(Res.string.upload_stories_details),
-                painter = painterResource(Res.drawable.upload_cloud_svgrepo_com)
-            ) {
-                backStack.add(AppDestination.Dest(AppDestination.Dest.UploadStories::class.simpleName?: ""))
+            if(!token.isEmpty()){
+                MyCustomMenu(
+                    modifier = Modifier,
+                    title = stringResource(Res.string.upload_stories),
+                    details = stringResource(Res.string.upload_stories_details),
+                    painter = painterResource(Res.drawable.upload_cloud_svgrepo_com)
+                ) {
+                    backStack.add(AppDestination.Dest(AppDestination.Dest.UploadStories::class.simpleName?: ""))
+                }
+                HeightGap(height = 10.dp)
             }
-            HeightGap(height = 10.dp)
+
 
             MyCustomMenu(
                 modifier = Modifier,
@@ -202,15 +205,19 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
 
             HeightGap(height = 10.dp)
 
-            MyCustomMenu(
-                modifier = Modifier,
-                title = stringResource(Res.string.earningHistory),
-                details = stringResource(Res.string.earningHistoryDetails),
-                painter = painterResource(Res.drawable.money_cash)
-            ) {
-                backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.EarningHistory::class.simpleName?: ""))
+            if(!token.isEmpty()){
+
+                MyCustomMenu(
+                    modifier = Modifier,
+                    title = stringResource(Res.string.earningHistory),
+                    details = stringResource(Res.string.earningHistoryDetails),
+                    painter = painterResource(Res.drawable.money_cash)
+                ) {
+                    backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.EarningHistory::class.simpleName?: ""))
+                }
+                HeightGap(height = 10.dp)
             }
-            HeightGap(height = 10.dp)
+
 
             MyCustomMenu(
                 modifier = Modifier,
@@ -223,27 +230,33 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
 
             HeightGap(height = 10.dp)
 
-            MyCustomMenu(
-                modifier = Modifier,
-                title = stringResource(Res.string.delete_account),
-                details = stringResource(Res.string.delete_account_details),
-                painter = painterResource(Res.drawable.delete_svgrepo_com)
-            ) {
-                viewModel.deleteAccountDialogShow = true
+            if(!token.isEmpty()){
+                MyCustomMenu(
+                    modifier = Modifier,
+                    title = stringResource(Res.string.delete_account),
+                    details = stringResource(Res.string.delete_account_details),
+                    painter = painterResource(Res.drawable.delete_svgrepo_com)
+                ) {
+                    viewModel.deleteAccountDialogShow = true
+                }
+
+                HeightGap(height = 10.dp)
             }
 
-            HeightGap(height = 10.dp)
 
-            MyCustomMenu(
-                modifier = Modifier,
-                title = stringResource(Res.string.logout),
-                details = stringResource(Res.string.logout_details),
-                painter = painterResource(Res.drawable.electricity_energy_off_on_power_switch_svgrepo_com)
-            ) {
-                viewModel.logoutDialogShow = true
+            if(!token.isEmpty()){
+                MyCustomMenu(
+                    modifier = Modifier,
+                    title = stringResource(Res.string.logout),
+                    details = stringResource(Res.string.logout_details),
+                    painter = painterResource(Res.drawable.electricity_energy_off_on_power_switch_svgrepo_com)
+                ) {
+                    viewModel.logoutDialogShow = true
+                }
+
+                HeightGap(height = 10.dp)
             }
 
-            HeightGap(height = 10.dp)
 
             Text(
                 text = stringResource(Res.string.copyright_muktokowlom_all_right_reserved),
@@ -261,7 +274,6 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
         }, logoutButtonClick = {
             viewModel.logoutDialogShow = false
             dataStoreViewModel.deleteUser()
-            backStack.clear()
 
 
             SnackBarEvent.save(
@@ -277,6 +289,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
     if (viewModel.deleteAccountDialogShow) {
         DeleteAccountBottomSheet(deleteAccountButtonClick = {
             viewModel.deleteAccountDialogShow = false
+
         }) {
             viewModel.deleteAccountDialogShow = false
         }

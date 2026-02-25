@@ -42,7 +42,6 @@ import org.example.project.ui.screen.signupScreen.SignUpScreen
 @Composable
 fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<NavKey>) {
 
-    val snackBarEvent = SnackBarEvent.state.collectAsState()
 
     val appConfig = SavedStateConfiguration {
         serializersModule = SerializersModule {
@@ -148,23 +147,6 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
             },
         )
 
-
-        if (snackBarEvent.value.show) {
-
-            MyCustomNotifySnackBar(
-                modifier = Modifier.fillMaxSize(),
-                message = snackBarEvent.value.details ?: "",
-           //     leftIcon = snackBarEvent.value.leftIcon, //  painterResource(snackBarEvent.value.leftIcon ?: Res.drawable.muktokowlom),
-                onDismiss = {
-                    SnackBarEvent.save(
-                        details = snackBarEvent.value.copy(
-                            show = false,
-                            details = null,
-                            title = null
-                        )
-                    )
-                })
-        }
     }
 
 

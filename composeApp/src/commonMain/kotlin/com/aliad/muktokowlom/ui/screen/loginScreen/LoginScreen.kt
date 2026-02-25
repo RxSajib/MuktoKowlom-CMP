@@ -101,7 +101,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
     LaunchedEffect(lifecycle.lifecycle) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             viewModel.userMutableSharedFlow.collect { user ->
-                backStack.add(AppDestination.HomeScreen)
+                rootBackStack.removeLastOrNull()
             }
         }
     }
