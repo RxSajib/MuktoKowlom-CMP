@@ -82,6 +82,11 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
     val userAge by dataStoreViewModel.getStringData(key = AppConstant.USER_AGE).collectAsStateWithLifecycle(null)
     val userAddress by dataStoreViewModel.getStringData(key = AppConstant.USER_ADDRESS).collectAsStateWithLifecycle(null)
 
+    val userID by dataStoreViewModel.getIntData(key = AppConstant.USER_ID).collectAsStateWithLifecycle(null)
+    val token by dataStoreViewModel.getStringData(key = AppConstant.ACCESS_TOKEN).collectAsStateWithLifecycle(null)
+
+    print("userID ${userID.toString()}")
+
     val parts = userName?.trim()?.split(" ")
     val firstName = parts?.firstOrNull() ?: ""
     val lastName = parts?.lastOrNull() ?: ""

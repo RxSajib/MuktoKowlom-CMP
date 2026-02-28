@@ -19,6 +19,9 @@ import com.aliad.repositoryImpl.ProfileRepositoryImpl
 import com.aliad.repositoryImpl.StoryTypeImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
@@ -54,6 +57,16 @@ val dataModule = module {
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
 
+            install(Auth){
+                this.bearer {
+                    loadTokens {
+                        BearerTokens(
+                            accessToken = "5593|KKqVrkyfuoE5yrIcEnSKqP6Qcx1KxtlJtFvXdaT1",
+                            refreshToken = "5593|KKqVrkyfuoE5yrIcEnSKqP6Qcx1KxtlJtFvXdaT1"
+                        )
+                    }
+                }
+            }
         }
     }
     // implement ktor clint

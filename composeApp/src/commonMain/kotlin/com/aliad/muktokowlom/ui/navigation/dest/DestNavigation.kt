@@ -129,9 +129,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 entry<AppDestination.Dest.SubscriptionHistory> {
                     SubscriptionHistoryScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
-                entry<AppDestination.SplashScreen> {
-                    SplashScreen(backStack = backStack)
-                }
+
                 entry<AppDestination.Dest.UpdatePassword> {
                     UpdatePasswordScreen(backStack = backStack)
                 }

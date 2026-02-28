@@ -29,6 +29,12 @@ sealed class AppDestination : NavKey {
         data object Profile : AppDestination()
     }
 
+    @Serializable
+    data object Splash{
+        @Serializable
+        data object SplashScreen : AppDestination()
+    }
+
 
     @Serializable
     data class Dest(val firstDestName : String) : AppDestination() {
@@ -83,8 +89,7 @@ sealed class AppDestination : NavKey {
 
 
 
-    @Serializable
-    data object SplashScreen : AppDestination()
+
 
 
 

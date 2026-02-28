@@ -34,7 +34,7 @@ val presentationModule = module {
     }
     
     viewModel {
-        SignInViewModel(loginUseCase = get(), saveStringData = get())
+        SignInViewModel(loginUseCase = get(), saveStringData = get(), saveIntData = get())
     }
 
     viewModel {

@@ -95,6 +95,18 @@ class DataStoreViewModel constructor(
             val job6 = async {
                 deleteStringData(key = AppConstant.ACCESS_TOKEN)
             }
+            val job7 = async {
+                deleteStringData(key = AppConstant.USER_SECOND_NUMBER)
+            }
+            val job8 = async {
+                deleteStringData(key = AppConstant.USER_DATE_OF_BIRTH)
+            }
+            val job9 = async {
+                deleteStringData(key = AppConstant.USER_AGE)
+            }
+            val job10 = async {
+                deleteStringData(key = AppConstant.USER_ADDRESS)
+            }
 
             job1.join()
             job2.join()
@@ -102,6 +114,10 @@ class DataStoreViewModel constructor(
             job4.join()
             job5.join()
             job6.join()
+            job7.join()
+            job8.join()
+            job9.join()
+            job10.join()
         }
     }
 

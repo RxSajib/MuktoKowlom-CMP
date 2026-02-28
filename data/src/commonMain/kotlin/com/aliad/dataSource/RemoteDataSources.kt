@@ -36,6 +36,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val NEWRELEASESTORY = "${BASEURL}get-new-realeses-story"
     private val SUBSCRIPTION_PLANS = "${BASEURL}get-subscription-plans"
     private val PRIVACY_POLICY = "${BASEURL}privacy-policy"
+    private val GET_PROFILE_INFO = "${BASEURL}user/get-profile-information"
 
 
     suspend fun loginAccount(

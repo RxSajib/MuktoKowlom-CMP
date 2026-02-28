@@ -11,6 +11,7 @@ import com.aliad.model.ErrorResponse
 import com.aliad.model.SnackBarDetails
 import com.aliad.model.User
 import com.aliad.usecase.LoginUseCase
+import com.aliad.usecase.dataStore.SaveIntData
 import com.aliad.usecase.dataStore.SaveStringData
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.async
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 
 class SignInViewModel constructor(
     val loginUseCase: LoginUseCase,
-    val saveStringData: SaveStringData
+    val saveStringData: SaveStringData,
+    val saveIntData: SaveIntData
 ) : ViewModel() {
 
     var isOpenPrivacyPolicyBottomSheet by mutableStateOf(false)
@@ -109,12 +111,19 @@ class SignInViewModel constructor(
                     user.createAtDate ?: ""
                 )
             }
+            val job7 = async {
+                saveIntData.saveIntData(
+                    key = AppConstant.USER_ID,
+                    value = user.id?: -1
+                )
+            }
             job1.join()
             job2.join()
             job3.join()
             job4.join()
             job5.join()
             job6.join()
+            job7.join()
         }
 
     }
