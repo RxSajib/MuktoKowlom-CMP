@@ -1,5 +1,8 @@
 package com.aliad.presentation.signIn.ui.category
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliad.model.Category
@@ -13,6 +16,7 @@ class CategoryViewModel constructor(val categoryUseCase: CategoryUseCase) : View
 
     private val categoryStateFlow = MutableStateFlow<List<Category>>(emptyList())
     val categoryData = categoryStateFlow.asStateFlow()
+    var isLoading by mutableStateOf(false)
 
     init {
         fetchCategory()
@@ -20,7 +24,9 @@ class CategoryViewModel constructor(val categoryUseCase: CategoryUseCase) : View
 
     fun fetchCategory() {
         viewModelScope.launch {
+            isLoading = true
          val response =   categoryUseCase.getCategory()
+            isLoading = false
             if(response.isSuccess){
                 println("data fetch success viewmodel ${response.getOrNull()}")
                 categoryStateFlow.emit(response.getOrNull()?.data?: emptyList())

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,7 +29,11 @@ import com.aliad.presentation.signIn.ui.storytype.StoryTypeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun StoryTypeScreen(backStack: NavBackStack<NavKey>, type: AppDestination.Dest.StoryTypeWiseBook) { //
+fun StoryTypeScreen(
+    backStack: NavBackStack<NavKey>,
+    type: AppDestination.Dest.StoryTypeWiseBook,
+    rootBackStack: NavBackStack<NavKey>
+) { //
 
     val viewModel : StoryTypeViewModel = koinViewModel()
     val storyItem = viewModel.storysData.collectAsLazyPagingItems()
@@ -47,7 +50,9 @@ fun StoryTypeScreen(backStack: NavBackStack<NavKey>, type: AppDestination.Dest.S
         topBar = {
             MyCustomAppBar(
                 isBackButtonEnable = true,
-                onBackPress = {  },
+                onBackPress = {
+                    rootBackStack.removeLastOrNull()
+                },
                 title ="Story",//type.typeName ?: "",
                 editProfile = {}
             )

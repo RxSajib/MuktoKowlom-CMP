@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -29,11 +31,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem) -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clickable {
+        modifier = Modifier.fillMaxWidth().height(100.dp).padding(horizontal = 16.dp).clickable {
             onclick.invoke(myBookItem)
         }.clip(shape = RoundedCornerShape(10.dp))
             .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f))
-            .padding(10.dp)
+            .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
             model = myBookItem.completedImageUri,
@@ -45,28 +48,30 @@ fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem)
             placeholder = painterResource(Res.drawable.placeholder)
         )
 
+
         Column(modifier = Modifier.weight(1f).padding(start = 10.dp)) {
-            Text(
-                text = myBookItem.titleBn ?: "",
-                modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = myBookItem.titleBn ?: "",
+                    modifier = Modifier.fillMaxWidth(),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
 
+                    )
+
+                Text(
+                    text = myBookItem.summaryBn ?: "",
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.inverseSurface,
+                    ),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 4,
                 )
-
-            Text(
-                text = myBookItem.summaryBn ?: "",
-                style = MaterialTheme.typography.bodySmall.copy(
-                    fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.inverseSurface,
-                ),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 4,
-            )
-
+            }
             HeightGap(height = 10.dp)
             MyRatingBar(
                 rating = myBookItem.ratingToInt?.toFloat() ?: 0f,
@@ -75,6 +80,8 @@ fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem)
                 isIndicator = true
             )
         }
+
+
     }
 }
 

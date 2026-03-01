@@ -29,7 +29,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun CategoryItem(category: Category, onClick: () -> Unit) {
     Box(
-        modifier = Modifier.fillMaxWidth().height(150.dp).padding(5.dp)
+        modifier = Modifier.fillMaxWidth().aspectRatio(1.5f)
             .clip(shape = RoundedCornerShape(10.dp)).clickable{onClick.invoke()}, contentAlignment = Alignment.Center
     ) {
 

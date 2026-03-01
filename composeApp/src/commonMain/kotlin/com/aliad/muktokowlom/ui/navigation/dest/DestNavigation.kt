@@ -6,7 +6,6 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
@@ -16,21 +15,15 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import com.aliad.helper.SnackBarEvent
 import com.aliad.muktokowlom.ui.category.CategoryScreen
 import com.aliad.muktokowlom.ui.category.CategoryWiseBook
 import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.MyCustomNotifySnackBar
 import com.aliad.muktokowlom.ui.screen.earning_history.EarningHistoryScreen
 import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
-import com.aliad.muktokowlom.ui.screen.loginScreen.SignInScreen
-import com.aliad.muktokowlom.ui.screen.otpView.OtpViewScreen
 import com.aliad.muktokowlom.ui.screen.premium.PremiumScreen
 import com.aliad.muktokowlom.ui.screen.privacy_policy.PrivacyPolicyScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
-import com.aliad.muktokowlom.ui.screen.recoveryPassword.RecoveryPasswordScreen
-import com.aliad.muktokowlom.ui.screen.splashScreen.SplashScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
 import com.aliad.muktokowlom.ui.screen.subscription_history.SubscriptionHistoryScreen
@@ -38,7 +31,6 @@ import com.aliad.muktokowlom.ui.screen.updatePassword.UpdatePasswordScreen
 import com.aliad.muktokowlom.ui.upload_stories.UploadStoriesScreen
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import org.example.project.ui.screen.signupScreen.SignUpScreen
 
 @Composable
 fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<NavKey>) {
@@ -103,7 +95,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                     CategoryWiseBook(backStack = backStack)
                 }
                 entry<AppDestination.Dest.StoryTypeWiseBook> { type ->
-                    StoryTypeScreen(backStack = backStack, type = type)
+                    StoryTypeScreen(backStack = backStack, rootBackStack = rootBackStack, type = type)
                 }
                 entry<AppDestination.StoryDetails> { type ->
                     StoryDetailsScreen(myBookItem = type.myBookItem, backStack = backStack)
