@@ -1,5 +1,6 @@
 package com.aliad.muktokowlom.ui.screen.component
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,15 +26,22 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun StoryItemFixedSize(item: MyBookItem?){
     Column(modifier = Modifier.width(220.dp).padding(10.dp)) {
-        AsyncImage(
-            modifier = Modifier.fillMaxWidth().height(100.dp)
-                .clip(shape = RoundedCornerShape(10.dp)),
-            model = item?.completedImageUri?: "",
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            placeholder = painterResource(Res.drawable.placeholder),
-            error = painterResource(Res.drawable.placeholder)
-        )
+        Box{
+            AsyncImage(
+                modifier = Modifier.fillMaxWidth().height(100.dp)
+                    .clip(shape = RoundedCornerShape(10.dp)),
+                model = item?.completedImageUri ?: "",
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(Res.drawable.placeholder),
+                error = painterResource(Res.drawable.placeholder)
+            )
+            if(item?.isPaidStory == true){
+                DiagonalCornerView()
+            }
+
+        }
+
         HeightGap(10.dp)
         MyRatingBar(rating = item?.ratingToInt?.toFloat()?: 0f, starSize = 15.dp, onStarClick = {}, isIndicator = true)
         HeightGap(2.dp)

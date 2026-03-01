@@ -41,7 +41,10 @@ fun StoryItem(item: MyBookItem?, onClick: (data: MyBookItem) -> Unit) {
                 placeholder = painterResource(Res.drawable.placeholder),
                 error = painterResource(Res.drawable.placeholder)
             )
-            DiagonalCornerView()
+            if(item?.isPaidStory == true){
+                DiagonalCornerView()
+            }
+
         }
 
         HeightGap(10.dp)

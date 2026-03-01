@@ -59,7 +59,8 @@ object DataMapper {
             rating = bookItem.rating,
             authorName = bookItem.user_name,
             summaryBn = bookItem.summary_bn,
-            summaryEn = bookItem.story_bn
+            summaryEn = bookItem.story_bn,
+            isPayAble = bookItem.is_payable
         )
     }
 

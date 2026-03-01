@@ -14,8 +14,11 @@ data class MyBookItem(
     val rating : String ?= null,
     val authorName : String?= null,
     val summaryBn : String? = null,
-    val summaryEn : String?= null
+    val summaryEn : String?= null,
+    val isPayAble : String? = null,
 ){
+
+    val isPaidStory : Boolean = isPayAble == 1.toString()
     val completedImageUri = "https://muktokowlom.com/$image"
     val ratingToInt = convertStringToInt(rating?:"0")
 }

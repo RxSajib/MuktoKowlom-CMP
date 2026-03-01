@@ -35,7 +35,7 @@ fun DiagonalCornerView(
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth(.45f)
+            .fillMaxWidth(.35f)
             .aspectRatio(1f)
             .clip(shape = RoundedCornerShape(topStart = 10.dp))
 
@@ -62,7 +62,7 @@ fun DiagonalCornerView(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(5.dp)
-                .size(15.dp)
+                .fillMaxWidth(.2f)
                 .graphicsLayer(
                     rotationZ = -45f,
                 )
