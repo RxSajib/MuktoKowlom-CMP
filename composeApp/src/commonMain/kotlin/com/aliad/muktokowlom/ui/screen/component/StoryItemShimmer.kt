@@ -30,7 +30,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun StoryItemShimmer(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxWidth().shimmer().clip(shape = RoundedCornerShape(10.dp))
-            .padding(10.dp)
     ) {
         Box(
             modifier = Modifier.fillMaxWidth().height(100.dp)
@@ -55,6 +54,7 @@ fun StoryItemShimmer(modifier: Modifier = Modifier) {
 fun StoryShimmerRow(){
     Row {
         StoryItemShimmer(modifier = Modifier.weight(1f))
+        WidthGap(16.dp)
         StoryItemShimmer(modifier = Modifier.weight(1f))
     }
 }

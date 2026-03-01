@@ -32,6 +32,7 @@ import androidx.navigation3.runtime.NavKey
 import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
+import com.aliad.muktokowlom.ui.screen.component.HomeScreenShimmer
 import com.aliad.muktokowlom.ui.screen.component.HomeSeaBanner
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomBannerItem
@@ -66,54 +67,66 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
     val allStory = stringResource(Res.string.all_release)
 
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .verticalScroll(state = rememberScrollState())
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        if(dashBoardViewModel.isLoading){
+            HomeScreenShimmer()
+        }else {
+
+        Column(
+            modifier = Modifier.fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
+                .verticalScroll(state = rememberScrollState())
+        ) {
 
 
-        HomeSeaBanner {}
+            HomeSeaBanner {}
 
-        HeightGap(height = 10.dp)
+            HeightGap(height = 10.dp)
 
-        StoryCategoryWithAllButton(
-            categoryTitle = stringResource(Res.string.most_popular), onClick = {
-            //    backStack.add(AppDestination.StoryTypeWiseBook(typeName = mostPopularStory))
-            })
-        Banner(
-            pageCount = dashBoardData.value?.lisOfPopularStories?.size ?: 0,
-            autoScrollTime = 5000L,
-            bannerState = rememberBannerState(),
-            orientation = Orientation.Horizontal,
-            bannerKey = { index -> dashBoardData.value?.lisOfPopularStories[index].toString() }) {
+            StoryCategoryWithAllButton(
+                categoryTitle = stringResource(Res.string.most_popular), onClick = {
+                    //    backStack.add(AppDestination.StoryTypeWiseBook(typeName = mostPopularStory))
+                })
+            Banner(
+                pageCount = dashBoardData.value?.lisOfPopularStories?.size ?: 0,
+                autoScrollTime = 5000L,
+                bannerState = rememberBannerState(),
+                orientation = Orientation.Horizontal,
+                bannerKey = { index -> dashBoardData.value?.lisOfPopularStories[index].toString() }) {
 
-            MyCustomBannerItem(
-                myBookItem = dashBoardData.value?.lisOfPopularStories[index] ?: MyBookItem()
-            ) { myBookItem ->
-                print("my book item $myBookItem")
+                MyCustomBannerItem(
+                    myBookItem = dashBoardData.value?.lisOfPopularStories[index] ?: MyBookItem()
+                ) { myBookItem ->
+                    print("my book item $myBookItem")
+                }
+            }
+
+            HeightGap(height = 10.dp)
+
+            StoryCategoryWithAllButton(
+                categoryTitle = stringResource(Res.string.new_release), onClick = {
+                    backStack.add(
+                        AppDestination.Dest(
+                            AppDestination.Dest.StoryTypeWiseBook::class.simpleName ?: ""
+                        )
+                    )
+                })
+            LazyRow {
+                items(dashBoardData.value?.listOfNewReleaseStories ?: emptyList()) { bookItem ->
+                    StoryItemFixedSize(item = bookItem)
+                }
+            }
+            StoryCategoryWithAllButton(
+                categoryTitle = stringResource(Res.string.all_release), onClick = {
+                    //     backStack.add(AppDestination.StoryTypeWiseBook(typeName = allStory))
+                })
+            LazyRow {
+                items(dashBoardData.value?.lifOfAllStories ?: emptyList()) { bookItem ->
+                    StoryItemFixedSize(item = bookItem)
+                }
             }
         }
-
-        HeightGap(height = 10.dp)
-
-        StoryCategoryWithAllButton(
-            categoryTitle = stringResource(Res.string.new_release), onClick = {
-                backStack.add(AppDestination.Dest(AppDestination.Dest.StoryTypeWiseBook::class.simpleName?: ""))
-            })
-        LazyRow {
-            items(dashBoardData.value?.listOfNewReleaseStories ?: emptyList()) { bookItem ->
-                StoryItemFixedSize(item = bookItem)
-            }
-        }
-        StoryCategoryWithAllButton(
-            categoryTitle = stringResource(Res.string.all_release), onClick = {
-           //     backStack.add(AppDestination.StoryTypeWiseBook(typeName = allStory))
-            })
-        LazyRow {
-            items(dashBoardData.value?.lifOfAllStories ?: emptyList()) { bookItem ->
-                StoryItemFixedSize(item = bookItem)
-            }
         }
     }
 }
