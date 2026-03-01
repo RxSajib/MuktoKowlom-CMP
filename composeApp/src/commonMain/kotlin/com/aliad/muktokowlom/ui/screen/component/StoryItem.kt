@@ -1,6 +1,7 @@
 package com.aliad.muktokowlom.ui.screen.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,15 +30,20 @@ fun StoryItem(item: MyBookItem?, onClick: (data: MyBookItem) -> Unit) {
         modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(10.dp))
             .clickable { onClick.invoke(item!!) }.padding(10.dp)
     ) {
-        AsyncImage(
-            modifier = Modifier.fillMaxWidth().height(100.dp)
-                .clip(shape = RoundedCornerShape(10.dp)),
-            model = item?.completedImageUri ?: "",
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            placeholder = painterResource(Res.drawable.placeholder),
-            error = painterResource(Res.drawable.placeholder)
-        )
+        Box{
+
+            AsyncImage(
+                modifier = Modifier.fillMaxWidth().height(100.dp)
+                    .clip(shape = RoundedCornerShape(10.dp)),
+                model = item?.completedImageUri ?: "",
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(Res.drawable.placeholder),
+                error = painterResource(Res.drawable.placeholder)
+            )
+            DiagonalCornerView()
+        }
+
         HeightGap(10.dp)
         MyRatingBar(
             rating = item?.ratingToInt?.toFloat() ?: 0f,

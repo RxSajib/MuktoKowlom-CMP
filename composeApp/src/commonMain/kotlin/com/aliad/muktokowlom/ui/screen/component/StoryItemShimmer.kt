@@ -1,10 +1,12 @@
 package com.aliad.muktokowlom.ui.screen.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,6 +24,7 @@ import coil3.compose.AsyncImage
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.valentinilk.shimmer.shimmer
 import muktokowlomcmp.composeapp.generated.resources.Res
+import muktokowlomcmp.composeapp.generated.resources.muktokowlom_white
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -35,7 +38,13 @@ fun StoryItemShimmer(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth().height(100.dp)
                 .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f))
                 .clip(shape = RoundedCornerShape(10.dp))
-        )
+        ){
+            Image(
+                painter = painterResource(Res.drawable.muktokowlom_white),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize().padding(16.dp)
+            )
+        }
         HeightGap(20.dp)
         Box(
             modifier = Modifier.fillMaxWidth(.5f).height(10.dp)
