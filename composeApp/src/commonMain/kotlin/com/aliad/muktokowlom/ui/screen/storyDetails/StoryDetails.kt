@@ -67,6 +67,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) {
 
     val viewModel : StoryDetailsViewModel = koinViewModel()
+    print("story id ${myBookItem.storyID}")
 
     Scaffold(
         topBar = {

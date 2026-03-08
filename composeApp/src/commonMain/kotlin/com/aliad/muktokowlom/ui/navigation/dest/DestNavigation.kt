@@ -113,7 +113,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                     PrivacyPolicyScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.Dest.EarningHistory> {
-                    EarningHistoryScreen(backStack = backStack)
+                    EarningHistoryScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.Dest.UploadStories> {
                     UploadStoriesScreen(backStack = backStack, rootBackStack = rootBackStack)

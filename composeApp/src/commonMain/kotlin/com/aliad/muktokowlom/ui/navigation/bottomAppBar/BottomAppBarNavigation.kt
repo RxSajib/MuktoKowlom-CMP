@@ -32,6 +32,7 @@ import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
+import com.aliad.muktokowlom.ui.screen.search.Search
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.serialization.json.Json
@@ -225,11 +226,7 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>) {
                     CategoryScreen(backStack = activeBackStack)
                 }
                 entry<AppDestination.BottomAppBar.Search> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = "Search",
-                        )
-                    }
+                    Search()
                 }
                 entry<AppDestination.BottomAppBar.FavoriteStory> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

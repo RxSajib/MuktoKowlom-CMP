@@ -37,6 +37,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val SUBSCRIPTION_PLANS = "${BASEURL}get-subscription-plans"
     private val PRIVACY_POLICY = "${BASEURL}privacy-policy"
     private val GET_PROFILE_INFO = "${BASEURL}user/get-profile-information"
+    private val STORY_DETAILS = "${BASEURL}get-story-details"
 
 
     suspend fun loginAccount(
@@ -213,6 +214,19 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         } catch (e: Exception) {
             //  print("error fetch privacy policy ${e.message}")
             return Result.failure(e)
+        }
+    }
+
+    suspend fun getStoryDetails(storyID : String){
+        try {
+            val response = httpClient.get(urlString = STORY_DETAILS){
+                this.parameter("story_id", storyID)
+            }
+            if(response.status.isSuccess()){
+
+            }
+        }catch (e : Exception){
+
         }
     }
 }
