@@ -98,6 +98,11 @@
     <string name="save">Save</string>
     <string name="password_update">Password Update</string>
 
+    <string name="search_your_favourite_genre">Search your favourite genre</string>
+    <string name="popular_searches">Popular Searches</string>
+    <string name="recent_searches">Recent Searches</string>
+    <string name="your_have_no_search_history">Your have no search history</string>
+
     <string name="enter_first_name">Enter first name</string>
     <string name="enter_last_name">Enter last name</string>
     <string name="enter_email_address">Enter email address</string>

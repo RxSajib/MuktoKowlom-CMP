@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -35,7 +37,9 @@ fun MyCustomInputFiled(
     isVisiblePasswordChange: () -> Unit,
     readOnly: Boolean = false,
     isNumberType: Boolean = false,
+    leftIcon : Painter ?= null,
     onClick: () -> Unit,
+
 ) {
 
     OutlinedTextField(
@@ -57,6 +61,16 @@ fun MyCustomInputFiled(
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent,
         ),
+
+        leadingIcon = leftIcon?.let { icon ->
+            {
+                Icon(
+                    painter = icon,
+                    contentDescription = null
+                )
+            }
+        },
+
         visualTransformation = if (!isPasswordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
         trailingIcon = {
             if (isPasswordInput) {
