@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,9 @@ import com.aliad.muktokowlom.ui.screen.component.CategoryItem
 import com.aliad.muktokowlom.ui.screen.component.CategoryScreenShimmer
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
+import com.lt.compose_views.refresh_layout.PullToRefresh
+import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
+import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
 import io.ktor.http.HttpHeaders.Destination
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.all_category
@@ -38,15 +42,28 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>) {
     val categoryData = viewModel.categoryData.collectAsStateWithLifecycle()
 
 
+    val refreshState = rememberRefreshLayoutState {
+        setRefreshState(RefreshContentStateEnum.Refreshing)
+        viewModel.fetchCategory()
+    }
+
+    LaunchedEffect(viewModel.isLoading){
+        if(!viewModel.isLoading){
+            refreshState.setRefreshState(state = RefreshContentStateEnum.Stop)
+        }
+    }
+
+
+    PullToRefresh(refreshLayoutState = refreshState){
 
     Box(
         modifier = Modifier.fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surface)
     ) {
 
-        if(viewModel.isLoading){
+        if (viewModel.isLoading) {
             CategoryScreenShimmer()
-        }else {
+        } else {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(16.dp),
@@ -65,7 +82,7 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>) {
                 }
             }
         }
-
+    }
     }
 
 }
