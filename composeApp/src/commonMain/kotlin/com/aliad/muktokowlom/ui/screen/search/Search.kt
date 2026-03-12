@@ -2,9 +2,13 @@ package com.aliad.muktokowlom.ui.screen.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowColumn
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
+import com.aliad.muktokowlom.ui.screen.component.SearchKeywordItem
 import com.aliad.muktokowlom.ui.screen.component.StoryShimmerRow
 import com.aliad.presentation.signIn.ui.search.SearchViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -34,6 +39,35 @@ import muktokowlomcmp.composeapp.generated.resources.your_have_no_search_history
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+
+
+data class BookSearch(
+    val name: String
+)
+
+val bookSearchList = listOf(
+    BookSearch("The Alchemist"),
+    BookSearch("The Da Vinci Code"),
+    BookSearch("The Alchemist"),
+    BookSearch("Atomic Habits"),
+    BookSearch("Rich Dad Poor Dad"),
+    BookSearch("Think and Grow Rich"),
+    BookSearch("The Power of Habit"),
+    BookSearch("Start With Why"),
+    BookSearch("The 7 Habits of Highly Effective People"),
+    BookSearch("Deep Work"),
+    BookSearch("Zero to One"),
+    BookSearch("The Lean Startup"),
+    BookSearch("Clean Code"),
+    BookSearch("Kotlin in Action"),
+    BookSearch("Android Programming Guide"),
+    BookSearch("Effective Java"),
+    BookSearch("Design Patterns"),
+    BookSearch("Refactoring"),
+    BookSearch("Head First Java"),
+    BookSearch("Cracking the Coding Interview")
+)
+
 
 @Composable
 fun Search(){
@@ -93,6 +127,20 @@ fun Search(){
                             color = MaterialTheme.colorScheme.inverseOnSurface
                         )
                     )
+                }
+
+                FlowRow(
+                    Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    repeat(bookSearchList.size) {nameOfSearchKey ->
+                        SearchKeywordItem(keywordName = bookSearchList[nameOfSearchKey].name){
+
+                        }
+                    }
                 }
 
             }

@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -21,13 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.SubscriptionPlanItem
 import com.aliad.muktokowlom.ui.screen.component.SubscriptionPlanItemShimmer
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
 import com.aliad.presentation.signIn.ui.subscriptionPlan.SubscriptionPlanViewModel
+import com.lt.compose_views.refresh_layout.PullToRefresh
+import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
+import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.amount
 import muktokowlomcmp.composeapp.generated.resources.buy
@@ -40,6 +43,17 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
 
     val viewModel : SubscriptionPlanViewModel = koinViewModel()
     val list = viewModel.premiumPlanStateFlow.collectAsStateWithLifecycle()
+
+    val rememberRefreshLayoutState = rememberRefreshLayoutState {
+        this.setRefreshState(state = RefreshContentStateEnum.Refreshing)
+        viewModel.getPremiumPlanList()
+    }
+
+    LaunchedEffect(viewModel.loading){
+        if(!viewModel.loading){
+            rememberRefreshLayoutState.setRefreshState(state = RefreshContentStateEnum.Stop)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -57,6 +71,9 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
             }, editProfile = {})
         }
     ) { innerPadding ->
+
+        PullToRefresh(refreshLayoutState = rememberRefreshLayoutState, modifier = Modifier.fillMaxSize()){
+
         Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
             Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
                 LazyColumn(
@@ -64,24 +81,26 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                     contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    items(list.value) {subscription ->
-                        SubscriptionPlanItem(selected = viewModel.selectedSubscriptionIndex == (subscription.id
-                            ?: 0) , subscription = subscription){
-                            viewModel.selectedSubscriptionIndex = subscription.id?: 0
+                    items(list.value) { subscription ->
+                        SubscriptionPlanItem(
+                            selected = viewModel.selectedSubscriptionIndex == (subscription.id
+                                ?: 0), subscription = subscription
+                        ) {
+                            viewModel.selectedSubscriptionIndex = subscription.id ?: 0
                             viewModel.selectedPackage = subscription
                         }
                     }
                 }
             }
 
-            if(viewModel.loading){
+            if (viewModel.loading) {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    repeat(20){
+                    repeat(20) {
                         SubscriptionPlanItemShimmer()
                     }
                 }
-            }else {
-                if(list.value.isNotEmpty()){
+            } else {
+                if (list.value.isNotEmpty()) {
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f))
@@ -103,7 +122,7 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                             )
                             WidthGap(width = 1.dp)
                             Text(
-                                text = viewModel.selectedPackage.price?: "0",
+                                text = viewModel.selectedPackage.price ?: "0",
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.W500
                                 )
@@ -120,7 +139,7 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                     }
                 }
             }
-
+        }
 
         }
     }
