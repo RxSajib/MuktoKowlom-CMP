@@ -88,6 +88,7 @@ kotlin {
             implementation("androidx.paging:paging-compose:3.4.0-beta01")
             //paging3 dependency
 
+
             //dataStore
             implementation(libs.datastore)
 
