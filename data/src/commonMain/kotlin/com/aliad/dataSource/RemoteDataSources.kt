@@ -7,6 +7,7 @@ import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashboardDto
 import com.aliad.model.ErrorResponse
 import com.aliad.model.GenericResponse
+import com.aliad.model.PopularSearchDto
 import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
@@ -38,6 +39,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val PRIVACY_POLICY = "${BASEURL}privacy-policy"
     private val GET_PROFILE_INFO = "${BASEURL}user/get-profile-information"
     private val STORY_DETAILS = "${BASEURL}get-story-details"
+    private val POPULAR_SEARCH = "${BASEURL}get-dashboard-popular-search"
 
 
     suspend fun loginAccount(
@@ -113,7 +115,6 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             val response = httpClient.get(urlString = CATEGORYURL)
             if (response.status.isSuccess()) {
                 val body = response.body<GenericResponse<List<CategoryDto>>>()
-                println("success fetch category body $body")
                 return Result.success(body)
             } else {
                 return Result.failure(Exception("error fetch category"))
@@ -227,6 +228,27 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             }
         }catch (e : Exception){
 
+        }
+    }
+
+    suspend fun getPopularSearch() : Result<PopularSearchDto>{
+        try {
+            val response = httpClient.get(urlString = POPULAR_SEARCH)
+            if(response.status.isSuccess()){
+                val data = response.body<PopularSearchDto>()
+                return Result.success(data)
+            }else {
+                return Result.failure(Exception("error fetch popular search story"))
+            }
+        }catch (e: ClientRequestException) {
+            //  print("error fetch privacy policy ${e.message}")
+            return Result.failure(e)
+        } catch (e: ServerResponseException) {
+            //   print("error fetch privacy policy ${e.message}")
+            return Result.failure(e)
+        } catch (e: Exception) {
+            //  print("error fetch privacy policy ${e.message}")
+            return Result.failure(e)
         }
     }
 }

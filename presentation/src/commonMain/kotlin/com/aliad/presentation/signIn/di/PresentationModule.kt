@@ -84,6 +84,6 @@ val presentationModule = module {
     }
 
     viewModel {
-        SearchViewModel()
+        SearchViewModel(popularSearchUseCase = get())
     }
 }

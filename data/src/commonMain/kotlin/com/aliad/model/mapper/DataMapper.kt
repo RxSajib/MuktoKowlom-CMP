@@ -7,6 +7,8 @@ import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashBord
 import com.aliad.model.DashboardDto
+import com.aliad.model.PopularSearch
+import com.aliad.model.PopularSearchDto
 import com.aliad.model.PrivacyPolicy
 import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.Subscription
@@ -15,6 +17,10 @@ import com.aliad.model.User
 import com.aliad.model.login.LoginDto
 
 object DataMapper {
+
+    fun toPopularSearch(popularSearchDto: PopularSearchDto) : PopularSearch {
+        return PopularSearch(storyList = popularSearchDto.popularSearchStories.map { toBookModel(it) })
+    }
 
     fun toUser(loginDto: LoginDto, accessToken : String) : User{
         return User(

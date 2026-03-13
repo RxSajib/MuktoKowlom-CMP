@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,6 +19,9 @@ import be.digitalia.compose.htmlconverter.htmlToString
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
+import com.lt.compose_views.refresh_layout.PullToRefresh
+import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
+import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.privacy_policy
 import org.jetbrains.compose.resources.stringResource
@@ -28,8 +32,17 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
     val viewModel: PrivacyPolicyViewModel = koinViewModel()
     val privacyPolicy = viewModel.privacyPolicy.collectAsStateWithLifecycle()
-     val privacyPolicyDetails = htmlToString(privacyPolicy.value?.description ?: "")
+    val privacyPolicyDetails = htmlToString(privacyPolicy.value?.description ?: "")
 
+    val refreshState = rememberRefreshLayoutState {
+        this.setRefreshState(state = RefreshContentStateEnum.Refreshing)
+        viewModel.getPrivacyPolicy()
+    }
+    LaunchedEffect(viewModel.isLoading) {
+        if (!viewModel.isLoading) {
+            refreshState.setRefreshState(state = RefreshContentStateEnum.Stop)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -39,10 +52,10 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     try {
                         if (backStack.size > 1) {
                             backStack.removeLastOrNull()
-                        }else {
+                        } else {
                             rootBackStack.removeLastOrNull()
                         }
-                    }catch (e : Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 },
@@ -51,12 +64,19 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
         }
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding).verticalScroll(state = rememberScrollState()).padding(16.dp)) {
-            Text(
-                text = privacyPolicyDetails,
-                modifier = Modifier.fillMaxSize(),
-                style = MaterialTheme.typography.bodyMedium
-            )
+
+        PullToRefresh(refreshLayoutState = refreshState, modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier.padding(innerPadding)
+                    .verticalScroll(state = rememberScrollState()).padding(16.dp)
+            ) {
+                Text(
+                    text = privacyPolicyDetails,
+                    modifier = Modifier.fillMaxSize(),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
+
     }
 }

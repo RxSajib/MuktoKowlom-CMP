@@ -10,12 +10,14 @@ import com.aliad.repository.CategoryRepository
 import com.aliad.repository.DashBordRepository
 import com.aliad.repository.DataStoreRepository
 import com.aliad.repository.ProfileRepository
+import com.aliad.repository.SearchRepository
 import com.aliad.repository.StoryType
 import com.aliad.repositoryImpl.AccountRepositoryImpl
 import com.aliad.repositoryImpl.CategoryRepositoryImpl
 import com.aliad.repositoryImpl.DashBoardRepositoryImpl
 import com.aliad.repositoryImpl.DataStoreRepositoryImpl
 import com.aliad.repositoryImpl.ProfileRepositoryImpl
+import com.aliad.repositoryImpl.SearchRepositoryImpl
 import com.aliad.repositoryImpl.StoryTypeImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
@@ -102,6 +104,10 @@ val dataModule = module {
 
     single<ProfileRepository> {
         ProfileRepositoryImpl(dataSources = get())
+    }
+
+    single<SearchRepository> {
+        SearchRepositoryImpl(remoteDataSources = get())
     }
 
 }
