@@ -67,6 +67,10 @@ sealed class AppDestination : NavKey {
 
         @Serializable
         data object EarningHistory : AppDestination()
+
+
+        @Serializable
+        data object StoryView: AppDestination()
     }
 
     @Serializable

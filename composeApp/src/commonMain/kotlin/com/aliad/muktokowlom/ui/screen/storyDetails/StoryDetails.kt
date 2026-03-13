@@ -116,7 +116,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     title = stringResource(Res.string.read_full_story),
                     modifier = Modifier.weight(1f),
                     onClickButton = {
-
+                        backStack.add(AppDestination.Dest.StoryView)
                     },
                     padding = 0.dp
                 )

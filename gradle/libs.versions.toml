@@ -19,6 +19,7 @@ kotlin = "2.3.0"
 kotlinx-coroutines = "1.10.2"
 kotlinStdlib = "2.3.0"
 kotlinxDatetime = "0.7.1"
+pdfbox = "2.0.30"
 runner = "1.7.0"
 core = "1.7.0"
 
@@ -86,6 +87,7 @@ ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", 
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
 # datastore
 datastore = {module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
+pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
 seymour-text = { module = "com.eygraber:seymour-text", version.ref = "seymourText" }
 
 composeviews = { module = "io.github.ltttttttttttt:ComposeViews", version.ref = "composeviews" }

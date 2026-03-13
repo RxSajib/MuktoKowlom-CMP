@@ -34,11 +34,14 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-            implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
+            implementation("io.coil-kt.coil3:coil-network-okhttp:3.4.0")
             implementation(libs.ktor.client.okhttp)
             implementation(libs.coil3.coil.network.okhttp)
 
-            implementation("androidx.paging:paging-runtime:3.3.6")
+            implementation("androidx.paging:paging-runtime:3.4.2")
+            implementation("io.github.grizzi91:bouquet:1.1.3")
+
+            // pdf view for android
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -110,6 +113,7 @@ kotlin {
             // shimmer effect
             implementation(libs.compose.shimmer)
 
+
             implementation(project(":data"))
             implementation(project(":domain"))
             implementation(project(":presentation"))
@@ -126,6 +130,8 @@ kotlin {
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.coil3.coil.network.okhttp)
             implementation(libs.ktor.client.okhttp)
+
+            implementation(libs.pdfbox)
         }
     }
 }

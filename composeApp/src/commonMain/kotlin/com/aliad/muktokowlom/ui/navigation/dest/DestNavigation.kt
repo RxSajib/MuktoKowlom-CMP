@@ -26,6 +26,7 @@ import com.aliad.muktokowlom.ui.screen.privacy_policy.PrivacyPolicyScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
+import com.aliad.muktokowlom.ui.screen.storyView.StoryViewScreen
 import com.aliad.muktokowlom.ui.screen.subscription_history.SubscriptionHistoryScreen
 import com.aliad.muktokowlom.ui.screen.updatePassword.UpdatePasswordScreen
 import com.aliad.muktokowlom.ui.upload_stories.UploadStoriesScreen
@@ -43,7 +44,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
               //  subclass(AppDestination.CategoryScreen::class, AppDestination.CategoryScreen.serializer())
                 subclass(AppDestination.Dest.CategoryWiseBook::class, AppDestination.Dest.CategoryWiseBook.serializer())
                 subclass(AppDestination.Dest.StoryTypeWiseBook::class, AppDestination.Dest.StoryTypeWiseBook.serializer())
-              //  subclass(AppDestination.StoryDetails::class, AppDestination.StoryDetails.serializer())
+                subclass(AppDestination.Dest.StoryView::class, AppDestination.Dest.StoryView.serializer())
              //   subclass(AppDestination.Profile::class, AppDestination.Profile.serializer())
                 subclass(AppDestination.Dest.EditProfile::class, AppDestination.Dest.EditProfile.serializer())
                 subclass(AppDestination.Dest.Premium::class, AppDestination.Dest.Premium.serializer())
@@ -124,6 +125,9 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
 
                 entry<AppDestination.Dest.UpdatePassword> {
                     UpdatePasswordScreen(backStack = backStack)
+                }
+                entry<AppDestination.Dest.StoryView> {
+                    StoryViewScreen(backStack = backStack)
                 }
 
             },

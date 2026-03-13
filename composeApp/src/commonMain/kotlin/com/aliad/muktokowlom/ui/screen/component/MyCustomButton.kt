@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
+import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -49,12 +50,11 @@ fun MyCustomButton(
         ) { isLoading ->
 
             if (isLoading) {
-                CircularProgressIndicator(
-                    color = Color.Red,
-                    strokeWidth = 2.dp,
+                WatchRunningAnimation(
+                    clockColor = Color.Gray.copy(alpha = 0.1f),
+                    handColor = Color.Gray,
+                    clockSize = 20.dp,
                     modifier = Modifier.padding(4.dp)
-                        .size(20.dp),
-
                 )
             } else {
                 Text(

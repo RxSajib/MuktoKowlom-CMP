@@ -1,5 +1,6 @@
 package com.aliad.muktokowlom.ui.screen.privacy_policy
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -66,16 +67,19 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
     ) { innerPadding ->
 
         PullToRefresh(refreshLayoutState = refreshState, modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier.padding(innerPadding)
-                    .verticalScroll(state = rememberScrollState()).padding(16.dp)
-            ) {
-                Text(
-                    text = privacyPolicyDetails,
-                    modifier = Modifier.fillMaxSize(),
-                    style = MaterialTheme.typography.bodyMedium
-                )
+            Box(modifier = Modifier.fillMaxSize()){
+                Column(
+                    modifier = Modifier.padding(innerPadding)
+                        .verticalScroll(state = rememberScrollState()).padding(16.dp)
+                ) {
+                    Text(
+                        text = privacyPolicyDetails,
+                        modifier = Modifier.fillMaxSize(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
             }
+
         }
 
     }
