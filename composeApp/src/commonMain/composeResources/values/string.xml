@@ -4,6 +4,7 @@
 
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
+    <string name="expired_on">Expired On:</string>
 
     <string name="search">Search</string>
     <string name="dashBoard">DashBoard</string>

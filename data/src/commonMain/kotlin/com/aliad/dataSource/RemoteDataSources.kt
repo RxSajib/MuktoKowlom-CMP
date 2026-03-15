@@ -12,6 +12,8 @@ import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
 import com.aliad.model.login.LoginDto
+import com.aliad.model.storyDetails.StoryDetailsDto
+import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -40,6 +42,8 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val GET_PROFILE_INFO = "${BASEURL}user/get-profile-information"
     private val STORY_DETAILS = "${BASEURL}get-story-details"
     private val POPULAR_SEARCH = "${BASEURL}get-dashboard-popular-search"
+    private val SUBSCRIPTION_HISTORY = "${BASEURL}subscription-history"
+
 
 
     suspend fun loginAccount(
@@ -218,16 +222,19 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
     }
 
-    suspend fun getStoryDetails(storyID : String){
+    suspend fun getStoryDetails(storyID : String) : Result<StoryDetailsDto>{
         try {
             val response = httpClient.get(urlString = STORY_DETAILS){
                 this.parameter("story_id", storyID)
             }
             if(response.status.isSuccess()){
-
+                val data = response.body<StoryDetailsDto>()
+                return Result.success(data)
+            }else {
+                return Result.failure(Exception("error fetch story details"))
             }
         }catch (e : Exception){
-
+            return Result.failure(Exception("error fetch story details"))
         }
     }
 
@@ -250,5 +257,12 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             //  print("error fetch privacy policy ${e.message}")
             return Result.failure(e)
         }
+    }
+
+    suspend fun getSubscriptionHistory(page : Int) : GenericResponse<SubscriptionHistoryDto> {
+        val response = httpClient.get(urlString = SUBSCRIPTION_HISTORY){
+            parameter("page", page)
+        }
+        return response.body<GenericResponse<SubscriptionHistoryDto>>()
     }
 }
