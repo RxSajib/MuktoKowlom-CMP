@@ -1,5 +1,8 @@
 package com.aliad.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Payment(
     val amount : String,
     val cardType : String,
@@ -8,5 +11,6 @@ data class Payment(
     val planNameBn : String,
     val transactionID : String,
     val userId : String,
-    val userName : String
+    val userName : String,
+    val expiryDate : String
 )

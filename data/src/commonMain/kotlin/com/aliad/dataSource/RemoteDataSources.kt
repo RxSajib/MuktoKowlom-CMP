@@ -19,10 +19,15 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
+import io.ktor.client.request.accept
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.headers
 import io.ktor.http.isSuccess
 import io.ktor.util.collections.getValue
 import kotlinx.serialization.json.Json
@@ -42,7 +47,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val GET_PROFILE_INFO = "${BASEURL}user/get-profile-information"
     private val STORY_DETAILS = "${BASEURL}get-story-details"
     private val POPULAR_SEARCH = "${BASEURL}get-dashboard-popular-search"
-    private val SUBSCRIPTION_HISTORY = "${BASEURL}subscription-history"
+    private val SUBSCRIPTION_HISTORY = "${BASEURL}user/subscription-history"
 
 
 

@@ -27,7 +27,7 @@ import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
 import com.aliad.muktokowlom.ui.screen.storyView.StoryViewScreen
-import com.aliad.muktokowlom.ui.screen.subscription_history.SubscriptionHistoryScreen
+import com.aliad.muktokowlom.ui.screen.subscriptionHistory.SubscriptionHistoryScreen
 import com.aliad.muktokowlom.ui.screen.updatePassword.UpdatePasswordScreen
 import com.aliad.muktokowlom.ui.upload_stories.UploadStoriesScreen
 import kotlinx.serialization.modules.SerializersModule

@@ -13,6 +13,7 @@ import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import com.aliad.presentation.signIn.ui.signup.SignUpViewModel
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
 import com.aliad.presentation.signIn.ui.storytype.StoryTypeViewModel
+import com.aliad.presentation.signIn.ui.subscriptionHistory.SubscriptionHistoryViewModel
 import com.aliad.presentation.signIn.ui.subscriptionPlan.SubscriptionPlanViewModel
 import com.aliad.presentation.signIn.ui.updatePassword.UpdatePasswordViewModel
 import org.koin.core.module.dsl.viewModel
@@ -85,5 +86,9 @@ val presentationModule = module {
 
     viewModel {
         SearchViewModel(popularSearchUseCase = get())
+    }
+
+    viewModel {
+        SubscriptionHistoryViewModel(subscriptionHistoryUseCase = get())
     }
 }

@@ -6,8 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliad.model.Payment
+import com.aliad.muktokowlom.data.app_constant.AppConstant
+import com.aliad.muktokowlom.data.app_constant.AppConstant.paymentTypeToImage
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.orange
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -37,14 +41,14 @@ fun SubscriptionHistoryItem(payment: Payment) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(Res.drawable.bkash_bkash_logo),
+            painter = painterResource(paymentTypeToImage(type = payment.cardType)),
             contentDescription = null,
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.width(50.dp).height(25.dp)
         )
         WidthGap(width = 10.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "Daily Package",
+                text = payment.planName,
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontWeight = FontWeight.Bold
@@ -64,7 +68,7 @@ fun SubscriptionHistoryItem(payment: Payment) {
                 )
                 WidthGap(width = 2.dp)
                 Text(
-                    text = "2025-02-20",
+                    text = payment.expiryDate,
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = MaterialTheme.colorScheme.inverseOnSurface,
                         fontSize = adjustedFontSize(10.0f)
@@ -78,7 +82,7 @@ fun SubscriptionHistoryItem(payment: Payment) {
                 fontSize = adjustedFontSize(10.0f)
             ))
             WidthGap(width = 2.dp)
-            Text(text = "100", style = MaterialTheme.typography.bodyLarge.copy(
+            Text(text = payment.amount, style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = FontWeight.Bold
             ))
         }
@@ -98,7 +102,8 @@ fun SubscriptionHistoryItemPreview() {
             planNameBn = "একদিনের প্যাকেজ",
             transactionID = "MUK177185254736677279897",
             userId = "4845",
-            userName = "Aliad Polok"
+            userName = "Aliad Polok",
+            expiryDate = "2026-02-24"
         )
     )
 }

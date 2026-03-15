@@ -15,8 +15,23 @@ import com.aliad.model.Subscription
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
 import com.aliad.model.login.LoginDto
+import com.aliad.model.subscription_history.Payment
 
 object DataMapper {
+
+    fun toPayment(payment: Payment) : com.aliad.model.Payment{
+        return com.aliad.model.Payment(
+            amount = payment.amount,
+            cardType = payment.card_type,
+            id = payment.id,
+            planName = payment.plan_name,
+            planNameBn = payment.plan_name_bn,
+            transactionID = payment.transaction_id,
+            userId = payment.user_id,
+            userName = payment.user_name,
+            expiryDate = payment.expiry_date
+        )
+    }
 
     fun toPopularSearch(popularSearchDto: PopularSearchDto) : PopularSearch {
         return PopularSearch(storyList = popularSearchDto.popularSearchStories.map { toBookModel(it) })

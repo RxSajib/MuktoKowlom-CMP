@@ -8,6 +8,7 @@ import com.aliad.usecase.PopularSearchUseCase
 import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.PrivacyPolicyUseCase
 import com.aliad.usecase.StoryTypeUseCase
+import com.aliad.usecase.SubscriptionHistoryUseCase
 import com.aliad.usecase.dataStore.DeleteBoolDataUseCase
 import com.aliad.usecase.dataStore.DeleteIntDataUseCase
 import com.aliad.usecase.dataStore.GetBoolData
@@ -93,5 +94,9 @@ val domainModule = module {
         PopularSearchUseCase(
             searchRepository = get()
         )
+    }
+
+    factory {
+        SubscriptionHistoryUseCase(subscriptionHistoryRepository = get())
     }
 }

@@ -12,6 +12,7 @@ import com.aliad.repository.DataStoreRepository
 import com.aliad.repository.ProfileRepository
 import com.aliad.repository.SearchRepository
 import com.aliad.repository.StoryType
+import com.aliad.repository.SubscriptionHistoryRepository
 import com.aliad.repositoryImpl.AccountRepositoryImpl
 import com.aliad.repositoryImpl.CategoryRepositoryImpl
 import com.aliad.repositoryImpl.DashBoardRepositoryImpl
@@ -19,6 +20,7 @@ import com.aliad.repositoryImpl.DataStoreRepositoryImpl
 import com.aliad.repositoryImpl.ProfileRepositoryImpl
 import com.aliad.repositoryImpl.SearchRepositoryImpl
 import com.aliad.repositoryImpl.StoryTypeImpl
+import com.aliad.repositoryImpl.SubscriptionHistoryRepositoryImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.auth.Auth
@@ -64,7 +66,7 @@ val dataModule = module {
                     loadTokens {
                         BearerTokens(
                             accessToken = "5593|KKqVrkyfuoE5yrIcEnSKqP6Qcx1KxtlJtFvXdaT1",
-                            refreshToken = "5593|KKqVrkyfuoE5yrIcEnSKqP6Qcx1KxtlJtFvXdaT1"
+                            refreshToken = ""
                         )
                     }
                 }
@@ -108,6 +110,10 @@ val dataModule = module {
 
     single<SearchRepository> {
         SearchRepositoryImpl(remoteDataSources = get())
+    }
+
+    single<SubscriptionHistoryRepository> {
+        SubscriptionHistoryRepositoryImpl(remoteDataSources = get())
     }
 
 }
