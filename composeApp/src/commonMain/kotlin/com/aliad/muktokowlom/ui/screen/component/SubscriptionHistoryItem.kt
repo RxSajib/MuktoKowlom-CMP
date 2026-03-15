@@ -68,7 +68,7 @@ fun SubscriptionHistoryItem(payment: Payment) {
                 )
                 WidthGap(width = 2.dp)
                 Text(
-                    text = payment.expiryDate,
+                    text = payment.expiryDate,//com.sajib.data.appConstant.AppConstant.formatDate(input = payment.createdDate),
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = MaterialTheme.colorScheme.inverseOnSurface,
                         fontSize = adjustedFontSize(10.0f)
@@ -103,7 +103,8 @@ fun SubscriptionHistoryItemPreview() {
             transactionID = "MUK177185254736677279897",
             userId = "4845",
             userName = "Aliad Polok",
-            expiryDate = "2026-02-24"
+            expiryDate = "2026-02-24",
+            createdDate = "2026-02-24"
         )
     )
 }

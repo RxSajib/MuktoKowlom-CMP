@@ -12,5 +12,6 @@ data class Payment(
     val transactionID : String,
     val userId : String,
     val userName : String,
-    val expiryDate : String
+    val expiryDate : String,
+    val createdDate : String
 )

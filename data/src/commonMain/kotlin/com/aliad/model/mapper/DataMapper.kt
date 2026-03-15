@@ -29,7 +29,8 @@ object DataMapper {
             transactionID = payment.transaction_id,
             userId = payment.user_id,
             userName = payment.user_name,
-            expiryDate = payment.expiry_date
+            expiryDate = payment.expiry_date,
+            createdDate = payment.created_at
         )
     }
 

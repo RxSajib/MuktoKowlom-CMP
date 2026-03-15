@@ -268,6 +268,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         val response = httpClient.get(urlString = SUBSCRIPTION_HISTORY){
             parameter("page", page)
         }
+        print("response with data ${response.status.description}")
         return response.body<GenericResponse<SubscriptionHistoryDto>>()
     }
 }

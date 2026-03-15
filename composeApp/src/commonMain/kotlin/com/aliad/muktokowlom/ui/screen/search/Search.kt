@@ -109,8 +109,12 @@ fun Search() {
                     },
                     isPasswordInput = false,
                     isVisiblePasswordChange = {},
+                    isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
+                    onSearch = {
+                        print("search data is $it")
+                    }
                 ) {}
 
                 HeightGap(height = 10.dp)

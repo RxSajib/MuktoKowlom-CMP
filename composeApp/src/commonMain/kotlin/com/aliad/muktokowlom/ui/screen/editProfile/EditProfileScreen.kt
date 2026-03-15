@@ -142,7 +142,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                         error = painterResource(Res.drawable.ic_placeholder),
                         placeholder = painterResource(Res.drawable.ic_placeholder),
                         modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable{
-                            viewModel.isOpenDatePicker = true
+                            viewModel.takeProfileImageFromGallery = true
                         },
                         contentScale = ContentScale.Crop
                     )
@@ -403,6 +403,10 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
             )
         }
 
+
+
+
+        // show gallery
     }
 }
 

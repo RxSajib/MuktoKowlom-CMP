@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -21,11 +22,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
+import kotlin.math.max
 
 @Composable
 fun MyCustomInputFiled(
@@ -37,17 +41,30 @@ fun MyCustomInputFiled(
     isVisiblePasswordChange: () -> Unit,
     readOnly: Boolean = false,
     isNumberType: Boolean = false,
-    leftIcon : Painter ?= null,
+    leftIcon: Painter? = null,
+    isSearchEnable: Boolean = false,
+    onSearch: ((String) -> Unit)? = null,
     onClick: () -> Unit,
 
-) {
+    ) {
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
-        keyboardOptions = KeyboardOptions(keyboardType = if (isNumberType) KeyboardType.Number else KeyboardType.Text),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = if (isNumberType) KeyboardType.Number else KeyboardType.Text,
+            imeAction = if (isSearchEnable) ImeAction.Search else ImeAction.Done
+        ),
         enabled = !readOnly,
         readOnly = readOnly,
         textStyle = MaterialTheme.typography.bodyMedium.copy(
             fontWeight = FontWeight.W400
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                onSearch?.invoke(text)
+                keyboardController?.hide()
+            }
         ),
         value = text,
         onValueChange = { passwordInput ->
