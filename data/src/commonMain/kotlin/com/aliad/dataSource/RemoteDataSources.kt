@@ -2,6 +2,7 @@ package com.aliad.dataSource
 
 import com.aliad.model.ApiException
 import com.aliad.ApiResult
+import com.aliad.model.ApiResponse
 import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashboardDto
@@ -48,8 +49,84 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val STORY_DETAILS = "${BASEURL}get-story-details"
     private val POPULAR_SEARCH = "${BASEURL}get-dashboard-popular-search"
     private val SUBSCRIPTION_HISTORY = "${BASEURL}user/subscription-history"
+    private val SIGNUP_ACCOUNT = "${BASEURL}user/signup"
+
+    suspend fun signupAccount(
+        name : String,
+        emailAddress : String,
+        password : String,
+        confirmPassword : String,
+        firstName : String,
+        lastName : String,
+        isWritterStatus : String
+    ) : ApiResult<ApiResponse>{
+        return try {
+            val response = httpClient.post (SIGNUP_ACCOUNT){
+                parameter("name", name)
+                parameter("email", emailAddress)
+                parameter("password", password)
+                parameter("password_confirmation", confirmPassword)
+                parameter("first_name", firstName)
+                parameter("last_name", lastName)
+                parameter("is_writer_status", isWritterStatus)
+            }
+            print("sign up success ${response.status.isSuccess()}")
+            if (response.status.isSuccess()) {
+
+                ApiResult.Success(
+                    response.body()
+                )
 
 
+
+            } else {
+
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message?: "Something went wrong",
+                        message_bn = e.message?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+
+                )
+            }
+
+
+        } catch (e: ClientRequestException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+    }
 
     suspend fun loginAccount(
         email: String,
@@ -268,7 +345,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         val response = httpClient.get(urlString = SUBSCRIPTION_HISTORY){
             parameter("page", page)
         }
-        print("response with data ${response.status.description}")
+      //  print("response with data ${response.status.description}")
         return response.body<GenericResponse<SubscriptionHistoryDto>>()
     }
 }

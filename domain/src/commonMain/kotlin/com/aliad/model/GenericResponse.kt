@@ -2,6 +2,14 @@ package com.aliad.model
 
 import kotlinx.serialization.Serializable
 
+
+@Serializable
+data class ApiResponse(
+    val message_bn: String ?= null,
+    val message_en: String ?= null,
+)
+
+
 @Serializable
 data class GenericResponse<T : Any>(
     val access_token : String?= null,

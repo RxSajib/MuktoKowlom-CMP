@@ -2,11 +2,9 @@ package com.aliad.muktokowlom.ui.screen.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,10 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +25,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.screen.component.SearchKeywordItem
@@ -39,8 +37,8 @@ import com.aliad.presentation.signIn.ui.search.SearchViewModel
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
+import kotlinx.coroutines.delay
 import muktokowlomcmp.composeapp.generated.resources.Res
-import muktokowlomcmp.composeapp.generated.resources.enter_first_name
 import muktokowlomcmp.composeapp.generated.resources.popular_searches
 import muktokowlomcmp.composeapp.generated.resources.recent_searches
 import muktokowlomcmp.composeapp.generated.resources.search_alt_svgrepo_com
@@ -80,7 +78,7 @@ val bookSearchList = listOf(
 
 
 @Composable
-fun Search() {
+fun Search(backStack: NavBackStack<NavKey>) {
 
     val viewModel: SearchViewModel = koinViewModel<SearchViewModel>()
     val popularSearchData = viewModel.popularSearch.collectAsStateWithLifecycle()
@@ -94,6 +92,7 @@ fun Search() {
             refreshLayoutState.setRefreshState(state = RefreshContentStateEnum.Stop)
         }
     }
+
 
     PullToRefresh(refreshLayoutState = refreshLayoutState) {
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
@@ -113,7 +112,9 @@ fun Search() {
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
                     onSearch = {
-                        print("search data is $it")
+                        backStack.add(AppDestination.Dest(
+                            AppDestination.Dest.SearchStoryResult::class.simpleName ?: ""
+                        ))
                     }
                 ) {}
 

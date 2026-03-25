@@ -7,6 +7,7 @@ import com.aliad.usecase.LoginUseCase
 import com.aliad.usecase.PopularSearchUseCase
 import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.PrivacyPolicyUseCase
+import com.aliad.usecase.SignUpUseCase
 import com.aliad.usecase.StoryTypeUseCase
 import com.aliad.usecase.SubscriptionHistoryUseCase
 import com.aliad.usecase.dataStore.DeleteBoolDataUseCase
@@ -98,5 +99,9 @@ val domainModule = module {
 
     factory {
         SubscriptionHistoryUseCase(subscriptionHistoryRepository = get())
+    }
+
+    factory {
+        SignUpUseCase(accountRepository = get())
     }
 }

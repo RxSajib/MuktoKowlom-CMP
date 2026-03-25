@@ -40,7 +40,9 @@ val presentationModule = module {
     }
 
     viewModel {
-        SignUpViewModel()
+        SignUpViewModel(
+            signUpUseCase = get()
+        )
     }
 
     viewModel {

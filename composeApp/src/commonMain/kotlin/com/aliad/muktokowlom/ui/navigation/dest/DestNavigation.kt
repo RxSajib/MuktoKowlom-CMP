@@ -24,6 +24,7 @@ import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.premium.PremiumScreen
 import com.aliad.muktokowlom.ui.screen.privacy_policy.PrivacyPolicyScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
+import com.aliad.muktokowlom.ui.screen.searchStory.SearchStoryResultScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
 import com.aliad.muktokowlom.ui.screen.storyView.StoryViewScreen
@@ -37,6 +38,7 @@ import kotlinx.serialization.modules.polymorphic
 fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<NavKey>) {
 
 
+
     val appConfig = SavedStateConfiguration {
         serializersModule = SerializersModule {
             polymorphic(NavKey::class) {
@@ -45,7 +47,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 subclass(AppDestination.Dest.CategoryWiseBook::class, AppDestination.Dest.CategoryWiseBook.serializer())
                 subclass(AppDestination.Dest.StoryTypeWiseBook::class, AppDestination.Dest.StoryTypeWiseBook.serializer())
                 subclass(AppDestination.Dest.StoryView::class, AppDestination.Dest.StoryView.serializer())
-             //   subclass(AppDestination.Profile::class, AppDestination.Profile.serializer())
+                subclass(AppDestination.Dest.SearchStoryResult::class, AppDestination.Dest.SearchStoryResult.serializer())
                 subclass(AppDestination.Dest.EditProfile::class, AppDestination.Dest.EditProfile.serializer())
                 subclass(AppDestination.Dest.Premium::class, AppDestination.Dest.Premium.serializer())
                 subclass(AppDestination.Dest.PrivacyPolicy::class, AppDestination.Dest.PrivacyPolicy.serializer())
@@ -70,6 +72,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
         startDest.firstDestName == AppDestination.Dest.UploadStories::class.simpleName -> AppDestination.Dest.UploadStories
         startDest.firstDestName == AppDestination.Dest.SubscriptionHistory::class.simpleName -> AppDestination.Dest.SubscriptionHistory
         startDest.firstDestName == AppDestination.Dest.StoryTypeWiseBook::class.simpleName -> AppDestination.Dest.StoryTypeWiseBook(typeName = "")
+        startDest.firstDestName == AppDestination.Dest.SearchStoryResult::class.simpleName -> AppDestination.Dest.SearchStoryResult
         else -> throw Exception("Invalid destination")
     }
 
@@ -128,6 +131,9 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 }
                 entry<AppDestination.Dest.StoryView> {
                     StoryViewScreen(backStack = backStack)
+                }
+                entry<AppDestination.Dest.SearchStoryResult> {
+                    SearchStoryResultScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
 
             },

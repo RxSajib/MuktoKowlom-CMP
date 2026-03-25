@@ -12,11 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -28,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.helper.SnackBarEvent
+import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.PrivacyPolicyBottomSheet
 import com.aliad.muktokowlom.ui.bottomSheet.TermsAndConditionBottomSheet
 import com.aliad.muktokowlom.ui.screen.component.CustomSocialButton
@@ -66,6 +71,27 @@ private const val TAG = "SignUpScreen"
 fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: SignUpViewModel = koinViewModel()
+    LaunchedEffect(Unit) {
+        viewModel.isSignUpSuccess.collect { loginSuccess ->
+            if (loginSuccess) {
+                SnackBarEvent.save(
+                    details = SnackBarDetails(
+                        details = "Enter your otp for verification",
+                        show = true,
+                        leftIcon = Icons.Default.LockOpen
+                    )
+                )
+            } else {
+                SnackBarEvent.save(
+                    details = SnackBarDetails(
+                        details = viewModel.errorResponse.message_bn,
+                        show = true,
+                        leftIcon = Icons.Default.LockOpen
+                    )
+                )
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -224,9 +250,10 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                     title = stringResource(Res.string.sign_up_account),
                     modifier = Modifier,
                     onClickButton = {
-
+                        viewModel.signUpAccount()
                     },
-                    isEnable = viewModel.isSignUpButtonEnable
+                    isEnable = viewModel.isSignUpButtonEnable,
+                    showProgress = viewModel.isLoading
                 )
                 HeightGap(height = 10.dp)
                 Row(

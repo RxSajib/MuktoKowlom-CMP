@@ -226,7 +226,7 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>) {
                     CategoryScreen(backStack = activeBackStack)
                 }
                 entry<AppDestination.BottomAppBar.Search> {
-                    Search()
+                    Search(backStack = rootBackStack)
                 }
                 entry<AppDestination.BottomAppBar.FavoriteStory> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
