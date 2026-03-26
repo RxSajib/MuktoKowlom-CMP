@@ -21,13 +21,16 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.accept
+import io.ktor.client.request.forms.FormDataContent
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.Parameters
 import io.ktor.http.headers
 import io.ktor.http.isSuccess
 import io.ktor.util.collections.getValue
@@ -50,6 +53,71 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val POPULAR_SEARCH = "${BASEURL}get-dashboard-popular-search"
     private val SUBSCRIPTION_HISTORY = "${BASEURL}user/subscription-history"
     private val SIGNUP_ACCOUNT = "${BASEURL}user/signup"
+    private val EMAIL_OTP_VERIFICATION = "${BASEURL}user/email-verification"
+
+
+    suspend fun emailOTPVerification(otp : String) : ApiResult<GenericResponse<User>>{
+        return try {
+            val response = httpClient.post(EMAIL_OTP_VERIFICATION){
+                setBody(
+                    FormDataContent(
+                        Parameters.build{
+                            append("verification_code", otp)
+                        }
+                    )
+                )
+            }
+
+            if(response.status.isSuccess()){
+                ApiResult.Success(
+                    response.body()
+                )
+            }else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message?: "Something went wrong",
+                        message_bn = e.message?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+
+                )
+            }
+        }catch (e: ClientRequestException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+
+    }
 
     suspend fun signupAccount(
         name : String,

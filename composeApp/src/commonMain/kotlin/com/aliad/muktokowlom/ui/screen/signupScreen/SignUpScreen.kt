@@ -35,6 +35,7 @@ import com.aliad.helper.SnackBarEvent
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.PrivacyPolicyBottomSheet
 import com.aliad.muktokowlom.ui.bottomSheet.TermsAndConditionBottomSheet
+import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.CustomSocialButton
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
@@ -81,6 +82,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         leftIcon = Icons.Default.LockOpen
                     )
                 )
+                backStack.add(AppDestination.Auth.Otp(emailOrPhoneNumber = viewModel.emailInput))
             } else {
                 SnackBarEvent.save(
                     details = SnackBarDetails(

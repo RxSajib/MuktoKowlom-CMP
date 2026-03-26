@@ -16,4 +16,6 @@ interface AccountRepository {
         lastName: String,
         isWriterStatus: String
     ) : ApiResult<ApiResponse>
+
+    suspend fun otpVerification(otp : String) : ApiResult<User>
 }
