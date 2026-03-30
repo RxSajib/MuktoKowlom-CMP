@@ -56,7 +56,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val EMAIL_OTP_VERIFICATION = "${BASEURL}user/email-verification"
 
 
-    suspend fun emailOTPVerification(otp : String) : ApiResult<GenericResponse<User>>{
+    suspend fun emailOTPVerification(otp : String) : ApiResult<GenericResponse<LoginDto>>{
         return try {
             val response = httpClient.post(EMAIL_OTP_VERIFICATION){
                 setBody(

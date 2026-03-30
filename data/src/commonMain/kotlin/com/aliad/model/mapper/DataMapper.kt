@@ -38,7 +38,7 @@ object DataMapper {
         return PopularSearch(storyList = popularSearchDto.popularSearchStories.map { toBookModel(it) })
     }
 
-    fun toUser(loginDto: LoginDto, accessToken : String) : User{
+    fun toUser(loginDto: LoginDto, accessToken : String = "") : User{
         return User(
             name = loginDto.name,
             id = loginDto.id,

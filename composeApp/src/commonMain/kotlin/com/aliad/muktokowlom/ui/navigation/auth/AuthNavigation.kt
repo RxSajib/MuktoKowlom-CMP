@@ -3,11 +3,7 @@ package com.aliad.muktokowlom.ui.navigation.auth
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -64,7 +60,7 @@ fun AuthNavigation(startDest: AppDestination.Auth, rootBackStack: NavBackStack<N
                 RecoveryPasswordScreen(backStack = backStack)
             }
             entry<AppDestination.Auth.Otp> {
-                OtpViewScreen(backStack = backStack, emailOrPhoneNumber = it.emailOrPhoneNumber)
+                OtpViewScreen(rootBackStack = rootBackStack, backStack = backStack, emailOrPhoneNumber = it.emailOrPhoneNumber)
             }
             entry<AppDestination.Dest.UpdatePassword> {
                 UpdatePasswordScreen(backStack = backStack)

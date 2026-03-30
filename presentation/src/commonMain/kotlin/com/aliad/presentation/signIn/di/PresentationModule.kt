@@ -5,6 +5,7 @@ import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewMod
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
+import com.aliad.presentation.signIn.ui.otpVerification.OtpVerificationViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.recoveryPassword.RecoveryPasswordViewModel
@@ -92,5 +93,13 @@ val presentationModule = module {
 
     viewModel {
         SubscriptionHistoryViewModel(subscriptionHistoryUseCase = get())
+    }
+
+    viewModel {
+        OtpVerificationViewModel(
+            otpVerificationUseCase = get(),
+            saveStringData = get(),
+            saveIntData = get()
+        )
     }
 }

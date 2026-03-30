@@ -4,6 +4,7 @@ import com.aliad.usecase.CategoryUseCase
 import com.aliad.usecase.CategoryWiseBookUseCase
 import com.aliad.usecase.DashBoardUseCase
 import com.aliad.usecase.LoginUseCase
+import com.aliad.usecase.OtpVerificationUseCase
 import com.aliad.usecase.PopularSearchUseCase
 import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.PrivacyPolicyUseCase
@@ -103,5 +104,9 @@ val domainModule = module {
 
     factory {
         SignUpUseCase(accountRepository = get())
+    }
+
+    factory {
+        OtpVerificationUseCase(accountRepository = get())
     }
 }

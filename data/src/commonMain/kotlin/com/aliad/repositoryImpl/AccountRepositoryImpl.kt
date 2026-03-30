@@ -95,7 +95,20 @@ class AccountRepositoryImpl(
     }
 
     override suspend fun otpVerification(otp: String): ApiResult<User> {
-        TODO("Not yet implemented")
+        return when(
+            val response = remoteDataSources.emailOTPVerification(otp = otp)
+        ){
+            is ApiResult.Success -> {
+                val body = response.data
+                ApiResult.Success(data = toUser(
+                    loginDto = body.data?: LoginDto(),
+                    accessToken = body.access_token?: ""
+                ))
+            }
+            is ApiResult.Error -> {
+                ApiResult.Error(messageEn = response.messageEn, messageBn = response.messageBn)
+            }
+        }
     }
 }
 
