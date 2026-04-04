@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,20 +26,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import androidx.navigation3.runtime.rememberNavBackStack
 import com.aliad.helper.SnackBarEvent
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.DeleteAccountBottomSheet
 import com.aliad.muktokowlom.ui.bottomSheet.LogoutBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
-import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomMenu
 import com.aliad.muktokowlom.ui.screen.component.SignUpSignInMenu
 import com.aliad.muktokowlom.ui.screen.component.UserInfo
 import com.aliad.muktokowlom.ui.screen.component.UserInfoItem
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.sajib.data.appConstant.AppConstant
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.basic_info
@@ -65,21 +63,18 @@ import muktokowlomcmp.composeapp.generated.resources.premium_details
 import muktokowlomcmp.composeapp.generated.resources.premium_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.privacy_policy
 import muktokowlomcmp.composeapp.generated.resources.privacy_policy_details
-import muktokowlomcmp.composeapp.generated.resources.profile
 import muktokowlomcmp.composeapp.generated.resources.subscription_history
 import muktokowlomcmp.composeapp.generated.resources.subscription_history_details
 import muktokowlomcmp.composeapp.generated.resources.ticket
 import muktokowlomcmp.composeapp.generated.resources.upload_cloud_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.upload_stories
 import muktokowlomcmp.composeapp.generated.resources.upload_stories_details
-import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ProfileScreen(backStack: NavBackStack<NavKey>) {
+fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
 
     val viewModel: ProfileViewModel = koinViewModel()
     val dataStoreViewModel : DataStoreViewModel = koinViewModel()
@@ -102,12 +97,24 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>) {
 
             if(!token.isEmpty()) {
                 UserInfo(
-                    userName = userName.value?: "",
-                    emailAddress = userEmailAddress.value?: "",
-                    userProfileImage = userProfileImage.value?: "",
+                    userName = userName.value ?: "",
+                    emailAddress = userEmailAddress.value ?: "",
+                    userProfileImage = userProfileImage.value ?: "",
                     publishedStoryCount = 45,
                     pendingStoryCount = 52,
-                    joinedSince = AppConstant.formatDate(input = userRegisterDate.value?: ""),
+                    joinedSince = AppConstant.formatDate(input = userRegisterDate.value ?: ""),
+                    pendingStoryButtonClick = {
+                        sharedViewModel.setIsPendingStory(true)
+                        backStack.add(
+                            AppDestination.Dest(AppDestination.Dest.PublishedPendingStory::class.simpleName?: "")
+                        )
+                    },
+                    publishedStoryButtonClick = {
+                        sharedViewModel.setIsPendingStory(false)
+                        backStack.add(
+                            AppDestination.Dest(AppDestination.Dest.PublishedPendingStory::class.simpleName?: "")
+                        )
+                    },
                 )
             }else {
                 SignUpSignInMenu(

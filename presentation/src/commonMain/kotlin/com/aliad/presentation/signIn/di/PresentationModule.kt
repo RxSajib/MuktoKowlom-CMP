@@ -10,6 +10,7 @@ import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.recoveryPassword.RecoveryPasswordViewModel
 import com.aliad.presentation.signIn.ui.search.SearchViewModel
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import com.aliad.presentation.signIn.ui.signup.SignUpViewModel
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
@@ -21,6 +22,10 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
+
+    viewModel {
+        SharedViewModel()
+    }
     
     viewModel {
         DataStoreViewModel(

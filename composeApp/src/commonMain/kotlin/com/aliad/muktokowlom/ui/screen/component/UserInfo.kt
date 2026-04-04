@@ -2,6 +2,7 @@ package com.aliad.muktokowlom.ui.screen.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +43,8 @@ fun UserInfo(
     publishedStoryCount: Int,
     pendingStoryCount: Int,
     joinedSince: String,
+    pendingStoryButtonClick: () -> Unit,
+    publishedStoryButtonClick: () -> Unit
 
 ) {
     Row(
@@ -83,7 +86,9 @@ fun UserInfo(
 
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.SpaceEvenly) {
 
-            Column {
+            Column(modifier = Modifier.clickable{
+                publishedStoryButtonClick.invoke()
+            }) {
                 Text(
                     text = publishedStoryCount.toString(),
                     style = MaterialTheme.typography.bodyMedium.copy(
@@ -107,7 +112,9 @@ fun UserInfo(
                 )
             }
             HeightGap(height = 10.dp)
-            Column {
+            Column(modifier = Modifier.clickable{
+                pendingStoryButtonClick.invoke()
+            }) {
                 Text(
                     text = pendingStoryCount.toString(),
                     style = MaterialTheme.typography.bodyMedium.copy(
@@ -170,6 +177,8 @@ fun UserInfoPreview() {
         publishedStoryCount = 45,
         pendingStoryCount = 52,
         joinedSince = "20 Apr 2025",
-        userProfileImage = ""
+        userProfileImage = "",
+        pendingStoryButtonClick = {},
+        publishedStoryButtonClick = {}
     )
 }

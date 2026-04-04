@@ -34,6 +34,7 @@ import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
 import com.aliad.muktokowlom.ui.screen.search.Search
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -55,7 +56,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>) {
+fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
     val appConfig = SavedStateConfiguration {
         this.serializersModule = SerializersModule {
             this.polymorphic(NavKey::class) {
@@ -236,7 +237,7 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>) {
                     }
                 }
                 entry<AppDestination.BottomAppBar.Profile> {
-                    ProfileScreen(backStack = rootBackStack)
+                    ProfileScreen(backStack = rootBackStack,  sharedViewModel = sharedViewModel)
                 }
             }
         )

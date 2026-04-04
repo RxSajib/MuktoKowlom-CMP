@@ -21,13 +21,17 @@ import com.aliad.muktokowlom.ui.navigation.auth.AuthNavigation
 import com.aliad.muktokowlom.ui.navigation.bottomAppBar.BottomAppBarNavigation
 import com.aliad.muktokowlom.ui.navigation.dest.DestNavigation
 import com.aliad.muktokowlom.ui.screen.component.MyCustomNotifySnackBar
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RootNavigation () {
 
     val snackBarEvent = SnackBarEvent.state.collectAsState()
+    val sharedViewModel : SharedViewModel = koinViewModel()
+
 
     val appConfig = SavedStateConfiguration {
         this.serializersModule = SerializersModule {
@@ -53,10 +57,10 @@ fun RootNavigation () {
             ),
             entryProvider = entryProvider {
                 entry<AppDestination.BottomAppBar> {
-                    BottomAppBarNavigation(rootBackStack = rootBackStack)
+                    BottomAppBarNavigation(rootBackStack = rootBackStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.Dest> { dest ->
-                    DestNavigation(startDest = dest, rootBackStack = rootBackStack)
+                    DestNavigation(startDest = dest, rootBackStack = rootBackStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.Auth> {
                     AuthNavigation(startDest = it, rootBackStack = rootBackStack)

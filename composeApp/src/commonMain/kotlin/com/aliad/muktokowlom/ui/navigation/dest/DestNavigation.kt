@@ -24,6 +24,7 @@ import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.premium.PremiumScreen
 import com.aliad.muktokowlom.ui.screen.privacy_policy.PrivacyPolicyScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
+import com.aliad.muktokowlom.ui.screen.publishedPendingStoryList.PublishedPendingStoryListScreen
 import com.aliad.muktokowlom.ui.screen.searchStory.SearchStoryResultScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
@@ -31,11 +32,16 @@ import com.aliad.muktokowlom.ui.screen.storyView.StoryViewScreen
 import com.aliad.muktokowlom.ui.screen.subscriptionHistory.SubscriptionHistoryScreen
 import com.aliad.muktokowlom.ui.screen.updatePassword.UpdatePasswordScreen
 import com.aliad.muktokowlom.ui.upload_stories.UploadStoriesScreen
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 
 @Composable
-fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<NavKey>) {
+fun DestNavigation(
+    startDest: AppDestination.Dest,
+    rootBackStack: NavBackStack<NavKey>,
+    sharedViewModel: SharedViewModel
+) {
 
 
 
@@ -55,7 +61,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 subclass(AppDestination.Dest.UploadStories::class, AppDestination.Dest.UploadStories.serializer())
                 subclass(AppDestination.Dest.SubscriptionHistory::class, AppDestination.Dest.SubscriptionHistory.serializer())
                 subclass(AppDestination.Dest.UpdatePassword::class, AppDestination.Dest.UpdatePassword.serializer())
-             //   subclass(AppDestination.SplashScreen::class, AppDestination.SplashScreen.serializer())
+                subclass(AppDestination.Dest.PublishedPendingStory::class, AppDestination.Dest.PublishedPendingStory.serializer())
              //   subclass(AppDestination.RecoveryPassword::class, AppDestination.RecoveryPassword.serializer())
               //  subclass(AppDestination.OtpView::class, AppDestination.OtpView.serializer())
             }
@@ -73,6 +79,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
         startDest.firstDestName == AppDestination.Dest.SubscriptionHistory::class.simpleName -> AppDestination.Dest.SubscriptionHistory
         startDest.firstDestName == AppDestination.Dest.StoryTypeWiseBook::class.simpleName -> AppDestination.Dest.StoryTypeWiseBook(typeName = "")
         startDest.firstDestName == AppDestination.Dest.SearchStoryResult::class.simpleName -> AppDestination.Dest.SearchStoryResult
+        startDest.firstDestName == AppDestination.Dest.PublishedPendingStory::class.simpleName -> AppDestination.Dest.PublishedPendingStory
         else -> throw Exception("Invalid destination")
     }
 
@@ -105,7 +112,7 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                     StoryDetailsScreen(myBookItem = type.myBookItem, backStack = backStack)
                 }
                 entry<AppDestination.Profile> {
-                    ProfileScreen(backStack = backStack)
+                    ProfileScreen(backStack = backStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.Dest.EditProfile> {
                     EditProfileScreen(navBackStack = backStack, rootBackStack =rootBackStack)
@@ -134,6 +141,9 @@ fun DestNavigation(startDest: AppDestination.Dest, rootBackStack: NavBackStack<N
                 }
                 entry<AppDestination.Dest.SearchStoryResult> {
                     SearchStoryResultScreen(backStack = backStack, rootBackStack = rootBackStack)
+                }
+                entry<AppDestination.Dest.PublishedPendingStory> {
+                    PublishedPendingStoryListScreen(backStack = backStack, rootBackStack = rootBackStack, viewModel = sharedViewModel)
                 }
 
             },
