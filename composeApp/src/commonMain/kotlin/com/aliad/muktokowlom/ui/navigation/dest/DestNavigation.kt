@@ -18,9 +18,12 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.aliad.muktokowlom.ui.category.CategoryScreen
 import com.aliad.muktokowlom.ui.category.CategoryWiseBook
 import com.aliad.muktokowlom.ui.navigation.AppDestination
+import com.aliad.muktokowlom.ui.screen.allRelease.AllStoryScreen
 import com.aliad.muktokowlom.ui.screen.earning_history.EarningHistoryScreen
 import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
+import com.aliad.muktokowlom.ui.screen.mosPopulatStory.MostPopularStoryScreen
+import com.aliad.muktokowlom.ui.screen.newRelease.NewReleaseScreen
 import com.aliad.muktokowlom.ui.screen.premium.PremiumScreen
 import com.aliad.muktokowlom.ui.screen.privacy_policy.PrivacyPolicyScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
@@ -44,32 +47,73 @@ fun DestNavigation(
 ) {
 
 
-
     val appConfig = SavedStateConfiguration {
         serializersModule = SerializersModule {
             polymorphic(NavKey::class) {
-              //  subclass(AppDestination.HomeScreen::class, AppDestination.HomeScreen.serializer())
-              //  subclass(AppDestination.CategoryScreen::class, AppDestination.CategoryScreen.serializer())
-                subclass(AppDestination.Dest.CategoryWiseBook::class, AppDestination.Dest.CategoryWiseBook.serializer())
-                subclass(AppDestination.Dest.StoryTypeWiseBook::class, AppDestination.Dest.StoryTypeWiseBook.serializer())
-                subclass(AppDestination.Dest.StoryView::class, AppDestination.Dest.StoryView.serializer())
-                subclass(AppDestination.Dest.SearchStoryResult::class, AppDestination.Dest.SearchStoryResult.serializer())
-                subclass(AppDestination.Dest.EditProfile::class, AppDestination.Dest.EditProfile.serializer())
-                subclass(AppDestination.Dest.Premium::class, AppDestination.Dest.Premium.serializer())
-                subclass(AppDestination.Dest.PrivacyPolicy::class, AppDestination.Dest.PrivacyPolicy.serializer())
-                subclass(AppDestination.Dest.EarningHistory::class, AppDestination.Dest.EarningHistory.serializer())
-                subclass(AppDestination.Dest.UploadStories::class, AppDestination.Dest.UploadStories.serializer())
-                subclass(AppDestination.Dest.SubscriptionHistory::class, AppDestination.Dest.SubscriptionHistory.serializer())
-                subclass(AppDestination.Dest.UpdatePassword::class, AppDestination.Dest.UpdatePassword.serializer())
-                subclass(AppDestination.Dest.PublishedPendingStory::class, AppDestination.Dest.PublishedPendingStory.serializer())
-             //   subclass(AppDestination.RecoveryPassword::class, AppDestination.RecoveryPassword.serializer())
-              //  subclass(AppDestination.OtpView::class, AppDestination.OtpView.serializer())
+                //  subclass(AppDestination.HomeScreen::class, AppDestination.HomeScreen.serializer())
+                  subclass(AppDestination.Dest.MostPopular::class, AppDestination.Dest.MostPopular.serializer())
+                subclass(
+                    AppDestination.Dest.CategoryWiseBook::class,
+                    AppDestination.Dest.CategoryWiseBook.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.StoryTypeWiseBook::class,
+                    AppDestination.Dest.StoryTypeWiseBook.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.StoryView::class,
+                    AppDestination.Dest.StoryView.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.SearchStoryResult::class,
+                    AppDestination.Dest.SearchStoryResult.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.EditProfile::class,
+                    AppDestination.Dest.EditProfile.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.Premium::class,
+                    AppDestination.Dest.Premium.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.PrivacyPolicy::class,
+                    AppDestination.Dest.PrivacyPolicy.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.EarningHistory::class,
+                    AppDestination.Dest.EarningHistory.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.UploadStories::class,
+                    AppDestination.Dest.UploadStories.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.SubscriptionHistory::class,
+                    AppDestination.Dest.SubscriptionHistory.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.UpdatePassword::class,
+                    AppDestination.Dest.UpdatePassword.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.PublishedPendingStory::class,
+                    AppDestination.Dest.PublishedPendingStory.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.AllReleaseStory::class,
+                    AppDestination.Dest.AllReleaseStory.serializer()
+                )
+                subclass(
+                    AppDestination.Dest.NewReleaseStory::class,
+                    AppDestination.Dest.NewReleaseStory.serializer()
+                )
             }
         }
     }
 
 
-    val firstDest = when{
+    val firstDest = when {
         startDest.firstDestName == AppDestination.Dest.EditProfile::class.simpleName -> AppDestination.Dest.EditProfile
         startDest.firstDestName == AppDestination.Dest.EarningHistory::class.simpleName -> AppDestination.Dest.EarningHistory
         startDest.firstDestName == AppDestination.Dest.CategoryWiseBook::class.simpleName -> AppDestination.Dest.CategoryWiseBook
@@ -77,19 +121,25 @@ fun DestNavigation(
         startDest.firstDestName == AppDestination.Dest.Premium::class.simpleName -> AppDestination.Dest.Premium
         startDest.firstDestName == AppDestination.Dest.UploadStories::class.simpleName -> AppDestination.Dest.UploadStories
         startDest.firstDestName == AppDestination.Dest.SubscriptionHistory::class.simpleName -> AppDestination.Dest.SubscriptionHistory
-        startDest.firstDestName == AppDestination.Dest.StoryTypeWiseBook::class.simpleName -> AppDestination.Dest.StoryTypeWiseBook(typeName = "")
+        startDest.firstDestName == AppDestination.Dest.StoryTypeWiseBook::class.simpleName -> AppDestination.Dest.StoryTypeWiseBook(
+            typeName = ""
+        )
+
         startDest.firstDestName == AppDestination.Dest.SearchStoryResult::class.simpleName -> AppDestination.Dest.SearchStoryResult
         startDest.firstDestName == AppDestination.Dest.PublishedPendingStory::class.simpleName -> AppDestination.Dest.PublishedPendingStory
+        startDest.firstDestName == AppDestination.Dest.AllReleaseStory::class.simpleName -> AppDestination.Dest.AllReleaseStory
+        startDest.firstDestName == AppDestination.Dest.NewReleaseStory::class.simpleName -> AppDestination.Dest.NewReleaseStory
+        startDest.firstDestName == AppDestination.Dest.MostPopular::class.simpleName -> AppDestination.Dest.MostPopular
         else -> throw Exception("Invalid destination")
     }
 
 
     val backStack = rememberNavBackStack(appConfig, firstDest)
 
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = Modifier.fillMaxSize()) {
         NavDisplay(
             backStack = backStack,
-            onBack = {backStack.removeLastOrNull()},
+            onBack = { backStack.removeLastOrNull() },
             entryDecorators = listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
                 rememberViewModelStoreNavEntryDecorator()
@@ -106,7 +156,11 @@ fun DestNavigation(
                     CategoryWiseBook(backStack = backStack)
                 }
                 entry<AppDestination.Dest.StoryTypeWiseBook> { type ->
-                    StoryTypeScreen(backStack = backStack, rootBackStack = rootBackStack, type = type)
+                    StoryTypeScreen(
+                        backStack = backStack,
+                        rootBackStack = rootBackStack,
+                        type = type
+                    )
                 }
                 entry<AppDestination.StoryDetails> { type ->
                     StoryDetailsScreen(myBookItem = type.myBookItem, backStack = backStack)
@@ -115,7 +169,7 @@ fun DestNavigation(
                     ProfileScreen(backStack = backStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.Dest.EditProfile> {
-                    EditProfileScreen(navBackStack = backStack, rootBackStack =rootBackStack)
+                    EditProfileScreen(navBackStack = backStack, rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.Dest.Premium> {
                     PremiumScreen(backStack = backStack, rootBackStack = rootBackStack)
@@ -143,7 +197,23 @@ fun DestNavigation(
                     SearchStoryResultScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.Dest.PublishedPendingStory> {
-                    PublishedPendingStoryListScreen(backStack = backStack, rootBackStack = rootBackStack, viewModel = sharedViewModel)
+                    PublishedPendingStoryListScreen(
+                        backStack = backStack,
+                        rootBackStack = rootBackStack,
+                        viewModel = sharedViewModel
+                    )
+                }
+                entry<AppDestination.Dest.AllReleaseStory> {
+                    AllStoryScreen(backStack = backStack,
+                        rootBackStack = rootBackStack)
+                }
+                entry<AppDestination.Dest.NewReleaseStory> {
+                    NewReleaseScreen(backStack = backStack,
+                        rootBackStack = rootBackStack)
+                }
+                entry<AppDestination.Dest.MostPopular> {
+                    MostPopularStoryScreen(backStack = backStack,
+                        rootBackStack = rootBackStack)
                 }
 
             },

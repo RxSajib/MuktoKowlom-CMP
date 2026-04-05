@@ -1,4 +1,4 @@
-package com.aliad.muktokowlom.ui.screen.newRelease
+package com.aliad.muktokowlom.ui.screen.allRelease
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,9 +15,9 @@ import androidx.navigation3.runtime.NavKey
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
-import com.aliad.presentation.signIn.ui.newReleaseStory.NewReleaseStoryViewModel
+import com.aliad.presentation.signIn.ui.allReleaseStory.AllReleaseStoryViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
-import muktokowlomcmp.composeapp.generated.resources.new_release
+import muktokowlomcmp.composeapp.generated.resources.all_release
 import muktokowlomcmp.composeapp.generated.resources.search_alt_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.search_your_favourite_genre
 import org.jetbrains.compose.resources.painterResource
@@ -25,24 +25,24 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun NewReleaseScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
+fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
-    val viewModel : NewReleaseStoryViewModel = koinViewModel()
+    val viewModel : AllReleaseStoryViewModel = koinViewModel()
 
-    Surface(
-        modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
-    ) {
+    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
         Scaffold(
             topBar = {
                 MyCustomAppBar(
-                    title = stringResource(Res.string.new_release), onBackPress = {
+                    title = stringResource(Res.string.all_release),
+                    editProfile = {},
+                    onBackPress = {
                         rootBackStack.removeLastOrNull()
-                    },
-                    editProfile = {}
+                    }
                 )
             }
-        ) {innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(horizontal = 16.dp)) {
+        ) { innerPadding ->
+            Column(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(start = 16.dp, end = 16.dp)) {
+
                 MyCustomInputFiled(
                     placeHolderText = stringResource(Res.string.search_your_favourite_genre),
                     text = viewModel.searchStoryData,

@@ -115,7 +115,11 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
 
                     StoryCategoryWithAllButton(
                         categoryTitle = stringResource(Res.string.most_popular), onClick = {
-                            //    backStack.add(AppDestination.StoryTypeWiseBook(typeName = mostPopularStory))
+                            backStack.add(
+                                AppDestination.Dest(
+                                    AppDestination.Dest.MostPopular::class.simpleName ?: ""
+                                )
+                            )
                         })
                     Banner(
                         pageCount = dashBoardData.value?.lisOfPopularStories?.size ?: 0,
@@ -138,7 +142,7 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
                         categoryTitle = stringResource(Res.string.new_release), onClick = {
                             backStack.add(
                                 AppDestination.Dest(
-                                    AppDestination.Dest.StoryTypeWiseBook::class.simpleName ?: ""
+                                    AppDestination.Dest.NewReleaseStory::class.simpleName ?: ""
                                 )
                             )
                         })
@@ -151,7 +155,11 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
                     }
                     StoryCategoryWithAllButton(
                         categoryTitle = stringResource(Res.string.all_release), onClick = {
-                            //     backStack.add(AppDestination.StoryTypeWiseBook(typeName = allStory))
+                            backStack.add(
+                                AppDestination.Dest(
+                                    AppDestination.Dest.AllReleaseStory::class.simpleName ?: ""
+                                )
+                            )
                         })
                     LazyRow {
                         items(dashBoardData.value?.lifOfAllStories ?: emptyList()) { bookItem ->

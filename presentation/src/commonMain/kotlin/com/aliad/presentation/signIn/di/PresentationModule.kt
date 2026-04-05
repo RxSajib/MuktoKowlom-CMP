@@ -1,10 +1,13 @@
 package com.aliad.presentation.signIn.di
 
+import com.aliad.presentation.signIn.ui.allReleaseStory.AllReleaseStoryViewModel
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
 import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewModel
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
+import com.aliad.presentation.signIn.ui.mostPopularStory.MostPopularStoryViewModel
+import com.aliad.presentation.signIn.ui.newReleaseStory.NewReleaseStoryViewModel
 import com.aliad.presentation.signIn.ui.otpVerification.OtpVerificationViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
@@ -106,5 +109,17 @@ val presentationModule = module {
             saveStringData = get(),
             saveIntData = get()
         )
+    }
+
+    viewModel {
+        AllReleaseStoryViewModel()
+    }
+
+    viewModel {
+        NewReleaseStoryViewModel()
+    }
+
+    viewModel {
+        MostPopularStoryViewModel()
     }
 }
