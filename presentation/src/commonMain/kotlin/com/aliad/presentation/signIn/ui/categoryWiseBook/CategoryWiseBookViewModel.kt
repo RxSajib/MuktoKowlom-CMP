@@ -1,5 +1,8 @@
 package com.aliad.presentation.signIn.ui.categoryWiseBook
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
@@ -16,6 +19,9 @@ import kotlinx.coroutines.launch
 
 class CategoryWiseBookViewModel constructor(val categoryWiseBookUseCase: CategoryWiseBookUseCase) :
     ViewModel() {
+
+
+        var searchStoryData by mutableStateOf("")
 
     val data =
         categoryWiseBookUseCase.getCategoryWiseBook(categoryID = 29, searchBy = "All")

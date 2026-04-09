@@ -150,10 +150,10 @@ fun DestNavigation(
                     HomeScreen(backStack = backStack)
                 }
                 entry<AppDestination.CategoryScreen> {
-                    CategoryScreen(backStack = backStack)
+                    CategoryScreen(backStack = backStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.Dest.CategoryWiseBook> {
-                    CategoryWiseBook(backStack = backStack)
+                    CategoryWiseBook(backStack = backStack, rootBackStack = rootBackStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.Dest.StoryTypeWiseBook> { type ->
                     StoryTypeScreen(

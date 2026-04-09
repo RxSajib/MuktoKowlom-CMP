@@ -112,14 +112,20 @@ val presentationModule = module {
     }
 
     viewModel {
-        AllReleaseStoryViewModel()
+        AllReleaseStoryViewModel(
+            storyTypeUseCase = get()
+        )
     }
 
     viewModel {
-        NewReleaseStoryViewModel()
+        NewReleaseStoryViewModel(
+            storyTypeUseCase = get()
+        )
     }
 
     viewModel {
-        MostPopularStoryViewModel()
+        MostPopularStoryViewModel(
+            storyTypeUseCase = get()
+        )
     }
 }

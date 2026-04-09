@@ -224,7 +224,7 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
                     HomeScreen(backStack = rootBackStack)
                 }
                 entry<AppDestination.BottomAppBar.Category> {
-                    CategoryScreen(backStack = activeBackStack)
+                    CategoryScreen(backStack = rootBackStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.BottomAppBar.Search> {
                     Search(backStack = rootBackStack)

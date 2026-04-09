@@ -11,10 +11,12 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun StoryLoaderShimmer(){
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-        repeat(20){
+fun StoryLoaderShimmer() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        repeat(20) {
             StoryShimmerRow()
         }
     }
@@ -22,6 +24,6 @@ fun StoryLoaderShimmer(){
 
 @Composable
 @Preview
-fun StoryLoaderShimmerPreview(){
+fun StoryLoaderShimmerPreview() {
     StoryLoaderShimmer()
 }

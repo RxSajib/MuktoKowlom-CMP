@@ -23,6 +23,7 @@ class StoryTypePagingSource constructor(val remoteDataSources: RemoteDataSources
                 nextKey = if(data.data?.last_page == page) null else page + 1
             )
         }catch (e : Exception){
+            print("error response ${e.message}")
             LoadResult.Error(e)
         }
     }

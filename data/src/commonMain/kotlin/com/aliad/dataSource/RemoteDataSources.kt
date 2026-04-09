@@ -16,6 +16,7 @@ import com.aliad.model.login.LoginDto
 import com.aliad.model.storyDetails.StoryDetailsDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
+import com.aliad.utils.StoryType
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -56,30 +57,30 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val EMAIL_OTP_VERIFICATION = "${BASEURL}user/email-verification"
 
 
-    suspend fun emailOTPVerification(otp : String) : ApiResult<GenericResponse<LoginDto>>{
+    suspend fun emailOTPVerification(otp: String): ApiResult<GenericResponse<LoginDto>> {
         return try {
-            val response = httpClient.post(EMAIL_OTP_VERIFICATION){
+            val response = httpClient.post(EMAIL_OTP_VERIFICATION) {
                 setBody(
                     FormDataContent(
-                        Parameters.build{
+                        Parameters.build {
                             append("verification_code", otp)
                         }
                     )
                 )
             }
 
-            if(response.status.isSuccess()){
+            if (response.status.isSuccess()) {
                 ApiResult.Success(
                     response.body()
                 )
-            }else {
+            } else {
                 val errorBody = response.bodyAsText()
                 val errorResponse = try {
                     Json.decodeFromString<ErrorResponse>(errorBody)
                 } catch (e: Exception) {
                     ErrorResponse(
-                        message_en = e.message?: "Something went wrong",
-                        message_bn = e.message?: "Something went wrong",
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
                         success = false
                     )
                 }
@@ -91,7 +92,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
 
                 )
             }
-        }catch (e: ClientRequestException) {
+        } catch (e: ClientRequestException) {
 
             val errorBody = e.response.bodyAsText()
 
@@ -120,16 +121,16 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     }
 
     suspend fun signupAccount(
-        name : String,
-        emailAddress : String,
-        password : String,
-        confirmPassword : String,
-        firstName : String,
-        lastName : String,
-        isWritterStatus : String
-    ) : ApiResult<ApiResponse>{
+        name: String,
+        emailAddress: String,
+        password: String,
+        confirmPassword: String,
+        firstName: String,
+        lastName: String,
+        isWritterStatus: String
+    ): ApiResult<ApiResponse> {
         return try {
-            val response = httpClient.post (SIGNUP_ACCOUNT){
+            val response = httpClient.post(SIGNUP_ACCOUNT) {
                 parameter("name", name)
                 parameter("email", emailAddress)
                 parameter("password", password)
@@ -146,7 +147,6 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                 )
 
 
-
             } else {
 
                 val errorBody = response.bodyAsText()
@@ -154,8 +154,8 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                     Json.decodeFromString<ErrorResponse>(errorBody)
                 } catch (e: Exception) {
                     ErrorResponse(
-                        message_en = e.message?: "Something went wrong",
-                        message_bn = e.message?: "Something went wrong",
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
                         success = false
                     )
                 }
@@ -221,16 +221,16 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                     Json.decodeFromString<ErrorResponse>(errorBody)
                 } catch (e: Exception) {
                     ErrorResponse(
-                        message_en = e.message?: "Something went wrong",
-                        message_bn = e.message?: "Something went wrong",
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
                         success = false
                     )
                 }
 
                 ApiResult.Error(
 
-                        messageBn = errorResponse.message_bn,
-                        messageEn = errorResponse.message_en
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
 
                 )
             }
@@ -320,7 +320,13 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         page: Int,
         searchKey: String = "All"
     ): GenericResponse<CategoryWiseBookDto> {
-        val response = httpClient.get(urlString = MOSTPOPULARSTORY) {
+
+
+
+        val URL =
+            if (storyType == StoryType.MOST_POPULAR_STORY.name) MOSTPOPULARSTORY else if (storyType == StoryType.ALL_STORY.name) ALLSTORY else NEWRELEASESTORY
+
+        val response = httpClient.get(urlString = URL) {
             parameter("page", page)
             parameter("search", searchKey)
         }
@@ -372,32 +378,32 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
     }
 
-    suspend fun getStoryDetails(storyID : String) : Result<StoryDetailsDto>{
+    suspend fun getStoryDetails(storyID: String): Result<StoryDetailsDto> {
         try {
-            val response = httpClient.get(urlString = STORY_DETAILS){
+            val response = httpClient.get(urlString = STORY_DETAILS) {
                 this.parameter("story_id", storyID)
             }
-            if(response.status.isSuccess()){
+            if (response.status.isSuccess()) {
                 val data = response.body<StoryDetailsDto>()
                 return Result.success(data)
-            }else {
+            } else {
                 return Result.failure(Exception("error fetch story details"))
             }
-        }catch (e : Exception){
+        } catch (e: Exception) {
             return Result.failure(Exception("error fetch story details"))
         }
     }
 
-    suspend fun getPopularSearch() : Result<PopularSearchDto>{
+    suspend fun getPopularSearch(): Result<PopularSearchDto> {
         try {
             val response = httpClient.get(urlString = POPULAR_SEARCH)
-            if(response.status.isSuccess()){
+            if (response.status.isSuccess()) {
                 val data = response.body<PopularSearchDto>()
                 return Result.success(data)
-            }else {
+            } else {
                 return Result.failure(Exception("error fetch popular search story"))
             }
-        }catch (e: ClientRequestException) {
+        } catch (e: ClientRequestException) {
             //  print("error fetch privacy policy ${e.message}")
             return Result.failure(e)
         } catch (e: ServerResponseException) {
@@ -409,11 +415,11 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
     }
 
-    suspend fun getSubscriptionHistory(page : Int) : GenericResponse<SubscriptionHistoryDto> {
-        val response = httpClient.get(urlString = SUBSCRIPTION_HISTORY){
+    suspend fun getSubscriptionHistory(page: Int): GenericResponse<SubscriptionHistoryDto> {
+        val response = httpClient.get(urlString = SUBSCRIPTION_HISTORY) {
             parameter("page", page)
         }
-      //  print("response with data ${response.status.description}")
+        //  print("response with data ${response.status.description}")
         return response.body<GenericResponse<SubscriptionHistoryDto>>()
     }
 }

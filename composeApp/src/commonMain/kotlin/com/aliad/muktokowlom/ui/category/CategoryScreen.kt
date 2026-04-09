@@ -5,18 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,19 +19,15 @@ import androidx.navigation3.runtime.NavKey
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.CategoryItem
 import com.aliad.muktokowlom.ui.screen.component.CategoryScreenShimmer
-import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
-import io.ktor.http.HttpHeaders.Destination
-import muktokowlomcmp.composeapp.generated.resources.Res
-import muktokowlomcmp.composeapp.generated.resources.all_category
-import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CategoryScreen(backStack: NavBackStack<NavKey>) {
+fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
     val viewModel: CategoryViewModel = koinViewModel()
     val categoryData = viewModel.categoryData.collectAsStateWithLifecycle()
 
@@ -72,12 +62,8 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>) {
             ) {
                 items(categoryData.value) { categoryData ->
                     CategoryItem(category = categoryData, onClick = {
-                        backStack.add(
-                            AppDestination.Dest(
-                                firstDestName = AppDestination.Dest.CategoryWiseBook::class.simpleName
-                                    ?: ""
-                            )
-                        )
+                        sharedViewModel.setCategory(category = categoryData)
+                        backStack.add(AppDestination.Dest(AppDestination.Dest.CategoryWiseBook::class.simpleName?: ""))
                     })
                 }
             }

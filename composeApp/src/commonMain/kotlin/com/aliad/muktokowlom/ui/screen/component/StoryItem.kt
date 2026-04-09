@@ -28,7 +28,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun StoryItem(item: MyBookItem?, onClick: (data: MyBookItem) -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(10.dp))
-            .clickable { onClick.invoke(item!!) }.padding(10.dp)
+            .clickable { onClick.invoke(item!!) }
     ) {
         Box{
 

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aliad.model.storyDetails.Category
 import com.aliad.repository.StoryType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +31,16 @@ class SharedViewModel constructor() : ViewModel() {
     fun selectedStoryType(storyType : String){
         viewModelScope.launch {
             selectedStoryTypeMutableStateFlow.emit(storyType)
+        }
+    }
+
+
+    private var selectedCategoryData = MutableStateFlow<com.aliad.model.Category>(com.aliad.model.Category())
+    val selectedCategory = selectedCategoryData.asStateFlow()
+
+    fun setCategory(category: com.aliad.model.Category){
+        viewModelScope.launch {
+            selectedCategoryData.emit(category)
         }
     }
 }
