@@ -6,6 +6,8 @@
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="expired_on">Expired On:</string>
+    <string name="how_was_your_experienced">How was your experienced</string>
+    <string name="submit">Submit</string>
 
     <string name="search">Search</string>
     <string name="dashBoard">DashBoard</string>

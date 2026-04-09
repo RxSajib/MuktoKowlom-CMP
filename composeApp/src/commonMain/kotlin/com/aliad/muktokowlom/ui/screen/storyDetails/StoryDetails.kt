@@ -2,14 +2,12 @@ package com.aliad.muktokowlom.ui.screen.storyDetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,6 +28,7 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
 import com.aliad.model.MyBookItem
+import com.aliad.muktokowlom.ui.bottomSheet.RatingBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
@@ -46,7 +45,6 @@ import muktokowlomcmp.composeapp.generated.resources.all_release
 import muktokowlomcmp.composeapp.generated.resources.category
 import muktokowlomcmp.composeapp.generated.resources.dashboard
 import muktokowlomcmp.composeapp.generated.resources.favorite_disable
-import muktokowlomcmp.composeapp.generated.resources.favorite_enable
 import muktokowlomcmp.composeapp.generated.resources.list
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import muktokowlomcmp.composeapp.generated.resources.published
@@ -56,7 +54,6 @@ import muktokowlomcmp.composeapp.generated.resources.sampleText
 import muktokowlomcmp.composeapp.generated.resources.see_less
 import muktokowlomcmp.composeapp.generated.resources.see_more
 import muktokowlomcmp.composeapp.generated.resources.send_rating
-import muktokowlomcmp.composeapp.generated.resources.sign_in_account
 import muktokowlomcmp.composeapp.generated.resources.similar_story
 import muktokowlomcmp.composeapp.generated.resources.views
 import org.jetbrains.compose.resources.painterResource
@@ -107,7 +104,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     modifier = Modifier.weight(1f),
                     backgroundColor = MaterialTheme.colorScheme.inverseSurface,
                     onClickButton = {
-
+viewModel.isOpenRatingBottomSheet = true
                     },
                     padding = 0.dp
                 )
@@ -254,6 +251,12 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                 )
             )
             HeightGap(height = 5.dp)
+        }
+    }
+
+    if(viewModel.isOpenRatingBottomSheet){
+        RatingBottomSheet(viewModel){
+            viewModel.isOpenRatingBottomSheet = false
         }
     }
 }
