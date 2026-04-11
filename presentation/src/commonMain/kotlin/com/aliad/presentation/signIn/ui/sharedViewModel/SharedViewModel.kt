@@ -43,4 +43,6 @@ class SharedViewModel constructor() : ViewModel() {
             selectedCategoryData.emit(category)
         }
     }
+
+    var searchKeyword by mutableStateOf("")
 }

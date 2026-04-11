@@ -21,6 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
@@ -91,85 +92,85 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
         }
     }
 
+    Surface(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
 
-    PullToRefresh(
-        refreshLayoutState = refreshState ,
-    ) {
+        PullToRefresh(
+            refreshLayoutState = refreshState,
+        ) {
 
-        Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize()) {
 
-            if (dashBoardViewModel.isLoading) {
-                HomeScreenShimmer()
-            } else {
+                if (dashBoardViewModel.isLoading) {
+                    HomeScreenShimmer()
+                } else {
 
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface)
-                        .verticalScroll(state = rememberScrollState())
-                ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                            .verticalScroll(state = rememberScrollState())
+                    ) {
 
 
-                    HomeSeaBanner {}
+                        HomeSeaBanner {}
 
-                    HeightGap(height = 10.dp)
+                        HeightGap(height = 10.dp)
 
-                    StoryCategoryWithAllButton(
-                        categoryTitle = stringResource(Res.string.most_popular), onClick = {
-                            backStack.add(
-                                AppDestination.Dest(
-                                    AppDestination.Dest.MostPopular::class.simpleName ?: ""
+                        StoryCategoryWithAllButton(
+                            categoryTitle = stringResource(Res.string.most_popular), onClick = {
+                                backStack.add(
+                                    AppDestination.Dest(
+                                        AppDestination.Dest.MostPopular::class.simpleName ?: ""
+                                    )
                                 )
-                            )
-                        })
-                    Banner(
-                        pageCount = dashBoardData.value?.lisOfPopularStories?.size ?: 0,
-                        autoScrollTime = 5000L,
-                        bannerState = rememberBannerState(),
-                        orientation = Orientation.Horizontal,
-                        bannerKey = { index -> dashBoardData.value?.lisOfPopularStories[index].toString() }) {
+                            })
+                        Banner(
+                            pageCount = dashBoardData.value?.lisOfPopularStories?.size ?: 0,
+                            autoScrollTime = 5000L,
+                            bannerState = rememberBannerState(),
+                            orientation = Orientation.Horizontal,
+                            bannerKey = { index -> dashBoardData.value?.lisOfPopularStories[index].toString() }) {
 
-                        MyCustomBannerItem(
-                            myBookItem = dashBoardData.value?.lisOfPopularStories[index]
-                                ?: MyBookItem()
-                        ) { myBookItem ->
-                            print("my book item $myBookItem")
+                            MyCustomBannerItem(
+                                myBookItem = dashBoardData.value?.lisOfPopularStories[index]
+                                    ?: MyBookItem()
+                            ) { myBookItem ->
+                                print("my book item $myBookItem")
+                            }
                         }
-                    }
 
-                    HeightGap(height = 10.dp)
+                        HeightGap(height = 10.dp)
 
-                    StoryCategoryWithAllButton(
-                        categoryTitle = stringResource(Res.string.new_release), onClick = {
-                            backStack.add(
-                                AppDestination.Dest(
-                                    AppDestination.Dest.NewReleaseStory::class.simpleName ?: ""
+                        StoryCategoryWithAllButton(
+                            categoryTitle = stringResource(Res.string.new_release), onClick = {
+                                backStack.add(
+                                    AppDestination.Dest(
+                                        AppDestination.Dest.NewReleaseStory::class.simpleName ?: ""
+                                    )
                                 )
-                            )
-                        })
-                    LazyRow {
-                        items(
-                            dashBoardData.value?.listOfNewReleaseStories ?: emptyList()
-                        ) { bookItem ->
-                            StoryItemFixedSize(item = bookItem)
+                            })
+                        LazyRow {
+                            items(
+                                dashBoardData.value?.listOfNewReleaseStories ?: emptyList()
+                            ) { bookItem ->
+                                StoryItemFixedSize(item = bookItem)
+                            }
                         }
-                    }
-                    StoryCategoryWithAllButton(
-                        categoryTitle = stringResource(Res.string.all_release), onClick = {
-                            backStack.add(
-                                AppDestination.Dest(
-                                    AppDestination.Dest.AllReleaseStory::class.simpleName ?: ""
+                        StoryCategoryWithAllButton(
+                            categoryTitle = stringResource(Res.string.all_release), onClick = {
+                                backStack.add(
+                                    AppDestination.Dest(
+                                        AppDestination.Dest.AllReleaseStory::class.simpleName ?: ""
+                                    )
                                 )
-                            )
-                        })
-                    LazyRow {
-                        items(dashBoardData.value?.lifOfAllStories ?: emptyList()) { bookItem ->
-                            StoryItemFixedSize(item = bookItem)
+                            })
+                        LazyRow {
+                            items(dashBoardData.value?.lifOfAllStories ?: emptyList()) { bookItem ->
+                                StoryItemFixedSize(item = bookItem)
+                            }
                         }
                     }
                 }
             }
         }
+
     }
-
-
 }

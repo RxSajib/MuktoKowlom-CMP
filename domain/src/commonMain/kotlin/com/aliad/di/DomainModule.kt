@@ -8,6 +8,7 @@ import com.aliad.usecase.OtpVerificationUseCase
 import com.aliad.usecase.PopularSearchUseCase
 import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.PrivacyPolicyUseCase
+import com.aliad.usecase.SearchBookUseCase
 import com.aliad.usecase.SignUpUseCase
 import com.aliad.usecase.StoryTypeUseCase
 import com.aliad.usecase.SubscriptionHistoryUseCase
@@ -108,5 +109,11 @@ val domainModule = module {
 
     factory {
         OtpVerificationUseCase(accountRepository = get())
+    }
+    
+    factory {
+        SearchBookUseCase(
+            storyType = get()
+        )
     }
 }

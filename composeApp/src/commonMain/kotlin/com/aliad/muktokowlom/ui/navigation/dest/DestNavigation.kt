@@ -194,7 +194,7 @@ fun DestNavigation(
                     StoryViewScreen(backStack = backStack)
                 }
                 entry<AppDestination.Dest.SearchStoryResult> {
-                    SearchStoryResultScreen(backStack = backStack, rootBackStack = rootBackStack)
+                    SearchStoryResultScreen(backStack = backStack, rootBackStack = rootBackStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.Dest.PublishedPendingStory> {
                     PublishedPendingStoryListScreen(

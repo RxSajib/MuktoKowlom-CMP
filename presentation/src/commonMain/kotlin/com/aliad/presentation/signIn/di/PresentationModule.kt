@@ -1,5 +1,6 @@
 package com.aliad.presentation.signIn.di
 
+import com.aliad.presentation.signIn.ui.FavoriteStory.FavoriteStoryViewModel
 import com.aliad.presentation.signIn.ui.allReleaseStory.AllReleaseStoryViewModel
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
 import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewModel
@@ -13,6 +14,7 @@ import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.recoveryPassword.RecoveryPasswordViewModel
 import com.aliad.presentation.signIn.ui.search.SearchViewModel
+import com.aliad.presentation.signIn.ui.searchStoryResult.SearchStoryResultViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
 import com.aliad.presentation.signIn.ui.signup.SignUpViewModel
@@ -126,6 +128,16 @@ val presentationModule = module {
     viewModel {
         MostPopularStoryViewModel(
             storyTypeUseCase = get()
+        )
+    }
+
+    viewModel {
+        FavoriteStoryViewModel()
+    }
+
+    viewModel {
+        SearchStoryResultViewModel(
+            searchBookUseCase = get()
         )
     }
 }

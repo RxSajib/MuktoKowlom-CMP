@@ -1,7 +1,5 @@
 package com.aliad.muktokowlom.ui.navigation.bottomAppBar
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -15,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -29,6 +26,7 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.aliad.muktokowlom.ui.category.CategoryScreen
 import com.aliad.muktokowlom.ui.navigation.AppDestination
+import com.aliad.muktokowlom.ui.screen.FavoriteStory.FavoriteStoryScreen
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
@@ -121,7 +119,7 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
         else -> dashBoardBackStack
     }
 
-    val webLink = userName.ifEmpty { stringResource(Res.string.muktokowlom_web_link) }
+    val webLink = userEmailAddress.ifEmpty { stringResource(Res.string.muktokowlom_web_link) }
 
     Scaffold(
         topBar = {
@@ -227,14 +225,10 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
                     CategoryScreen(backStack = rootBackStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.BottomAppBar.Search> {
-                    Search(backStack = rootBackStack)
+                    Search(backStack = rootBackStack, sharedViewModel = sharedViewModel)
                 }
                 entry<AppDestination.BottomAppBar.FavoriteStory> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = "FavoriteStory",
-                        )
-                    }
+                    FavoriteStoryScreen(backStack = rootBackStack)
                 }
                 entry<AppDestination.BottomAppBar.Profile> {
                     ProfileScreen(backStack = rootBackStack,  sharedViewModel = sharedViewModel)

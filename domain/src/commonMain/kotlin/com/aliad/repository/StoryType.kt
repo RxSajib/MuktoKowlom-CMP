@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface StoryType {
     fun getStoryType(searchKey: String, storyType : String): Flow<PagingData<MyBookItem>>
+
+    fun getSearchStory(searchKey : String) : Flow<PagingData<MyBookItem>>
 }

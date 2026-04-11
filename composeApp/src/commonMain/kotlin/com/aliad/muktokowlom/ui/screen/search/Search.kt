@@ -34,10 +34,10 @@ import com.aliad.muktokowlom.ui.screen.component.SearchKeywordItem
 import com.aliad.muktokowlom.ui.screen.component.StoryItemFixedSize
 import com.aliad.muktokowlom.ui.screen.component.StoryShimmerRow
 import com.aliad.presentation.signIn.ui.search.SearchViewModel
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
-import kotlinx.coroutines.delay
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.popular_searches
 import muktokowlomcmp.composeapp.generated.resources.recent_searches
@@ -78,7 +78,7 @@ val bookSearchList = listOf(
 
 
 @Composable
-fun Search(backStack: NavBackStack<NavKey>) {
+fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
 
     val viewModel: SearchViewModel = koinViewModel<SearchViewModel>()
     val popularSearchData = viewModel.popularSearch.collectAsStateWithLifecycle()
@@ -112,6 +112,7 @@ fun Search(backStack: NavBackStack<NavKey>) {
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
                     onSearch = {
+                        sharedViewModel.searchKeyword = it
                         backStack.add(AppDestination.Dest(
                             AppDestination.Dest.SearchStoryResult::class.simpleName ?: ""
                         ))

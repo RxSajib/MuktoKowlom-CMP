@@ -13,6 +13,7 @@ import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
 import com.aliad.model.login.LoginDto
+import com.aliad.model.searchStory.SearchStoryDto
 import com.aliad.model.storyDetails.StoryDetailsDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
@@ -55,7 +56,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val SUBSCRIPTION_HISTORY = "${BASEURL}user/subscription-history"
     private val SIGNUP_ACCOUNT = "${BASEURL}user/signup"
     private val EMAIL_OTP_VERIFICATION = "${BASEURL}user/email-verification"
-
+    private val SEARCH_BOOK = "${BASEURL}get-story-by-search"
 
     suspend fun emailOTPVerification(otp: String): ApiResult<GenericResponse<LoginDto>> {
         return try {
@@ -421,5 +422,12 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
         //  print("response with data ${response.status.description}")
         return response.body<GenericResponse<SubscriptionHistoryDto>>()
+    }
+
+    suspend fun getStoryBySearch(searchKey : String, page : Int) : GenericResponse<SearchStoryDto>{
+        val response = httpClient.get(urlString = SEARCH_BOOK){
+            parameter("page", page)
+        }
+        return response.body<GenericResponse<SearchStoryDto>>()
     }
 }

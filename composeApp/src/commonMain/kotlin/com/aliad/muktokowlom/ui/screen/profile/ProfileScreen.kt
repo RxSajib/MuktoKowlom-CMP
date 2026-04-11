@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -89,13 +90,14 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
 
     val logoutText = stringResource(Res.string.logout_success)
 
+    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
 
         Column(
             modifier = Modifier.fillMaxSize().verticalScroll(state = rememberScrollState())
                 .padding(16.dp)
         ) {
 
-            if(!token.isEmpty()) {
+            if (!token.isEmpty()) {
                 UserInfo(
                     userName = userName.value ?: "",
                     emailAddress = userEmailAddress.value ?: "",
@@ -106,30 +108,42 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                     pendingStoryButtonClick = {
                         sharedViewModel.setIsPendingStory(true)
                         backStack.add(
-                            AppDestination.Dest(AppDestination.Dest.PublishedPendingStory::class.simpleName?: "")
+                            AppDestination.Dest(
+                                AppDestination.Dest.PublishedPendingStory::class.simpleName ?: ""
+                            )
                         )
                     },
                     publishedStoryButtonClick = {
                         sharedViewModel.setIsPendingStory(false)
                         backStack.add(
-                            AppDestination.Dest(AppDestination.Dest.PublishedPendingStory::class.simpleName?: "")
+                            AppDestination.Dest(
+                                AppDestination.Dest.PublishedPendingStory::class.simpleName ?: ""
+                            )
                         )
                     },
                 )
-            }else {
+            } else {
                 SignUpSignInMenu(
                     signIn = {
-                        backStack.add(AppDestination.Auth(AppDestination.Auth.SignIn::class.simpleName?: ""))
+                        backStack.add(
+                            AppDestination.Auth(
+                                AppDestination.Auth.SignIn::class.simpleName ?: ""
+                            )
+                        )
                     },
                     signUp = {
-                        backStack.add(AppDestination.Auth(AppDestination.Auth.SignUp::class.simpleName?: ""))
+                        backStack.add(
+                            AppDestination.Auth(
+                                AppDestination.Auth.SignUp::class.simpleName ?: ""
+                            )
+                        )
                     }
                 )
             }
 
             HeightGap(height = 10.dp)
 
-            if(!token.isEmpty()) {
+            if (!token.isEmpty()) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -177,14 +191,18 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
             }
             HeightGap(height = 10.dp)
 
-            if(!token.isEmpty()){
+            if (!token.isEmpty()) {
                 MyCustomMenu(
                     modifier = Modifier,
                     title = stringResource(Res.string.upload_stories),
                     details = stringResource(Res.string.upload_stories_details),
                     painter = painterResource(Res.drawable.upload_cloud_svgrepo_com)
                 ) {
-                    backStack.add(AppDestination.Dest(AppDestination.Dest.UploadStories::class.simpleName?: ""))
+                    backStack.add(
+                        AppDestination.Dest(
+                            AppDestination.Dest.UploadStories::class.simpleName ?: ""
+                        )
+                    )
                 }
                 HeightGap(height = 10.dp)
             }
@@ -196,7 +214,11 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 details = stringResource(Res.string.premium_details),
                 painter = painterResource(Res.drawable.premium_svgrepo_com)
             ) {
-                backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.Premium::class.simpleName?: ""))
+                backStack.add(
+                    AppDestination.Dest(
+                        firstDestName = AppDestination.Dest.Premium::class.simpleName ?: ""
+                    )
+                )
             }
 
             HeightGap(height = 10.dp)
@@ -207,12 +229,16 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 details = stringResource(Res.string.subscription_history_details),
                 painter = painterResource(Res.drawable.ticket)
             ) {
-                backStack.add(AppDestination.Dest(AppDestination.Dest.SubscriptionHistory::class.simpleName?: ""))
+                backStack.add(
+                    AppDestination.Dest(
+                        AppDestination.Dest.SubscriptionHistory::class.simpleName ?: ""
+                    )
+                )
             }
 
             HeightGap(height = 10.dp)
 
-            if(!token.isEmpty()){
+            if (!token.isEmpty()) {
 
                 MyCustomMenu(
                     modifier = Modifier,
@@ -220,7 +246,12 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                     details = stringResource(Res.string.earningHistoryDetails),
                     painter = painterResource(Res.drawable.money_cash)
                 ) {
-                    backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.EarningHistory::class.simpleName?: ""))
+                    backStack.add(
+                        AppDestination.Dest(
+                            firstDestName = AppDestination.Dest.EarningHistory::class.simpleName
+                                ?: ""
+                        )
+                    )
                 }
                 HeightGap(height = 10.dp)
             }
@@ -232,12 +263,16 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 details = stringResource(Res.string.privacy_policy_details),
                 painter = painterResource(Res.drawable.policy)
             ) {
-                backStack.add(AppDestination.Dest(firstDestName = AppDestination.Dest.PrivacyPolicy::class.simpleName?: ""))
+                backStack.add(
+                    AppDestination.Dest(
+                        firstDestName = AppDestination.Dest.PrivacyPolicy::class.simpleName ?: ""
+                    )
+                )
             }
 
             HeightGap(height = 10.dp)
 
-            if(!token.isEmpty()){
+            if (!token.isEmpty()) {
                 MyCustomMenu(
                     modifier = Modifier,
                     title = stringResource(Res.string.delete_account),
@@ -251,7 +286,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
             }
 
 
-            if(!token.isEmpty()){
+            if (!token.isEmpty()) {
                 MyCustomMenu(
                     modifier = Modifier,
                     title = stringResource(Res.string.logout),
@@ -274,31 +309,32 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 textAlign = TextAlign.Center
             )
 
-    }
-    if (viewModel.logoutDialogShow) {
-        LogoutBottomSheet(onDismissRequest = {
-            viewModel.logoutDialogShow = false
-        }, logoutButtonClick = {
-            viewModel.logoutDialogShow = false
-            dataStoreViewModel.deleteUser()
+        }
+        if (viewModel.logoutDialogShow) {
+            LogoutBottomSheet(onDismissRequest = {
+                viewModel.logoutDialogShow = false
+            }, logoutButtonClick = {
+                viewModel.logoutDialogShow = false
+                dataStoreViewModel.deleteUser()
 
 
-            SnackBarEvent.save(
-                details = SnackBarDetails(
-                    details = logoutText,
-                    show = true,
-                    leftIcon = Icons.Default.LockOpen
+                SnackBarEvent.save(
+                    details = SnackBarDetails(
+                        details = logoutText,
+                        show = true,
+                        leftIcon = Icons.Default.LockOpen
+                    )
                 )
-            )
-        })
-    }
+            })
+        }
 
-    if (viewModel.deleteAccountDialogShow) {
-        DeleteAccountBottomSheet(deleteAccountButtonClick = {
-            viewModel.deleteAccountDialogShow = false
+        if (viewModel.deleteAccountDialogShow) {
+            DeleteAccountBottomSheet(deleteAccountButtonClick = {
+                viewModel.deleteAccountDialogShow = false
 
-        }) {
-            viewModel.deleteAccountDialogShow = false
+            }) {
+                viewModel.deleteAccountDialogShow = false
+            }
         }
     }
 }

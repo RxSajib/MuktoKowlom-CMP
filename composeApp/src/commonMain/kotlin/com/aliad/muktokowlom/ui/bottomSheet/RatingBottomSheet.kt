@@ -40,7 +40,6 @@ import muktokowlomcmp.composeapp.generated.resources.star_fill
 import muktokowlomcmp.composeapp.generated.resources.submit
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +53,6 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
 
     ModalBottomSheet(
