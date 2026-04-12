@@ -101,12 +101,13 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
 
         PullToRefresh(
             refreshLayoutState = refreshState,
+            modifier = Modifier.padding(innerPadding)
         ) {
 
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
-                        .padding(innerPadding).verticalScroll(state = rememberScrollState()),
+                        .verticalScroll(state = rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     HeightGap(height = 15.dp)
