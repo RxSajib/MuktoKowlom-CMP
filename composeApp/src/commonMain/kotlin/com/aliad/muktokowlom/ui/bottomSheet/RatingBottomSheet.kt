@@ -21,9 +21,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.aliad.muktokowlom.ui.screen.component.FeedBackInputComponent
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
@@ -47,6 +51,8 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
 
     val scope = rememberCoroutineScope()
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val storyData = viewModel.storyData.collectAsStateWithLifecycle()
+
     LaunchedEffect(Unit) {
         try {
             state.expand()
@@ -67,16 +73,18 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
         ) {
 
             AsyncImage(
-                modifier = Modifier.fillMaxWidth(.4f).aspectRatio(2f)
+                modifier = Modifier.fillMaxWidth(.65f).aspectRatio(2f)
                     .clip(shape = RoundedCornerShape(10.dp)),
-                model = "",
+                model = storyData.value.completedImageUri,
                 contentDescription = null,
                 placeholder = painterResource(Res.drawable.muktokowlom_white),
-                error = painterResource(Res.drawable.muktokowlom_white)
+                error = painterResource(Res.drawable.muktokowlom_white),
+                contentScale = ContentScale.Crop,
+
             )
             HeightGap(height = 15.dp)
             Text(
-                text = "My Name Is a Story: An Empowering First Day of School Book for Kids",
+                text = storyData.value.titleBn?: "",
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge.copy(
@@ -88,11 +96,12 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
                 Image(
                     painter = painterResource(Res.drawable.star_fill),
                     contentDescription = null,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(15.dp),
+                    colorFilter = ColorFilter.tint(color = Color.Red)
                 )
-                WidthGap(10.dp)
+                WidthGap(5.dp)
                 Text(
-                    text = "0.0 / 0.5",
+                    text = "${storyData.value.rating} / 0.5",
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = adjustedFontSize(10.0f),
                         fontWeight = FontWeight.Bold
@@ -101,11 +110,12 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
             }
             HeightGap(height = 5.dp)
             Text(
-                text = "Sajib Roy",
+                text = storyData.value.user?.name?: "",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
+                    fontSize = adjustedFontSize(8.0f),
+                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
                 )
             )
             HeightGap(height = 10.dp)
