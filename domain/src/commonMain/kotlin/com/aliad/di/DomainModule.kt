@@ -1,5 +1,6 @@
 package com.aliad.di
 
+import com.aliad.usecase.AllReleaseUseCase
 import com.aliad.usecase.CategoryUseCase
 import com.aliad.usecase.CategoryWiseBookUseCase
 import com.aliad.usecase.DashBoardUseCase
@@ -113,6 +114,12 @@ val domainModule = module {
     
     factory {
         SearchBookUseCase(
+            storyType = get()
+        )
+    }
+    
+    factory {
+        AllReleaseUseCase(
             storyType = get()
         )
     }

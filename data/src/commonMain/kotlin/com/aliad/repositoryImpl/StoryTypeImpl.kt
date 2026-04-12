@@ -7,6 +7,7 @@ import androidx.paging.map
 import com.aliad.dataSource.RemoteDataSources
 import com.aliad.model.MyBookItem
 import com.aliad.model.mapper.DataMapper.toBookModel
+import com.aliad.pager.AllStoryPagingSource
 import com.aliad.pager.SearchStoryPagingSource
 import com.aliad.pager.StoryTypePagingSource
 import com.aliad.repository.StoryType
@@ -32,6 +33,20 @@ class StoryTypeImpl constructor(val remoteDataSources: RemoteDataSources) : Stor
         return Pager(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false),
             pagingSourceFactory = { SearchStoryPagingSource(searchKey = searchKey, remoteDataSources = remoteDataSources)}
+        ).flow.map {pagingData ->
+            pagingData.map { bookItem ->
+                toBookModel(bookItem = bookItem)
+            }
+        }
+    }
+
+    override fun getAllReleaseStory(searchKey: String): Flow<PagingData<MyBookItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { AllStoryPagingSource(remoteDataSources = remoteDataSources, searchKey = searchKey)}
         ).flow.map {pagingData ->
             pagingData.map { bookItem ->
                 toBookModel(bookItem = bookItem)

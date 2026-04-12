@@ -10,15 +10,16 @@ import androidx.paging.LoadState
 import androidx.paging.cachedIn
 import com.aliad.model.PagingUiState
 import com.aliad.presentation.utils.StoryType
+import com.aliad.usecase.AllReleaseUseCase
 import com.aliad.usecase.StoryTypeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class AllReleaseStoryViewModel constructor(val storyTypeUseCase: StoryTypeUseCase) : ViewModel() {
+class AllReleaseStoryViewModel constructor(val allReleaseUseCase: AllReleaseUseCase) : ViewModel() {
 
     var searchStoryData by mutableStateOf("")
 
-    val storyData = storyTypeUseCase.getStoryType(searchKey = "All", searchType = StoryType.ALL_STORY.name)
+    val storyData = allReleaseUseCase.getAllReleaseStory(searchKey = "All")
         .cachedIn(viewModelScope)
 
     private val _pagingUiState = MutableStateFlow(PagingUiState())

@@ -115,7 +115,7 @@ val presentationModule = module {
 
     viewModel {
         AllReleaseStoryViewModel(
-            storyTypeUseCase = get()
+            allReleaseUseCase = get()
         )
     }
 

@@ -3,6 +3,7 @@ package com.aliad.dataSource
 import com.aliad.model.ApiException
 import com.aliad.ApiResult
 import com.aliad.model.ApiResponse
+import com.aliad.model.BookItem
 import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashboardDto
@@ -427,7 +428,16 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     suspend fun getStoryBySearch(searchKey : String, page : Int) : GenericResponse<SearchStoryDto>{
         val response = httpClient.get(urlString = SEARCH_BOOK){
             parameter("page", page)
+            parameter("search", searchKey)
         }
         return response.body<GenericResponse<SearchStoryDto>>()
+    }
+
+    suspend fun getAllReleaseStory(searchKey : String, page : Int) : GenericResponse<List<BookItem>>{
+        val response = httpClient.get(urlString = ALLSTORY){
+            parameter("page", page)
+            parameter("search", searchKey)
+        }
+        return response.body<GenericResponse< List<BookItem>>>()
     }
 }

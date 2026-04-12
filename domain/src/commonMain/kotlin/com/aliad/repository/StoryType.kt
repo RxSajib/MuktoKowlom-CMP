@@ -8,4 +8,6 @@ interface StoryType {
     fun getStoryType(searchKey: String, storyType : String): Flow<PagingData<MyBookItem>>
 
     fun getSearchStory(searchKey : String) : Flow<PagingData<MyBookItem>>
+
+    fun getAllReleaseStory(searchKey : String) : Flow<PagingData<MyBookItem>>
 }
