@@ -5,18 +5,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MyBookItem(
-    val storyID : Int? = null,
+    val storyID: Int? = null,
     val category_name: String? = null,
     val category_name_bn: String? = null,
     val created_at: String? = null,
     val titleBn: String? = null,
     val titleEn: String? = null,
-    val image : String ?= null,
-    val rating : String ?= null,
-    val authorName : String?= null,
-    val summaryBn : String? = null,
-    val summaryEn : String?= null,
-    val isPayAble : String? = null,
+    val image: String? = null,
+    val rating: String? = null,
+    val authorName: String? = null,
+    val summaryBn: String? = null,
+    val summaryEn: String? = null,
+    val isPayAble: String? = null,
+    val likeStories: List<MyLikeStory> = emptyList()
 ){
 
     val isPaidStory : Boolean = isPayAble == 1.toString()
@@ -27,4 +28,26 @@ data class MyBookItem(
 fun convertStringToInt(input: String): Int? {
     val doubleValue: Double? = input.toDoubleOrNull()
     return doubleValue?.toInt()
+}
+
+
+@Serializable
+data class MyLikeStory(
+    val storyID: Int? = null,
+    val category_name: String? = null,
+    val category_name_bn: String? = null,
+    val created_at: String? = null,
+    val titleBn: String? = null,
+    val titleEn: String? = null,
+    val image: String? = null,
+    val rating: String? = null,
+    val authorName: String? = null,
+    val summaryBn: String? = null,
+    val summaryEn: String? = null,
+    val isPayAble: String? = null,
+){
+
+    val isPaidStory : Boolean = isPayAble == 1.toString()
+    val completedImageUri = "https://muktokowlom.com/$image"
+    val ratingToInt = convertStringToInt(rating?:"0")
 }

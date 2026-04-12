@@ -4,9 +4,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.aliad.ApiResult
 import com.aliad.dataSource.RemoteDataSources
 import com.aliad.model.MyBookItem
+import com.aliad.model.mapper.DataMapper.toBookFromSearchStoryDto
 import com.aliad.model.mapper.DataMapper.toBookModel
+import com.aliad.model.searchStory.SearchStoryDto
 import com.aliad.pager.AllStoryPagingSource
 import com.aliad.pager.SearchStoryPagingSource
 import com.aliad.pager.StoryTypePagingSource
@@ -50,6 +53,19 @@ class StoryTypeImpl constructor(val remoteDataSources: RemoteDataSources) : Stor
         ).flow.map {pagingData ->
             pagingData.map { bookItem ->
                 toBookModel(bookItem = bookItem)
+            }
+        }
+    }
+
+    override suspend fun getStoryDetails(storyID: String): ApiResult<MyBookItem> {
+        return when(val response = remoteDataSources.getStoryDetails(storyID = storyID)){
+            is ApiResult.Success -> {
+                val data = response.data
+                val storyData = toBookFromSearchStoryDto(data.data?: SearchStoryDto())
+                 ApiResult.Success(storyData)
+            }
+            is ApiResult.Error -> {
+                ApiResult.Error(messageEn = response.messageEn, messageBn = response.messageBn)
             }
         }
     }

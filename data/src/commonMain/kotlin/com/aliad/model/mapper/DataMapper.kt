@@ -4,9 +4,10 @@ import com.aliad.model.BookItem
 import com.aliad.model.MyBookItem
 import com.aliad.model.Category
 import com.aliad.model.CategoryDto
-import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashBord
 import com.aliad.model.DashboardDto
+import com.aliad.model.LikeStory
+import com.aliad.model.MyLikeStory
 import com.aliad.model.PopularSearch
 import com.aliad.model.PopularSearchDto
 import com.aliad.model.PrivacyPolicy
@@ -15,11 +16,12 @@ import com.aliad.model.Subscription
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
 import com.aliad.model.login.LoginDto
+import com.aliad.model.searchStory.SearchStoryDto
 import com.aliad.model.subscription_history.Payment
 
 object DataMapper {
 
-    fun toPayment(payment: Payment) : com.aliad.model.Payment{
+    fun toPayment(payment: Payment): com.aliad.model.Payment {
         return com.aliad.model.Payment(
             amount = payment.amount,
             cardType = payment.card_type,
@@ -34,11 +36,11 @@ object DataMapper {
         )
     }
 
-    fun toPopularSearch(popularSearchDto: PopularSearchDto) : PopularSearch {
+    fun toPopularSearch(popularSearchDto: PopularSearchDto): PopularSearch {
         return PopularSearch(storyList = popularSearchDto.popularSearchStories.map { toBookModel(it) })
     }
 
-    fun toUser(loginDto: LoginDto, accessToken : String = "") : User{
+    fun toUser(loginDto: LoginDto, accessToken: String = ""): User {
         return User(
             name = loginDto.name,
             id = loginDto.id,
@@ -87,15 +89,59 @@ object DataMapper {
         )
     }
 
-    fun toDashBoardModel(dashboardDto: DashboardDto) : DashBord{
-        return DashBord(
-            lisOfPopularStories = dashboardDto.mostPopularStories.map { toBookModel(it) },
-            lifOfAllStories = dashboardDto.allStories.map { story -> toBookModel(story) },
-            listOfNewReleaseStories = dashboardDto.newReleaseStories.map { story -> toBookModel(story) }
+    fun toMyLikeStory(likeStory: LikeStory) : MyLikeStory{
+        return MyLikeStory(
+            storyID = likeStory.id,
+            category_name = likeStory.category_name,
+            category_name_bn = likeStory.category_name_bn,
+            titleBn = likeStory.title_bn,
+            image = likeStory.image,
+            rating = likeStory.rating,
+            summaryBn = likeStory.summary_bn,
+            isPayAble = likeStory.is_payable
         )
     }
 
-    fun toSubscriptionPlan(subscriptionDto: SubscriptionDto) : Subscription{
+    fun toStoryList(likeStories: List<LikeStory>): List<MyLikeStory> {
+        val bookItemList = mutableListOf<MyLikeStory>()
+        likeStories.forEach { likeStories ->
+            val story = toMyLikeStory(likeStories)
+            bookItemList.add(story)
+        }
+        return bookItemList
+    }
+
+    fun toBookFromSearchStoryDto(searchStoryDto: SearchStoryDto): MyBookItem {
+
+        return MyBookItem(
+            category_name = searchStoryDto.data[0].category_name,
+            category_name_bn = searchStoryDto.data[0].category_name_bn,
+            created_at = searchStoryDto.data[0].created_at,
+            titleBn = searchStoryDto.data[0].title_bn,
+            image = searchStoryDto.data[0].image,
+            rating = searchStoryDto.data[0].rating,
+            authorName = searchStoryDto.data[0].user_name,
+            summaryBn = searchStoryDto.data[0].summary_bn,
+            summaryEn = searchStoryDto.data[0].story_bn,
+            isPayAble = searchStoryDto.data[0].is_payable,
+            storyID = searchStoryDto.data[0].id,
+            likeStories = toStoryList(searchStoryDto.data[0].likeStories)
+        )
+    }
+
+    fun toDashBoardModel(dashboardDto: DashboardDto): DashBord {
+        return DashBord(
+            lisOfPopularStories = dashboardDto.mostPopularStories.map { toBookModel(it) },
+            lifOfAllStories = dashboardDto.allStories.map { story -> toBookModel(story) },
+            listOfNewReleaseStories = dashboardDto.newReleaseStories.map { story ->
+                toBookModel(
+                    story
+                )
+            }
+        )
+    }
+
+    fun toSubscriptionPlan(subscriptionDto: SubscriptionDto): Subscription {
         return Subscription(
             days = subscriptionDto.days,
             id = subscriptionDto.id,
@@ -105,21 +151,22 @@ object DataMapper {
             status = subscriptionDto.status
         )
     }
-    fun toSubscriptionPlanList(subscriptionDto: List<SubscriptionDto>) : List<Subscription>{
+
+    fun toSubscriptionPlanList(subscriptionDto: List<SubscriptionDto>): List<Subscription> {
         val subscriptionPlanList = mutableListOf<Subscription>()
-        subscriptionDto.forEach {subscription ->
+        subscriptionDto.forEach { subscription ->
             subscriptionPlanList.add(toSubscriptionPlan(subscription))
         }
         return subscriptionPlanList
     }
 
-    fun toPrivacyPolicy(privacyPolicyDto: PrivacyPolicyDto) : PrivacyPolicy {
+    fun toPrivacyPolicy(privacyPolicyDto: PrivacyPolicyDto): PrivacyPolicy {
         return PrivacyPolicy(
-            description = privacyPolicyDto.description?: "",
-            descriptionBn = privacyPolicyDto.description_bn?: "",
-            id = privacyPolicyDto.id?: 0,
-            title = privacyPolicyDto.title?: "",
-            titleBn = privacyPolicyDto.title_bn?: ""
+            description = privacyPolicyDto.description ?: "",
+            descriptionBn = privacyPolicyDto.description_bn ?: "",
+            id = privacyPolicyDto.id ?: 0,
+            title = privacyPolicyDto.title ?: "",
+            titleBn = privacyPolicyDto.title_bn ?: ""
         )
     }
 }

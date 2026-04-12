@@ -2,6 +2,9 @@ package com.aliad.model.searchStory
 
 import com.aliad.model.BookItem
 import com.aliad.model.Link
+import com.aliad.model.User
+import com.aliad.model.login.LoginDto
+import com.aliad.model.storyDetails.LikeStory
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,6 +21,8 @@ data class SearchStoryDto(
     val per_page: Int?= null,
     val prev_page_url: String?= null,
     val to: Int?= null,
-    val total: Int?= null
+    val total: Int?= null,
+    val user: LoginDto?= null,
+    val likeStories: List<BookItem> = emptyList()
 )
 

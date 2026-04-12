@@ -380,20 +380,61 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
     }
 
-    suspend fun getStoryDetails(storyID: String): Result<StoryDetailsDto> {
-        try {
+
+    suspend fun getStoryDetails(storyID: String): ApiResult<GenericResponse<SearchStoryDto>> {
+       return try {
             val response = httpClient.get(urlString = STORY_DETAILS) {
                 this.parameter("story_id", storyID)
             }
-            if (response.status.isSuccess()) {
-                val data = response.body<StoryDetailsDto>()
-                return Result.success(data)
-            } else {
-                return Result.failure(Exception("error fetch story details"))
-            }
-        } catch (e: Exception) {
-            return Result.failure(Exception("error fetch story details"))
-        }
+           if (response.status.isSuccess()) {
+               ApiResult.Success(
+                   response.body<GenericResponse<SearchStoryDto>>()
+               )
+
+           } else {
+               val errorBody = response.bodyAsText()
+               val errorResponse = try {
+                   Json.decodeFromString<ErrorResponse>(errorBody)
+               } catch (e: Exception) {
+                   ErrorResponse(
+                       message_en = e.message ?: "Something went wrong",
+                       message_bn = e.message ?: "Something went wrong",
+                       success = false
+                   )
+               }
+
+               ApiResult.Error(
+
+                   messageBn = errorResponse.message_bn,
+                   messageEn = errorResponse.message_en
+
+               )
+           }
+        } catch (e: ClientRequestException) {
+
+           val errorBody = e.response.bodyAsText()
+
+           ApiResult.Error(
+               messageBn = errorBody,
+               messageEn = errorBody
+           )
+
+       } catch (e: ServerResponseException) {
+
+           val errorBody = e.response.bodyAsText()
+
+           ApiResult.Error(
+               messageBn = errorBody,
+               messageEn = errorBody
+           )
+
+       } catch (e: Exception) {
+
+           ApiResult.Error(
+               messageBn = e.message,
+               messageEn = e.message
+           )
+       }
     }
 
     suspend fun getPopularSearch(): Result<PopularSearchDto> {

@@ -11,6 +11,7 @@ import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.PrivacyPolicyUseCase
 import com.aliad.usecase.SearchBookUseCase
 import com.aliad.usecase.SignUpUseCase
+import com.aliad.usecase.StoryDetailsUseCase
 import com.aliad.usecase.StoryTypeUseCase
 import com.aliad.usecase.SubscriptionHistoryUseCase
 import com.aliad.usecase.dataStore.DeleteBoolDataUseCase
@@ -120,6 +121,12 @@ val domainModule = module {
     
     factory {
         AllReleaseUseCase(
+            storyType = get()
+        )
+    }
+    
+    factory {
+        StoryDetailsUseCase(
             storyType = get()
         )
     }

@@ -2,12 +2,16 @@ package com.aliad.muktokowlom.ui.screen.storyDetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,13 +29,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
 import com.aliad.model.MyBookItem
+import com.aliad.model.MyLikeStory
 import com.aliad.muktokowlom.ui.bottomSheet.RatingBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
+import com.aliad.muktokowlom.ui.screen.component.LikeStoryItem
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.QuickAccessButton
@@ -63,8 +71,13 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) {
 
-    val viewModel : StoryDetailsViewModel = koinViewModel()
+    val viewModel: StoryDetailsViewModel = koinViewModel()
     print("story id ${myBookItem.storyID}")
+    val storyData = viewModel.storyData.collectAsStateWithLifecycle()
+
+    LaunchedEffect(myBookItem) {
+        viewModel.getStoryDetails(storyID = myBookItem.storyID.toString())
+    }
 
     Scaffold(
         topBar = {
@@ -74,12 +87,13 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface).padding(innerPadding).verticalScroll(state = rememberScrollState()),
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+                .padding(innerPadding).verticalScroll(state = rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HeightGap(height = 15.dp)
             AsyncImage(
-                model = myBookItem.completedImageUri,
+                model = storyData.value.completedImageUri,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 placeholder = painterResource(Res.drawable.placeholder),
@@ -104,7 +118,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     modifier = Modifier.weight(1f),
                     backgroundColor = MaterialTheme.colorScheme.inverseSurface,
                     onClickButton = {
-viewModel.isOpenRatingBottomSheet = true
+                        viewModel.isOpenRatingBottomSheet = true
                     },
                     padding = 0.dp
                 )
@@ -219,7 +233,7 @@ viewModel.isOpenRatingBottomSheet = true
             HeightGap(height = 10.dp)
             Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
                 QuickAccessButton(
-                    modifier = Modifier.weight(1f).clip(shape = CircleShape).clickable{
+                    modifier = Modifier.weight(1f).clip(shape = CircleShape).clickable {
 
                     },
                     icon = painterResource(Res.drawable.favorite_disable),
@@ -227,11 +241,11 @@ viewModel.isOpenRatingBottomSheet = true
                 )
                 WidthGap(width = 5.dp)
                 QuickAccessButton(
-                    modifier = Modifier.weight(1f).clip(shape = CircleShape).clickable{
-                        if(backStack.contains(AppDestination.Dest.AllCategory)){
+                    modifier = Modifier.weight(1f).clip(shape = CircleShape).clickable {
+                        if (backStack.contains(AppDestination.Dest.AllCategory)) {
                             backStack.removeLastOrNull()
                             backStack.removeLastOrNull()
-                        }else {
+                        } else {
                             backStack.add(AppDestination.Dest.AllCategory)
                         }
 
@@ -241,11 +255,11 @@ viewModel.isOpenRatingBottomSheet = true
                 )
                 WidthGap(width = 5.dp)
                 QuickAccessButton(
-                    modifier = Modifier.weight(1f).clip(shape = CircleShape).clickable{
+                    modifier = Modifier.weight(1f).clip(shape = CircleShape).clickable {
 
-                        if(backStack.contains(AppDestination.Dest.AllReleaseStory)){
+                        if (backStack.contains(AppDestination.Dest.AllReleaseStory)) {
                             backStack.removeLastOrNull()
-                        }else {
+                        } else {
                             backStack.add(AppDestination.Dest.AllReleaseStory)
                         }
                     },
@@ -262,11 +276,16 @@ viewModel.isOpenRatingBottomSheet = true
                 )
             )
             HeightGap(height = 5.dp)
+            LazyRow(modifier = Modifier.fillMaxWidth()) {
+                items(storyData.value.likeStories){myLikeStory ->
+                    LikeStoryItem(item = myLikeStory)
+                }
+            }
         }
     }
 
-    if(viewModel.isOpenRatingBottomSheet){
-        RatingBottomSheet(viewModel){
+    if (viewModel.isOpenRatingBottomSheet) {
+        RatingBottomSheet(viewModel) {
             viewModel.isOpenRatingBottomSheet = false
         }
     }

@@ -72,7 +72,9 @@ val presentationModule = module {
         StoryTypeViewModel(storyTypeUseCase = get())
     }
     viewModel {
-        StoryDetailsViewModel()
+        StoryDetailsViewModel(
+            storyDetailsUseCase = get()
+        )
     }
     viewModel {
         ProfileViewModel()
