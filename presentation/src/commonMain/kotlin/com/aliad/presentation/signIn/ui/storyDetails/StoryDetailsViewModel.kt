@@ -34,15 +34,25 @@ class StoryDetailsViewModel constructor(
         }
     }
 
+    var isLoading by mutableStateOf(false)
+
 
     fun getStoryDetails(storyID : String){
+        isLoading = true
         viewModelScope.launch {
-           when(val response =  storyDetailsUseCase.getStoryDetails(storyID = storyID)){
+
+           when(
+               val response =
+               storyDetailsUseCase.getStoryDetails(storyID = storyID)
+
+           ){
                 is ApiResult.Success -> {
                     print("success fetch data ${response.data}")
                     setStoryData(myBookItem = response.data)
+                    isLoading = false
                 }
                 is ApiResult.Error -> {
+                    isLoading = false
                   //  print("error fetch story details")
                 }
             }
