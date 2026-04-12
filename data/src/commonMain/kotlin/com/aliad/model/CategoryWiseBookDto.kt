@@ -1,5 +1,6 @@
 package com.aliad.model
 
+import com.aliad.model.login.LoginDto
 import kotlinx.serialization.Serializable
 
 
@@ -37,9 +38,11 @@ data class BookItem(
     val story_file_bn: String ? =null,
     val summary_bn: String?= null,
     val title_bn: String?= null,
+    val summary : String?= null,
     val updated_at: String?= null,
     val user_name: String?= null,
-    val views: String ?= null
+    val views: String ?= null,
+    val user: LoginDto?= null,
 )
 
 @Serializable

@@ -1,6 +1,8 @@
 package com.aliad.model
 
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class User(
     val name : String?= null,
     val id : Int?= null,

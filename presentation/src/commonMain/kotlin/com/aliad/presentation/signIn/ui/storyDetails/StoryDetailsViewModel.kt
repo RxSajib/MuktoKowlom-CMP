@@ -53,7 +53,6 @@ class StoryDetailsViewModel constructor(
                 }
                 is ApiResult.Error -> {
                     isLoading = false
-                  //  print("error fetch story details")
                 }
             }
         }

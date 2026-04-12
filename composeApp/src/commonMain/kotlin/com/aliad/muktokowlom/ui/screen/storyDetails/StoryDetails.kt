@@ -1,5 +1,6 @@
 package com.aliad.muktokowlom.ui.screen.storyDetails
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -44,19 +45,23 @@ import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.QuickAccessButton
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
 import com.aliad.muktokowlom.ui.screen.component.WriterInfo
+import com.aliad.muktokowlom.utils.AppHelper.toUSFormatWithMonth
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
 import com.eygraber.seymour.SeymourText
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
+import kotlinx.datetime.LocalDate
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.about_book
 import muktokowlomcmp.composeapp.generated.resources.add_favorites
 import muktokowlomcmp.composeapp.generated.resources.all_release
+import muktokowlomcmp.composeapp.generated.resources.book_svgrepo_com_icon
 import muktokowlomcmp.composeapp.generated.resources.category
 import muktokowlomcmp.composeapp.generated.resources.dashboard
 import muktokowlomcmp.composeapp.generated.resources.favorite_disable
 import muktokowlomcmp.composeapp.generated.resources.list
+import muktokowlomcmp.composeapp.generated.resources.no_similar_story
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import muktokowlomcmp.composeapp.generated.resources.published
 import muktokowlomcmp.composeapp.generated.resources.rating
@@ -157,14 +162,17 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                             modifier = Modifier.weight(1f),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = "2026-02-05",
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.W500
-                                ),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                            storyData.value.publishDate?.let {
+                                Text(
+                                    text = LocalDate.parse(it).toUSFormatWithMonth() ,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        fontWeight = FontWeight.W500
+                                    ),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+
                             Text(
                                 text = stringResource(Res.string.published),
                                 style = MaterialTheme.typography.bodySmall.copy(
@@ -180,7 +188,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "0",
+                                text = storyData.value.views?: "0",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.W500
                                 ),
@@ -202,7 +210,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "0",
+                                text = storyData.value.rating?: "0.0",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.W500
                                 ),
@@ -222,8 +230,8 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     HeightGap(height = 10.dp)
                     WriterInfo(
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        writerName = "Sajib Roy",
-                        profileImage = ""
+                        writerName = storyData.value.user?.name?: "Unknown",
+                        profileImage = storyData.value.user?.profileImage?: ""
                     ) {
 
                     }
@@ -239,7 +247,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     SeymourText(
                         onSeeMoreChange = { viewModel.isExpandedText = it },
                         isSeeMoreExpanded = viewModel.isExpandedText,
-                        text = stringResource(Res.string.sampleText),
+                        text = storyData.value.summaryBn?: "",
                         seeMoreText = stringResource(Res.string.see_more),
                         seeLessText = stringResource(Res.string.see_less),
                         seeMoreMaxLines = 3,
@@ -295,11 +303,30 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                         )
                     )
                     HeightGap(height = 5.dp)
-                    LazyRow(modifier = Modifier.fillMaxWidth()) {
-                        items(storyData.value.likeStories) { myLikeStory ->
-                            LikeStoryItem(item = myLikeStory)
+
+                    if(storyData.value.likeStories.isEmpty()){
+                        Box(modifier = Modifier.fillMaxWidth().aspectRatio(3f), contentAlignment = Alignment.Center){
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Image(
+                                    painter = painterResource(Res.drawable.book_svgrepo_com_icon),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(40.dp)
+                                )
+                                HeightGap(height = 10.dp)
+                                Text(
+                                    text = stringResource(Res.string.no_similar_story),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
+                        }
+                    }else {
+                        LazyRow(modifier = Modifier.fillMaxWidth()) {
+                            items(storyData.value.likeStories) { myLikeStory ->
+                                LikeStoryItem(item = myLikeStory)
+                            }
                         }
                     }
+
                 }
             }
         }

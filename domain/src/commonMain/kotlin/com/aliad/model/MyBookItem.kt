@@ -17,7 +17,10 @@ data class MyBookItem(
     val summaryBn: String? = null,
     val summaryEn: String? = null,
     val isPayAble: String? = null,
-    val likeStories: List<MyLikeStory> = emptyList()
+    val publishDate: String?= null,
+    val views : String?= null,
+    val likeStories: List<MyLikeStory> = emptyList(),
+    val user : User?= null
 ){
 
     val isPaidStory : Boolean = isPayAble == 1.toString()

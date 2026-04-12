@@ -18,6 +18,7 @@ import com.aliad.model.User
 import com.aliad.model.login.LoginDto
 import com.aliad.model.searchStory.SearchStoryDto
 import com.aliad.model.subscription_history.Payment
+import kotlin.math.log
 
 object DataMapper {
 
@@ -111,6 +112,7 @@ object DataMapper {
         return bookItemList
     }
 
+
     fun toBookFromSearchStoryDto(searchStoryDto: SearchStoryDto): MyBookItem {
 
         return MyBookItem(
@@ -122,10 +124,13 @@ object DataMapper {
             rating = searchStoryDto.data[0].rating,
             authorName = searchStoryDto.data[0].user_name,
             summaryBn = searchStoryDto.data[0].summary_bn,
-            summaryEn = searchStoryDto.data[0].story_bn,
+            summaryEn = searchStoryDto.data[0].summary,
             isPayAble = searchStoryDto.data[0].is_payable,
             storyID = searchStoryDto.data[0].id,
-            likeStories = toStoryList(searchStoryDto.data[0].likeStories)
+            publishDate = searchStoryDto.data[0].publish_date,
+            views = searchStoryDto.data[0].views,
+            likeStories = toStoryList(searchStoryDto.data[0].likeStories),
+            user = toUser(loginDto = searchStoryDto.data[0].user?: LoginDto())
         )
     }
 

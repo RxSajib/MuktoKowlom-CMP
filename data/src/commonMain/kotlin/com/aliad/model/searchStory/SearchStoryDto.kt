@@ -22,7 +22,9 @@ data class SearchStoryDto(
     val prev_page_url: String?= null,
     val to: Int?= null,
     val total: Int?= null,
-    val user: LoginDto?= null,
-    val likeStories: List<BookItem> = emptyList()
+    val publish_date : String?= null,
+    val views : String? = null,
+    val rating : String?= null,
+    val likeStories: List<BookItem> = emptyList(),
 )
 

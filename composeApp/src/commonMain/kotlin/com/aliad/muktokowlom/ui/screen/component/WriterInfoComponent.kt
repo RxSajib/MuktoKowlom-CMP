@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -33,13 +34,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun WriterInfo(modifier: Modifier,writerName: String, profileImage: String, viewAllButtonClick: () -> Unit) {
+
+
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         AsyncImage(
             model = profileImage,
             contentDescription = null,
-            modifier = Modifier.size(60.dp).clip(shape = CircleShape),
+            modifier = Modifier.size(50.dp).clip(shape = CircleShape),
             placeholder = painterResource(Res.drawable.placeholder),
             error = painterResource(Res.drawable.placeholder),
+            contentScale = ContentScale.Crop
         )
         WidthGap(width = 10.dp)
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
