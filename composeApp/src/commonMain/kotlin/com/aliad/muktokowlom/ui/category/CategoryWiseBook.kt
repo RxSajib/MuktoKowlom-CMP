@@ -54,11 +54,11 @@ fun CategoryWiseBook(
 ) {
 
     val viewModel: CategoryWiseBookViewModel = koinViewModel()
-    val storyItem = viewModel.data.collectAsLazyPagingItems()
+    val storyItem = viewModel.categoryWiseSearch.collectAsLazyPagingItems()
     val pagingUiState = viewModel.pagingUiState.collectAsState()
     val selectedStory = sharedViewModel.selectedCategory.collectAsStateWithLifecycle()
 
-    //todo print("selected category ${selectedStory.value}")
+     print("selected category id ${selectedStory.value.id}")
 
 
     LaunchedEffect(storyItem.loadState) {
@@ -93,14 +93,18 @@ fun CategoryWiseBook(
                     text = viewModel.searchStoryData,
                     onValueChange = { firstNameInput ->
                         viewModel.searchStoryData = firstNameInput
+
+                        if(firstNameInput.isEmpty()){
+                            viewModel.categoryByBook(search = "All", categoryID = selectedStory.value.id)
+                        }
                     },
                     isPasswordInput = false,
                     isVisiblePasswordChange = {},
                     isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
-                    onSearch = {
-
+                    onSearch = {searchKey ->
+                        viewModel.categoryByBook(search = searchKey, categoryID = selectedStory.value.id)
                     }
                 ) {}
                 HeightGap(height = 10.dp)

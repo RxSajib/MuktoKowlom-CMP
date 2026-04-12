@@ -1,5 +1,6 @@
 package com.aliad.presentation.signIn.di
 
+import androidx.lifecycle.SavedStateHandle
 import com.aliad.presentation.signIn.ui.FavoriteStory.FavoriteStoryViewModel
 import com.aliad.presentation.signIn.ui.allReleaseStory.AllReleaseStoryViewModel
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
@@ -31,7 +32,7 @@ val presentationModule = module {
     viewModel {
         SharedViewModel()
     }
-    
+
     viewModel {
         DataStoreViewModel(
             saveStringData = get(),
@@ -45,7 +46,7 @@ val presentationModule = module {
             deleteBoolDataUseCase = get()
         )
     }
-    
+
     viewModel {
         SignInViewModel(loginUseCase = get(), saveStringData = get(), saveIntData = get())
     }
@@ -60,8 +61,11 @@ val presentationModule = module {
         CategoryViewModel(categoryUseCase = get())
     }
 
-    viewModel {
-        CategoryWiseBookViewModel(categoryWiseBookUseCase = get())
+    viewModel { (stateHandle: SavedStateHandle) ->
+        CategoryWiseBookViewModel(
+            categoryWiseBookUseCase = get(),
+            savedStateHandle = stateHandle
+        )
     }
 
     viewModel {
