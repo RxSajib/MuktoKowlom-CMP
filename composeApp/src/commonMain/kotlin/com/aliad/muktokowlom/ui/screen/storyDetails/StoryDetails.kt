@@ -228,6 +228,12 @@ viewModel.isOpenRatingBottomSheet = true
                 WidthGap(width = 5.dp)
                 QuickAccessButton(
                     modifier = Modifier.weight(1f).clip(shape = CircleShape).clickable{
+                        if(backStack.contains(AppDestination.Dest.AllCategory)){
+                            backStack.removeLastOrNull()
+                            backStack.removeLastOrNull()
+                        }else {
+                            backStack.add(AppDestination.Dest.AllCategory)
+                        }
 
                     },
                     icon = painterResource(Res.drawable.list),
@@ -237,6 +243,11 @@ viewModel.isOpenRatingBottomSheet = true
                 QuickAccessButton(
                     modifier = Modifier.weight(1f).clip(shape = CircleShape).clickable{
 
+                        if(backStack.contains(AppDestination.Dest.AllReleaseStory)){
+                            backStack.removeLastOrNull()
+                        }else {
+                            backStack.add(AppDestination.Dest.AllReleaseStory)
+                        }
                     },
                     icon = painterResource(Res.drawable.dashboard),
                     title = stringResource(Res.string.all_release)

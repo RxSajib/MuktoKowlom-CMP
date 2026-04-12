@@ -75,7 +75,13 @@ fun CategoryWiseBook(
                 MyCustomAppBar(
                     title = selectedStory.value.name,
                     isBackButtonEnable = true,
-                    onBackPress = { rootBackStack.removeLastOrNull() }, editProfile = {})
+                    onBackPress = {
+                        if(!rootBackStack.contains(AppDestination.Dest.CategoryWiseBook)){
+                            backStack.removeLastOrNull()
+                        }else {
+                            rootBackStack.removeLastOrNull()
+                        }
+                    }, editProfile = {})
             }
         ) { innerPadding ->
 
@@ -127,7 +133,7 @@ fun CategoryWiseBook(
 
                             items(storyItem.itemCount) { position ->
                                 StoryItem(storyItem[position]) { bookItem ->
-                                        backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
+                                    backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
                                 }
                             }
 

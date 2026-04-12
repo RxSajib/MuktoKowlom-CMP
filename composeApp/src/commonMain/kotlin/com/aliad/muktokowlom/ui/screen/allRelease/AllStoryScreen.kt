@@ -44,27 +44,37 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
-    val viewModel : AllReleaseStoryViewModel = koinViewModel()
+    val viewModel: AllReleaseStoryViewModel = koinViewModel()
     val storyData = viewModel.storyData.collectAsLazyPagingItems()
     val pagingUiState = viewModel.pagingUiState.collectAsState()
 
-    LaunchedEffect(storyData.loadState){
-        viewModel.updatePagingLoadStates( loadStates = storyData.loadState, itemCount = storyData.itemCount)
+    LaunchedEffect(storyData.loadState) {
+        viewModel.updatePagingLoadStates(
+            loadStates = storyData.loadState,
+            itemCount = storyData.itemCount
+        )
     }
 
-    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
+    Surface(
+        modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
+    ) {
         Scaffold(
             topBar = {
                 MyCustomAppBar(
                     title = stringResource(Res.string.all_release),
                     editProfile = {},
                     onBackPress = {
-                        rootBackStack.removeLastOrNull()
+
+                            rootBackStack.removeLastOrNull()
+
                     }
                 )
             }
         ) { innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(start = 16.dp, end = 16.dp)) {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(innerPadding)
+                    .padding(start = 16.dp, end = 16.dp)
+            ) {
 
                 MyCustomInputFiled(
                     placeHolderText = stringResource(Res.string.search_your_favourite_genre),
@@ -90,14 +100,13 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
                         StoryLoaderShimmer()
 
                     }
-                    if(pagingUiState.value.refreshError != null){
-                        LoadStateRefreshError(onRetry = {storyData.retry()})
+                    if (pagingUiState.value.refreshError != null) {
+                        LoadStateRefreshError(onRetry = { storyData.retry() })
 
                     }
-                    if(pagingUiState.value.isEmpty){
+                    if (pagingUiState.value.isEmpty) {
                         EmptyStoryMessage()
-                    }
-                    else {
+                    } else {
                         LazyVerticalGrid(
                             modifier = Modifier
                                 .fillMaxSize(),
@@ -107,7 +116,7 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
                         ) {
 
                             items(storyData.itemCount) { position ->
-                                StoryItem(storyData[position]){bookItem ->
+                                StoryItem(storyData[position]) { bookItem ->
                                     backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
                                 }
                             }
@@ -128,9 +137,9 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
 
                             pagingUiState.value.appendError?.let {
                                 item(
-                                    span = {GridItemSpan(maxLineSpan)}
+                                    span = { GridItemSpan(maxLineSpan) }
                                 ) {
-                                    LoadStateAppendError(retry = {storyData.retry()})
+                                    LoadStateAppendError(retry = { storyData.retry() })
                                 }
                             }
 

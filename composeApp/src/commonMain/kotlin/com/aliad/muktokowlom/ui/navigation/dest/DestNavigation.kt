@@ -18,6 +18,7 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.aliad.muktokowlom.ui.category.CategoryScreen
 import com.aliad.muktokowlom.ui.category.CategoryWiseBook
 import com.aliad.muktokowlom.ui.navigation.AppDestination
+import com.aliad.muktokowlom.ui.screen.allCategory.AllCategoryScreen
 import com.aliad.muktokowlom.ui.screen.allRelease.AllStoryScreen
 import com.aliad.muktokowlom.ui.screen.earning_history.EarningHistoryScreen
 import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen
@@ -107,6 +108,11 @@ fun DestNavigation(
                 subclass(
                     AppDestination.Dest.NewReleaseStory::class,
                     AppDestination.Dest.NewReleaseStory.serializer()
+                )
+
+                subclass(
+                    AppDestination.Dest.AllCategory::class,
+                    AppDestination.Dest.AllCategory.serializer()
                 )
             }
         }
@@ -214,6 +220,11 @@ fun DestNavigation(
                 entry<AppDestination.Dest.MostPopular> {
                     MostPopularStoryScreen(backStack = backStack,
                         rootBackStack = rootBackStack)
+                }
+                entry<AppDestination.Dest.AllCategory> {
+                    AllCategoryScreen(backStack = backStack,
+                        rootBackStack = rootBackStack,
+                        sharedViewModel = sharedViewModel)
                 }
 
             },
