@@ -20,16 +20,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
-class CategoryWiseBookViewModel constructor(val categoryWiseBookUseCase: CategoryWiseBookUseCase,
-    val savedStateHandle: SavedStateHandle) :
+class CategoryWiseBookViewModel constructor(
+    val categoryWiseBookUseCase: CategoryWiseBookUseCase,
+    val savedStateHandle: SavedStateHandle
+) :
     ViewModel() {
 
 
-        var searchStoryData by mutableStateOf("")
-
-    val data =
-        categoryWiseBookUseCase.getCategoryWiseBook(categoryID = 29, searchBy = "All")
-            .cachedIn(viewModelScope)
+    var searchStoryData by mutableStateOf("")
 
 
     private val _pagingUiState = MutableStateFlow(PagingUiState())
@@ -70,7 +68,7 @@ class CategoryWiseBookViewModel constructor(val categoryWiseBookUseCase: Categor
     val categoryWiseSearch: Flow<PagingData<MyBookItem>> = _currentPagingData
         .flatMapLatest {
             it ?: categoryWiseBookUseCase.getCategoryWiseBook(
-               categoryID = _queryCategoryID.value,
+                categoryID = _queryCategoryID.value,
                 searchBy = _queryCategorySearchName.value
             ).cachedIn(viewModelScope).also { newPagingData ->
                 _currentPagingData.value = newPagingData // Cache the first-time result
@@ -78,7 +76,7 @@ class CategoryWiseBookViewModel constructor(val categoryWiseBookUseCase: Categor
         }
 
     // Update search query function
-    fun categoryByBook(search: String, categoryID : Int) {
+    fun categoryByBook(search: String, categoryID: Int) {
         if (_queryCategorySearchName.value != search || _queryCategoryID.value != categoryID) {
             _queryCategorySearchName.value = search
             _queryCategoryID.value = categoryID

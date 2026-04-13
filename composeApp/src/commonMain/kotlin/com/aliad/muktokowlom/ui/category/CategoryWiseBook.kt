@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.EmptyStoryMessage
@@ -118,11 +119,11 @@ fun CategoryWiseBook(
                             StoryLoaderShimmer()
                         }
                     }
-                    if (pagingUiState.value.refreshError != null) {
+                   else if (pagingUiState.value.refreshError != null) {
                         LoadStateRefreshError(onRetry = { storyItem.retry() })
 
                     }
-                    if (pagingUiState.value.isEmpty) {
+                   else if (pagingUiState.value.isEmpty) {
                         EmptyStoryMessage()
                     } else {
 
@@ -163,6 +164,7 @@ fun CategoryWiseBook(
                                     LoadStateAppendError(retry = { storyItem.retry() })
                                 }
                             }
+
 
                         }
                     }
