@@ -133,9 +133,10 @@ val presentationModule = module {
         )
     }
 
-    viewModel {
+    viewModel {(saveStateHandle : SavedStateHandle) ->
         MostPopularStoryViewModel(
-            storyTypeUseCase = get()
+            storyTypeUseCase = get(),
+            savedStateHandle = saveStateHandle
         )
     }
 
