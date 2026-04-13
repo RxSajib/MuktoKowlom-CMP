@@ -126,9 +126,10 @@ val presentationModule = module {
         )
     }
 
-    viewModel {
+    viewModel {(savestateHandle : SavedStateHandle) ->
         NewReleaseStoryViewModel(
-            storyTypeUseCase = get()
+            storyTypeUseCase = get(),
+            savedStateHandle = savestateHandle
         )
     }
 
