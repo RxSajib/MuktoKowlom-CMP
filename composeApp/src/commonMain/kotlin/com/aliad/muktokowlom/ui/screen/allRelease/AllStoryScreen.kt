@@ -81,14 +81,17 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
                     text = viewModel.searchStoryData,
                     onValueChange = { firstNameInput ->
                         viewModel.searchStoryData = firstNameInput
+                        if(firstNameInput.isEmpty()){
+                            viewModel.searchStory(search = "All")
+                        }
                     },
                     isPasswordInput = false,
                     isVisiblePasswordChange = {},
                     isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
-                    onSearch = {
-
+                    onSearch = {searchKey ->
+                        viewModel.searchStory(search = searchKey)
                     }
                 ) {}
 
@@ -100,11 +103,11 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
                         StoryLoaderShimmer()
 
                     }
-                    if (pagingUiState.value.refreshError != null) {
+                    else if (pagingUiState.value.refreshError != null) {
                         LoadStateRefreshError(onRetry = { storyData.retry() })
 
                     }
-                    if (pagingUiState.value.isEmpty) {
+                   else if (pagingUiState.value.isEmpty) {
                         EmptyStoryMessage()
                     } else {
                         LazyVerticalGrid(

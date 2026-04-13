@@ -119,9 +119,10 @@ val presentationModule = module {
         )
     }
 
-    viewModel {
+    viewModel {(saveStateHandle : SavedStateHandle) ->
         AllReleaseStoryViewModel(
-            allReleaseUseCase = get()
+            allReleaseUseCase = get(),
+            savedStateHandle = saveStateHandle
         )
     }
 
