@@ -1,5 +1,6 @@
 package com.aliad.muktokowlom.ui.screen.privacy_policy
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,10 +9,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
@@ -23,6 +27,7 @@ import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
+import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.privacy_policy
 import org.jetbrains.compose.resources.stringResource
@@ -65,21 +70,38 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
         }
     ) { innerPadding ->
+        Surface(
+            modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
+        ) {
 
-        PullToRefresh(refreshLayoutState = refreshState, modifier = Modifier.fillMaxSize()) {
-            Box(modifier = Modifier.fillMaxSize()){
-                Column(
-                    modifier = Modifier.padding(innerPadding)
-                        .verticalScroll(state = rememberScrollState()).padding(16.dp)
-                ) {
-                    Text(
-                        text = privacyPolicyDetails,
-                        modifier = Modifier.fillMaxSize(),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+            PullToRefresh(
+                refreshLayoutState = refreshState,
+                modifier = Modifier.fillMaxSize().padding(innerPadding)
+            ) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+
+                    if(viewModel.isLoading){
+                        WatchRunningAnimation(
+                            clockColor = Color.Gray.copy(alpha = 0.1f),
+                            handColor = Color.Gray,
+                            clockSize = 30.dp
+                        )
+                    }else {
+                        Column(
+                            modifier = Modifier.fillMaxSize()
+                                .verticalScroll(state = rememberScrollState()).padding(16.dp)
+                        ) {
+                            Text(
+                                text = privacyPolicyDetails,
+                                modifier = Modifier.fillMaxSize(),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+
+
                 }
             }
-
         }
 
     }

@@ -21,9 +21,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -39,7 +36,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import com.aliad.dataSource.CacheDataStore
 import com.aliad.helper.SnackBarEvent
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.PrivacyPolicyBottomSheet
@@ -54,8 +50,8 @@ import com.aliad.muktokowlom.ui.screen.component.WidthGap
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
+import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
-import com.sajib.data.appConstant.AppConstant
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.and
 import muktokowlomcmp.composeapp.generated.resources.by_continuing_you_agree_to_the
@@ -74,7 +70,6 @@ import muktokowlomcmp.composeapp.generated.resources.sign_up
 import muktokowlomcmp.composeapp.generated.resources.t_and_c
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -84,7 +79,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
     val dataStoreViewModel: DataStoreViewModel = koinViewModel()
     val token = dataStoreViewModel.getStringData("Token").collectAsStateWithLifecycle("")
     val lifecycle = LocalLifecycleOwner.current
-
+    val privacyPolicyViewModel: PrivacyPolicyViewModel = koinViewModel()
 
 
     LaunchedEffect(lifecycle.lifecycle) {
@@ -359,15 +354,17 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
             }
 
             if (viewModel.isOpenPrivacyPolicyBottomSheet) {
-                PrivacyPolicyBottomSheet {
+                PrivacyPolicyBottomSheet(privacyPolicyViewModel = privacyPolicyViewModel) {
                     viewModel.isOpenPrivacyPolicyBottomSheet = false
                 }
             }
 
             if(viewModel.isOpenTermsAndConditionBottomSheet){
-                TermsAndConditionBottomSheet {
-                    viewModel.isOpenTermsAndConditionBottomSheet = false
-                }
+                TermsAndConditionBottomSheet(privacyPolicyViewModel = privacyPolicyViewModel,
+                    {
+                        viewModel.isOpenTermsAndConditionBottomSheet = false
+                    },
+                )
             }
         }
     }

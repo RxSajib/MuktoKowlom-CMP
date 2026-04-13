@@ -44,6 +44,7 @@ import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
+import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.signup.SignUpViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.already_have_account
@@ -72,6 +73,8 @@ private const val TAG = "SignUpScreen"
 fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: SignUpViewModel = koinViewModel()
+    val privacyPolicyViewModel: PrivacyPolicyViewModel = koinViewModel()
+
     LaunchedEffect(Unit) {
         viewModel.isSignUpSuccess.collect { loginSuccess ->
             if (loginSuccess) {
@@ -346,13 +349,15 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
             }
 
             if (viewModel.isOpenPrivacyPolicyBottomSheet) {
-                PrivacyPolicyBottomSheet {
+                PrivacyPolicyBottomSheet(privacyPolicyViewModel = privacyPolicyViewModel) {
                     viewModel.isOpenPrivacyPolicyBottomSheet = false
                 }
             }
 
             if(viewModel.isOpenTermsAndConditionBottomSheet){
-                TermsAndConditionBottomSheet {
+                TermsAndConditionBottomSheet(
+                    privacyPolicyViewModel = privacyPolicyViewModel,
+                ) {
                     viewModel.isOpenTermsAndConditionBottomSheet = false
                 }
             }
