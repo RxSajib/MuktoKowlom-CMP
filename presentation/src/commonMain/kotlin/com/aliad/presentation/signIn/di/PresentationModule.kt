@@ -144,9 +144,10 @@ val presentationModule = module {
         FavoriteStoryViewModel()
     }
 
-    viewModel {
+    viewModel {(saveStateHandle : SavedStateHandle) ->
         SearchStoryResultViewModel(
-            searchBookUseCase = get()
+            searchBookUseCase = get(),
+            savedStateHandle = saveStateHandle
         )
     }
 }

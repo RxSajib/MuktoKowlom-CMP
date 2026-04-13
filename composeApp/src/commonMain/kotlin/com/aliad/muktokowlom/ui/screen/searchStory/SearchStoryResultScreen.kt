@@ -57,6 +57,14 @@ fun SearchStoryResultScreen(
         viewModel.updatePagingLoadStates( loadStates = storyData.loadState, itemCount = storyData.itemCount)
     }
 
+    LaunchedEffect(sharedViewModel.searchKeyword){
+        if(!viewModel.readFirstTimeSearchValue){
+            viewModel.searchStoryData = sharedViewModel.searchKeyword
+            viewModel.searchStory(search = sharedViewModel.searchKeyword)
+            viewModel.readFirstTimeSearchValue = true
+        }
+    }
+
     Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
         Scaffold(
             topBar = {
@@ -71,6 +79,9 @@ fun SearchStoryResultScreen(
                     text = viewModel.searchStoryData,
                     onValueChange = { firstNameInput ->
                         viewModel.searchStoryData = firstNameInput
+                        if(firstNameInput.isEmpty()){
+                            viewModel.searchStory(search = "All")
+                        }
                     },
                     isPasswordInput = false,
                     isVisiblePasswordChange = {
@@ -78,8 +89,8 @@ fun SearchStoryResultScreen(
                     isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
-                    onSearch = {
-
+                    onSearch = {searchKey ->
+                        viewModel.searchStory(search = searchKey)
                     }
                 ) {}
 
@@ -91,11 +102,11 @@ fun SearchStoryResultScreen(
                         StoryLoaderShimmer()
 
                     }
-                    if(pagingUiState.value.refreshError != null){
+                    else if(pagingUiState.value.refreshError != null){
                         LoadStateRefreshError(onRetry = {storyData.retry()})
 
                     }
-                    if(pagingUiState.value.isEmpty){
+                    else if(pagingUiState.value.isEmpty){
                         EmptyStoryMessage()
                     }
                     else {
