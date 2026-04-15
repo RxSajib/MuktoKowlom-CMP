@@ -9,6 +9,7 @@ import com.aliad.usecase.OtpVerificationUseCase
 import com.aliad.usecase.PopularSearchUseCase
 import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.PrivacyPolicyUseCase
+import com.aliad.usecase.RecoveryPasswordUseCase
 import com.aliad.usecase.SearchBookUseCase
 import com.aliad.usecase.SignUpUseCase
 import com.aliad.usecase.StoryDetailsUseCase
@@ -128,6 +129,12 @@ val domainModule = module {
     factory {
         StoryDetailsUseCase(
             storyType = get()
+        )
+    }
+    
+    factory {
+        RecoveryPasswordUseCase(
+            accountRepository = get()
         )
     }
 }

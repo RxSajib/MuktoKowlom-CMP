@@ -16,6 +16,7 @@ import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.loginScreen.SignInScreen
 import com.aliad.muktokowlom.ui.screen.otpView.OtpViewScreen
 import com.aliad.muktokowlom.ui.screen.recoveryPassword.RecoveryPasswordScreen
+import com.aliad.muktokowlom.ui.screen.resetPassword.ResetPasswordScreen
 import com.aliad.muktokowlom.ui.screen.updatePassword.UpdatePasswordScreen
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -31,6 +32,7 @@ fun AuthNavigation(startDest: AppDestination.Auth, rootBackStack: NavBackStack<N
                 subclass(AppDestination.Auth.SignUp::class, AppDestination.Auth.SignUp.serializer())
                 subclass(AppDestination.Auth.RecoveryPassword::class, AppDestination.Auth.RecoveryPassword.serializer())
                 subclass(AppDestination.Auth.Otp::class, AppDestination.Auth.Otp.serializer())
+                subclass(AppDestination.Auth.ResetPassword::class, AppDestination.Auth.ResetPassword.serializer())
             }
         }
     }
@@ -64,6 +66,9 @@ fun AuthNavigation(startDest: AppDestination.Auth, rootBackStack: NavBackStack<N
             }
             entry<AppDestination.Dest.UpdatePassword> {
                 UpdatePasswordScreen(backStack = backStack)
+            }
+            entry<AppDestination.Auth.ResetPassword> {
+                ResetPasswordScreen()
             }
         },
 

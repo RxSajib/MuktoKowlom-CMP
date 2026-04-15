@@ -8,13 +8,14 @@ import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
 import com.aliad.model.DashboardDto
 import com.aliad.model.ErrorResponse
+import com.aliad.model.ForgotPasswordDto
 import com.aliad.model.GenericResponse
 import com.aliad.model.PopularSearchDto
 import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
-import com.aliad.model.login.LoginDto
-import com.aliad.model.searchStory.SearchStoryDto
+import com.aliad.model.LoginDto
+import com.aliad.model.SearchStoryDto
 import com.aliad.model.storyDetails.StoryDetailsDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
@@ -25,6 +26,7 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.accept
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
@@ -58,6 +60,69 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val SIGNUP_ACCOUNT = "${BASEURL}user/signup"
     private val EMAIL_OTP_VERIFICATION = "${BASEURL}user/email-verification"
     private val SEARCH_BOOK = "${BASEURL}get-story-by-search"
+    private val FORGOT_PASSWORD = "${BASEURL}forgot-password"
+
+
+    suspend fun forGotPassword(emailAddress: String): ApiResult<ForgotPasswordDto> {
+
+        return try {
+
+            val response = httpClient.post(urlString = FORGOT_PASSWORD) {
+                setBody(
+                    FormDataContent(
+                        Parameters.build {
+                            append("email", emailAddress)
+                        }
+                    )
+                )
+            }
+            if (response.status.isSuccess()) {
+                ApiResult.Success(response.body<ForgotPasswordDto>())
+            } else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+
+                )
+            }
+        } catch (e: ClientRequestException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+    }
 
     suspend fun emailOTPVerification(otp: String): ApiResult<GenericResponse<LoginDto>> {
         return try {
@@ -324,7 +389,6 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     ): GenericResponse<CategoryWiseBookDto> {
 
 
-
         val URL =
             if (storyType == StoryType.MOST_POPULAR_STORY.name) MOSTPOPULARSTORY else if (storyType == StoryType.ALL_STORY.name) ALLSTORY else NEWRELEASESTORY
 
@@ -382,59 +446,59 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
 
 
     suspend fun getStoryDetails(storyID: String): ApiResult<GenericResponse<SearchStoryDto>> {
-       return try {
+        return try {
             val response = httpClient.get(urlString = STORY_DETAILS) {
                 this.parameter("story_id", storyID)
             }
-           if (response.status.isSuccess()) {
-               ApiResult.Success(
-                   response.body<GenericResponse<SearchStoryDto>>()
-               )
+            if (response.status.isSuccess()) {
+                ApiResult.Success(
+                    response.body<GenericResponse<SearchStoryDto>>()
+                )
 
-           } else {
-               val errorBody = response.bodyAsText()
-               val errorResponse = try {
-                   Json.decodeFromString<ErrorResponse>(errorBody)
-               } catch (e: Exception) {
-                   ErrorResponse(
-                       message_en = e.message ?: "Something went wrong",
-                       message_bn = e.message ?: "Something went wrong",
-                       success = false
-                   )
-               }
+            } else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
 
-               ApiResult.Error(
+                ApiResult.Error(
 
-                   messageBn = errorResponse.message_bn,
-                   messageEn = errorResponse.message_en
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
 
-               )
-           }
+                )
+            }
         } catch (e: ClientRequestException) {
 
-           val errorBody = e.response.bodyAsText()
+            val errorBody = e.response.bodyAsText()
 
-           ApiResult.Error(
-               messageBn = errorBody,
-               messageEn = errorBody
-           )
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
 
-       } catch (e: ServerResponseException) {
+        } catch (e: ServerResponseException) {
 
-           val errorBody = e.response.bodyAsText()
+            val errorBody = e.response.bodyAsText()
 
-           ApiResult.Error(
-               messageBn = errorBody,
-               messageEn = errorBody
-           )
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
 
-       } catch (e: Exception) {
+        } catch (e: Exception) {
 
-           ApiResult.Error(
-               messageBn = e.message,
-               messageEn = e.message
-           )
-       }
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
     }
 
     suspend fun getPopularSearch(): Result<PopularSearchDto> {
@@ -466,19 +530,19 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         return response.body<GenericResponse<SubscriptionHistoryDto>>()
     }
 
-    suspend fun getStoryBySearch(searchKey : String, page : Int) : GenericResponse<SearchStoryDto>{
-        val response = httpClient.get(urlString = SEARCH_BOOK){
+    suspend fun getStoryBySearch(searchKey: String, page: Int): GenericResponse<SearchStoryDto> {
+        val response = httpClient.get(urlString = SEARCH_BOOK) {
             parameter("page", page)
             parameter("search", searchKey)
         }
         return response.body<GenericResponse<SearchStoryDto>>()
     }
 
-    suspend fun getAllReleaseStory(searchKey : String, page : Int) : GenericResponse<List<BookItem>>{
-        val response = httpClient.get(urlString = ALLSTORY){
+    suspend fun getAllReleaseStory(searchKey: String, page: Int): GenericResponse<List<BookItem>> {
+        val response = httpClient.get(urlString = ALLSTORY) {
             parameter("page", page)
             parameter("search", searchKey)
         }
-        return response.body<GenericResponse< List<BookItem>>>()
+        return response.body<GenericResponse<List<BookItem>>>()
     }
 }

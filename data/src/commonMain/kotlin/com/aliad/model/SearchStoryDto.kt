@@ -1,10 +1,5 @@
-package com.aliad.model.searchStory
+package com.aliad.model
 
-import com.aliad.model.BookItem
-import com.aliad.model.Link
-import com.aliad.model.User
-import com.aliad.model.login.LoginDto
-import com.aliad.model.storyDetails.LikeStory
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -27,4 +22,3 @@ data class SearchStoryDto(
     val rating : String?= null,
     val likeStories: List<BookItem> = emptyList(),
 )
-

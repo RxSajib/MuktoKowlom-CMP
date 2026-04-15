@@ -81,6 +81,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
     val lifecycle = LocalLifecycleOwner.current
     val privacyPolicyViewModel: PrivacyPolicyViewModel = koinViewModel()
 
+    // fabare8974@mypethealh.com
 
     LaunchedEffect(lifecycle.lifecycle) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
@@ -153,9 +154,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                     ) {
 
                     HeightGap(height = 20.dp)
-                    Text(
-                        text = token.value
-                    )
+
                     Text(
                         text = stringResource(Res.string.sign_in_now),
                         style = MaterialTheme.typography.bodyLarge.copy(

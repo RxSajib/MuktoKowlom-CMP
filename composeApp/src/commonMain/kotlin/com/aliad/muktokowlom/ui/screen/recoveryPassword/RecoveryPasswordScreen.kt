@@ -14,10 +14,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.muktokowlom.ui.navigation.AppDestination
@@ -42,6 +46,22 @@ import org.koin.compose.viewmodel.koinViewModel
 fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
 
     val viewModel: RecoveryPasswordViewModel = koinViewModel()
+    val lifecycle = LocalLifecycleOwner.current
+
+    LaunchedEffect(lifecycle) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            viewModel.response.collect { response ->
+                if (response.success) {
+                    print("success send ${response.message_bn} ${response.message_en}")
+                    backStack.add(
+                        AppDestination.Auth.Otp(emailOrPhoneNumber = viewModel.inputEmailAddress)
+                    )
+                } else {
+                    print("error ${response.message_bn} ${response.message_en}")
+                }
+            }
+        }
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
@@ -52,7 +72,7 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
                     editProfile = {},
                     onBackPress = {
                         backStack.remove(AppDestination.Auth.RecoveryPassword)
-                                  },
+                    },
                     title = stringResource(Res.string.recovery_password)
                 )
             }
@@ -103,7 +123,7 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
                             isPasswordInput = false,
                             isVisiblePasswordChange = {},
                             isPasswordVisibility = true,
-                        ){}
+                        ) {}
 
                     }
 
@@ -112,12 +132,10 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
                         title = stringResource(Res.string.send_otp),
                         modifier = Modifier,
                         onClickButton = {
-                            backStack.add(
-                                AppDestination.Auth.Otp(emailOrPhoneNumber = viewModel.inputEmailAddress)
-                            )
+                            viewModel.resetPassword()
                         },
                         isEnable = viewModel.isButtonValid,
-                        showProgress = false
+                        showProgress = viewModel.isLoading
                     )
                 }
             }

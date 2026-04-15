@@ -6,6 +6,7 @@ import com.aliad.model.Category
 import com.aliad.model.CategoryDto
 import com.aliad.model.DashBord
 import com.aliad.model.DashboardDto
+import com.aliad.model.ForgotPasswordDto
 import com.aliad.model.LikeStory
 import com.aliad.model.MyLikeStory
 import com.aliad.model.PopularSearch
@@ -15,12 +16,22 @@ import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.Subscription
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
-import com.aliad.model.login.LoginDto
-import com.aliad.model.searchStory.SearchStoryDto
+import com.aliad.model.LoginDto
+import com.aliad.model.ResetPasswordResponse
+import com.aliad.model.SearchStoryDto
 import com.aliad.model.subscription_history.Payment
 import kotlin.math.log
 
 object DataMapper {
+    
+    fun resetPasswordDtoTOResetPasswordResponse(forgotPasswordDto: ForgotPasswordDto) : ResetPasswordResponse{
+        return ResetPasswordResponse(
+            messageEn = forgotPasswordDto.message_en,
+            messageBn = forgotPasswordDto.message_bn,
+            emailAddress = forgotPasswordDto.resetData.email,
+            token = forgotPasswordDto.resetData.token
+        )
+    }
 
     fun toPayment(payment: Payment): com.aliad.model.Payment {
         return com.aliad.model.Payment(

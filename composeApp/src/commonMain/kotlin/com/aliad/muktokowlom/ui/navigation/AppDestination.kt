@@ -95,6 +95,9 @@ sealed class AppDestination : NavKey {
     data class Auth(val firstDestName : String) : AppDestination(){
 
         @Serializable
+        object ResetPassword : AppDestination()
+
+        @Serializable
         object SignUp : AppDestination()
 
         @Serializable

@@ -1,4 +1,4 @@
-package com.aliad.model.login
+package com.aliad.model
 
 import kotlinx.serialization.Serializable
 
@@ -43,4 +43,3 @@ data class LoginDto(
 ){
     val completedProfileImage = "https://muktokowlom.com/$image"
 }
-

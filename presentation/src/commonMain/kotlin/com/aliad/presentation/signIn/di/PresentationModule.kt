@@ -14,6 +14,7 @@ import com.aliad.presentation.signIn.ui.otpVerification.OtpVerificationViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.recoveryPassword.RecoveryPasswordViewModel
+import com.aliad.presentation.signIn.ui.resetPassword.ResetPasswordViewModel
 import com.aliad.presentation.signIn.ui.search.SearchViewModel
 import com.aliad.presentation.signIn.ui.searchStoryResult.SearchStoryResultViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
@@ -96,7 +97,9 @@ val presentationModule = module {
     }
 
     viewModel {
-        RecoveryPasswordViewModel()
+        RecoveryPasswordViewModel(
+            resetPasswordUseCase = get()
+        )
     }
 
     viewModel {
@@ -149,5 +152,9 @@ val presentationModule = module {
             searchBookUseCase = get(),
             savedStateHandle = saveStateHandle
         )
+    }
+
+    viewModel {
+        ResetPasswordViewModel()
     }
 }

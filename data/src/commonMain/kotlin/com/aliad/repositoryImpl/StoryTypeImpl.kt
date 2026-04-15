@@ -9,7 +9,7 @@ import com.aliad.dataSource.RemoteDataSources
 import com.aliad.model.MyBookItem
 import com.aliad.model.mapper.DataMapper.toBookFromSearchStoryDto
 import com.aliad.model.mapper.DataMapper.toBookModel
-import com.aliad.model.searchStory.SearchStoryDto
+import com.aliad.model.SearchStoryDto
 import com.aliad.pager.AllStoryPagingSource
 import com.aliad.pager.SearchStoryPagingSource
 import com.aliad.pager.StoryTypePagingSource

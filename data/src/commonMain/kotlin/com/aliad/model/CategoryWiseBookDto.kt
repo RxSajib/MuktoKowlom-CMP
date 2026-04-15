@@ -1,6 +1,6 @@
 package com.aliad.model
 
-import com.aliad.model.login.LoginDto
+import com.aliad.model.LoginDto
 import kotlinx.serialization.Serializable
 
 

@@ -4,7 +4,9 @@ import com.aliad.ApiResult
 import com.aliad.dataSource.RemoteDataSources
 import com.aliad.model.ApiResponse
 import com.aliad.model.User
-import com.aliad.model.login.LoginDto
+import com.aliad.model.LoginDto
+import com.aliad.model.ResetPasswordResponse
+import com.aliad.model.mapper.DataMapper.resetPasswordDtoTOResetPasswordResponse
 import com.aliad.model.mapper.DataMapper.toUser
 import com.aliad.repository.AccountRepository
 import io.ktor.client.HttpClient
@@ -104,6 +106,18 @@ class AccountRepositoryImpl(
                     loginDto = body.data?: LoginDto(),
                     accessToken = body.access_token?: ""
                 ))
+            }
+            is ApiResult.Error -> {
+                ApiResult.Error(messageEn = response.messageEn, messageBn = response.messageBn)
+            }
+        }
+    }
+
+    override suspend fun resetPassword(emailAddress: String): ApiResult<ResetPasswordResponse> {
+        return when(val response = remoteDataSources.forGotPassword(emailAddress = emailAddress)){
+            is ApiResult.Success -> {
+                val body = response.data
+                ApiResult.Success(resetPasswordDtoTOResetPasswordResponse(forgotPasswordDto = body))
             }
             is ApiResult.Error -> {
                 ApiResult.Error(messageEn = response.messageEn, messageBn = response.messageBn)

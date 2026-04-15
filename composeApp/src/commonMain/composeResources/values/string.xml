@@ -2,7 +2,7 @@
 
 <resources>
 
-
+    <string name="reset_password">Reset Password</string>
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="expired_on">Expired On:</string>
@@ -134,8 +134,12 @@
     <string name="recovery_password">Recovery Password</string>
     <string name="recovery_password_details">Enter your valid email for recovery password</string>
     <string name="send_otp">Send OTP</string>
-    <string name="enter_otp">Enter OTP</string>
 
+    <string name="reset_password_details">Please enter your valid email and password for recovery password</string>
+    <string name="i_don_t_found_otp">I don't found otp</string>
+
+    <string name="reset">Reset</string>
+    <string name="enter_otp">Enter Otp</string>
     <string name="logout_success">Logout success</string>
     <string name="or_continue_with">Or continue with</string>
 
