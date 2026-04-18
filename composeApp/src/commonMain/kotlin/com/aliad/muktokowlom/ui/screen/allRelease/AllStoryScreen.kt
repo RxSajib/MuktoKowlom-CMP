@@ -83,6 +83,8 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
                         viewModel.searchStoryData = firstNameInput
                         if(firstNameInput.isEmpty()){
                             viewModel.searchStory(search = "All")
+                        }else {
+                            viewModel.searchStory(search = firstNameInput)
                         }
                     },
                     isPasswordInput = false,
@@ -91,7 +93,7 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
                     onSearch = {searchKey ->
-                        viewModel.searchStory(search = searchKey)
+                     //   viewModel.searchStory(search = searchKey)
                     }
                 ) {}
 

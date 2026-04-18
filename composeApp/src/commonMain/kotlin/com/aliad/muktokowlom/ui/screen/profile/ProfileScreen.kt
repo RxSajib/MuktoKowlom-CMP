@@ -16,7 +16,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,7 +26,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.helper.SnackBarEvent
@@ -41,6 +47,10 @@ import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.yield
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.basic_info
 import muktokowlomcmp.composeapp.generated.resources.calender_svgrepo_com
@@ -86,7 +96,43 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
     val userRegisterDate = dataStoreViewModel.getStringData(key = AppConstant.USER_REGISTER_DATE).collectAsStateWithLifecycle(null)
     val token by dataStoreViewModel.getStringData(key = AppConstant.ACCESS_TOKEN).collectAsStateWithLifecycle("")
 
-    print("access token is $token")
+    val lifecycle = LocalLifecycleOwner.current
+
+    print("token $token")
+
+
+    LaunchedEffect(lifecycle.lifecycle) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            viewModel.data.collect { apiResponse ->
+                apiResponse.success?.let { isSuccess ->
+                    if (isSuccess) {
+                        viewModel.deleteAccountDialogShow = false
+                        dataStoreViewModel.deleteUser()
+
+                        SnackBarEvent.save(
+                            details = SnackBarDetails(
+                                details = apiResponse.message_en,
+                                show = true,
+                                leftIcon = Icons.Default.LockOpen
+                            )
+                        )
+                    } else {
+                        SnackBarEvent.save(
+                            details = SnackBarDetails(
+                                details = apiResponse.message_en,
+                                show = true,
+                                leftIcon = Icons.Default.LockOpen
+                            )
+                        )
+                    }
+                }
+
+            }
+
+        }
+    }
+
+
 
     val logoutText = stringResource(Res.string.logout_success)
 
@@ -329,9 +375,10 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
         }
 
         if (viewModel.deleteAccountDialogShow) {
-            DeleteAccountBottomSheet(deleteAccountButtonClick = {
-                viewModel.deleteAccountDialogShow = false
-
+            DeleteAccountBottomSheet(
+                isProgress = viewModel.isLoading,
+                deleteAccountButtonClick = {
+                viewModel.deleteAccount()
             }) {
                 viewModel.deleteAccountDialogShow = false
             }

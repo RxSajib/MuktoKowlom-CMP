@@ -61,6 +61,59 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val EMAIL_OTP_VERIFICATION = "${BASEURL}user/email-verification"
     private val SEARCH_BOOK = "${BASEURL}get-story-by-search"
     private val FORGOT_PASSWORD = "${BASEURL}forgot-password"
+    private val DELETE_ACCOUNT = "${BASEURL}user/account/delete"
+
+
+    suspend fun deleteAccount() : ApiResult<ApiResponse>{
+        return try {
+            val response = httpClient.get(urlString = DELETE_ACCOUNT)
+            if(response.status.isSuccess()){
+                ApiResult.Success(response.body<ApiResponse>())
+            }else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+
+                )
+            }
+        }catch (e: ClientRequestException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+    }
 
 
     suspend fun forGotPassword(emailAddress: String): ApiResult<ForgotPasswordDto> {

@@ -21,4 +21,7 @@ interface AccountRepository {
     suspend fun otpVerification(otp : String) : ApiResult<User>
 
     suspend fun resetPassword(emailAddress : String) : ApiResult<ResetPasswordResponse>
+
+
+    suspend fun deleteAccount() : ApiResult<ApiResponse>
 }

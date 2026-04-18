@@ -30,6 +30,7 @@ import com.aliad.muktokowlom.ui.screen.component.WidthGap
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.privacy_policy
 import muktokowlomcmp.composeapp.generated.resources.test

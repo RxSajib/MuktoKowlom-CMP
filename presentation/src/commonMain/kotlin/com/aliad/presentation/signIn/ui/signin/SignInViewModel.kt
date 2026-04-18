@@ -16,6 +16,7 @@ import com.aliad.usecase.dataStore.SaveStringData
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class SignInViewModel constructor(
@@ -23,6 +24,7 @@ class SignInViewModel constructor(
     val saveStringData: SaveStringData,
     val saveIntData: SaveIntData
 ) : ViewModel() {
+
 
     var isOpenPrivacyPolicyBottomSheet by mutableStateOf(false)
 

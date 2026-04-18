@@ -41,17 +41,27 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeleteAccountBottomSheet(deleteAccountButtonClick : () -> Unit, onDismissRequest: () -> Unit) {
+fun DeleteAccountBottomSheet(
+    isProgress: Boolean = false,
+    deleteAccountButtonClick: () -> Unit,
+    onDismissRequest: () -> Unit
+) {
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
-    ModalBottomSheet(onDismissRequest = { onDismissRequest.invoke() }, containerColor = MaterialTheme.colorScheme.surface) {
+    ModalBottomSheet(
+        onDismissRequest = { onDismissRequest.invoke() },
+        containerColor = MaterialTheme.colorScheme.surface
+    ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(modifier = Modifier.size(50.dp).clip(shape = CircleShape).background(color = Color.Red.copy(0.1f)), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.size(50.dp).clip(shape = CircleShape)
+                    .background(color = Color.Red.copy(0.1f)), contentAlignment = Alignment.Center
+            ) {
                 Image(
                     painter = painterResource(Res.drawable.delete_svgrepo_com),
                     contentDescription = null,
@@ -82,22 +92,30 @@ fun DeleteAccountBottomSheet(deleteAccountButtonClick : () -> Unit, onDismissReq
                 style = MaterialTheme.typography.bodySmall
             )
             HeightGap(height = 10.dp)
-            Row(modifier = Modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)).padding(16.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                    .padding(16.dp)
             ) {
-                MyCustomButton(onClickButton = {
-                    coroutineScope.launch {
-                        bottomSheetState.hide()
-                        onDismissRequest.invoke()
-                    }
-                }, title = stringResource(Res.string.cancel), modifier = Modifier.weight(1f), padding = 0.dp)
+                MyCustomButton(
+                    onClickButton = {
+                        coroutineScope.launch {
+                            bottomSheetState.hide()
+                            onDismissRequest.invoke()
+                        }
+                    },
+                    title = stringResource(Res.string.cancel),
+                    modifier = Modifier.weight(1f),
+                    padding = 0.dp
+                )
                 WidthGap(width = 20.dp)
-                MyCustomButton(onClickButton = {
-                    coroutineScope.launch {
-                        bottomSheetState.hide()
+                MyCustomButton(
+                    onClickButton = {
                         deleteAccountButtonClick.invoke()
-                        onDismissRequest.invoke()
-                    }
-                }, backgroundColor = Color.Red, title = stringResource(Res.string.delete), modifier = Modifier.weight(1f), padding = 0.dp)
+                    }, backgroundColor = Color.Red, title = stringResource(Res.string.delete),
+                    showProgress = isProgress,
+                    modifier = Modifier.weight(1f), padding = 0.dp
+                )
             }
         }
     }
@@ -105,9 +123,9 @@ fun DeleteAccountBottomSheet(deleteAccountButtonClick : () -> Unit, onDismissReq
 
 @Composable
 @Preview
-fun DeleteAccountBottomSheetPreview(){
+fun DeleteAccountBottomSheetPreview() {
     DeleteAccountBottomSheet(
-        deleteAccountButtonClick = {  },
+        deleteAccountButtonClick = { },
         onDismissRequest = {}
     )
 }

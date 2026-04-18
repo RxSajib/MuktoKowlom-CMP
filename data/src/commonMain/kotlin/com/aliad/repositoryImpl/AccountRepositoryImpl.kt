@@ -124,6 +124,20 @@ class AccountRepositoryImpl(
             }
         }
     }
+
+    override suspend fun deleteAccount(): ApiResult<ApiResponse> {
+        return when(val response = remoteDataSources.deleteAccount()){
+            is ApiResult.Success -> {
+                val body = response.data
+                ApiResult.Success(body)
+            }
+            is ApiResult.Error -> {
+                ApiResult.Error(messageBn = response.messageBn, messageEn = response.messageEn)
+            }
+        }
+    }
+
+
 }
 
 

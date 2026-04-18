@@ -82,7 +82,9 @@ val presentationModule = module {
         )
     }
     viewModel {
-        ProfileViewModel()
+        ProfileViewModel(
+            deleteAccountUseCase = get()
+        )
     }
     viewModel {
         EditProfileViewModel()

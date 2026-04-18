@@ -7,9 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliad.model.Subscription
 import com.aliad.usecase.PremiumPlanUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SubscriptionPlanViewModel constructor(val premiumPlanUseCase: PremiumPlanUseCase) : ViewModel() {
 
@@ -26,16 +29,19 @@ class SubscriptionPlanViewModel constructor(val premiumPlanUseCase: PremiumPlanU
 
     fun getPremiumPlanList() {
         viewModelScope.launch {
-            loading = true
-           val response = premiumPlanUseCase.getPremiumPlanList()
-            loading = false
-            if(response.isSuccess){
-                premiumPlanMutableStateFlow.value = response.getOrNull()?: emptyList()
-                selectedPackage = response.getOrNull()?.get(0)?: Subscription()
+            withContext(Dispatchers.IO){
+                loading = true
+                val response = premiumPlanUseCase.getPremiumPlanList()
+                loading = false
+                if(response.isSuccess){
+                    premiumPlanMutableStateFlow.value = response.getOrNull()?: emptyList()
+                    selectedPackage = response.getOrNull()?.get(0)?: Subscription()
+                }
+                else {
+                    premiumPlanMutableStateFlow.value = emptyList()
+                }
             }
-            else {
-                premiumPlanMutableStateFlow.value = emptyList()
-            }
+
         }
         
     }

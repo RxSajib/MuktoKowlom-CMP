@@ -4,6 +4,7 @@ import com.aliad.usecase.AllReleaseUseCase
 import com.aliad.usecase.CategoryUseCase
 import com.aliad.usecase.CategoryWiseBookUseCase
 import com.aliad.usecase.DashBoardUseCase
+import com.aliad.usecase.DeleteAccountUseCase
 import com.aliad.usecase.LoginUseCase
 import com.aliad.usecase.OtpVerificationUseCase
 import com.aliad.usecase.PopularSearchUseCase
@@ -134,6 +135,12 @@ val domainModule = module {
     
     factory {
         RecoveryPasswordUseCase(
+            accountRepository = get()
+        )
+    }
+    
+    factory {
+        DeleteAccountUseCase(
             accountRepository = get()
         )
     }

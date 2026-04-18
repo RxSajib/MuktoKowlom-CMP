@@ -65,7 +65,7 @@ val dataModule = module {
                 this.bearer {
                     loadTokens {
                         BearerTokens(
-                            accessToken = "5593|KKqVrkyfuoE5yrIcEnSKqP6Qcx1KxtlJtFvXdaT1",
+                            accessToken = "6014|qaNQTrSRiz7SimoUCUeZuoDGwRi1CKwfvt637NI5",
                             refreshToken = ""
                         )
                     }

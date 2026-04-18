@@ -16,9 +16,11 @@ import com.aliad.presentation.utils.StoryType
 import com.aliad.usecase.AllReleaseUseCase
 import com.aliad.usecase.StoryTypeUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 
 class AllReleaseStoryViewModel constructor(
@@ -59,8 +61,9 @@ class AllReleaseStoryViewModel constructor(
     private val _currentPagingData = MutableStateFlow<Flow<PagingData<MyBookItem>>?>(null)
 
     // Expose the paging data as a non-null flow
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     val storyData : Flow<PagingData<MyBookItem>> = _currentPagingData
+        .debounce(1000)
         .flatMapLatest {
             it ?: allReleaseUseCase.getAllReleaseStory(
                 searchKey = _queryCategorySearchName.value
