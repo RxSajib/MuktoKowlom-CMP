@@ -2,7 +2,8 @@
 
 <resources>
 
-    <string name="launguage_change_success">language change success</string>
+    <string name="choose_language">Choose language</string>
+    <string name="choose_language_details">Select your preferred language for better app clarity and usability</string>    <string name="launguage_change_success">language change success</string>
     <string name="reset_password">Reset Password</string>
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
@@ -25,6 +26,7 @@
     <string name="dont_have_an_account">Don't have an account</string>
     <string name="sign_up">Sign Up</string>
 
+    <string name="update">Update</string>
     <string name="terma_and_condition">Terms and Condition</string>
 
     <string name="sign_up_now">Sign Up Now</string>

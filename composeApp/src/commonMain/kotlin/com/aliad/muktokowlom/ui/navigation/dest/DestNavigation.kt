@@ -20,6 +20,7 @@ import com.aliad.muktokowlom.ui.category.CategoryWiseBook
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.allCategory.AllCategoryScreen
 import com.aliad.muktokowlom.ui.screen.allRelease.AllStoryScreen
+import com.aliad.muktokowlom.ui.screen.changeLaunguage.ChangeLanguageScreen
 import com.aliad.muktokowlom.ui.screen.earning_history.EarningHistoryScreen
 import com.aliad.muktokowlom.ui.screen.editProfile.EditProfileScreen
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
@@ -114,6 +115,11 @@ fun DestNavigation(
                     AppDestination.Dest.AllCategory::class,
                     AppDestination.Dest.AllCategory.serializer()
                 )
+
+                subclass(
+                    AppDestination.Dest.ChangeLanguage::class,
+                    AppDestination.Dest.ChangeLanguage.serializer()
+                )
             }
         }
     }
@@ -136,6 +142,7 @@ fun DestNavigation(
         startDest.firstDestName == AppDestination.Dest.AllReleaseStory::class.simpleName -> AppDestination.Dest.AllReleaseStory
         startDest.firstDestName == AppDestination.Dest.NewReleaseStory::class.simpleName -> AppDestination.Dest.NewReleaseStory
         startDest.firstDestName == AppDestination.Dest.MostPopular::class.simpleName -> AppDestination.Dest.MostPopular
+        startDest.firstDestName == AppDestination.Dest.ChangeLanguage::class.simpleName -> AppDestination.Dest.ChangeLanguage
         else -> throw Exception("Invalid destination")
     }
 
@@ -225,6 +232,13 @@ fun DestNavigation(
                     AllCategoryScreen(backStack = backStack,
                         rootBackStack = rootBackStack,
                         sharedViewModel = sharedViewModel)
+                }
+
+                entry<AppDestination.Dest.ChangeLanguage> {
+                    ChangeLanguageScreen(
+                        backStack = backStack,
+                        rootBackStack = rootBackStack,
+                    )
                 }
 
             },

@@ -5,6 +5,7 @@ import com.aliad.presentation.signIn.ui.FavoriteStory.FavoriteStoryViewModel
 import com.aliad.presentation.signIn.ui.allReleaseStory.AllReleaseStoryViewModel
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
 import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewModel
+import com.aliad.presentation.signIn.ui.changeLanguage.ChangeLanguageViewModel
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
@@ -158,5 +159,9 @@ val presentationModule = module {
 
     viewModel {
         ResetPasswordViewModel()
+    }
+
+    viewModel {
+        ChangeLanguageViewModel()
     }
 }

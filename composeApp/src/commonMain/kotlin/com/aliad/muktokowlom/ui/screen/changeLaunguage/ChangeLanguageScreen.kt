@@ -1,0 +1,93 @@
+package com.aliad.muktokowlom.ui.screen.changeLaunguage
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import com.aliad.muktokowlom.ui.screen.component.HeightGap
+import com.aliad.muktokowlom.ui.screen.component.LanguageItem
+import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
+import com.aliad.presentation.signIn.ui.changeLanguage.ChangeLanguageViewModel
+import muktokowlomcmp.composeapp.generated.resources.Res
+import muktokowlomcmp.composeapp.generated.resources.choose_language
+import muktokowlomcmp.composeapp.generated.resources.sign_in_account
+import muktokowlomcmp.composeapp.generated.resources.update
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+import kotlin.collections.get
+
+@Composable
+fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
+
+    val chooseLanguageViewModel : ChangeLanguageViewModel = koinViewModel()
+
+    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
+        Scaffold(
+            topBar = {
+                MyCustomAppBar(
+                    title = stringResource(Res.string.choose_language),
+                    onBackPress = {
+                        rootBackStack.removeLastOrNull()
+                    },
+                    editProfile = {}
+                )
+            }
+        ) {innerPadding ->
+            Column(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp).imePadding()) {
+
+
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        items(chooseLanguageViewModel.languageData.size) { position ->
+
+
+                            LanguageItem(
+                                data = chooseLanguageViewModel.languageData[position],
+                                isSelected =  chooseLanguageViewModel.selectedPosition == position,
+                                onItemSelect = {
+                                    chooseLanguageViewModel.selectedPosition = position
+                                })
+
+
+                            if (chooseLanguageViewModel.languageData.indexOf(chooseLanguageViewModel.languageData[position]) != chooseLanguageViewModel.languageData.lastIndex) {
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                        }
+                    }
+
+                HeightGap(height = 20.dp)
+                MyCustomButton(
+                    title = stringResource(Res.string.update),
+                    modifier = Modifier,
+                    onClickButton = {
+
+                    },
+                    isEnable = true,
+                    showProgress = false
+                )
+
+                HeightGap(height = 10.dp)
+
+            }
+        }
+    }
+}

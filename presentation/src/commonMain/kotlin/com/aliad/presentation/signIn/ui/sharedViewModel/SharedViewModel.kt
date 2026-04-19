@@ -9,10 +9,15 @@ import com.aliad.model.storyDetails.Category
 import com.aliad.repository.StoryType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SharedViewModel constructor() : ViewModel() {
+
+
+
+
 
     private var isPendingStoryMutableStateFlow = MutableStateFlow(false)
     val pendingStoryState = isPendingStoryMutableStateFlow.asStateFlow()

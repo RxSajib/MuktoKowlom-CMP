@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.aliad.helper.ResetAppEvent.triggerResetEvent
 import com.aliad.muktokowlom.platform.backButtonIcon
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import io.ktor.util.Platform
@@ -49,6 +50,7 @@ fun MyCustomAppBar(
     userName : String?= null,
     userEmailAddress : String?= null,
     userProfileImage : String?= null,
+    clickLanguageBtn: (() -> Unit)? = null
 ) {
     TopAppBar(
         title = {
@@ -101,10 +103,12 @@ fun MyCustomAppBar(
 
             SwitchLocalization(
                 onClickBn = {
-
+                    triggerResetEvent(true)
+                    clickLanguageBtn?.invoke()
                 },
                 onClickEn = {
-
+                    triggerResetEvent(true)
+                    clickLanguageBtn?.invoke()
                 }
             )
         },
@@ -134,5 +138,6 @@ fun MyCustomAppBarPreview() {
         homeHeaderEnable = true,
         onBackPress = {},
         editProfile = {},
+        clickLanguageBtn = {}
     )
 }

@@ -6,5 +6,5 @@ import com.aliad.muktokowlom.di.initKoin
 fun MainViewController() = ComposeUIViewController {
     initKoin()
 
-    App()
+    App(sharedViewModel)
 }

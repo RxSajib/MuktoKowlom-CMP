@@ -82,7 +82,8 @@ fun CategoryWiseBook(
                         }else {
                             rootBackStack.removeLastOrNull()
                         }
-                    }, editProfile = {})
+                    }, editProfile = {},
+                    )
             }
         ) { innerPadding ->
 

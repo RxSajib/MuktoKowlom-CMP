@@ -54,6 +54,8 @@ import kotlinx.coroutines.yield
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.basic_info
 import muktokowlomcmp.composeapp.generated.resources.calender_svgrepo_com
+import muktokowlomcmp.composeapp.generated.resources.choose_language
+import muktokowlomcmp.composeapp.generated.resources.choose_language_details
 import muktokowlomcmp.composeapp.generated.resources.copyright_muktokowlom_all_right_reserved
 import muktokowlomcmp.composeapp.generated.resources.delete_account
 import muktokowlomcmp.composeapp.generated.resources.delete_account_details
@@ -62,6 +64,7 @@ import muktokowlomcmp.composeapp.generated.resources.earningHistory
 import muktokowlomcmp.composeapp.generated.resources.earningHistoryDetails
 import muktokowlomcmp.composeapp.generated.resources.edit
 import muktokowlomcmp.composeapp.generated.resources.electricity_energy_off_on_power_switch_svgrepo_com
+import muktokowlomcmp.composeapp.generated.resources.language_svgrepo
 import muktokowlomcmp.composeapp.generated.resources.logout
 import muktokowlomcmp.composeapp.generated.resources.logout_details
 import muktokowlomcmp.composeapp.generated.resources.logout_success
@@ -302,6 +305,19 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 HeightGap(height = 10.dp)
             }
 
+            MyCustomMenu(
+                modifier = Modifier,
+                title = stringResource(Res.string.choose_language),
+                details = stringResource(Res.string.choose_language_details),
+                painter = painterResource(Res.drawable.language_svgrepo)
+            ) {
+                backStack.add(
+                    AppDestination.Dest(
+                        firstDestName = AppDestination.Dest.ChangeLanguage::class.simpleName ?: ""
+                    )
+                )
+            }
+            HeightGap(height = 10.dp)
 
             MyCustomMenu(
                 modifier = Modifier,

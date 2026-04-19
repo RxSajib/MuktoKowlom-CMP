@@ -27,11 +27,10 @@ import kotlinx.serialization.modules.polymorphic
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun RootNavigation () {
+fun RootNavigation() {
 
     val snackBarEvent = SnackBarEvent.state.collectAsState()
     val sharedViewModel : SharedViewModel = koinViewModel()
-
 
     val appConfig = SavedStateConfiguration {
         this.serializersModule = SerializersModule {

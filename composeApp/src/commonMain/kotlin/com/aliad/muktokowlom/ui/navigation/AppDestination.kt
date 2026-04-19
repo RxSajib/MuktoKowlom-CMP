@@ -40,6 +40,9 @@ sealed class AppDestination : NavKey {
     data class Dest(val firstDestName : String) : AppDestination() {
 
         @Serializable
+        data object ChangeLanguage : AppDestination()
+
+        @Serializable
         data object AllCategory : AppDestination()
 
         @Serializable
