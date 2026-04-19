@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.aliad.muktokowlom.di.commonModule
 import com.aliad.muktokowlom.di.initKoin
+import org.koin.android.ext.koin.androidContext
 
 class MyApplication : Application() {
 
@@ -17,7 +18,7 @@ class MyApplication : Application() {
         initKoinAndroid(context = this)
 
         initKoin {
-          this@MyApplication
+         androidContext(this@MyApplication)
         }
     }
 

@@ -32,30 +32,30 @@ fun SwitchLocalization(onClickBn: () -> Unit, onClickEn: () -> Unit) {
         Box(
             modifier = Modifier.background(color = Color.White).padding(2.dp).padding(0.5.dp)
                 .clip(shape = RoundedCornerShape(2.dp)).clickable {
-                dataStoreViewModel.saveStringData(key = AppConstant.SELECT_LOCAL, value = "En")
+                dataStoreViewModel.saveStringData(key = AppConstant.SELECT_LOCAL, value = "en")
             }
-                .background(color = if (selectLocal.value == "En") Color.Red else Color.Gray.copy(alpha = 0.3f)).padding(4.dp)
+                .background(color = if (selectLocal.value == "en") Color.Red else Color.Gray.copy(alpha = 0.3f)).padding(4.dp)
         ) {
             Text(
-                text = "En",
+                text = "en",
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontSize = adjustedFontSize(10.0f),
-                    color = if (selectLocal.value == "En") Color.White else Color.Gray.copy(alpha = 0.4f)
+                    color = if (selectLocal.value == "en") Color.White else Color.Gray.copy(alpha = 0.4f)
                 ),
             )
         }
         Box(
             modifier = Modifier.background(color = Color.White).padding(2.dp).padding(0.5.dp)
                 .clip(shape = RoundedCornerShape(2.dp)).clickable {
-                dataStoreViewModel.saveStringData(key = AppConstant.SELECT_LOCAL, value = "Bn")
+                dataStoreViewModel.saveStringData(key = AppConstant.SELECT_LOCAL, value = "bn")
             }
-                .background(color = if (selectLocal.value == "Bn") Color.Red else Color.Gray.copy(alpha = 0.3f)).padding(4.dp)
+                .background(color = if (selectLocal.value == "bn") Color.Red else Color.Gray.copy(alpha = 0.3f)).padding(4.dp)
         ) {
             Text(
                 text = "বাং",
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontSize = adjustedFontSize(10.0f),
-                    color = if (selectLocal.value == "Bn") Color.White else Color.Gray.copy(alpha = 0.4f)
+                    color = if (selectLocal.value == "bn") Color.White else Color.Gray.copy(alpha = 0.4f)
                 )
             )
         }
