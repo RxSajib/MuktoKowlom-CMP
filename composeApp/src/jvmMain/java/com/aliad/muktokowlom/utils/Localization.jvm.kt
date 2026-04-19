@@ -6,9 +6,10 @@ import java.util.Locale
 actual class Localization {
     actual fun setLocal(iso: String) {
 
-        val locale = Locale.forLanguageTag(iso)
+        print("local $iso")
 
-        // JVM default locale set
+        val locale = Locale.forLanguageTag(iso)
         Locale.setDefault(locale)
+
     }
 }

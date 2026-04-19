@@ -16,11 +16,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @Preview
 fun App() {
 
-    val dataStoreViewModel: DataStoreViewModel = koinViewModel()
-    val localization = koinInject<Localization>()
-    val localIso =
-        dataStoreViewModel.getStringData(key = com.aliad.muktokowlom.data.app_constant.AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
-
     MaterialTheme {
         RootNavigation()
     }

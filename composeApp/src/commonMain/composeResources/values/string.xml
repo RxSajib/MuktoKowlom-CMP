@@ -2,6 +2,7 @@
 
 <resources>
 
+    <string name="launguage_change_success">language change success</string>
     <string name="reset_password">Reset Password</string>
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
