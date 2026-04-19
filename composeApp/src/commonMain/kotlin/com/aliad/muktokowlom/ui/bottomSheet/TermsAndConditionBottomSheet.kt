@@ -26,13 +26,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import be.digitalia.compose.htmlconverter.htmlToString
+import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
+import com.aliad.muktokowlom.utils.getStoryData
+import com.aliad.muktokowlom.utils.getTitle
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.terms_and_conditions
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,8 +46,12 @@ fun TermsAndConditionBottomSheet(
     onDismissRequest: () -> Unit,
 ) {
 
+    val viewModel : DataStoreViewModel = koinViewModel()
+    val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
+
     val privacyPolicy = privacyPolicyViewModel.privacyPolicy.collectAsStateWithLifecycle()
-    val privacyPolicyDetails = htmlToString(privacyPolicy.value?.description ?: "")
+    val privacyPolicyDetailsEn = htmlToString(privacyPolicy.value?.description ?: "")
+    val privacyPolicyDetailsBn = htmlToString(privacyPolicy.value?.descriptionBn ?: "")
 
     ModalBottomSheet(onDismissRequest = {onDismissRequest.invoke()}){
         val coroutineScope = rememberCoroutineScope()
@@ -100,7 +109,7 @@ fun TermsAndConditionBottomSheet(
                                 .verticalScroll(state = rememberScrollState()).padding(16.dp)
                         ) {
                             Text(
-                                text = privacyPolicyDetails,
+                                text = getTitle(selectLn = selectLn.value, title = privacyPolicyDetailsEn, titleBn = privacyPolicyDetailsBn),
                                 modifier = Modifier.fillMaxSize(),
                                 style = MaterialTheme.typography.bodyMedium
                             )
