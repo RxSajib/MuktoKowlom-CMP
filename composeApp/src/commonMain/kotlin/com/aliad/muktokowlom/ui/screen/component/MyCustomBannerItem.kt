@@ -20,16 +20,26 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.aliad.model.MyBookItem
+import com.aliad.muktokowlom.data.app_constant.AppConstant
+import com.aliad.muktokowlom.utils.getStoryData
+import com.aliad.muktokowlom.utils.getTitle
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.muktokowlom
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem) -> Unit) {
+
+    val viewModel : DataStoreViewModel = koinViewModel()
+    val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
+
     Row(
         modifier = Modifier.fillMaxWidth().height(100.dp).padding(horizontal = 16.dp).clickable {
             onclick.invoke(myBookItem)
@@ -52,7 +62,7 @@ fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem)
         Column(modifier = Modifier.weight(1f).padding(start = 10.dp)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = myBookItem.titleBn ?: "",
+                    text = getTitle(selectLn = selectLn.value, title = myBookItem.titleEn, titleBn = myBookItem.titleBn) ,
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold
@@ -63,7 +73,10 @@ fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem)
                     )
 
                 Text(
-                    text = myBookItem.summaryBn ?: "",
+                    text = getStoryData(
+                        dataBn = myBookItem.summaryBn ?: "",
+                        dataEn = myBookItem.summaryEn ?: ""
+                    ) ,
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Normal,
                         color = MaterialTheme.colorScheme.inverseSurface,

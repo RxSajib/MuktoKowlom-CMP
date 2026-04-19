@@ -16,15 +16,25 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.aliad.model.MyBookItem
+import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
+import com.aliad.muktokowlom.utils.getTitle
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun StoryItemFixedSize(item: MyBookItem?){
+
+    val viewModel : DataStoreViewModel = koinViewModel()
+    val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
+
+
     Column(modifier = Modifier.width(220.dp).padding(10.dp)) {
         Box{
             AsyncImage(
@@ -46,7 +56,7 @@ fun StoryItemFixedSize(item: MyBookItem?){
         MyRatingBar(rating = item?.ratingToInt?.toFloat()?: 0f, starSize = 15.dp, onStarClick = {}, isIndicator = true)
         HeightGap(2.dp)
         Text(
-            text = item?.titleBn ?: "Unknow Story",
+            text = getTitle(selectLn = selectLn.value, title = item?.titleEn?: "", titleBn = item?.titleBn?: ""),
             modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.W600,

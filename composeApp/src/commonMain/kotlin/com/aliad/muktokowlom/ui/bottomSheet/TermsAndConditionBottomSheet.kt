@@ -32,7 +32,6 @@ import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.terms_and_conditions
-import muktokowlomcmp.composeapp.generated.resources.test
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
