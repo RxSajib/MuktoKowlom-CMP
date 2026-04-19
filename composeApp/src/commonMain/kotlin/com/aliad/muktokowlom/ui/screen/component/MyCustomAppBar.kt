@@ -48,7 +48,7 @@ fun MyCustomAppBar(
     editProfile: () -> Unit,
     userName : String?= null,
     userEmailAddress : String?= null,
-    userProfileImage : String?= null
+    userProfileImage : String?= null,
 ) {
     TopAppBar(
         title = {
@@ -98,21 +98,15 @@ fun MyCustomAppBar(
 
         },
         actions = {
-            if (isActonButtonEnable) {
-                IconButton(onClick = {}) {
-                    Icon(
-                        painter = painterResource(Res.drawable.premium_svgrepo_com),
-                        contentDescription = null
-                    )
-                }
-                IconButton(onClick = {}) {
-                    Icon(
-                        painter = painterResource(Res.drawable.notification_svgrepo_com),
-                        contentDescription = null
-                    )
-                }
-            }
 
+            SwitchLocalization(
+                onClickBn = {
+
+                },
+                onClickEn = {
+
+                }
+            )
         },
         navigationIcon = {
             if (isBackButtonEnable) {
@@ -139,6 +133,6 @@ fun MyCustomAppBarPreview() {
         title = "Details 01",
         homeHeaderEnable = true,
         onBackPress = {},
-        editProfile = {}
+        editProfile = {},
     )
 }

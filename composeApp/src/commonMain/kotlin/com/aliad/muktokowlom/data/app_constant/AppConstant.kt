@@ -18,4 +18,6 @@ object AppConstant {
             else -> Res.drawable.visa_inc_logo
         }
     }
+
+    const val SELECT_LOCAL = "selectLocal"
 }
