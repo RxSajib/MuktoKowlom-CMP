@@ -98,7 +98,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
 
     val lifecycle = LocalLifecycleOwner.current
 
-    print("token $token")
+
 
 
     LaunchedEffect(lifecycle.lifecycle) {

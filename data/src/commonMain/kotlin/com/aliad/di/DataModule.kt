@@ -4,6 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.aliad.dataSource.CacheDataStore
 import com.aliad.dataSource.RemoteDataSources
+import com.aliad.dataSource.Token
+import com.aliad.dataSource.TokenManager
 import com.aliad.pager.CategoryWiseBookPagingSource
 import com.aliad.repository.AccountRepository
 import com.aliad.repository.CategoryRepository
@@ -36,11 +38,13 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import kotlin.math.sin
 
 val dataModule = module {
+
 
     // implement ktor clint
     single {
@@ -62,10 +66,13 @@ val dataModule = module {
             }
 
             install(Auth){
+
                 this.bearer {
                     loadTokens {
+                        val token : TokenManager = getKoin().get()
+                        token.init()
                         BearerTokens(
-                            accessToken = "6014|qaNQTrSRiz7SimoUCUeZuoDGwRi1CKwfvt637NI5",
+                            accessToken = token.getToken(),
                             refreshToken = ""
                         )
                     }
@@ -116,6 +123,11 @@ val dataModule = module {
         SubscriptionHistoryRepositoryImpl(remoteDataSources = get())
     }
 
+    single {
+        TokenManager(
+            repository = get()
+        )
+    }
 
 
 }
