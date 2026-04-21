@@ -135,9 +135,6 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
                 onBackPress = {},
                 editProfile = {
 
-                },
-                clickLanguageBtn = {
-
                 }
 
             )

@@ -50,7 +50,6 @@ fun MyCustomAppBar(
     userName : String?= null,
     userEmailAddress : String?= null,
     userProfileImage : String?= null,
-    clickLanguageBtn: (() -> Unit)? = null
 ) {
     TopAppBar(
         title = {
@@ -101,16 +100,7 @@ fun MyCustomAppBar(
         },
         actions = {
 
-            SwitchLocalization(
-                onClickBn = {
-                    triggerResetEvent(true)
-                    clickLanguageBtn?.invoke()
-                },
-                onClickEn = {
-                    triggerResetEvent(true)
-                    clickLanguageBtn?.invoke()
-                }
-            )
+
         },
         navigationIcon = {
             if (isBackButtonEnable) {
@@ -138,6 +128,5 @@ fun MyCustomAppBarPreview() {
         homeHeaderEnable = true,
         onBackPress = {},
         editProfile = {},
-        clickLanguageBtn = {}
     )
 }
