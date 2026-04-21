@@ -21,8 +21,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import be.digitalia.compose.htmlconverter.htmlToString
+import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
+import com.aliad.muktokowlom.utils.getTitle
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
@@ -36,16 +39,22 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
-    val viewModel: PrivacyPolicyViewModel = koinViewModel()
-    val privacyPolicy = viewModel.privacyPolicy.collectAsStateWithLifecycle()
-    val privacyPolicyDetails = htmlToString(privacyPolicy.value?.description ?: "")
+    val privacyPolicyViewModel: PrivacyPolicyViewModel = koinViewModel()
+    val privacyPolicy = privacyPolicyViewModel.privacyPolicy.collectAsStateWithLifecycle()
+
+    val viewModel : DataStoreViewModel = koinViewModel()
+    val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
+
+    val privacyPolicyDetailsEn = htmlToString(privacyPolicy.value?.description ?: "")
+    val privacyPolicyDetailsBn = htmlToString(privacyPolicy.value?.descriptionBn ?: "")
+
 
     val refreshState = rememberRefreshLayoutState {
         this.setRefreshState(state = RefreshContentStateEnum.Refreshing)
-        viewModel.getPrivacyPolicy()
+        privacyPolicyViewModel.getPrivacyPolicy()
     }
-    LaunchedEffect(viewModel.isLoading) {
-        if (!viewModel.isLoading) {
+    LaunchedEffect(privacyPolicyViewModel.isLoading) {
+        if (!privacyPolicyViewModel.isLoading) {
             refreshState.setRefreshState(state = RefreshContentStateEnum.Stop)
         }
     }
@@ -80,7 +89,7 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
             ) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
 
-                    if(viewModel.isLoading){
+                    if(privacyPolicyViewModel.isLoading){
                         WatchRunningAnimation(
                             clockColor = Color.Gray.copy(alpha = 0.1f),
                             handColor = Color.Gray,
@@ -92,7 +101,7 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                                 .verticalScroll(state = rememberScrollState()).padding(16.dp)
                         ) {
                             Text(
-                                text = privacyPolicyDetails,
+                                text = getTitle(selectLn = selectLn.value, title = privacyPolicyDetailsEn, titleBn = privacyPolicyDetailsBn),
                                 modifier = Modifier.fillMaxSize(),
                                 style = MaterialTheme.typography.bodyMedium
                             )

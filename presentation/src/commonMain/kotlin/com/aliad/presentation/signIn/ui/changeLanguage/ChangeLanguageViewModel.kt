@@ -4,11 +4,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aliad.model.Language
 import com.aliad.usecase.dataStore.GetStringData
+import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.launch
 import kotlin.code
 
 class ChangeLanguageViewModel constructor(
+    val getStringData: GetStringData
 ) : ViewModel() {
 
     val languageData: List<Language> = listOf(
@@ -31,5 +35,18 @@ class ChangeLanguageViewModel constructor(
 
     var selectedPosition by mutableStateOf(0)
 
+    var selectedLanguage by mutableStateOf(Language())
+
+    init {
+        getLanguage()
+    }
+
+    fun getLanguage(){
+        viewModelScope.launch {
+            getStringData.getStringData(key = AppConstant.SELECT_LOCAL).collect { lan ->
+                selectedLanguage = selectedLanguage.copy(code = lan)
+            }
+        }
+    }
 
 }

@@ -41,7 +41,6 @@ fun LanguageItem(data: Language, isSelected: Boolean, onItemSelect: (Language) -
             .clickable {
                 onItemSelect.invoke(data)
             }
-            //.padding(vertical = 40.dp, horizontal = 12.dp)
             .fillMaxSize(), contentAlignment = Alignment.Center) {
 
         Row(
@@ -66,7 +65,7 @@ fun LanguageItem(data: Language, isSelected: Boolean, onItemSelect: (Language) -
                         ), contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = data.symbol,
+                        text = data.symbol?: "en",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight(700), fontSize = 32.sp
                         ),
@@ -78,7 +77,7 @@ fun LanguageItem(data: Language, isSelected: Boolean, onItemSelect: (Language) -
 
                 Column {
                     Text(
-                        text = data.text,
+                        text = data.text?: "",
                         fontSize = 16.sp,
                         color = if (isSelected) onPrimaryLight else Color.Gray.copy(alpha = 0.5f),
                         textAlign = TextAlign.Center,

@@ -20,16 +20,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.LanguageItem
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
+import com.aliad.muktokowlom.utils.Localization
 import com.aliad.presentation.signIn.ui.changeLanguage.ChangeLanguageViewModel
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.choose_language
 import muktokowlomcmp.composeapp.generated.resources.sign_in_account
 import muktokowlomcmp.composeapp.generated.resources.update
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.collections.get
 
@@ -37,6 +41,8 @@ import kotlin.collections.get
 fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val chooseLanguageViewModel : ChangeLanguageViewModel = koinViewModel()
+    val languages : Localization = koinInject()
+    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
 
     Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
         Scaffold(
@@ -59,12 +65,12 @@ fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
                     ) {
                         items(chooseLanguageViewModel.languageData.size) { position ->
 
-
                             LanguageItem(
                                 data = chooseLanguageViewModel.languageData[position],
                                 isSelected =  chooseLanguageViewModel.selectedPosition == position,
                                 onItemSelect = {
                                     chooseLanguageViewModel.selectedPosition = position
+                                    chooseLanguageViewModel.selectedLanguage = it
                                 })
 
 
@@ -79,7 +85,9 @@ fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
                     title = stringResource(Res.string.update),
                     modifier = Modifier,
                     onClickButton = {
-
+                        languages.setLocal(chooseLanguageViewModel.selectedLanguage.code?: "en")
+                        dataStoreViewModel.saveStringData(key = AppConstant.SELECT_LOCAL, chooseLanguageViewModel.selectedLanguage.code?: "en")
+                        rootBackStack.removeLastOrNull()
                     },
                     isEnable = true,
                     showProgress = false

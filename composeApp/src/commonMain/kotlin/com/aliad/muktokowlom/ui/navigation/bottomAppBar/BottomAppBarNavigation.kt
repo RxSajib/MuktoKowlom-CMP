@@ -38,6 +38,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import muktokowlomcmp.composeapp.generated.resources.Res
+import muktokowlomcmp.composeapp.generated.resources.category
 import muktokowlomcmp.composeapp.generated.resources.dashBoard
 import muktokowlomcmp.composeapp.generated.resources.favorite
 import muktokowlomcmp.composeapp.generated.resources.ic_fav_unselected
@@ -171,7 +172,7 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
                             modifier = Modifier.size(24.dp)
                         )
                     },
-                    label = { Text("Category") }
+                    label = { Text(stringResource(Res.string.category)) }
                 )
 
                 NavigationBarItem(

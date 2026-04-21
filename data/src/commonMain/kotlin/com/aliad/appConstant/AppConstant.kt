@@ -17,7 +17,7 @@ object AppConstant {
     const val USER_AGE = "userAge"
     const val USER_ADDRESS = "userAddress"
     const val USER_ID = "userID"
-
+    const val SELECT_LOCAL = "selectLocal"
 
     fun formatDate(input: String): String {
         if (input.isNullOrBlank()) return ""

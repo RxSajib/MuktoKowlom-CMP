@@ -162,6 +162,8 @@ val presentationModule = module {
     }
 
     viewModel {
-        ChangeLanguageViewModel()
+        ChangeLanguageViewModel(
+            getStringData = get()
+        )
     }
 }
