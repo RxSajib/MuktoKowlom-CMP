@@ -22,11 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.SubscriptionPlanItem
 import com.aliad.muktokowlom.ui.screen.component.SubscriptionPlanItemShimmer
 import com.aliad.muktokowlom.ui.screen.component.WidthGap
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.subscriptionPlan.SubscriptionPlanViewModel
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
@@ -43,6 +45,9 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
 
     val viewModel : SubscriptionPlanViewModel = koinViewModel()
     val list = viewModel.premiumPlanStateFlow.collectAsStateWithLifecycle()
+
+    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
+    val selectLn = dataStoreViewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
 
     val rememberRefreshLayoutState = rememberRefreshLayoutState {
         this.setRefreshState(state = RefreshContentStateEnum.Refreshing)
@@ -84,10 +89,12 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                     items(list.value) { subscription ->
                         SubscriptionPlanItem(
                             selected = viewModel.selectedSubscriptionIndex == (subscription.id
-                                ?: 0), subscription = subscription
+                                ?: 0), subscription = subscription,
+                            selectLn = selectLn,
                         ) {
                             viewModel.selectedSubscriptionIndex = subscription.id ?: 0
                             viewModel.selectedPackage = subscription
+
                         }
                     }
                 }
@@ -117,12 +124,12 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                             )
                             WidthGap(width = 5.dp)
                             Text(
-                                text = "$",
+                                text = "৳",
                                 style = MaterialTheme.typography.bodyLarge,
                             )
                             WidthGap(width = 1.dp)
                             Text(
-                                text = viewModel.selectedPackage.price ?: "0",
+                                text = if(selectLn.value == "en") viewModel.selectedPackage.price ?: "0" else AppConstant.toBanglaDigits(viewModel.selectedPackage.price ?: "0") ,
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.W500
                                 )

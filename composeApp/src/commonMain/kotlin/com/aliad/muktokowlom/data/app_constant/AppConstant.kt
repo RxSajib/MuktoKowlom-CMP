@@ -1,5 +1,6 @@
 package com.aliad.muktokowlom.data.app_constant
 
+import androidx.compose.ui.text.intl.Locale
 import com.aliad.muktokowlom.data.enum.PaymentType
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.bkash_bkash_logo
@@ -20,4 +21,11 @@ object AppConstant {
     }
 
     const val SELECT_LOCAL = "selectLocal"
+
+    fun toBanglaDigits(input: String): String {
+        val bnDigits = listOf('০','১','২','৩','৪','৫','৬','৭','৮','৯')
+        return input.map {
+            if (it.isDigit()) bnDigits[it - '0'] else it
+        }.joinToString("")
+    }
 }
