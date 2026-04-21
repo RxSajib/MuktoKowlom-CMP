@@ -64,8 +64,8 @@ fun AuthNavigation(startDest: AppDestination.Auth, rootBackStack: NavBackStack<N
             entry<AppDestination.Auth.Otp> {
                 OtpViewScreen(rootBackStack = rootBackStack, backStack = backStack, emailOrPhoneNumber = it.emailOrPhoneNumber)
             }
-            entry<AppDestination.Dest.UpdatePassword> {
-                UpdatePasswordScreen(backStack = backStack)
+            entry<AppDestination.Dest.UpdatePassword> {data ->
+                UpdatePasswordScreen(backStack = backStack, data = data)
             }
             entry<AppDestination.Auth.ResetPassword> {
                 ResetPasswordScreen()

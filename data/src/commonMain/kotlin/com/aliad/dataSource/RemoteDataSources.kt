@@ -38,6 +38,8 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
 import io.ktor.http.headers
 import io.ktor.http.isSuccess
+import io.ktor.http.parameters
+import io.ktor.http.parametersOf
 import io.ktor.util.collections.getValue
 import kotlinx.serialization.json.Json
 
@@ -62,7 +64,62 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val SEARCH_BOOK = "${BASEURL}get-story-by-search"
     private val FORGOT_PASSWORD = "${BASEURL}forgot-password"
     private val DELETE_ACCOUNT = "${BASEURL}user/account/delete"
+    private val PASSWORD_UPDATE = "${BASEURL}user/password-update"
 
+
+    suspend fun updatePassword(userID : String, password : String) : ApiResult<GenericResponse<LoginDto>>{
+        return try {
+            val response = httpClient.post(urlString = PASSWORD_UPDATE){
+                parameter("user_id", userID)
+                parameter("password", password)
+            }
+            if(response.status.isSuccess()){
+                ApiResult.Success(response.body<GenericResponse<LoginDto>>())
+            }else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+
+                )
+            }
+        }catch (e: ClientRequestException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+    }
 
     suspend fun deleteAccount() : ApiResult<ApiResponse>{
         return try {

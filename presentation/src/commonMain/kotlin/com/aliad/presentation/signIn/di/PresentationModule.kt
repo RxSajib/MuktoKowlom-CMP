@@ -106,7 +106,9 @@ val presentationModule = module {
     }
 
     viewModel {
-        UpdatePasswordViewModel()
+        UpdatePasswordViewModel(
+            passwordUseCase = get()
+        )
     }
 
     viewModel {

@@ -16,6 +16,7 @@ import com.aliad.usecase.SignUpUseCase
 import com.aliad.usecase.StoryDetailsUseCase
 import com.aliad.usecase.StoryTypeUseCase
 import com.aliad.usecase.SubscriptionHistoryUseCase
+import com.aliad.usecase.UpdatePasswordUseCase
 import com.aliad.usecase.dataStore.DeleteBoolDataUseCase
 import com.aliad.usecase.dataStore.DeleteIntDataUseCase
 import com.aliad.usecase.dataStore.GetBoolData
@@ -141,6 +142,12 @@ val domainModule = module {
     
     factory {
         DeleteAccountUseCase(
+            accountRepository = get()
+        )
+    }
+    
+    factory {
+        UpdatePasswordUseCase(
             accountRepository = get()
         )
     }

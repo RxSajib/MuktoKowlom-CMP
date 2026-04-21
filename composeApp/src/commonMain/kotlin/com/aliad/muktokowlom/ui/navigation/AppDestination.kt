@@ -61,7 +61,7 @@ sealed class AppDestination : NavKey {
         data object SearchStoryResult : AppDestination()
 
         @Serializable
-        data object UpdatePassword : AppDestination()
+        data class UpdatePassword(val emailAddress : String) : AppDestination()
 
         @Serializable
         data class StoryTypeWiseBook(

@@ -19,7 +19,7 @@ kotlin = "2.3.20"
 kotlinx-coroutines = "1.10.2"
 kotlinStdlib = "2.3.20"
 kotlinxDatetime = "0.7.1"
-pdfbox = "3.0.7"
+pdfbox = "2.0.35"
 runner = "1.7.0"
 core = "1.7.0"
 

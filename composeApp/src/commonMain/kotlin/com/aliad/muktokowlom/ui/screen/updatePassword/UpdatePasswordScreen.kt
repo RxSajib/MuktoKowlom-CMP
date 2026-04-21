@@ -15,11 +15,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.muktokowlom.ui.navigation.AppDestination
@@ -28,25 +30,27 @@ import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
 import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
+import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.updatePassword.UpdatePasswordViewModel
+import com.sajib.data.appConstant.AppConstant
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.confirm_password
 import muktokowlomcmp.composeapp.generated.resources.dont_have_an_account
 import muktokowlomcmp.composeapp.generated.resources.enter_email
 import muktokowlomcmp.composeapp.generated.resources.enter_new_password
 import muktokowlomcmp.composeapp.generated.resources.enter_old_password
-import muktokowlomcmp.composeapp.generated.resources.enter_password
 import muktokowlomcmp.composeapp.generated.resources.password_update
 import muktokowlomcmp.composeapp.generated.resources.save
-import muktokowlomcmp.composeapp.generated.resources.sign_in_account
-import muktokowlomcmp.composeapp.generated.resources.sign_in_now
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>){
+fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.Dest.UpdatePassword){
 
     val viewModel : UpdatePasswordViewModel = koinViewModel()
+    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
+    val userID by dataStoreViewModel.getIntData(key = AppConstant.USER_ID).collectAsStateWithLifecycle(null)
+    viewModel.emailInput = data.emailAddress
 
     Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
         Scaffold(
@@ -54,7 +58,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>){
                 MyCustomAppBar(
                     title = stringResource(Res.string.password_update),
                     onBackPress = {
-                        backStack.remove(AppDestination.Dest.UpdatePassword)
+                        backStack.remove(AppDestination.Dest.UpdatePassword(emailAddress = data.emailAddress))
                     },
                     editProfile = {}
                 )
@@ -71,18 +75,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>){
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(Res.string.dont_have_an_account),
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontSize = adjustedFontSize(10.0f)
-                            )
-                        )
-                    }
+
                     HeightGap(height = 20.dp)
 
                     MyCustomInputFiled(
@@ -93,7 +86,8 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>){
                         },
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
-                        isPasswordVisibility = true
+                        isPasswordVisibility = true,
+                        readOnly = true
                     ){}
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
@@ -141,7 +135,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>){
                     title = stringResource(Res.string.save),
                     modifier = Modifier,
                     onClickButton = {
-
+                        viewModel.updatePassword(userID = userID.toString(), password = viewModel.confirmPasswordInput)
                     },
                     isEnable = true,
                     showProgress = false

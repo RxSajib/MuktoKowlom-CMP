@@ -86,6 +86,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
     val token by dataStoreViewModel.getStringData(key = AppConstant.ACCESS_TOKEN).collectAsStateWithLifecycle(null)
 
     print("userID ${userID.toString()}")
+    print("token ${token.toString()}")
 
     val parts = userName?.trim()?.split(" ")
     val firstName = parts?.firstOrNull() ?: ""
@@ -379,7 +380,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             title = stringResource(Res.string.password_update),
                             modifier = Modifier.weight(1f),
                             onClickButton = {
-                                navBackStack.add(AppDestination.Dest.UpdatePassword)
+                                navBackStack.add(AppDestination.Dest.UpdatePassword(
+                                    emailAddress = viewModel.emailAddressInput,
+                                ))
                             },
                             isEnable = true
                         )

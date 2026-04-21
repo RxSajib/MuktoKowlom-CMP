@@ -137,6 +137,18 @@ class AccountRepositoryImpl(
         }
     }
 
+    override suspend fun updatePassword(userID : String, password : String): ApiResult<User> {
+        return when(val response = remoteDataSources.updatePassword(userID = userID, password = password)){
+            is ApiResult.Success -> {
+                val body = response.data
+                ApiResult.Success(toUser(loginDto = body.data?: LoginDto()))
+            }
+            is ApiResult.Error -> {
+                ApiResult.Error(messageEn = response.messageEn, messageBn = response.messageBn)
+            }
+        }
+    }
+
 
 }
 

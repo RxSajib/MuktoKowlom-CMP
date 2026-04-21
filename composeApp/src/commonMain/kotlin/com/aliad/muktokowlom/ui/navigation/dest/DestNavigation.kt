@@ -200,8 +200,8 @@ fun DestNavigation(
                     SubscriptionHistoryScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
 
-                entry<AppDestination.Dest.UpdatePassword> {
-                    UpdatePasswordScreen(backStack = backStack)
+                entry<AppDestination.Dest.UpdatePassword> {data ->
+                    UpdatePasswordScreen(backStack = backStack, data = data)
                 }
                 entry<AppDestination.Dest.StoryView> {
                     StoryViewScreen(backStack = backStack)
