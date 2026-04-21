@@ -20,6 +20,8 @@ class SignUpViewModel constructor(val signUpUseCase: SignUpUseCase) : ViewModel(
 
     var isSignUpSuccess = MutableSharedFlow<Boolean>()
     var nameInput by mutableStateOf("")
+    val namePart get() = nameInput.trim().split(" ")
+
     var emailInput by mutableStateOf("")
     var passwordInput by mutableStateOf("")
     var confirmPasswordInput by mutableStateOf("")
@@ -47,8 +49,8 @@ class SignUpViewModel constructor(val signUpUseCase: SignUpUseCase) : ViewModel(
                 emailAddress = emailInput,
                 password = passwordInput,
                 confirmPassword = confirmPasswordInput,
-                firstName = "Sajib",
-                lastName = "Roy",
+                firstName = namePart.firstOrNull()?: "",
+                lastName = namePart.lastOrNull()?: "",
                 isWriterStatus = "1"
             )
             isLoading = false
