@@ -67,11 +67,13 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val PASSWORD_UPDATE = "${BASEURL}user/password-update"
 
 
-    suspend fun updatePassword(userID : String, password : String) : ApiResult<GenericResponse<LoginDto>>{
+    suspend fun updatePassword(userID : String, oldPassword : String,  password : String, confirmPassword : String) : ApiResult<GenericResponse<LoginDto>>{
         return try {
             val response = httpClient.post(urlString = PASSWORD_UPDATE){
                 parameter("user_id", userID)
+                parameter("old_password", oldPassword)
                 parameter("password", password)
+                parameter("password_confirmation", password)
             }
             if(response.status.isSuccess()){
                 ApiResult.Success(response.body<GenericResponse<LoginDto>>())

@@ -12,6 +12,7 @@ import com.aliad.model.GenericResponse
 import com.aliad.usecase.DeleteAccountUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -21,7 +22,7 @@ class ProfileViewModel constructor(val deleteAccountUseCase: DeleteAccountUseCas
     var logoutDialogShow by mutableStateOf(false)
     var deleteAccountDialogShow by mutableStateOf(false)
 
-    var data = MutableStateFlow(ApiResponse())
+    var data = MutableSharedFlow<ApiResponse>()
 
     var isLoading by mutableStateOf(false)
 

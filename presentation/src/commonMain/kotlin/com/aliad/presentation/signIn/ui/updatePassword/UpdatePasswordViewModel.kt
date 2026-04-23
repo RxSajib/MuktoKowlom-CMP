@@ -33,10 +33,10 @@ class UpdatePasswordViewModel constructor(
 
 
 
-    fun updatePassword(userID : String, password : String){
+    fun updatePassword(userID : String){
         viewModelScope.launch(Dispatchers.IO) {
             isLoading = true
-            val response = passwordUseCase.updatePassword(userID = userID, password = password)
+            val response = passwordUseCase.updatePassword(userID = userID, oldPassword = oldPasswordInput, password = newPasswordInput, confirmPassword = confirmPasswordInput)
             isLoading = false
             when(response){
                 is ApiResult.Success -> {

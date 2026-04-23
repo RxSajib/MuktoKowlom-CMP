@@ -6,8 +6,10 @@ import com.aliad.repository.AccountRepository
 
 class UpdatePasswordUseCase constructor(val accountRepository: AccountRepository) {
 
-    suspend fun updatePassword(userID : String, password : String) : ApiResult<User> = accountRepository.updatePassword(
+    suspend fun updatePassword(userID : String, oldPassword : String,  password : String, confirmPassword : String) : ApiResult<User> = accountRepository.updatePassword(
         userID = userID,
-        password = password
+        oldPassword = oldPassword,
+        password = password,
+        confirmPassword = confirmPassword
     )
 }

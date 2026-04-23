@@ -25,5 +25,5 @@ interface AccountRepository {
 
     suspend fun deleteAccount() : ApiResult<ApiResponse>
 
-    suspend fun updatePassword(userID : String, password : String) : ApiResult<User>
+    suspend fun updatePassword(userID : String, oldPassword : String,  password : String, confirmPassword : String) : ApiResult<User>
 }

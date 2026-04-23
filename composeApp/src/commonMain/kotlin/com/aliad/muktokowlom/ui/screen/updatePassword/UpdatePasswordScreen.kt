@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -44,6 +46,7 @@ import muktokowlomcmp.composeapp.generated.resources.enter_email
 import muktokowlomcmp.composeapp.generated.resources.enter_new_password
 import muktokowlomcmp.composeapp.generated.resources.enter_old_password
 import muktokowlomcmp.composeapp.generated.resources.password_update
+import muktokowlomcmp.composeapp.generated.resources.password_update_success
 import muktokowlomcmp.composeapp.generated.resources.save
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -55,7 +58,34 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
     val dataStoreViewModel : DataStoreViewModel = koinViewModel()
     val userID by dataStoreViewModel.getIntData(key = AppConstant.USER_ID).collectAsStateWithLifecycle(null)
     viewModel.emailInput = data.emailAddress
+    val successData = stringResource(Res.string.password_update_success)
 
+    // handle error response
+    LaunchedEffect(Unit){
+        viewModel.data.collect { response ->
+            response.success?.let { isSuccess ->
+                if(isSuccess){
+                    SnackBarEvent.save(
+                        details = SnackBarDetails(
+                            details = successData,
+                            show = true,
+                            leftIcon = Icons.Default.LockOpen
+                        )
+                    )
+                    backStack.remove(AppDestination.Dest.UpdatePassword(emailAddress = data.emailAddress))
+                } else {
+                    SnackBarEvent.save(
+                        details = SnackBarDetails(
+                            details = response.message_bn,
+                            show = true,
+                            leftIcon = Icons.Default.LockOpen
+                        )
+                    )
+                }
+            }
+
+        }
+    }
 
 
 
@@ -142,7 +172,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                     title = stringResource(Res.string.save),
                     modifier = Modifier,
                     onClickButton = {
-                        viewModel.updatePassword(userID = userID.toString(), password = viewModel.confirmPasswordInput)
+                        viewModel.updatePassword(userID = userID.toString())
                     },
                     isEnable = true,
                     showProgress = viewModel.isLoading
