@@ -29,6 +29,8 @@ class UpdatePasswordViewModel constructor(
 
     var data = MutableSharedFlow<GenericResponse<User>>()
     var isLoading by mutableStateOf(false)
+    var isSuccessPasswordUpdate by mutableStateOf(false)
+
 
 
     fun updatePassword(userID : String, password : String){
@@ -38,12 +40,14 @@ class UpdatePasswordViewModel constructor(
             isLoading = false
             when(response){
                 is ApiResult.Success -> {
+                    isSuccessPasswordUpdate = true
                     data.emit(value = GenericResponse(
                         success = true,
                         data = response.data
                     ))
                 }
                 is ApiResult.Error -> {
+                    isSuccessPasswordUpdate = false
                     data.emit(value = GenericResponse(
                         success = false,
                         message_bn = response.messageBn,

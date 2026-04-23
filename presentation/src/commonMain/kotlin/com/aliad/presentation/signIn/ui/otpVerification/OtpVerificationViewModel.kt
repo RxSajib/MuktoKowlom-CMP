@@ -15,6 +15,7 @@ import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 
 class OtpVerificationViewModel constructor(
     private val otpVerificationUseCase: OtpVerificationUseCase,
@@ -52,8 +53,8 @@ class OtpVerificationViewModel constructor(
     }
 
 
-    fun saveUserInfo(user: User) {
-        viewModelScope.launch {
+    suspend fun saveUserInfo(user: User) {
+        supervisorScope {
             val job1 = async {
                 saveStringData.saveStringData(AppConstant.USER_EMAIL_ADDRESS, user.email ?: "")
             }

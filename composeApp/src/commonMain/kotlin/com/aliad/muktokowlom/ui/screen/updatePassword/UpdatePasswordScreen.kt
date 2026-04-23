@@ -13,8 +13,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.helper.SnackBarEvent
+import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.screen.component.HeightGap
 import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
@@ -51,6 +55,9 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
     val dataStoreViewModel : DataStoreViewModel = koinViewModel()
     val userID by dataStoreViewModel.getIntData(key = AppConstant.USER_ID).collectAsStateWithLifecycle(null)
     viewModel.emailInput = data.emailAddress
+
+
+
 
     Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
         Scaffold(
@@ -138,7 +145,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                         viewModel.updatePassword(userID = userID.toString(), password = viewModel.confirmPasswordInput)
                     },
                     isEnable = true,
-                    showProgress = false
+                    showProgress = viewModel.isLoading
                 )
             }
         }

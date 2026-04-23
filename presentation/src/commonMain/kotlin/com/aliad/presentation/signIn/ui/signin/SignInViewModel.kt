@@ -18,6 +18,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 
 class SignInViewModel constructor(
     val loginUseCase: LoginUseCase,
@@ -87,8 +88,8 @@ class SignInViewModel constructor(
         get() = isValidEmailAddress && passwordInput.isNotEmpty() && passwordInput.length >= 6
 
 
-    fun saveUserInfo(user: User) {
-        viewModelScope.launch {
+    suspend fun saveUserInfo(user: User) {
+        supervisorScope { // if one corotine cancel other corotine run
             val job1 = async {
                 saveStringData.saveStringData(AppConstant.USER_EMAIL_ADDRESS, user.email ?: "")
             }
