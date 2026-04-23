@@ -65,6 +65,8 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
     val newPassword = viewModel.newPasswordState.collectAsStateWithLifecycle()
     val confirmPassword = viewModel.confirmPasswordState.collectAsStateWithLifecycle()
     val isEnableUpdateButton = viewModel.isUpdateButtonEnable.collectAsStateWithLifecycle(false)
+    val selectedLocal = dataStoreViewModel.getStringData(AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
+
 
     LaunchedEffect(Unit){
         viewModel.updateEmailInput(emailAddress = data.emailAddress)
@@ -86,7 +88,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                 } else {
                     SnackBarEvent.save(
                         details = SnackBarDetails(
-                            details = response.message_bn,
+                            details = if(selectedLocal.value == "en") response.message_en else response.message_bn,
                             show = true,
                             leftIcon = Icons.Default.LockOpen
                         )
