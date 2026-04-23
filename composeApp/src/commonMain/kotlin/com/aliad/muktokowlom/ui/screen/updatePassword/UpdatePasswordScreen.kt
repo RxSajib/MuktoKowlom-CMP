@@ -60,6 +60,16 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
     viewModel.emailInput = data.emailAddress
     val successData = stringResource(Res.string.password_update_success)
 
+    val emailAddress = viewModel.emailStateFlow.collectAsStateWithLifecycle()
+    val oldPassword = viewModel.oldPasswordStateFlow.collectAsStateWithLifecycle()
+    val newPassword = viewModel.newPasswordState.collectAsStateWithLifecycle()
+    val confirmPassword = viewModel.confirmPasswordState.collectAsStateWithLifecycle()
+    val isEnableUpdateButton = viewModel.isUpdateButtonEnable.collectAsStateWithLifecycle(false)
+
+    LaunchedEffect(Unit){
+        viewModel.updateEmailInput(emailAddress = data.emailAddress)
+    }
+
     // handle error response
     LaunchedEffect(Unit){
         viewModel.data.collect { response ->
@@ -117,9 +127,10 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
 
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_email),
-                        text = viewModel.emailInput,
+                        text = emailAddress.value,
                         onValueChange = { emailInput ->
-                            viewModel.emailInput = emailInput
+                         //   viewModel.emailInput = emailInput
+                            viewModel.updateEmailInput(emailAddress = emailInput)
                         },
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
@@ -129,9 +140,10 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_old_password),
-                        text = viewModel.oldPasswordInput,
-                        onValueChange = { passwordInput ->
-                            viewModel.oldPasswordInput = passwordInput
+                        text = oldPassword.value,
+                        onValueChange = { oldPasswordInput ->
+                          //  viewModel.oldPasswordInput = passwordInput
+                            viewModel.updateOldPassword(oldPassword = oldPasswordInput)
                         },
                         isPasswordInput = true,
                         isVisiblePasswordChange = {
@@ -142,9 +154,10 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_new_password),
-                        text = viewModel.newPasswordInput,
-                        onValueChange = { passwordInput ->
-                            viewModel.newPasswordInput = passwordInput
+                        text = newPassword.value,
+                        onValueChange = { newPassword ->
+                         //   viewModel.newPasswordInput = passwordInput
+                            viewModel.newPasswordUpdate(newPassword = newPassword)
                         },
                         isPasswordInput = true,
                         isVisiblePasswordChange = {
@@ -156,9 +169,10 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.confirm_password),
-                        text = viewModel.confirmPasswordInput,
-                        onValueChange = { passwordInput ->
-                            viewModel.confirmPasswordInput = passwordInput
+                        text = confirmPassword.value,
+                        onValueChange = { confirmPassword ->
+                           // viewModel.confirmPasswordInput = passwordInput
+                            viewModel.confirmPasswordUpdate(confirmPassword = confirmPassword)
                         },
                         isPasswordInput = true,
                         isVisiblePasswordChange = {
@@ -174,7 +188,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                     onClickButton = {
                         viewModel.updatePassword(userID = userID.toString())
                     },
-                    isEnable = true,
+                    isEnable = isEnableUpdateButton.value,
                     showProgress = viewModel.isLoading
                 )
             }
