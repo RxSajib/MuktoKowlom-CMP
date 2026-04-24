@@ -52,6 +52,8 @@ import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.signin.SignInViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.and
 import muktokowlomcmp.composeapp.generated.resources.by_continuing_you_agree_to_the
@@ -76,11 +78,11 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: SignInViewModel = koinViewModel()
-    val dataStoreViewModel: DataStoreViewModel = koinViewModel()
-    val token = dataStoreViewModel.getStringData("Token").collectAsStateWithLifecycle("")
     val lifecycle = LocalLifecycleOwner.current
     val privacyPolicyViewModel: PrivacyPolicyViewModel = koinViewModel()
-
+    val emailState = viewModel.emailState.collectAsStateWithLifecycle()
+    val passwordState = viewModel.passwordState.collectAsStateWithLifecycle()
+    val validationSignInButton = viewModel.validationSignButton.collectAsStateWithLifecycle(false)
 
 
     // fabare8974@mypethealh.com
@@ -191,10 +193,11 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
 
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_email),
-                        text = viewModel.inputEmailAddressInput,
+                        text = emailState.value,
                         onValueChange = { emailAddressInput ->
-                            viewModel.inputEmailAddressInput = emailAddressInput
-                            viewModel.onEmailChanged(emailAddressInput)
+                            viewModel.updateEmail(emailAddress = emailAddressInput)
+//                            viewModel.inputEmailAddressInput = emailAddressInput
+                            //viewModel.onEmailChanged(emailAddressInput)
                         },
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
@@ -203,9 +206,10 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_password),
-                        text = viewModel.passwordInput,
+                        text = passwordState.value,
                         onValueChange = { passwordInput ->
-                            viewModel.passwordInput = passwordInput
+                            viewModel.updatePassword(password = passwordInput)
+                          //  viewModel.passwordInput = passwordInput
                         },
                         isPasswordInput = true,
                         isVisiblePasswordChange = {
@@ -261,7 +265,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                     onClickButton = {
                         viewModel.loginAccount()
                     },
-                    isEnable = viewModel.isButtonEnableForSignIn,
+                    isEnable = validationSignInButton.value, // viewModel.isButtonEnableForSignIn,
                     showProgress = viewModel.showProgress
                 )
 

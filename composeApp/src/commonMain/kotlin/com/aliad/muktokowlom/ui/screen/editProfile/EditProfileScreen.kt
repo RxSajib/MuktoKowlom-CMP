@@ -92,14 +92,16 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
     val firstName = parts?.firstOrNull() ?: ""
     val lastName = parts?.lastOrNull() ?: ""
 
-    viewModel.emailAddressInput = userEmailAddress?: ""
-    viewModel.phoneNumberInput = userPhoneNumber?: ""
-    viewModel.firstNameInput = firstName
-    viewModel.lastNameInput = lastName
-    viewModel.secondNumberInput = userSecondNumber?: ""
-    viewModel.dateOfBirthInput = userDateOfBirth?: ""
-    viewModel.ageInput = userAge?: ""
-    viewModel.addressInput = userAddress?: ""
+    val firstNameState = viewModel.firstNameState.collectAsStateWithLifecycle()
+    val lastNameState = viewModel.lastNameState.collectAsStateWithLifecycle()
+    val emailAddressState = viewModel.emailAddressState.collectAsStateWithLifecycle()
+    val phoneNumberState = viewModel.phoneNumberState.collectAsStateWithLifecycle()
+    val secondNumberState = viewModel.secondNumberState.collectAsStateWithLifecycle()
+    val dateOfBirthState = viewModel.dateOfBirthState.collectAsStateWithLifecycle()
+    val ageState = viewModel.ageStateFlow.collectAsStateWithLifecycle()
+    val addressState = viewModel.addressState.collectAsStateWithLifecycle()
+
+    val isValidSaveButton = viewModel.isValidationSaveButton.collectAsStateWithLifecycle(false)
 
 
 
@@ -171,9 +173,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             HeightGap(height = 4.dp)
                             MyCustomInputFiled(
                                 placeHolderText = stringResource(Res.string.enter_first_name),
-                                text = viewModel.firstNameInput,
+                                text = firstNameState.value,
                                 onValueChange = { firstNameInput ->
-                                    viewModel.firstNameInput = firstNameInput
+                                    viewModel.updateFirstName(firstNameInput)
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
@@ -195,9 +197,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             HeightGap(height = 4.dp)
                             MyCustomInputFiled(
                                 placeHolderText = stringResource(Res.string.enter_last_name),
-                                text = viewModel.lastNameInput,
+                                text = lastNameState.value,
                                 onValueChange = { lastNameInput ->
-                                    viewModel.lastNameInput = lastNameInput
+                                    viewModel.updateLastName(lastName = lastNameInput)
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
@@ -221,9 +223,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             HeightGap(height = 4.dp)
                             MyCustomInputFiled(
                                 placeHolderText = stringResource(Res.string.enter_email_address),
-                                text = viewModel.emailAddressInput,
+                                text = emailAddressState.value,
                                 onValueChange = { emailAddress ->
-                                    viewModel.emailAddressInput = emailAddress
+                                    viewModel.updateEmailAddress(emailAddress = emailAddress)
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
@@ -245,9 +247,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             HeightGap(height = 4.dp)
                             MyCustomInputFiled(
                                 placeHolderText = stringResource(Res.string.enter_phone_number),
-                                text = viewModel.phoneNumberInput,
+                                text = phoneNumberState.value,
                                 onValueChange = { phoneNumberInput ->
-                                    viewModel.phoneNumberInput = phoneNumberInput
+                                    viewModel.updatePhoneNumber(phoneNumber = phoneNumberInput)
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
@@ -271,9 +273,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             HeightGap(height = 4.dp)
                             MyCustomInputFiled(
                                 placeHolderText = stringResource(Res.string.enter_second_phone_number),
-                                text = viewModel.secondNumberInput,
+                                text = secondNumberState.value,
                                 onValueChange = { secondPhoneNumberInput ->
-                                    viewModel.secondNumberInput = secondPhoneNumberInput
+                                    viewModel.updateSecondPhoneNumber(secondNumber = secondPhoneNumberInput)
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
@@ -295,9 +297,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             HeightGap(height = 4.dp)
                             MyCustomInputFiled(
                                 placeHolderText = stringResource(Res.string.enter_date_of_birth),
-                                text = viewModel.dateOfBirthInput,
+                                text = dateOfBirthState.value,
                                 onValueChange = { dateOfBirthInput ->
-                                    viewModel.dateOfBirthInput = dateOfBirthInput
+                                    viewModel.updateDateOfBirth(dateOfBirth = dateOfBirthInput)
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
@@ -325,9 +327,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             HeightGap(height = 4.dp)
                             MyCustomInputFiled(
                                 placeHolderText = stringResource(Res.string.enter_age),
-                                text = viewModel.ageInput,
+                                text = ageState.value,
                                 onValueChange = { ageInput ->
-                                    viewModel.ageInput = ageInput
+                                    viewModel.updateAge(age = ageInput)
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
@@ -350,9 +352,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             HeightGap(height = 4.dp)
                             MyCustomInputFiled(
                                 placeHolderText = stringResource(Res.string.enter_address),
-                                text = viewModel.addressInput,
+                                text = addressState.value,
                                 onValueChange = { addressInput ->
-                                    viewModel.addressInput = addressInput
+                                    viewModel.updateAddress(address = addressInput)
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
@@ -372,7 +374,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             onClickButton = {
 
                             },
-                            isEnable = true
+                            isEnable = isValidSaveButton.value
                         )
                         WidthGap(width = 10.dp)
                         MyCustomButton(
@@ -381,7 +383,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             modifier = Modifier.weight(1f),
                             onClickButton = {
                                 navBackStack.add(AppDestination.Dest.UpdatePassword(
-                                    emailAddress = viewModel.emailAddressInput,
+                                    emailAddress = userEmailAddress?: "",
                                 ))
                             },
                             isEnable = true
@@ -401,7 +403,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                 },
                 onDateSelected = {localDate ->
                     viewModel.isOpenDatePicker = false
-                    viewModel.dateOfBirthInput = localDate.toString()
+                    viewModel.updateDateOfBirth(dateOfBirth = localDate.toString())
                 }
             )
         }

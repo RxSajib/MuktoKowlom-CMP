@@ -16,7 +16,10 @@ import com.aliad.usecase.dataStore.SaveStringData
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 
@@ -88,6 +91,45 @@ class SignInViewModel constructor(
         get() = isValidEmailAddress && passwordInput.isNotEmpty() && passwordInput.length >= 6
 
 
+    // button validation using kotlin combain
+    private var emailAddressIsValidMutableStateFlow = MutableStateFlow<Boolean>(false)
+    val emailAddressValidationState = emailAddressIsValidMutableStateFlow.asStateFlow()
+
+    private var emailMutableStateFlow = MutableStateFlow<String>("")
+    val emailState = emailMutableStateFlow.asStateFlow()
+
+    private var passwordMutableStateFlow = MutableStateFlow<String>("")
+    val passwordState = passwordMutableStateFlow.asStateFlow()
+
+
+    fun updateEmail(emailAddress: String) {
+        val isValid = AppConstant.emailRegex.matches(emailAddress)
+        viewModelScope.launch {
+            emailMutableStateFlow.emit(emailAddress)
+            emailAddressIsValidMutableStateFlow.emit(isValid)
+        }
+    }
+
+    fun updatePassword(password: String) {
+        viewModelScope.launch {
+            passwordMutableStateFlow.emit(password)
+        }
+    }
+
+    val validationSignButton = combine(
+        emailAddressValidationState,
+        emailState,
+        passwordState
+    ) { isValidEmailAddress, email, password ->
+        isValidEmailAddress &&
+                email.isNotBlank() &&
+                password.isNotBlank() &&
+                password.length >= 6
+    }
+
+    // button validation using kotlin combain
+
+
     suspend fun saveUserInfo(user: User) {
         supervisorScope { // if one corotine cancel other corotine run
             val job1 = async {
@@ -117,7 +159,7 @@ class SignInViewModel constructor(
             val job7 = async {
                 saveIntData.saveIntData(
                     key = AppConstant.USER_ID,
-                    value = user.id?: -1
+                    value = user.id ?: -1
                 )
             }
             job1.join()

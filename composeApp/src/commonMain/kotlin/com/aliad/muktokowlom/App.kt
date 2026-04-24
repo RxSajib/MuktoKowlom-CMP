@@ -6,9 +6,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aliad.muktokowlom.ui.navigation.root.RootNavigation
 import com.aliad.muktokowlom.utils.Localization
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
-import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.sajib.data.appConstant.AppConstant
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.CoroutineExceptionHandler
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -31,5 +30,13 @@ fun App() {
 
     }
 
+
+    // global exception handler
+    val exception = CoroutineExceptionHandler { _, throwable ->
+        print("error with exception ${throwable.message}")
+
+        // log the event
+    }
+    // global exception handler
 
 }
