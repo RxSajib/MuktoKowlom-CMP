@@ -47,10 +47,6 @@ import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.sajib.data.appConstant.AppConstant
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.yield
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.basic_info
 import muktokowlomcmp.composeapp.generated.resources.calender_svgrepo_com

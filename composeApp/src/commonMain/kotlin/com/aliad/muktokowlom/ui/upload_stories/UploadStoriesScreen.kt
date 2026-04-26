@@ -22,10 +22,10 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     try {
                         if (backStack.size > 1) {
                             backStack.removeLastOrNull()
-                        }else {
+                        } else {
                             rootBackStack.removeLastOrNull()
                         }
-                    }catch (e : Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 },
@@ -33,7 +33,9 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                 editProfile = {})
         }
     ) { innerPadding ->
+
         Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+
 
         }
     }

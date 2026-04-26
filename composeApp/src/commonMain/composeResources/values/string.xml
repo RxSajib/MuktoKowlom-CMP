@@ -2,6 +2,13 @@
 
 <resources>
 
+    <string name="upload_story_file">Upload story file</string>
+    <string name="upload_story_file_type">PDF, DOC, DOCX, TXT</string>
+    <string name="upload_story_cover">Upload story cover</string>
+    <string name="upload_story_cover_type">JPG, JPEG (Max. 5MB)</string>
+    <string name="choose_file">Choose file</string>
+
+
     <string name="choose_language">Choose language</string>
     <string name="choose_language_details">Select your preferred language for better app clarity and usability</string>    <string name="launguage_change_success">language change success</string>
     <string name="reset_password">Reset Password</string>
