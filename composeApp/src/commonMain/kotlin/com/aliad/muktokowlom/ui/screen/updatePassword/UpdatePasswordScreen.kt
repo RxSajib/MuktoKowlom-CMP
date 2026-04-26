@@ -31,10 +31,10 @@ import androidx.navigation3.runtime.NavKey
 import com.aliad.helper.SnackBarEvent
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.HeightGap
-import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
-import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
-import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
+import com.aliad.muktokowlom.ui.component.HeightGap
+import com.aliad.muktokowlom.ui.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.component.MyCustomButton
+import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.updatePassword.UpdatePasswordViewModel

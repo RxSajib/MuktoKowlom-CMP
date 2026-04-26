@@ -21,10 +21,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.aliad.muktokowlom.ui.screen.component.HeightGap
-import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
-import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
-import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
+import com.aliad.muktokowlom.ui.component.HeightGap
+import com.aliad.muktokowlom.ui.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.component.MyCustomButton
+import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.presentation.signIn.ui.resetPassword.ResetPasswordViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res

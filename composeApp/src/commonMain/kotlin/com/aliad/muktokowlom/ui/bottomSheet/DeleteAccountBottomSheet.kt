@@ -24,9 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.aliad.muktokowlom.ui.screen.component.HeightGap
-import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
-import com.aliad.muktokowlom.ui.screen.component.WidthGap
+import com.aliad.muktokowlom.ui.component.HeightGap
+import com.aliad.muktokowlom.ui.component.MyCustomButton
+import com.aliad.muktokowlom.ui.component.WidthGap
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.are_you_sure
@@ -68,7 +68,7 @@ fun DeleteAccountBottomSheet(
                     modifier = Modifier.fillMaxWidth(.45f).aspectRatio(1f)
                 )
             }
-            HeightGap(height = 15.dp)
+            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 15.dp)
             Text(
                 text = stringResource(Res.string.are_you_sure),
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
@@ -77,27 +77,27 @@ fun DeleteAccountBottomSheet(
                     fontWeight = FontWeight.W500
                 )
             )
-            HeightGap(height = 2.dp)
+            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 2.dp)
             Text(
                 text = stringResource(Res.string.delete_account_dialog_title),
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium
             )
-            HeightGap(height = 10.dp)
+            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
             Text(
                 text = stringResource(Res.string.delete_account_dialog_details),
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall
             )
-            HeightGap(height = 10.dp)
+            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
             Row(
                 modifier = Modifier.fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
                     .padding(16.dp)
             ) {
-                MyCustomButton(
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomButton(
                     onClickButton = {
                         coroutineScope.launch {
                             bottomSheetState.hide()
@@ -108,8 +108,8 @@ fun DeleteAccountBottomSheet(
                     modifier = Modifier.weight(1f),
                     padding = 0.dp
                 )
-                WidthGap(width = 20.dp)
-                MyCustomButton(
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 20.dp)
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomButton(
                     onClickButton = {
                         deleteAccountButtonClick.invoke()
                     }, backgroundColor = Color.Red, title = stringResource(Res.string.delete),

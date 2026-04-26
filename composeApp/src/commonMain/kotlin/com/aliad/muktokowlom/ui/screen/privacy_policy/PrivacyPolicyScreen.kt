@@ -23,7 +23,7 @@ import androidx.navigation3.runtime.NavKey
 import be.digitalia.compose.htmlconverter.htmlToString
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.utils.getTitle
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel

@@ -1,0 +1,119 @@
+package com.aliad.muktokowlom.ui.component
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
+import kotlin.math.max
+
+@Composable
+fun MyCustomInputFiled(
+    placeHolderText: String,
+    text: String,
+    onValueChange: (String) -> Unit,
+    isPasswordInput: Boolean = false,
+    isPasswordVisibility: Boolean = false,
+    isVisiblePasswordChange: () -> Unit,
+    readOnly: Boolean = false,
+    isNumberType: Boolean = false,
+    leftIcon: Painter? = null,
+    isSearchEnable: Boolean = false,
+    onSearch: ((String) -> Unit)? = null,
+    onClick: () -> Unit,
+
+    ) {
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    OutlinedTextField(
+        keyboardOptions = KeyboardOptions(
+            keyboardType = if (isNumberType) KeyboardType.Number else KeyboardType.Text,
+            imeAction = if (isSearchEnable) ImeAction.Search else ImeAction.Done
+        ),
+        enabled = !readOnly,
+        readOnly = readOnly,
+        textStyle = MaterialTheme.typography.bodyMedium.copy(
+            fontWeight = FontWeight.W400
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                onSearch?.invoke(text)
+                keyboardController?.hide()
+            }
+        ),
+        value = text,
+        onValueChange = { passwordInput ->
+            onValueChange.invoke(passwordInput)
+        },
+        modifier = Modifier.fillMaxWidth().clip(shape = CircleShape)
+            .background(color = Color.Gray.copy(alpha = 0.1f))
+            .clickable(readOnly) { onClick.invoke() },
+        shape = CircleShape,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = Color.Transparent,
+            unfocusedBorderColor = Color.Transparent,
+        ),
+
+        leadingIcon = leftIcon?.let { icon ->
+            {
+                Icon(
+                    painter = icon,
+                    contentDescription = null
+                )
+            }
+        },
+
+        visualTransformation = if (!isPasswordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
+        trailingIcon = {
+            if (isPasswordInput) {
+                IconButton(onClick = {
+                    isVisiblePasswordChange.invoke()
+                }) {
+                    Icon(
+                        if (!isPasswordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = null
+                    )
+                }
+            }
+
+        },
+        placeholder = {
+            Text(
+                text = placeHolderText,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.W400
+                )
+            )
+        },
+        maxLines = 1,
+    )
+
+
+}

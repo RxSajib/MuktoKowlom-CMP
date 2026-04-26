@@ -19,9 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aliad.muktokowlom.ui.screen.component.HeightGap
-import com.aliad.muktokowlom.ui.screen.component.MyCustomButton
-import com.aliad.muktokowlom.ui.screen.component.WidthGap
+import com.aliad.muktokowlom.ui.component.HeightGap
+import com.aliad.muktokowlom.ui.component.MyCustomButton
+import com.aliad.muktokowlom.ui.component.WidthGap
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.cancel
@@ -54,7 +54,7 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit, logoutButtonClick: () -> Uni
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
-                HeightGap(height = 10.dp)
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
                 Text(
                     text = stringResource(Res.string.logout_dialog_details),
                     style = MaterialTheme.typography.bodySmall.copy(
@@ -66,14 +66,14 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit, logoutButtonClick: () -> Uni
                 )
             }
 
-            HeightGap(height = 10.dp)
+            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
 
             Row(
                 modifier = Modifier.fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f))
                     .padding(16.dp)
             ) {
-                MyCustomButton(
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomButton(
                     title = stringResource(Res.string.cancel),
                     modifier = Modifier.weight(1f),
                     onClickButton = {
@@ -86,8 +86,8 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit, logoutButtonClick: () -> Uni
                     isEnable = true,
                     padding = 0.dp
                 )
-                WidthGap(width = 20.dp)
-                MyCustomButton(
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 20.dp)
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomButton(
                     backgroundColor = Color.Red,
                     title = stringResource(Res.string.logout),
                     modifier = Modifier.weight(1f),

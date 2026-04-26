@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import be.digitalia.compose.htmlconverter.htmlToString
 import com.aliad.muktokowlom.data.app_constant.AppConstant
-import com.aliad.muktokowlom.ui.screen.component.WidthGap
+import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.utils.getStoryData
 import com.aliad.muktokowlom.utils.getTitle
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
@@ -83,7 +83,7 @@ fun TermsAndConditionBottomSheet(
                         )
                     }
 
-                    WidthGap(width = 10.dp)
+                    _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 10.dp)
 
                     Text(
                         text = stringResource(Res.string.terms_and_conditions),

@@ -17,8 +17,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.CategoryItem
-import com.aliad.muktokowlom.ui.screen.component.CategoryScreenShimmer
+import com.aliad.muktokowlom.ui.component.CategoryItem
+import com.aliad.muktokowlom.ui.component.CategoryScreenShimmer
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.lt.compose_views.refresh_layout.PullToRefresh
@@ -52,7 +52,7 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewM
     ) {
 
         if (viewModel.isLoading) {
-            CategoryScreenShimmer()
+            _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryScreenShimmer()
         } else {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
@@ -61,10 +61,16 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewM
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(categoryData.value) { categoryData ->
-                    CategoryItem(category = categoryData, onClick = {
-                        sharedViewModel.setCategory(category = categoryData)
-                        backStack.add(AppDestination.Dest(AppDestination.Dest.CategoryWiseBook::class.simpleName?: ""))
-                    })
+                    _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryItem(
+                        category = categoryData,
+                        onClick = {
+                            sharedViewModel.setCategory(category = categoryData)
+                            backStack.add(
+                                AppDestination.Dest(
+                                    AppDestination.Dest.CategoryWiseBook::class.simpleName ?: ""
+                                )
+                            )
+                        })
                 }
             }
         }

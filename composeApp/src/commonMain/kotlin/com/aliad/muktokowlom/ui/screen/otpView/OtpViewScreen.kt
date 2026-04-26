@@ -27,9 +27,9 @@ import androidx.navigation3.runtime.NavKey
 import com.aliad.helper.SnackBarEvent
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.AnimatedOtpInput
-import com.aliad.muktokowlom.ui.screen.component.HeightGap
-import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.component.AnimatedOtpInput
+import com.aliad.muktokowlom.ui.component.HeightGap
+import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.presentation.signIn.ui.otpVerification.OtpVerificationViewModel
 import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import muktokowlomcmp.composeapp.generated.resources.Please_type_the_verification_code_send_to

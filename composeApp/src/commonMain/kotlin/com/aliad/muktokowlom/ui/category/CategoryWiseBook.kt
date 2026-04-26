@@ -26,16 +26,16 @@ import androidx.navigation3.runtime.NavKey
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.EmptyStoryMessage
-import com.aliad.muktokowlom.ui.screen.component.HeightGap
-import com.aliad.muktokowlom.ui.screen.component.LoadStateAppendError
-import com.aliad.muktokowlom.ui.screen.component.LoadStateRefreshError
-import com.aliad.muktokowlom.ui.screen.component.Loader
-import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
-import com.aliad.muktokowlom.ui.screen.component.MyCustomInputFiled
-import com.aliad.muktokowlom.ui.screen.component.ShimmerBox
-import com.aliad.muktokowlom.ui.screen.component.StoryItem
-import com.aliad.muktokowlom.ui.screen.component.StoryLoaderShimmer
+import com.aliad.muktokowlom.ui.component.EmptyStoryMessage
+import com.aliad.muktokowlom.ui.component.HeightGap
+import com.aliad.muktokowlom.ui.component.LoadStateAppendError
+import com.aliad.muktokowlom.ui.component.LoadStateRefreshError
+import com.aliad.muktokowlom.ui.component.Loader
+import com.aliad.muktokowlom.ui.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
+import com.aliad.muktokowlom.ui.component.ShimmerBox
+import com.aliad.muktokowlom.ui.component.StoryItem
+import com.aliad.muktokowlom.ui.component.StoryLoaderShimmer
 import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -73,31 +73,35 @@ fun CategoryWiseBook(
 
         Scaffold(
             topBar = {
-                MyCustomAppBar(
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomAppBar(
                     title = selectedStory.value.name,
                     isBackButtonEnable = true,
                     onBackPress = {
-                        if(!rootBackStack.contains(AppDestination.Dest.CategoryWiseBook)){
+                        if (!rootBackStack.contains(AppDestination.Dest.CategoryWiseBook)) {
                             backStack.removeLastOrNull()
-                        }else {
+                        } else {
                             rootBackStack.removeLastOrNull()
                         }
-                    }, editProfile = {},
-                    )
+                    },
+                    editProfile = {},
+                )
             }
         ) { innerPadding ->
 
             Column(
                 modifier = Modifier.fillMaxSize().padding(innerPadding).padding(horizontal = 16.dp)
             ) {
-                MyCustomInputFiled(
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomInputFiled(
                     placeHolderText = stringResource(Res.string.search_your_favourite_genre),
                     text = viewModel.searchStoryData,
                     onValueChange = { firstNameInput ->
                         viewModel.searchStoryData = firstNameInput
 
-                        if(firstNameInput.isEmpty()){
-                            viewModel.categoryByBook(search = "All", categoryID = selectedStory.value.id)
+                        if (firstNameInput.isEmpty()) {
+                            viewModel.categoryByBook(
+                                search = "All",
+                                categoryID = selectedStory.value.id
+                            )
                         }
                     },
                     isPasswordInput = false,
@@ -105,11 +109,14 @@ fun CategoryWiseBook(
                     isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
-                    onSearch = {searchKey ->
-                        viewModel.categoryByBook(search = searchKey, categoryID = selectedStory.value.id)
+                    onSearch = { searchKey ->
+                        viewModel.categoryByBook(
+                            search = searchKey,
+                            categoryID = selectedStory.value.id
+                        )
                     }
                 ) {}
-                HeightGap(height = 10.dp)
+                _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
                 Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
                     if (pagingUiState.value.isRefreshing) {
                         Box(
@@ -117,15 +124,16 @@ fun CategoryWiseBook(
                                 .fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            StoryLoaderShimmer()
+                            _root_ide_package_.com.aliad.muktokowlom.ui.component.StoryLoaderShimmer()
                         }
                     }
                    else if (pagingUiState.value.refreshError != null) {
-                        LoadStateRefreshError(onRetry = { storyItem.retry() })
+                        _root_ide_package_.com.aliad.muktokowlom.ui.component.LoadStateRefreshError(
+                            onRetry = { storyItem.retry() })
 
                     }
                    else if (pagingUiState.value.isEmpty) {
-                        EmptyStoryMessage()
+                        _root_ide_package_.com.aliad.muktokowlom.ui.component.EmptyStoryMessage()
                     } else {
 
 
@@ -138,7 +146,9 @@ fun CategoryWiseBook(
                         ) {
 
                             items(storyItem.itemCount) { position ->
-                                StoryItem(storyItem[position]) { bookItem ->
+                                _root_ide_package_.com.aliad.muktokowlom.ui.component.StoryItem(
+                                    storyItem[position]
+                                ) { bookItem ->
                                     backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
                                 }
                             }
@@ -153,7 +163,7 @@ fun CategoryWiseBook(
                                             .padding(16.dp),
                                         contentAlignment = Alignment.Center
                                     ) {
-                                        Loader()
+                                        _root_ide_package_.com.aliad.muktokowlom.ui.component.Loader()
                                     }
                                 }
                             }
@@ -162,7 +172,8 @@ fun CategoryWiseBook(
                                 item(
                                     span = { GridItemSpan(maxLineSpan) }
                                 ) {
-                                    LoadStateAppendError(retry = { storyItem.retry() })
+                                    _root_ide_package_.com.aliad.muktokowlom.ui.component.LoadStateAppendError(
+                                        retry = { storyItem.retry() })
                                 }
                             }
 

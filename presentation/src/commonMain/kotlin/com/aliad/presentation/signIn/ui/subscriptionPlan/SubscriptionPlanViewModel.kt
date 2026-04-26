@@ -9,6 +9,8 @@ import com.aliad.model.Subscription
 import com.aliad.usecase.PremiumPlanUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -22,6 +24,16 @@ class SubscriptionPlanViewModel constructor(val premiumPlanUseCase: PremiumPlanU
     var selectedSubscriptionIndex by mutableStateOf(1)
     var selectedPackage by mutableStateOf(Subscription())
     var loading by mutableStateOf(false)
+
+
+    var sharedFlow = MutableSharedFlow<String>()
+
+    fun sendFlow(data : String){
+        viewModelScope.launch {
+            sharedFlow.emit(data)
+        }
+    }
+
 
     init {
         getPremiumPlanList()

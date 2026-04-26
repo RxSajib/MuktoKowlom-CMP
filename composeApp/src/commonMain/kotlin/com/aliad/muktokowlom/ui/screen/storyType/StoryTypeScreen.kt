@@ -18,13 +18,13 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.EmptyStoryMessage
-import com.aliad.muktokowlom.ui.screen.component.LoadStateAppendError
-import com.aliad.muktokowlom.ui.screen.component.LoadStateRefreshError
-import com.aliad.muktokowlom.ui.screen.component.Loader
-import com.aliad.muktokowlom.ui.screen.component.MyCustomAppBar
-import com.aliad.muktokowlom.ui.screen.component.StoryItem
-import com.aliad.muktokowlom.ui.screen.component.StoryLoaderShimmer
+import com.aliad.muktokowlom.ui.component.EmptyStoryMessage
+import com.aliad.muktokowlom.ui.component.LoadStateAppendError
+import com.aliad.muktokowlom.ui.component.LoadStateRefreshError
+import com.aliad.muktokowlom.ui.component.Loader
+import com.aliad.muktokowlom.ui.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.component.StoryItem
+import com.aliad.muktokowlom.ui.component.StoryLoaderShimmer
 import com.aliad.presentation.signIn.ui.storytype.StoryTypeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

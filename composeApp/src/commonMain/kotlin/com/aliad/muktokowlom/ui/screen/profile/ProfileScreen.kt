@@ -38,11 +38,11 @@ import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.DeleteAccountBottomSheet
 import com.aliad.muktokowlom.ui.bottomSheet.LogoutBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
-import com.aliad.muktokowlom.ui.screen.component.HeightGap
-import com.aliad.muktokowlom.ui.screen.component.MyCustomMenu
-import com.aliad.muktokowlom.ui.screen.component.SignUpSignInMenu
-import com.aliad.muktokowlom.ui.screen.component.UserInfo
-import com.aliad.muktokowlom.ui.screen.component.UserInfoItem
+import com.aliad.muktokowlom.ui.component.HeightGap
+import com.aliad.muktokowlom.ui.component.MyCustomMenu
+import com.aliad.muktokowlom.ui.component.SignUpSignInMenu
+import com.aliad.muktokowlom.ui.component.UserInfo
+import com.aliad.muktokowlom.ui.component.UserInfoItem
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
