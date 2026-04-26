@@ -15,3 +15,5 @@ val onPrimaryLight = Color(0xFF1877F2)
 val onPrimaryDark = Color(0xFF1877F2)
 
 val orange = Color(0xFFFFA903)
+
+val green = Color(0xFF11A726)

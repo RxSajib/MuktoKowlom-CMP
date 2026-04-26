@@ -49,10 +49,11 @@ fun StoryFileUploadCustomButton(
     title: String,
     fileType: String,
     fileIcon: Painter,
-    fileButtonBgColor: Color
+    fileButtonBgColor: Color,
+    modifier: Modifier
 ) {
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.drawBehind{
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier.drawBehind{
         val strokeWidth = 1.dp.toPx()
         val dashWidth = 7.dp.toPx()
         val dashGap = 2.dp.toPx()
@@ -72,7 +73,7 @@ fun StoryFileUploadCustomButton(
 
         Box(
             modifier = Modifier.clip(shape = CircleShape)
-                .background(color = fileButtonBgColor.copy(0.2f)).padding(10.dp)
+                .background(color = fileButtonBgColor.copy(0.1f)).padding(10.dp)
         ) {
             Image(
                 painter = fileIcon,
@@ -128,6 +129,7 @@ fun StoryFileUploadCustomButtonPreview() {
         title = stringResource(Res.string.upload_story_file),
         fileType = stringResource(Res.string.upload_story_file_type),
         fileIcon = painterResource(Res.drawable.icon_file),
-        fileButtonBgColor = onPrimaryLight
+        fileButtonBgColor = onPrimaryLight,
+        modifier = Modifier
     )
 }

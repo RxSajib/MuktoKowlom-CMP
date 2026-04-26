@@ -2,12 +2,34 @@
 
 <resources>
 
+    <string name="story_summary_max_word">Story summary (Max. 500 word)</string>
+    <string name="write_full_story_here">Write full story hear</string>
+    <string name="start_writing_your_story">Start writing your story...</string>
+    <string name="write_short_summary_of_your_story">Write short summary of your story</string>
+    <string name="tags">Tags</string>
+    <string name="add_tags">Add tags (comma separated)</string>
+    <string name="add_tags_hingt">E.g. love, life, inspiration</string>
+    <string name="published_date">Published date</string>
+    <string name="select_category">Select category</string>
+    <string name="title">Title</string>
+    <string name="story_title">Story title</string>
+    <string name="share_your_story">Share your story</string>
+    <string name="fill_in_the_details_below_to_submit_your_story">Fill in the details below to submit your story</string>
+
+
     <string name="upload_story_file">Upload story file</string>
     <string name="upload_story_file_type">PDF, DOC, DOCX, TXT</string>
     <string name="upload_story_cover">Upload story cover</string>
     <string name="upload_story_cover_type">JPG, JPEG (Max. 5MB)</string>
     <string name="choose_file">Choose file</string>
-
+    <string name="free">Free</string>
+    <string name="free_details">Available to everyone</string>
+    <string name="premium_details_two">Only for premium members</string>
+    <string name="your_data_is_safe_and_secure_we_respect_your_privacy">Your data is safe and secure. We respect your privacy</string>
+    <string name="what_do_you_want_for_readers">What do you want for readers?</string>
+    <string name="or">Or</string>
+    <string name="upload_file">upload file</string>
+    <string name="below">below</string>
 
     <string name="choose_language">Choose language</string>
     <string name="choose_language_details">Select your preferred language for better app clarity and usability</string>    <string name="launguage_change_success">language change success</string>

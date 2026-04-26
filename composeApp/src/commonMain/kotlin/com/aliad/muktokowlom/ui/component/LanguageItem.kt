@@ -98,7 +98,7 @@ fun LanguageItem(data: Language, isSelected: Boolean, onItemSelect: (Language) -
 
 
 
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.MyRadioButton(
+            MyRadioButton(
                 isSelected = isSelected,
                 onClick = {
 
