@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -113,182 +114,193 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
             Column(
                 modifier = Modifier.fillMaxSize().padding(innerPadding)
-                    .verticalScroll(state = rememberScrollState()).padding(16.dp)
+                    .padding(16.dp).imePadding()
             ) {
 
-                Text(
-                    text = stringResource(Res.string.share_your_story),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.W500
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(Res.string.fill_in_the_details_below_to_submit_your_story),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontSize = adjustedFontSize(10.0f)
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
+                Column(modifier = Modifier.fillMaxWidth().weight(1f).verticalScroll(state = rememberScrollState())) {
 
-                HeightGap(height = 20.dp)
-
-                StoryUploadCustomHeader(
-                    icon = painterResource(Res.drawable.dashboard),
-                    title = stringResource(Res.string.title)
-                )
-                HeightGap(height = 10.dp)
-                MySecondaryCustomInputFiled(
-                    placeholder = stringResource(Res.string.story_title),
-                    modifier = Modifier,
-                )
-                HeightGap(height = 15.dp)
-                StoryUploadCustomHeader(
-                    icon = painterResource(Res.drawable.icon_bookmark),
-                    title = stringResource(Res.string.category)
-                )
-                HeightGap(height = 10.dp)
-                MySecondaryCustomInputFiled(
-                    placeholder = stringResource(Res.string.select_category),
-                    modifier = Modifier,
-                )
-                HeightGap(height = 15.dp)
-                StoryUploadCustomHeader(
-                    icon = painterResource(Res.drawable.icon_calender),
-                    title = stringResource(Res.string.published_date)
-                )
-                HeightGap(height = 10.dp)
-                MySecondaryCustomInputFiled(
-                    placeholder = stringResource(Res.string.select_date),
-                    modifier = Modifier,
-                    tralingIcon = painterResource(Res.drawable.icon_calender)
-                )
-                HeightGap(height = 15.dp)
-                StoryUploadCustomHeader(
-                    icon = painterResource(Res.drawable.icon_tag),
-                    title = stringResource(Res.string.tags)
-                )
-
-                HeightGap(height = 10.dp)
-                MySecondaryCustomInputFiled(
-                    placeholder = stringResource(Res.string.add_tags),
-                    modifier = Modifier
-                )
-                HeightGap(height = 15.dp)
-                StoryUploadCustomHeader(
-                    icon = painterResource(Res.drawable.icon_file),
-                    title = stringResource(Res.string.story_summary_max_word)
-                )
-
-                HeightGap(height = 10.dp)
-                MySecondaryCustomInputFiled(
-                    placeholder = stringResource(Res.string.write_short_summary_of_your_story),
-                    modifier = Modifier
-                )
-                HeightGap(height = 15.dp)
-                StoryUploadCustomHeader(
-                    icon = painterResource(Res.drawable.icon_pen),
-                    title = stringResource(Res.string.write_full_story_here)
-                )
-
-                HeightGap(height = 10.dp)
-                MySecondaryCustomInputFiled(
-                    placeholder = stringResource(Res.string.start_writing_your_story),
-                    modifier = Modifier
-                )
-
-                HeightGap(height = 15.dp)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    HorizontalDivider(
-                        modifier = Modifier.weight(1f).height(1.dp)
-                            .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f))
-                    )
-                    WidthGap(width = 15.dp)
                     Text(
-                        buildAnnotatedString {
-                            append(stringResource(Res.string.or))
+                        text = stringResource(Res.string.share_your_story),
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.W500
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(Res.string.fill_in_the_details_below_to_submit_your_story),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = adjustedFontSize(10.0f)
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
 
-                            withStyle(
-                                style = SpanStyle(
-                                    color = Color(0xFF3B82F6), // blue
-                                    fontWeight = FontWeight.Medium
+                    HeightGap(height = 20.dp)
+
+                    StoryUploadCustomHeader(
+                        icon = painterResource(Res.drawable.dashboard),
+                        title = stringResource(Res.string.title)
+                    )
+                    HeightGap(height = 10.dp)
+                    MySecondaryCustomInputFiled(
+                        placeholder = stringResource(Res.string.story_title),
+                        modifier = Modifier,
+                    )
+                    HeightGap(height = 15.dp)
+                    StoryUploadCustomHeader(
+                        icon = painterResource(Res.drawable.icon_bookmark),
+                        title = stringResource(Res.string.category)
+                    )
+                    HeightGap(height = 10.dp)
+                    MySecondaryCustomInputFiled(
+                        placeholder = stringResource(Res.string.select_category),
+                        modifier = Modifier,
+                    )
+                    HeightGap(height = 15.dp)
+                    StoryUploadCustomHeader(
+                        icon = painterResource(Res.drawable.icon_calender),
+                        title = stringResource(Res.string.published_date)
+                    )
+                    HeightGap(height = 10.dp)
+                    MySecondaryCustomInputFiled(
+                        placeholder = stringResource(Res.string.select_date),
+                        modifier = Modifier,
+                        tralingIcon = painterResource(Res.drawable.icon_calender)
+                    )
+                    HeightGap(height = 15.dp)
+                    StoryUploadCustomHeader(
+                        icon = painterResource(Res.drawable.icon_tag),
+                        title = stringResource(Res.string.tags)
+                    )
+
+                    HeightGap(height = 10.dp)
+                    MySecondaryCustomInputFiled(
+                        placeholder = stringResource(Res.string.add_tags),
+                        modifier = Modifier
+                    )
+                    HeightGap(height = 15.dp)
+                    StoryUploadCustomHeader(
+                        icon = painterResource(Res.drawable.icon_file),
+                        title = stringResource(Res.string.story_summary_max_word)
+                    )
+
+                    HeightGap(height = 10.dp)
+                    MySecondaryCustomInputFiled(
+                        placeholder = stringResource(Res.string.write_short_summary_of_your_story),
+                        modifier = Modifier
+                    )
+                    HeightGap(height = 15.dp)
+                    StoryUploadCustomHeader(
+                        icon = painterResource(Res.drawable.icon_pen),
+                        title = stringResource(Res.string.write_full_story_here)
+                    )
+
+                    HeightGap(height = 10.dp)
+                    MySecondaryCustomInputFiled(
+                        placeholder = stringResource(Res.string.start_writing_your_story),
+                        modifier = Modifier
+                    )
+
+                    HeightGap(height = 15.dp)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        HorizontalDivider(
+                            modifier = Modifier.weight(1f).height(1.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.inverseSurface.copy(
+                                        alpha = 0.3f
+                                    )
                                 )
-                            ) {
-                                append(" " + stringResource(Res.string.upload_file))
-                            }
+                        )
+                        WidthGap(width = 15.dp)
+                        Text(
+                            buildAnnotatedString {
+                                append(stringResource(Res.string.or))
 
-                            append(" " + stringResource(Res.string.below))
-                        },
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray // default text color
-                    )
-                    WidthGap(width = 15.dp)
-                    HorizontalDivider(
-                        modifier = Modifier.weight(1f).height(1.dp)
-                            .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f))
-                    )
-                }
+                                withStyle(
+                                    style = SpanStyle(
+                                        color = Color(0xFF3B82F6), // blue
+                                        fontWeight = FontWeight.Medium
+                                    )
+                                ) {
+                                    append(" " + stringResource(Res.string.upload_file))
+                                }
 
-                HeightGap(height = 10.dp)
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    StoryFileUploadCustomButton(
-                        title = stringResource(Res.string.upload_story_file),
-                        fileType = stringResource(Res.string.upload_story_file_type),
-                        fileIcon = painterResource(Res.drawable.icon_file),
-                        fileButtonBgColor = onPrimaryLight,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    WidthGap(width = 10.dp)
-
-                    StoryFileUploadCustomButton(
-                        title = stringResource(Res.string.upload_story_cover),
-                        fileType = stringResource(Res.string.upload_story_cover_type),
-                        fileIcon = painterResource(Res.drawable.icon_gallery),
-                        fileButtonBgColor = green,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-
-                HeightGap(height = 10.dp)
-
-                StoryUploadCustomHeader(
-                    icon = painterResource(Res.drawable.icon_users),
-                    title = stringResource(Res.string.what_do_you_want_for_readers)
-                )
-
-                HeightGap(height = 10.dp)
-
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    MySubscriptionButton(
-                        rightImage = painterResource(Res.drawable.icon_world),
-                        title = stringResource(Res.string.free),
-                        details = stringResource(Res.string.free_details),
-                        isSelected = true,
-                        modifier = Modifier.weight(1f)
-                    ) {
-
+                                append(" " + stringResource(Res.string.below))
+                            },
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray // default text color
+                        )
+                        WidthGap(width = 15.dp)
+                        HorizontalDivider(
+                            modifier = Modifier.weight(1f).height(1.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.inverseSurface.copy(
+                                        alpha = 0.3f
+                                    )
+                                )
+                        )
                     }
 
-                    WidthGap(width = 15.dp)
+                    HeightGap(height = 10.dp)
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        StoryFileUploadCustomButton(
+                            title = stringResource(Res.string.upload_story_file),
+                            fileType = stringResource(Res.string.upload_story_file_type),
+                            fileIcon = painterResource(Res.drawable.icon_file),
+                            fileButtonBgColor = onPrimaryLight,
+                            modifier = Modifier.weight(1f)
+                        )
 
-                    MySubscriptionButton(
-                        rightImage = painterResource(Res.drawable.icon_crown),
-                        title = stringResource(Res.string.premium),
-                        details = stringResource(Res.string.premium_details_two),
-                        isSelected = false,
-                        modifier = Modifier.weight(1f)
-                    ) {
+                        WidthGap(width = 10.dp)
 
+                        StoryFileUploadCustomButton(
+                            title = stringResource(Res.string.upload_story_cover),
+                            fileType = stringResource(Res.string.upload_story_cover_type),
+                            fileIcon = painterResource(Res.drawable.icon_gallery),
+                            fileButtonBgColor = green,
+                            modifier = Modifier.weight(1f)
+                        )
                     }
-                }
 
+                    HeightGap(height = 10.dp)
+
+                    StoryUploadCustomHeader(
+                        icon = painterResource(Res.drawable.icon_users),
+                        title = stringResource(Res.string.what_do_you_want_for_readers)
+                    )
+
+                    HeightGap(height = 10.dp)
+
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        MySubscriptionButton(
+                            rightImage = painterResource(Res.drawable.icon_world),
+                            title = stringResource(Res.string.free),
+                            details = stringResource(Res.string.free_details),
+                            isSelected = true,
+                            modifier = Modifier.weight(1f)
+                        ) {
+
+                        }
+
+                        WidthGap(width = 15.dp)
+
+                        MySubscriptionButton(
+                            rightImage = painterResource(Res.drawable.icon_crown),
+                            title = stringResource(Res.string.premium),
+                            details = stringResource(Res.string.premium_details_two),
+                            isSelected = false,
+                            modifier = Modifier.weight(1f)
+                        ) {
+
+                        }
+                    }
+
+                }
                 HeightGap(height = 15.dp)
 
                 MyCustomButton(
@@ -315,11 +327,11 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                             )
                         )
                     )
-                    WidthGap(width = 10.dp)
+                    WidthGap(width = 5.dp)
                     Text(
                         text = stringResource(Res.string.your_data_is_safe_and_secure_we_respect_your_privacy),
                         style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = adjustedFontSize(10.0f),
+                            fontSize = adjustedFontSize(8.0f),
                             color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
                         )
                     )
