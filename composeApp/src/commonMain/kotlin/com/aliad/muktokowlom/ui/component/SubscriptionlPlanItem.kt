@@ -1,11 +1,14 @@
 package com.aliad.muktokowlom.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -15,12 +18,13 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliad.model.Subscription
 import com.aliad.muktokowlom.data.app_constant.AppConstant
+import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import com.aliad.muktokowlom.utils.getTitle
-import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.membership_valid_days
 import muktokowlomcmp.composeapp.generated.resources.premium_svgrepo_com
@@ -36,67 +40,109 @@ fun SubscriptionPlanItem(
 ) {
 
 
-
-    Row(
-        modifier = Modifier.fillMaxWidth()
-            .border(
-                width = 0.5.dp,
-                color = if (selected) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.inverseSurface.copy(
-                    0.2f
-                ),
-                shape = CircleShape
-            )
-            .clip(shape = CircleShape)
-            .clickable { onClick.invoke() }
-
-
-            .padding(10.dp), verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(Res.drawable.premium_svgrepo_com),
-            contentDescription = null,
-            tint = if (selected) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.inverseSurface.copy(
-                alpha = 0.7f
-            )
+    fun generateRandomColor(): Color {
+        return Color(
+            red = (0..255).random(),
+            green = (0..255).random(),
+            blue = (0..255).random()
         )
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 10.dp)
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = getTitle(selectLn = selectLn.value, title = subscription.name ?: "", titleBn = subscription.name_bn ?: "") ,
-                modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = if (selected) FontWeight.W500 else FontWeight.W400
-                )
-            )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 4.dp)
-            Text(
-                text = stringResource(Res.string.membership_valid_days, if(selectLn.value == "en") subscription.days ?: "0" else AppConstant.toBanglaDigits(subscription.days ?: "0")),
-                modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.bodySmall.copy(
-                    color = if (selected) MaterialTheme.colorScheme.inverseSurface.copy(0.5f) else MaterialTheme.colorScheme.inverseSurface.copy(
-                        0.3f
+    }
+
+
+    Box(modifier = Modifier.fillMaxWidth()) {
+
+
+
+
+        Column {
+            HeightGap(height = 12.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = if (selected) onPrimaryLight else MaterialTheme.colorScheme.inverseSurface.copy(
+                            0.2f
+                        ),
+                        shape = CircleShape
                     )
+                    .clip(shape = CircleShape)
+                    .clickable { onClick.invoke() }
+
+
+                    .padding(15.dp), verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Box(modifier = Modifier.clip(shape = CircleShape).background(color = generateRandomColor().copy(alpha = 0.1f)).padding(8.dp),
+                    contentAlignment = Alignment.Center){
+                    Icon(
+                        painter =  painterResource(Res.drawable.premium_svgrepo_com),
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                        tint = generateRandomColor()
+                    )
+                }
+
+                WidthGap(width = 10.dp)
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = getTitle(
+                            selectLn = selectLn.value,
+                            title = subscription.name ?: "",
+                            titleBn = subscription.name_bn ?: ""
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.W400
+                        )
+                    )
+                    HeightGap(height = 1.dp)
+                    Text(
+                        text = stringResource(
+                            Res.string.membership_valid_days,
+                            if (selectLn.value == "en") subscription.days
+                                ?: "0" else AppConstant.toBanglaDigits(subscription.days ?: "0")
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = if (selected) MaterialTheme.colorScheme.inverseSurface.copy(0.5f) else MaterialTheme.colorScheme.inverseSurface.copy(
+                                0.3f
+                            )
+                        )
+                    )
+                }
+
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "৳",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            // color = MaterialTheme.colorScheme.inverseSurface.copy(0.5f),
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.W300
+                        )
+                    )
+                    WidthGap(width = 1.dp)
+                    Text(
+                        text = if (selectLn.value == "en") subscription.price
+                            ?: "0" else AppConstant.toBanglaDigits(subscription.price ?: "0"),
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.W300
+                        )
+                    )
+                }
+            }
+        }
+        Row {
+            WidthGap(width = 30.dp)
+            PremiumSelectedBanner(
+                modifier = Modifier,
+                selected = selected,
+                packageName =subscription.name?: "",
+                borderColor  = if (selected) onPrimaryLight else MaterialTheme.colorScheme.inverseSurface.copy(
+                    0.2f
                 )
             )
         }
 
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = "৳",
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    // color = MaterialTheme.colorScheme.inverseSurface.copy(0.5f),
-                    fontWeight = if (selected) FontWeight.W500 else FontWeight.W300
-                )
-            )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 1.dp)
-            Text(
-                text = if(selectLn.value == "en") subscription.price ?: "0" else AppConstant.toBanglaDigits(subscription.price ?: "0"),
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = if (selected) FontWeight.W500 else FontWeight.W300
-                )
-            )
-        }
     }
 }
 

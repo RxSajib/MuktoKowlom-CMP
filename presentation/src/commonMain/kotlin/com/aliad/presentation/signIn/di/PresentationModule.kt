@@ -26,6 +26,7 @@ import com.aliad.presentation.signIn.ui.storytype.StoryTypeViewModel
 import com.aliad.presentation.signIn.ui.subscriptionHistory.SubscriptionHistoryViewModel
 import com.aliad.presentation.signIn.ui.subscriptionPlan.SubscriptionPlanViewModel
 import com.aliad.presentation.signIn.ui.updatePassword.UpdatePasswordViewModel
+import com.aliad.presentation.signIn.ui.uploadStories.UploadStoriesViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -167,5 +168,9 @@ val presentationModule = module {
         ChangeLanguageViewModel(
             getStringData = get()
         )
+    }
+
+    viewModel {
+        UploadStoriesViewModel()
     }
 }

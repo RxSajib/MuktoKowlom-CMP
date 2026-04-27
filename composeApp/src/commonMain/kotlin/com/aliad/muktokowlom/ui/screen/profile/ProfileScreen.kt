@@ -43,6 +43,14 @@ import com.aliad.muktokowlom.ui.component.MyCustomMenu
 import com.aliad.muktokowlom.ui.component.SignUpSignInMenu
 import com.aliad.muktokowlom.ui.component.UserInfo
 import com.aliad.muktokowlom.ui.component.UserInfoItem
+import com.aliad.muktokowlom.ui.theme.colorPrimaryLight
+import com.aliad.muktokowlom.ui.theme.green
+import com.aliad.muktokowlom.ui.theme.onPrimaryLight
+import com.aliad.muktokowlom.ui.theme.orange
+import com.aliad.muktokowlom.ui.theme.pink
+import com.aliad.muktokowlom.ui.theme.purple
+import com.aliad.muktokowlom.ui.theme.purpleBlue
+import com.aliad.muktokowlom.ui.theme.teal
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
@@ -241,7 +249,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                     modifier = Modifier,
                     title = stringResource(Res.string.upload_stories),
                     details = stringResource(Res.string.upload_stories_details),
-                    painter = painterResource(Res.drawable.upload_cloud_svgrepo_com)
+                    painter = painterResource(Res.drawable.upload_cloud_svgrepo_com),
+                    color = onPrimaryLight
                 ) {
                     backStack.add(
                         AppDestination.Dest(
@@ -257,7 +266,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 modifier = Modifier,
                 title = stringResource(Res.string.premium),
                 details = stringResource(Res.string.premium_details),
-                painter = painterResource(Res.drawable.premium_svgrepo_com)
+                painter = painterResource(Res.drawable.premium_svgrepo_com),
+                color = purpleBlue
             ) {
                 backStack.add(
                     AppDestination.Dest(
@@ -272,7 +282,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 modifier = Modifier,
                 title = stringResource(Res.string.subscription_history),
                 details = stringResource(Res.string.subscription_history_details),
-                painter = painterResource(Res.drawable.ticket)
+                painter = painterResource(Res.drawable.ticket),
+                color = pink
             ) {
                 backStack.add(
                     AppDestination.Dest(
@@ -289,7 +300,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                     modifier = Modifier,
                     title = stringResource(Res.string.earningHistory),
                     details = stringResource(Res.string.earningHistoryDetails),
-                    painter = painterResource(Res.drawable.money_cash)
+                    painter = painterResource(Res.drawable.money_cash),
+                    color = orange
                 ) {
                     backStack.add(
                         AppDestination.Dest(
@@ -305,7 +317,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 modifier = Modifier,
                 title = stringResource(Res.string.choose_language),
                 details = stringResource(Res.string.choose_language_details),
-                painter = painterResource(Res.drawable.language_svgrepo)
+                painter = painterResource(Res.drawable.language_svgrepo),
+                color = purple
             ) {
                 backStack.add(
                     AppDestination.Dest(
@@ -319,7 +332,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 modifier = Modifier,
                 title = stringResource(Res.string.privacy_policy),
                 details = stringResource(Res.string.privacy_policy_details),
-                painter = painterResource(Res.drawable.policy)
+                painter = painterResource(Res.drawable.policy),
+                color = green
             ) {
                 backStack.add(
                     AppDestination.Dest(
@@ -335,7 +349,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                     modifier = Modifier,
                     title = stringResource(Res.string.delete_account),
                     details = stringResource(Res.string.delete_account_details),
-                    painter = painterResource(Res.drawable.delete_svgrepo_com)
+                    painter = painterResource(Res.drawable.delete_svgrepo_com),
+                    color = teal
                 ) {
                     viewModel.deleteAccountDialogShow = true
                 }
@@ -349,7 +364,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                     modifier = Modifier,
                     title = stringResource(Res.string.logout),
                     details = stringResource(Res.string.logout_details),
-                    painter = painterResource(Res.drawable.electricity_energy_off_on_power_switch_svgrepo_com)
+                    painter = painterResource(Res.drawable.electricity_energy_off_on_power_switch_svgrepo_com),
+                    color = colorPrimaryLight
                 ) {
                     viewModel.logoutDialogShow = true
                 }

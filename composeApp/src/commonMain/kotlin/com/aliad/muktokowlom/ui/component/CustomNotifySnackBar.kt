@@ -159,9 +159,9 @@ fun CustomSnackBar(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomLottieAnim(
+            MyCustomLottieAnim(
                 lottieFile = "files/checkmark.lottie",
-                size = 25.dp
+                modifier = Modifier.size(25.dp)
             )
         }
     }

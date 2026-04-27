@@ -27,8 +27,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.muktokowlom.data.app_constant.AppConstant
+import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.MyCustomButton
+import com.aliad.muktokowlom.ui.component.PremiumBenefits
 import com.aliad.muktokowlom.ui.component.SubscriptionPlanItem
 import com.aliad.muktokowlom.ui.component.SubscriptionPlanItemShimmer
 import com.aliad.muktokowlom.ui.component.WidthGap
@@ -41,7 +43,10 @@ import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.amount
 import muktokowlomcmp.composeapp.generated.resources.buy
+import muktokowlomcmp.composeapp.generated.resources.icon_lock
+import muktokowlomcmp.composeapp.generated.resources.icon_unlock_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.premium
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -123,48 +128,56 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                     }
                 } else {
                     if (list.value.isNotEmpty()) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth()
-                                .background(
-                                    color = MaterialTheme.colorScheme.inverseSurface.copy(
-                                        alpha = 0.2f
-                                    )
-                                )
-                                .padding(horizontal = 16.dp, vertical = 10.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
+
+                        Column {
+                            PremiumBenefits()
+
+                            HeightGap(height = 10.dp)
+
                             Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                Text(
-                                    text = stringResource(Res.string.amount),
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                                WidthGap(width = 5.dp)
-                                Text(
-                                    text = "৳",
-                                    style = MaterialTheme.typography.bodyLarge,
-                                )
-                                WidthGap(width = 1.dp)
-                                Text(
-                                    text = if (selectLn.value == "en") viewModel.selectedPackage.price
-                                        ?: "0" else AppConstant.toBanglaDigits(
-                                        viewModel.selectedPackage.price ?: "0"
-                                    ),
-                                    style = MaterialTheme.typography.bodyLarge.copy(
-                                        fontWeight = FontWeight.W500
+                                modifier = Modifier.fillMaxWidth()
+                                    .background(
+                                        color = MaterialTheme.colorScheme.inverseSurface.copy(
+                                            alpha = 0.2f
+                                        )
                                     )
+                                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text(
+                                        text = stringResource(Res.string.amount),
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                    WidthGap(width = 5.dp)
+                                    Text(
+                                        text = "৳",
+                                        style = MaterialTheme.typography.bodyLarge,
+                                    )
+                                    WidthGap(width = 1.dp)
+                                    Text(
+                                        text = if (selectLn.value == "en") viewModel.selectedPackage.price
+                                            ?: "0" else AppConstant.toBanglaDigits(
+                                            viewModel.selectedPackage.price ?: "0"
+                                        ),
+                                        style = MaterialTheme.typography.bodyLarge.copy(
+                                            fontWeight = FontWeight.W500
+                                        )
+                                    )
+                                }
+
+                                MyCustomButton(
+                                    isEnable = true,
+                                    onClickButton = {},
+                                    title = stringResource(Res.string.buy),
+                                    modifier = Modifier.weight(1f),
+                                    padding = 0.dp,
+                                    leftIcon = painterResource(Res.drawable.icon_unlock_svgrepo_com)
                                 )
                             }
-
-                            MyCustomButton(
-                                isEnable = true,
-                                onClickButton = {},
-                                title = stringResource(Res.string.buy),
-                                modifier = Modifier.weight(1f),
-                                padding = 0.dp
-                            )
                         }
                     }
                 }

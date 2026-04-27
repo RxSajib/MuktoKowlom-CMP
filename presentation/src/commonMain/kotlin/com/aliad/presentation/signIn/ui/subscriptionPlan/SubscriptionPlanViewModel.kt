@@ -21,7 +21,7 @@ class SubscriptionPlanViewModel constructor(val premiumPlanUseCase: PremiumPlanU
     private var premiumPlanMutableStateFlow = MutableStateFlow<List<Subscription>>(emptyList())
     val premiumPlanStateFlow = premiumPlanMutableStateFlow.asStateFlow()
 
-    var selectedSubscriptionIndex by mutableStateOf(1)
+    var selectedSubscriptionIndex by mutableStateOf(2)
     var selectedPackage by mutableStateOf(Subscription())
     var loading by mutableStateOf(false)
 

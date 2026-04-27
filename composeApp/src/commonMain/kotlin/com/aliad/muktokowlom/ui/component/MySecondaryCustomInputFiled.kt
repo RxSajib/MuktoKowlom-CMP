@@ -1,6 +1,7 @@
 package com.aliad.muktokowlom.ui.component
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,24 +24,32 @@ fun MySecondaryCustomInputFiled(
     modifier: Modifier,
     placeholder: String,
     leadingIcon: Painter? = null,
-    tralingIcon: Painter? = null
+    tralingIcon: Painter? = null,
+    inputData : String,
+    readOnly : Boolean = false,
+    onValueChanged: (String) -> Unit,
+    onClick: (() -> Unit)? = null
 ) {
 
-    val data = remember { mutableStateOf("") }
 
     OutlinedTextField(
-        value = data.value,
-        onValueChange = {
-            data.value = it
+        enabled = !readOnly,
+        value = inputData,
+        onValueChange = {input ->
+            onValueChanged.invoke(input)
         },
         modifier = modifier.fillMaxWidth().border(
             width = 1.dp,
             color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.4f),
             shape = RoundedCornerShape(size = 5.dp)
-        ),
+        ).clickable{
+            onClick?.invoke()
+        },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent,
+            disabledTextColor = Color(0xff1E1C21),
+            disabledPlaceholderColor = Color(0xff514D57)
         ),
         placeholder = {
             Text(
@@ -57,13 +66,8 @@ fun MySecondaryCustomInputFiled(
                 )
             }
 
-        }
+        },
+        readOnly = readOnly
 
     )
-}
-
-@Composable
-@Preview
-fun MySecondaryCustomInputFiledPreview() {
-    MySecondaryCustomInputFiled(placeholder = "Enter name", modifier = Modifier)
 }

@@ -2,11 +2,13 @@ package com.aliad.muktokowlom.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.alexzhirkevich.compottie.DotLottie
@@ -18,14 +20,14 @@ import muktokowlomcmp.composeapp.generated.resources.Res
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MyCustomLottieAnim(lottieFile : String, size : Dp){
+fun MyCustomLottieAnim(lottieFile : String, modifier: Modifier, onrepet : Boolean = false, interaction : Int = 1){
     val composition by rememberLottieComposition {
         LottieCompositionSpec.DotLottie(
             Res.readBytes(lottieFile)
         )
     }
 
-    val progress by animateLottieCompositionAsState(composition)
+    val progress by animateLottieCompositionAsState(composition = composition, reverseOnRepeat = onrepet, iterations = interaction)
 
     Image(
         painter = rememberLottiePainter(
@@ -33,15 +35,16 @@ fun MyCustomLottieAnim(lottieFile : String, size : Dp){
             progress = { progress },
         ),
         contentDescription = "Lottie animation",
-        modifier = Modifier.size(size).background(color = Color.Transparent)
+        modifier = modifier.fillMaxSize().background(color = Color.Transparent),
+        contentScale = ContentScale.Crop
     )
 }
 
 @Composable
 @Preview
 fun MyCustomLottieAnimPreview(){
-    _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomLottieAnim(
+    MyCustomLottieAnim(
         lottieFile = "files/success_check.lottie",
-        size = 50.dp
+        modifier = Modifier.size(50.dp)
     )
 }

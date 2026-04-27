@@ -3,6 +3,7 @@ package com.aliad.muktokowlom.ui.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,7 +45,11 @@ fun MySubscriptionButton(
     onClick: () -> Unit
 ) {
     Box(
-        modifier = modifier.fillMaxWidth().clip(shape = RoundedCornerShape(10.dp))
+        modifier = modifier.fillMaxWidth()
+            .clip(shape = RoundedCornerShape(10.dp))
+            .clickable{
+                onClick.invoke()
+            }
             .border(
                 width = 1.dp,
                 color = if (!isSelected) MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f) else onPrimaryLight,
@@ -52,7 +57,7 @@ fun MySubscriptionButton(
             )
             .background(
                 color = if (!isSelected) MaterialTheme.colorScheme.surface else onPrimaryLight.copy(
-                    alpha = 0.01f
+                    alpha = 0.03f
                 )
             )
             .padding(8.dp).height(height = height),
@@ -68,6 +73,7 @@ fun MySubscriptionButton(
             MyRadioButton(
                 isSelected = isSelected,
                 onClick = {
+                    onClick.invoke()
                 },
             )
 

@@ -17,3 +17,8 @@ val onPrimaryDark = Color(0xFF1877F2)
 val orange = Color(0xFFFFA903)
 
 val green = Color(0xFF11A726)
+
+val purpleBlue = Color(0xFF6F38D6)
+val pink = Color(0xFFE4187B)
+val teal = Color(0xFF008080)
+val purple = Color(0xFF800080)

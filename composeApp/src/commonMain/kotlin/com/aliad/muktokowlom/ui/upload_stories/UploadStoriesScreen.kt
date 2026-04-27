@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.muktokowlom.ui.component.HeightGap
@@ -38,12 +39,15 @@ import com.aliad.muktokowlom.ui.component.MySecondaryCustomInputFiled
 import com.aliad.muktokowlom.ui.component.MySubscriptionButton
 import com.aliad.muktokowlom.ui.component.StoryFileUploadCustomButton
 import com.aliad.muktokowlom.ui.component.StoryUploadCustomHeader
+import com.aliad.muktokowlom.ui.component.WheelDatePickerDialog
 import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.green
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
+import com.aliad.presentation.signIn.ui.uploadStories.UploadStoriesViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.add_tags
+import muktokowlomcmp.composeapp.generated.resources.arrow_right_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.below
 import muktokowlomcmp.composeapp.generated.resources.category
 import muktokowlomcmp.composeapp.generated.resources.dashboard
@@ -51,6 +55,7 @@ import muktokowlomcmp.composeapp.generated.resources.dont_have_an_account
 import muktokowlomcmp.composeapp.generated.resources.fill_in_the_details_below_to_submit_your_story
 import muktokowlomcmp.composeapp.generated.resources.free
 import muktokowlomcmp.composeapp.generated.resources.free_details
+import muktokowlomcmp.composeapp.generated.resources.icon_arrow_down
 import muktokowlomcmp.composeapp.generated.resources.icon_bookmark
 import muktokowlomcmp.composeapp.generated.resources.icon_calender
 import muktokowlomcmp.composeapp.generated.resources.icon_crown
@@ -87,9 +92,17 @@ import muktokowlomcmp.composeapp.generated.resources.write_short_summary_of_your
 import muktokowlomcmp.composeapp.generated.resources.your_data_is_safe_and_secure_we_respect_your_privacy
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
+
+    val viewModel : UploadStoriesViewModel = koinViewModel()
+    val storyTitle = viewModel.storyTitleFlow.collectAsStateWithLifecycle()
+    val category = viewModel.categoryFlow.collectAsStateWithLifecycle()
+    val publishedDate = viewModel.publishedDateFlow.collectAsStateWithLifecycle()
+    val storySummary = viewModel.storySummaryFlow.collectAsStateWithLifecycle()
+    val fullStory = viewModel.fullStoryFlow.collectAsStateWithLifecycle()
 
     Surface(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)) {
 
@@ -145,7 +158,11 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     HeightGap(height = 10.dp)
                     MySecondaryCustomInputFiled(
                         placeholder = stringResource(Res.string.story_title),
+                        inputData = storyTitle.value,
                         modifier = Modifier,
+                        onValueChanged = {title ->
+                            viewModel.inputTitle(title = title)
+                        }
                     )
                     HeightGap(height = 15.dp)
                     StoryUploadCustomHeader(
@@ -156,6 +173,15 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     MySecondaryCustomInputFiled(
                         placeholder = stringResource(Res.string.select_category),
                         modifier = Modifier,
+                        inputData = category.value,
+                        onValueChanged = {category ->
+                            viewModel.inputCategory(category = category)
+                        },
+                        readOnly = true,
+                        tralingIcon = painterResource(Res.drawable.icon_arrow_down),
+                        onClick = {
+                            viewModel.showCategoryDialog = true
+                        }
                     )
                     HeightGap(height = 15.dp)
                     StoryUploadCustomHeader(
@@ -166,7 +192,15 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     MySecondaryCustomInputFiled(
                         placeholder = stringResource(Res.string.select_date),
                         modifier = Modifier,
-                        tralingIcon = painterResource(Res.drawable.icon_calender)
+                        tralingIcon = painterResource(Res.drawable.icon_calender),
+                        inputData = publishedDate.value,
+                        readOnly = true,
+                        onValueChanged = {publishedDate ->
+                            viewModel.inputPublishedDate(publishedDate = publishedDate)
+                        },
+                        onClick = {
+                            viewModel.showCalender = true
+                        }
                     )
                     HeightGap(height = 15.dp)
                     StoryUploadCustomHeader(
@@ -177,7 +211,9 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     HeightGap(height = 10.dp)
                     MySecondaryCustomInputFiled(
                         placeholder = stringResource(Res.string.add_tags),
-                        modifier = Modifier
+                        modifier = Modifier,
+                        inputData = "",
+                        onValueChanged = {}
                     )
                     HeightGap(height = 15.dp)
                     StoryUploadCustomHeader(
@@ -188,7 +224,11 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     HeightGap(height = 10.dp)
                     MySecondaryCustomInputFiled(
                         placeholder = stringResource(Res.string.write_short_summary_of_your_story),
-                        modifier = Modifier
+                        modifier = Modifier,
+                        inputData = storySummary.value,
+                        onValueChanged = {summary ->
+                            viewModel.inputStorySummary(storySummary = summary)
+                        }
                     )
                     HeightGap(height = 15.dp)
                     StoryUploadCustomHeader(
@@ -199,7 +239,11 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     HeightGap(height = 10.dp)
                     MySecondaryCustomInputFiled(
                         placeholder = stringResource(Res.string.start_writing_your_story),
-                        modifier = Modifier
+                        modifier = Modifier,
+                        inputData = fullStory.value,
+                        onValueChanged = {fullStory ->
+                            viewModel.inputFullStoryDetails(fullStoryDetails = fullStory)
+                        }
                     )
 
                     HeightGap(height = 15.dp)
@@ -223,7 +267,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
                                 withStyle(
                                     style = SpanStyle(
-                                        color = Color(0xFF3B82F6), // blue
+                                        color = Color(0xFF3B82F6),
                                         fontWeight = FontWeight.Medium
                                     )
                                 ) {
@@ -281,22 +325,22 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                             rightImage = painterResource(Res.drawable.icon_world),
                             title = stringResource(Res.string.free),
                             details = stringResource(Res.string.free_details),
-                            isSelected = true,
+                            isSelected = viewModel.selectStoryIsFree,
                             modifier = Modifier.weight(1f)
                         ) {
-
+                            viewModel.selectStoryIsFree = true
                         }
 
-                        WidthGap(width = 15.dp)
+                        WidthGap(width = 10.dp)
 
                         MySubscriptionButton(
                             rightImage = painterResource(Res.drawable.icon_crown),
                             title = stringResource(Res.string.premium),
                             details = stringResource(Res.string.premium_details_two),
-                            isSelected = false,
+                            isSelected = !viewModel.selectStoryIsFree,
                             modifier = Modifier.weight(1f)
                         ) {
-
+                            viewModel.selectStoryIsFree = false
                         }
                     }
 
@@ -337,6 +381,22 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     )
                 }
             }
+        }
+
+        if(viewModel.showCalender){
+            WheelDatePickerDialog(
+                onDismissRequest = {
+                    viewModel.showCalender = false
+                },
+                onDateSelected = {localDate ->
+                    viewModel.showCalender = false
+                    viewModel.inputPublishedDate(publishedDate = localDate.toString())
+                }
+            )
+        }
+
+        if(viewModel.showCategoryDialog){
+
         }
     }
 }

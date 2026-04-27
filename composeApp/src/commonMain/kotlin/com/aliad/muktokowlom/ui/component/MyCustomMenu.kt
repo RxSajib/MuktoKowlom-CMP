@@ -1,12 +1,15 @@
 package com.aliad.muktokowlom.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -15,10 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.arrow_right_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.premium
@@ -34,6 +39,7 @@ fun MyCustomMenu(
     title: String,
     details: String,
     painter: Painter,
+    color : Color = onPrimaryLight,
     onClick: () -> Unit
 ) {
     Row(
@@ -45,24 +51,29 @@ fun MyCustomMenu(
             .padding(horizontal = 10.dp, vertical = 8.dp)
             .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painter,
-            contentDescription = null,
-            modifier = Modifier.size(22.dp),
-            tint = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.7f)
-        )
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 10.dp)
+
+        Box(modifier = Modifier.clip(shape = CircleShape).background(color = color.copy(alpha = 0.1f)).padding(8.dp),
+            contentAlignment = Alignment.Center){
+            Icon(
+                painter = painter,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = color
+            )
+        }
+
+        WidthGap(width = 10.dp)
         Column(modifier = Modifier.weight(1f).padding(end = 10.dp)) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.W500
+                    fontWeight = FontWeight.Bold
                 ),
                 modifier = Modifier.fillMaxWidth(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 5.dp)
+            HeightGap(height = 5.dp)
             Text(
                 text = details,
                 style = MaterialTheme.typography.bodySmall.copy(
@@ -76,7 +87,7 @@ fun MyCustomMenu(
             painter = painterResource(Res.drawable.arrow_right_svgrepo_com),
             contentDescription = null,
             modifier = Modifier.size(22.dp),
-            tint = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.7f)
+            tint = onPrimaryLight.copy(alpha = 0.4f)
         )
     }
 }
@@ -84,11 +95,12 @@ fun MyCustomMenu(
 @Composable
 @Preview
 fun MyCustomMenuPreview() {
-    _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomMenu(
+    MyCustomMenu(
         modifier = Modifier,
         title = stringResource(Res.string.premium),
         details = stringResource(Res.string.premium_details),
-        painter = painterResource(Res.drawable.premium_svgrepo_com)
+        painter = painterResource(Res.drawable.premium_svgrepo_com),
+        color = onPrimaryLight
     ) {
 
     }
