@@ -2,6 +2,7 @@ package com.aliad.muktokowlom.ui.screen.premium
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -76,6 +78,9 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
         }
     }
 
+
+
+
     Scaffold(
         topBar = {
             MyCustomAppBar(title = stringResource(Res.string.premium), onBackPress = {
@@ -92,6 +97,8 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
             }, editProfile = {})
         }
     ) { innerPadding ->
+
+        Box(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)){
 
         PullToRefresh(
             refreshLayoutState = rememberRefreshLayoutState,
@@ -136,7 +143,8 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                             HeightGap(height = 10.dp)
 
                             PremiumPurchaseCustomButton(
-                                price = list.value[viewModel.selectedSubscriptionIndex - 1].price?: "0" ,
+                                price = list.value[viewModel.selectedSubscriptionIndex - 1].price
+                                    ?: "0",
                                 selectedLn = selectLn.value,
                                 onClick = {},
                                 modifier = Modifier
@@ -144,7 +152,9 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                         }
                     }
                 }
+
             }
+        }
 
         }
     }

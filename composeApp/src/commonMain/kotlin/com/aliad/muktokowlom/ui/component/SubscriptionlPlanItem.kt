@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliad.model.Subscription
 import com.aliad.muktokowlom.data.app_constant.AppConstant
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import com.aliad.muktokowlom.utils.getTitle
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -91,8 +92,9 @@ fun SubscriptionPlanItem(
                             titleBn = subscription.name_bn ?: ""
                         ),
                         modifier = Modifier.fillMaxWidth(),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = if (selected) FontWeight.Bold else FontWeight.W400
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.W400,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     )
                     HeightGap(height = 1.dp)
@@ -106,7 +108,8 @@ fun SubscriptionPlanItem(
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = if (selected) MaterialTheme.colorScheme.inverseSurface.copy(0.5f) else MaterialTheme.colorScheme.inverseSurface.copy(
                                 0.3f
-                            )
+                            ),
+                            fontSize = adjustedFontSize(10.0f)
                         )
                     )
                 }
@@ -117,7 +120,8 @@ fun SubscriptionPlanItem(
                         text = "৳",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             // color = MaterialTheme.colorScheme.inverseSurface.copy(0.5f),
-                            fontWeight = if (selected) FontWeight.Bold else FontWeight.W300
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.W300,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     )
                     WidthGap(width = 1.dp)
@@ -125,7 +129,8 @@ fun SubscriptionPlanItem(
                         text = if (selectLn.value == "en") subscription.price
                             ?: "0" else AppConstant.toBanglaDigits(subscription.price ?: "0"),
                         style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = if (selected) FontWeight.Bold else FontWeight.W300
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.W300,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     )
                 }

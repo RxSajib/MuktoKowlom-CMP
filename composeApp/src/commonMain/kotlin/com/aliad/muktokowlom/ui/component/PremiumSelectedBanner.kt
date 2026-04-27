@@ -40,7 +40,7 @@ fun PremiumSelectedBanner(modifier: Modifier, packageName: String, borderColor: 
     Card(
         shape = CircleShape,
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+          //  containerColor = MaterialTheme.colorScheme.primary
         ),
         border = BorderStroke(1.dp, color = borderColor),
         modifier = modifier.clip(shape = CircleShape).height(25.dp).width(100.dp)
@@ -71,7 +71,8 @@ fun PremiumSelectedBanner(modifier: Modifier, packageName: String, borderColor: 
                     text = stringResource(getPackageInfoBasedOnPackage(type)),
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = adjustedFontSize(8.0f),
-                        fontWeight = if(selected) FontWeight.W600 else FontWeight.W400
+                        fontWeight = if(selected) FontWeight.W600 else FontWeight.W400,
+                        color = MaterialTheme.colorScheme.primary
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

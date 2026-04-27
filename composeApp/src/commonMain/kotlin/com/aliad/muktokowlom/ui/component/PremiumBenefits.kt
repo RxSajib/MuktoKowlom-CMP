@@ -113,7 +113,8 @@ fun PremiumBenefitsItem(
                     text = title,
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = adjustedFontSize(8.0f)
+                        fontSize = adjustedFontSize(8.0f),
+                        color = MaterialTheme.colorScheme.primary
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

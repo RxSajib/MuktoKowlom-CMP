@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliad.muktokowlom.data.app_constant.AppConstant
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.amount
@@ -41,13 +42,16 @@ fun PremiumPurchaseCustomButton(modifier: Modifier, price : String, selectedLn :
             ) {
                 Text(
                     text = stringResource(Res.string.amount),
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = adjustedFontSize(10.0f),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                 )
                 WidthGap(width = 5.dp)
                 Text(
                     text = "৳",
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
                     ),
                 )
                 WidthGap(width = 1.dp)
@@ -57,7 +61,8 @@ fun PremiumPurchaseCustomButton(modifier: Modifier, price : String, selectedLn :
                         price ?: "0"
                     ),
                     style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
             }

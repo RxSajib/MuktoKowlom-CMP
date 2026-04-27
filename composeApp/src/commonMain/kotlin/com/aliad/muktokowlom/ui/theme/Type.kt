@@ -78,7 +78,7 @@ fun getMaterialTypography(): Typography {
             fontSize = adjustedFontSize(18f),
             lineHeight = adjustedFontSize(24f),
             //letterSpacing = 0.15.sp,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.onPrimary,
         ),
 
         titleLarge = TextStyle(

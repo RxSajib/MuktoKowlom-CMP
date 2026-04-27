@@ -51,8 +51,9 @@ fun UserInfoItem(icon: Painter, title: String, isDivider: Boolean = true) {
             WidthGap(width = 10.dp)
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.W500
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontWeight = FontWeight.W500,
+                    color = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier.weight(1f),
                 maxLines = 1,
@@ -62,7 +63,7 @@ fun UserInfoItem(icon: Painter, title: String, isDivider: Boolean = true) {
         if (isDivider) {
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f))
+                    .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f))
             )
         }
     }

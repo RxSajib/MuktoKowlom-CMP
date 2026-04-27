@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.aliad.muktokowlom.ui.theme.MuktoKowlomTheme
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.arrow_right_svgrepo_com
@@ -46,7 +48,7 @@ fun MyCustomMenu(
         modifier = modifier.border(
             width = 0.5.dp,
             shape = RoundedCornerShape(size = 10.dp),
-            color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f)
+            color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f)
         ).clip(shape = RoundedCornerShape(size = 10.dp)).clickable { onClick.invoke() }
             .padding(horizontal = 10.dp, vertical = 8.dp)
             .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
@@ -66,8 +68,9 @@ fun MyCustomMenu(
         Column(modifier = Modifier.weight(1f).padding(end = 10.dp)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier.fillMaxWidth(),
                 maxLines = 1,
@@ -77,7 +80,8 @@ fun MyCustomMenu(
             Text(
                 text = details,
                 style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f),
+                    fontSize = adjustedFontSize(10.0f)
                 ),
                 modifier = Modifier.fillMaxWidth()
             )

@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aliad.muktokowlom.ui.navigation.root.RootNavigation
+import com.aliad.muktokowlom.ui.theme.MuktoKowlomTheme
 import com.aliad.muktokowlom.utils.Localization
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.sajib.data.appConstant.AppConstant
@@ -19,7 +20,7 @@ fun App() {
     val local =
         dataStore.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
 
-    MaterialTheme {
+    MuktoKowlomTheme {
 
         languages.setLocal(local.value)
 

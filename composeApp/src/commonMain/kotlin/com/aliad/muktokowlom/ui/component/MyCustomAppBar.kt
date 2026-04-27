@@ -66,15 +66,16 @@ fun MyCustomAppBar(
                         placeholder = painterResource(Res.drawable.person_circle),
                         error = painterResource(Res.drawable.person_circle)
                     )
-                    _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(15.dp)
+                    WidthGap(15.dp)
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = userName?: "",
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.Bold
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
                             )
                         )
 
@@ -84,16 +85,15 @@ fun MyCustomAppBar(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.bodySmall.copy(
-                                color = MaterialTheme.colorScheme.onSurface.copy(
-                                    alpha = 0.4f
-                                )
+                               fontSize =  adjustedFontSize(8.0f),
+                                color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f)
                             )
                         )
                     }
                 }
             } else {
-                Text(text = title, style = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = adjustedFontSize(18f)
+                Text(text = title, style = MaterialTheme.typography.titleMedium.copy(
+                    color = MaterialTheme.colorScheme.primary
                 ))
             }
 
@@ -109,7 +109,8 @@ fun MyCustomAppBar(
                 }) {
                     Icon(
                         imageVector = backButtonIcon(),
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -118,13 +119,13 @@ fun MyCustomAppBar(
     )
 }
 
-@Preview
+@Preview(name = "s")
 @Composable
 fun MyCustomAppBarPreview() {
-    _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomAppBar(
+    MyCustomAppBar(
         isBackButtonEnable = true,
         isActonButtonEnable = true,
-        title = "Details 01",
+        title = "Title Toolbar",
         homeHeaderEnable = true,
         onBackPress = {},
         editProfile = {},

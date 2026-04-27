@@ -43,6 +43,7 @@ import com.aliad.muktokowlom.ui.component.MyCustomMenu
 import com.aliad.muktokowlom.ui.component.SignUpSignInMenu
 import com.aliad.muktokowlom.ui.component.UserInfo
 import com.aliad.muktokowlom.ui.component.UserInfoItem
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.colorPrimaryLight
 import com.aliad.muktokowlom.ui.theme.green
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
@@ -378,7 +379,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 text = stringResource(Res.string.copyright_muktokowlom_all_right_reserved),
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f)
+                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f),
+                    fontSize = adjustedFontSize(8.0f)
                 ),
                 textAlign = TextAlign.Center
             )

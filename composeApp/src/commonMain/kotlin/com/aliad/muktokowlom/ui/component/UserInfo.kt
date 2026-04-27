@@ -12,20 +12,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.joined_since
+import muktokowlomcmp.composeapp.generated.resources.muktokowlom_white
 import muktokowlomcmp.composeapp.generated.resources.pending
 import muktokowlomcmp.composeapp.generated.resources.person_circle
 import muktokowlomcmp.composeapp.generated.resources.placeholder
@@ -39,7 +44,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun UserInfo(
     userName: String,
     emailAddress: String,
-    userProfileImage : String,
+    userProfileImage: String,
     publishedStoryCount: Int,
     pendingStoryCount: Int,
     joinedSince: String,
@@ -47,63 +52,42 @@ fun UserInfo(
     publishedStoryButtonClick: () -> Unit
 
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(size = 10.dp))
-            .background(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)).padding(16.dp)
-
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        elevation = CardDefaults.cardElevation(1.dp)
     ) {
-        Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            AsyncImage(
-                model = userProfileImage,
-                modifier = Modifier.size(80.dp).clip(shape = CircleShape),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                placeholder = painterResource(Res.drawable.person_circle),
-                error = painterResource(Res.drawable.person_circle)
-            )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
-            Text(
-                text = userName,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.W500
-                ),
-                modifier = Modifier.fillMaxWidth(),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = emailAddress,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
-                ),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
 
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.SpaceEvenly) {
 
-            Column(modifier = Modifier.clickable{
-                publishedStoryButtonClick.invoke()
-            }) {
+        Row( modifier = Modifier.fillMaxWidth().padding(16.dp)){
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AsyncImage(
+                    model = userProfileImage,
+                    modifier = Modifier.size(80.dp).clip(shape = CircleShape),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(Res.drawable.person_circle),
+                    error = painterResource(Res.drawable.person_circle)
+                )
+                HeightGap(height = 10.dp)
                 Text(
-                    text = publishedStoryCount.toString(),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.W500
+                    text = userName,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
                     ),
+                    modifier = Modifier.fillMaxWidth(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    textAlign = TextAlign.Center
                 )
-
                 Text(
-                    text = stringResource(Res.string.published_story),
+                    text = emailAddress,
                     style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
+                        color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f),
+                        fontSize = adjustedFontSize(8.0f)
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -111,59 +95,97 @@ fun UserInfo(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
-            Column(modifier = Modifier.clickable{
-                pendingStoryButtonClick.invoke()
-            }) {
-                Text(
-                    text = pendingStoryCount.toString(),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.W500
-                    ),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
 
-                Text(
-                    text = stringResource(Res.string.pending),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
-                    ),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.SpaceEvenly) {
+
+                Column(modifier = Modifier.clickable {
+                    publishedStoryButtonClick.invoke()
+                }) {
+                    Text(
+                        text = publishedStoryCount.toString(),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = adjustedFontSize(8.0f),
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Text(
+                        text = stringResource(Res.string.published_story),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f),
+                            fontSize = adjustedFontSize(8.0f)
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                HeightGap(height = 10.dp)
+                Column(modifier = Modifier.clickable {
+                    pendingStoryButtonClick.invoke()
+                }) {
+                    Text(
+                        text = pendingStoryCount.toString(),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = adjustedFontSize(8.0f),
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Text(
+                        text = stringResource(Res.string.pending),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f),
+                            fontSize = adjustedFontSize(8.0f)
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                HeightGap(height = 10.dp)
+                Column {
+                    Text(
+                        text = stringResource(Res.string.joined_since),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f),
+                            fontSize = adjustedFontSize(8.0f)
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Text(
+                        text = joinedSince,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = adjustedFontSize(8.0f),
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+
+                }
+
             }
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
-            Column {
-                Text(
-                    text = stringResource(Res.string.joined_since),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
-                    ),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Text(
-                    text = joinedSince,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.W500
-                    ),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-
-            }
-
         }
     }
 }
