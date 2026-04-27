@@ -31,6 +31,7 @@ import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.MyCustomButton
 import com.aliad.muktokowlom.ui.component.PremiumBenefits
+import com.aliad.muktokowlom.ui.component.PremiumPurchaseCustomButton
 import com.aliad.muktokowlom.ui.component.SubscriptionPlanItem
 import com.aliad.muktokowlom.ui.component.SubscriptionPlanItemShimmer
 import com.aliad.muktokowlom.ui.component.WidthGap
@@ -134,50 +135,12 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
 
                             HeightGap(height = 10.dp)
 
-                            Row(
-                                modifier = Modifier.fillMaxWidth()
-                                    .background(
-                                        color = MaterialTheme.colorScheme.inverseSurface.copy(
-                                            alpha = 0.2f
-                                        )
-                                    )
-                                    .padding(horizontal = 16.dp, vertical = 10.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    Text(
-                                        text = stringResource(Res.string.amount),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                    WidthGap(width = 5.dp)
-                                    Text(
-                                        text = "৳",
-                                        style = MaterialTheme.typography.bodyLarge,
-                                    )
-                                    WidthGap(width = 1.dp)
-                                    Text(
-                                        text = if (selectLn.value == "en") viewModel.selectedPackage.price
-                                            ?: "0" else AppConstant.toBanglaDigits(
-                                            viewModel.selectedPackage.price ?: "0"
-                                        ),
-                                        style = MaterialTheme.typography.bodyLarge.copy(
-                                            fontWeight = FontWeight.W500
-                                        )
-                                    )
-                                }
-
-                                MyCustomButton(
-                                    isEnable = true,
-                                    onClickButton = {},
-                                    title = stringResource(Res.string.buy),
-                                    modifier = Modifier.weight(1f),
-                                    padding = 0.dp,
-                                    leftIcon = painterResource(Res.drawable.icon_unlock_svgrepo_com)
-                                )
-                            }
+                            PremiumPurchaseCustomButton(
+                                price = list.value[viewModel.selectedSubscriptionIndex - 1].price?: "0" ,
+                                selectedLn = selectLn.value,
+                                onClick = {},
+                                modifier = Modifier
+                            )
                         }
                     }
                 }
