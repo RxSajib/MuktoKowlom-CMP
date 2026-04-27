@@ -41,7 +41,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun PremiumBenefits() {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp
+    ), horizontalArrangement = Arrangement.SpaceAround) {
         PremiumBenefitsItem(
             title = stringResource(Res.string.secure_payment),
             details = stringResource(Res.string.secure_payment_Details),
@@ -50,6 +51,8 @@ fun PremiumBenefits() {
             modifier = Modifier.weight(1f)
         )
 
+        WidthGap(4.dp)
+
         PremiumBenefitsItem(
             title = stringResource(Res.string.instant_access),
             details = stringResource(Res.string.instant_access_details),
@@ -57,6 +60,7 @@ fun PremiumBenefits() {
             color = onPrimaryLight,
             modifier = Modifier.weight(1f)
         )
+        WidthGap(4.dp)
         PremiumBenefitsItem(
             title = stringResource(Res.string.support),
             details = stringResource(Res.string.support_details),
