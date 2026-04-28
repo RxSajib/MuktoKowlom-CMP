@@ -2,6 +2,7 @@ package com.aliad.muktokowlom.ui.upload_stories
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -59,6 +60,7 @@ import muktokowlomcmp.composeapp.generated.resources.icon_arrow_down
 import muktokowlomcmp.composeapp.generated.resources.icon_bookmark
 import muktokowlomcmp.composeapp.generated.resources.icon_calender
 import muktokowlomcmp.composeapp.generated.resources.icon_crown
+import muktokowlomcmp.composeapp.generated.resources.icon_crown_dark
 import muktokowlomcmp.composeapp.generated.resources.icon_file
 import muktokowlomcmp.composeapp.generated.resources.icon_gallery
 import muktokowlomcmp.composeapp.generated.resources.icon_lock
@@ -67,6 +69,7 @@ import muktokowlomcmp.composeapp.generated.resources.icon_send
 import muktokowlomcmp.composeapp.generated.resources.icon_tag
 import muktokowlomcmp.composeapp.generated.resources.icon_users
 import muktokowlomcmp.composeapp.generated.resources.icon_world
+import muktokowlomcmp.composeapp.generated.resources.icon_world_dark
 import muktokowlomcmp.composeapp.generated.resources.or
 import muktokowlomcmp.composeapp.generated.resources.premium
 import muktokowlomcmp.composeapp.generated.resources.premium_details_two
@@ -97,7 +100,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
-    val viewModel : UploadStoriesViewModel = koinViewModel()
+    val viewModel: UploadStoriesViewModel = koinViewModel()
     val storyTitle = viewModel.storyTitleFlow.collectAsStateWithLifecycle()
     val category = viewModel.categoryFlow.collectAsStateWithLifecycle()
     val publishedDate = viewModel.publishedDateFlow.collectAsStateWithLifecycle()
@@ -126,11 +129,15 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
         ) { innerPadding ->
 
             Column(
-                modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding)
+                modifier = Modifier.fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.surface).padding(innerPadding)
                     .padding(16.dp).imePadding()
             ) {
 
-                Column(modifier = Modifier.fillMaxWidth().weight(1f).verticalScroll(state = rememberScrollState())) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().weight(1f)
+                        .verticalScroll(state = rememberScrollState())
+                ) {
 
                     Text(
                         text = stringResource(Res.string.share_your_story),
@@ -163,7 +170,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                         placeholder = stringResource(Res.string.story_title),
                         inputData = storyTitle.value,
                         modifier = Modifier,
-                        onValueChanged = {title ->
+                        onValueChanged = { title ->
                             viewModel.inputTitle(title = title)
                         }
                     )
@@ -177,7 +184,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                         placeholder = stringResource(Res.string.select_category),
                         modifier = Modifier,
                         inputData = category.value,
-                        onValueChanged = {category ->
+                        onValueChanged = { category ->
                             viewModel.inputCategory(category = category)
                         },
                         readOnly = true,
@@ -198,7 +205,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                         tralingIcon = painterResource(Res.drawable.icon_calender),
                         inputData = publishedDate.value,
                         readOnly = true,
-                        onValueChanged = {publishedDate ->
+                        onValueChanged = { publishedDate ->
                             viewModel.inputPublishedDate(publishedDate = publishedDate)
                         },
                         onClick = {
@@ -229,7 +236,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                         placeholder = stringResource(Res.string.write_short_summary_of_your_story),
                         modifier = Modifier,
                         inputData = storySummary.value,
-                        onValueChanged = {summary ->
+                        onValueChanged = { summary ->
                             viewModel.inputStorySummary(storySummary = summary)
                         }
                     )
@@ -244,7 +251,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                         placeholder = stringResource(Res.string.start_writing_your_story),
                         modifier = Modifier,
                         inputData = fullStory.value,
-                        onValueChanged = {fullStory ->
+                        onValueChanged = { fullStory ->
                             viewModel.inputFullStoryDetails(fullStoryDetails = fullStory)
                         }
                     )
@@ -327,7 +334,9 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
                     Row(modifier = Modifier.fillMaxWidth()) {
                         MySubscriptionButton(
-                            rightImage = painterResource(Res.drawable.icon_world),
+                            rightImage = if (!isSystemInDarkTheme()) painterResource(Res.drawable.icon_world) else painterResource(
+                                Res.drawable.icon_world_dark
+                            ),
                             title = stringResource(Res.string.free),
                             details = stringResource(Res.string.free_details),
                             isSelected = viewModel.selectStoryIsFree,
@@ -339,7 +348,9 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                         WidthGap(width = 10.dp)
 
                         MySubscriptionButton(
-                            rightImage = painterResource(Res.drawable.icon_crown),
+                            rightImage = if (!isSystemInDarkTheme()) painterResource(Res.drawable.icon_crown) else painterResource(
+                                Res.drawable.icon_crown_dark
+                            ),
                             title = stringResource(Res.string.premium),
                             details = stringResource(Res.string.premium_details_two),
                             isSelected = !viewModel.selectStoryIsFree,
@@ -389,19 +400,19 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
             }
         }
 
-        if(viewModel.showCalender){
+        if (viewModel.showCalender) {
             WheelDatePickerDialog(
                 onDismissRequest = {
                     viewModel.showCalender = false
                 },
-                onDateSelected = {localDate ->
+                onDateSelected = { localDate ->
                     viewModel.showCalender = false
                     viewModel.inputPublishedDate(publishedDate = localDate.toString())
                 }
             )
         }
 
-        if(viewModel.showCategoryDialog){
+        if (viewModel.showCategoryDialog) {
 
         }
     }
