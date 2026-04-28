@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Colors
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -177,187 +179,191 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
         )
 
     }, bottomBar = {
+        Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(5.dp)) {
 
-        NavigationBar(
-            containerColor = MaterialTheme.colorScheme.inverseSurface,
-        ) {
 
-            NavigationBarItem(
-                colors = NavigationBarItemColors(
-                    selectedIconColor = onPrimaryLight,
-                    selectedTextColor = Color.Transparent,
-                    selectedIndicatorColor = Color.Transparent,
-                    unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                    unselectedTextColor = Color.Transparent,
-                    disabledIconColor = Color.Transparent,
-                    disabledTextColor = Color.Transparent
-                ),
-                selected = currentTab is AppDestination.BottomAppBar.DashBoard,
-                onClick = { currentTab = AppDestination.BottomAppBar.DashBoard },
-                icon = {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            painter = if (currentTab is AppDestination.BottomAppBar.DashBoard) painterResource(
-                                Res.drawable.icon_home_selected
-                            ) else painterResource(Res.drawable.icon_home),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        WidthGap(width = 2.dp)
-                        Text(
-                            stringResource(Res.string.home),
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontSize = adjustedFontSize(10f),
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.inversePrimary,
+                //     tonalElevation = 5.dp
+            ) {
+
+                NavigationBarItem(
+                    colors = NavigationBarItemColors(
+                        selectedIconColor = onPrimaryLight,
+                        selectedTextColor = Color.Transparent,
+                        selectedIndicatorColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        unselectedTextColor = Color.Transparent,
+                        disabledIconColor = Color.Transparent,
+                        disabledTextColor = Color.Transparent
+                    ),
+                    selected = currentTab is AppDestination.BottomAppBar.DashBoard,
+                    onClick = { currentTab = AppDestination.BottomAppBar.DashBoard },
+                    icon = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = if (currentTab is AppDestination.BottomAppBar.DashBoard) painterResource(
+                                    Res.drawable.icon_home_selected
+                                ) else painterResource(Res.drawable.icon_home),
+                                null,
+                                modifier = Modifier.size(24.dp)
                             )
-                        )
-                    }
+                            WidthGap(width = 2.dp)
+                            Text(
+                                stringResource(Res.string.home),
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                )
+                            )
+                        }
 
-                },
-                /* label = {
+                    },
+                    /* label = {
 
                  }*/
-            )
-            NavigationBarItem(
-                selected = currentTab is AppDestination.BottomAppBar.Category,
-                onClick = { currentTab = AppDestination.BottomAppBar.Category },
-                colors = NavigationBarItemColors(
-                    selectedIconColor = onPrimaryLight,
-                    selectedTextColor = Color.Transparent,
-                    selectedIndicatorColor = Color.Transparent,
-                    unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                    unselectedTextColor = Color.Transparent,
-                    disabledIconColor = Color.Transparent,
-                    disabledTextColor = Color.Transparent
-                ),
-                icon = {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            painter = if (currentTab is AppDestination.BottomAppBar.Category) painterResource(
-                                Res.drawable.icon_category_selected
-                            ) else painterResource(Res.drawable.icon_category),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        WidthGap(width = 2.dp)
-                        Text(
-                            text = stringResource(Res.string.category),
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontSize = adjustedFontSize(10f),
-                            )
-                        )
-                    }
-
-                },
-
-
                 )
-
-            NavigationBarItem(
-                colors = NavigationBarItemColors(
-                    selectedIconColor = onPrimaryLight,
-                    selectedTextColor = Color.Transparent,
-                    selectedIndicatorColor = Color.Transparent,
-                    unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                    unselectedTextColor = Color.Transparent,
-                    disabledIconColor = Color.Transparent,
-                    disabledTextColor = Color.Transparent
-                ),
-                selected = currentTab is AppDestination.BottomAppBar.Search,
-                onClick = { currentTab = AppDestination.BottomAppBar.Search },
-                icon = {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            painter = if (currentTab is AppDestination.BottomAppBar.Search) painterResource(
-                                Res.drawable.icon_search_selected
-                            ) else
-                                painterResource(Res.drawable.search_alt_svgrepo_com),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        WidthGap(width = 2.dp)
-                        Text(
-                            stringResource(Res.string.search),
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontSize = adjustedFontSize(10f),
+                NavigationBarItem(
+                    selected = currentTab is AppDestination.BottomAppBar.Category,
+                    onClick = { currentTab = AppDestination.BottomAppBar.Category },
+                    colors = NavigationBarItemColors(
+                        selectedIconColor = onPrimaryLight,
+                        selectedTextColor = Color.Transparent,
+                        selectedIndicatorColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        unselectedTextColor = Color.Transparent,
+                        disabledIconColor = Color.Transparent,
+                        disabledTextColor = Color.Transparent
+                    ),
+                    icon = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = if (currentTab is AppDestination.BottomAppBar.Category) painterResource(
+                                    Res.drawable.icon_category_selected
+                                ) else painterResource(Res.drawable.icon_category),
+                                null,
+                                modifier = Modifier.size(24.dp)
                             )
-                        )
-                    }
+                            WidthGap(width = 2.dp)
+                            Text(
+                                text = stringResource(Res.string.category),
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                )
+                            )
+                        }
 
-                },
-                /*label = {
+                    },
+
+
+                    )
+
+                NavigationBarItem(
+                    colors = NavigationBarItemColors(
+                        selectedIconColor = onPrimaryLight,
+                        selectedTextColor = Color.Transparent,
+                        selectedIndicatorColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        unselectedTextColor = Color.Transparent,
+                        disabledIconColor = Color.Transparent,
+                        disabledTextColor = Color.Transparent
+                    ),
+                    selected = currentTab is AppDestination.BottomAppBar.Search,
+                    onClick = { currentTab = AppDestination.BottomAppBar.Search },
+                    icon = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = if (currentTab is AppDestination.BottomAppBar.Search) painterResource(
+                                    Res.drawable.icon_search_selected
+                                ) else
+                                    painterResource(Res.drawable.search_alt_svgrepo_com),
+                                null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            WidthGap(width = 2.dp)
+                            Text(
+                                stringResource(Res.string.search),
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                )
+                            )
+                        }
+
+                    },
+                    /*label = {
 
                 }*/
-            )
-            NavigationBarItem(
-                colors = NavigationBarItemColors(
-                    selectedIconColor = onPrimaryLight,
-                    selectedTextColor = Color.Transparent,
-                    selectedIndicatorColor = Color.Transparent,
-                    unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                    unselectedTextColor = Color.Transparent,
-                    disabledIconColor = Color.Transparent,
-                    disabledTextColor = Color.Transparent
-                ),
-                selected = currentTab is AppDestination.BottomAppBar.FavoriteStory,
-                onClick = { currentTab = AppDestination.BottomAppBar.FavoriteStory },
-                icon = {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            painter = if (currentTab is AppDestination.BottomAppBar.FavoriteStory) painterResource(
-                                Res.drawable.icon_bookmark_selected
-                            ) else painterResource(Res.drawable.icon_bookmark),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        WidthGap(width = 2.dp)
-                        Text(
-                            stringResource(Res.string.favorite),
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontSize = adjustedFontSize(10f),
+                )
+                NavigationBarItem(
+                    colors = NavigationBarItemColors(
+                        selectedIconColor = onPrimaryLight,
+                        selectedTextColor = Color.Transparent,
+                        selectedIndicatorColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        unselectedTextColor = Color.Transparent,
+                        disabledIconColor = Color.Transparent,
+                        disabledTextColor = Color.Transparent
+                    ),
+                    selected = currentTab is AppDestination.BottomAppBar.FavoriteStory,
+                    onClick = { currentTab = AppDestination.BottomAppBar.FavoriteStory },
+                    icon = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = if (currentTab is AppDestination.BottomAppBar.FavoriteStory) painterResource(
+                                    Res.drawable.icon_bookmark_selected
+                                ) else painterResource(Res.drawable.icon_bookmark),
+                                null,
+                                modifier = Modifier.size(24.dp)
                             )
-                        )
-                    }
+                            WidthGap(width = 2.dp)
+                            Text(
+                                stringResource(Res.string.favorite),
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                )
+                            )
+                        }
 
-                },
-                /* label = {
+                    },
+                    /* label = {
 
                  }*/
-            )
-            NavigationBarItem(
-                colors = NavigationBarItemColors(
-                    selectedIconColor = onPrimaryLight,
-                    selectedTextColor = Color.Transparent,
-                    selectedIndicatorColor = Color.Transparent,
-                    unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                    unselectedTextColor = Color.Transparent,
-                    disabledIconColor = Color.Transparent,
-                    disabledTextColor = Color.Transparent
-                ),
+                )
+                NavigationBarItem(
+                    colors = NavigationBarItemColors(
+                        selectedIconColor = onPrimaryLight,
+                        selectedTextColor = Color.Transparent,
+                        selectedIndicatorColor = Color.Transparent,
+                        unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        unselectedTextColor = Color.Transparent,
+                        disabledIconColor = Color.Transparent,
+                        disabledTextColor = Color.Transparent
+                    ),
 
-                selected = currentTab is AppDestination.BottomAppBar.Profile,
-                onClick = { currentTab = AppDestination.BottomAppBar.Profile },
-                icon = {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            painter = if (currentTab is AppDestination.BottomAppBar.Profile) painterResource(
-                                Res.drawable.icon_setting_selected
-                            ) else painterResource(Res.drawable.icon_setting),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Text(
-                            stringResource(Res.string.profile),
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontSize = adjustedFontSize(10f),
+                    selected = currentTab is AppDestination.BottomAppBar.Profile,
+                    onClick = { currentTab = AppDestination.BottomAppBar.Profile },
+                    icon = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = if (currentTab is AppDestination.BottomAppBar.Profile) painterResource(
+                                    Res.drawable.icon_setting_selected
+                                ) else painterResource(Res.drawable.icon_setting),
+                                null,
+                                modifier = Modifier.size(24.dp)
                             )
-                        )
-                    }
+                            Text(
+                                stringResource(Res.string.profile),
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                )
+                            )
+                        }
 
-                },
-                /*label = {
+                    },
+                    /*label = {
 
                 }*/
-            )
+                )
+            }
         }
 
     }) { innerPadding ->
