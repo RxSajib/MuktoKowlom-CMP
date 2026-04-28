@@ -3,6 +3,7 @@ package com.aliad.muktokowlom.ui.screen.loginScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -117,6 +118,8 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
         }
     }
 
+    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
+
 
     Scaffold(
         topBar = {
@@ -136,8 +139,9 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                 editProfile = {})
         }
     ) { innerPadding ->
-        Surface(
+        Box(
             modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.surface)
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 16.dp)
@@ -146,7 +150,6 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.surface)
                     .imePadding()
             ) {
 
@@ -161,8 +164,9 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
 
                     Text(
                         text = stringResource(Res.string.sign_in_now),
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.W500
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
@@ -175,16 +179,18 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         Text(
                             text = stringResource(Res.string.dont_have_an_account),
                             style = MaterialTheme.typography.bodySmall.copy(
-                                fontSize = adjustedFontSize(10.0f)
+                                fontSize = adjustedFontSize(10.0f),
+
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                             )
                         )
                         WidthGap(width = 4.dp)
                         Text(
                             text = stringResource(Res.string.sign_up),
-                            style = MaterialTheme.typography.bodySmall.copy(
+                            style = MaterialTheme.typography.titleSmall.copy(
                                 fontWeight = FontWeight.W500,
                                 color = Color.Red,
-                                fontSize = adjustedFontSize(10.0f)
+                                fontSize = adjustedFontSize(10.0f),
                             ), modifier = Modifier.clickable {
                                 backStack.add(AppDestination.Auth.SignUp)
                             })
@@ -202,27 +208,31 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
                         isPasswordVisibility = true
-                    ){}
+                    ) {}
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_password),
                         text = passwordState.value,
                         onValueChange = { passwordInput ->
                             viewModel.updatePassword(password = passwordInput)
-                          //  viewModel.passwordInput = passwordInput
+                            //  viewModel.passwordInput = passwordInput
                         },
                         isPasswordInput = true,
                         isVisiblePasswordChange = {
                             viewModel.isPasswordVisible = !viewModel.isPasswordVisible
                         },
                         isPasswordVisibility = viewModel.isPasswordVisible
-                    ){}
+                    ) {}
                     HeightGap(height = 5.dp)
                     Row {
                         Spacer(modifier = Modifier.weight(1f))
                         Text(
                             text = stringResource(Res.string.forgot_password),
-                            style = MaterialTheme.typography.bodySmall,
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = adjustedFontSize(10.0f),
+
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                            ),
                             modifier = Modifier.clickable {
                                 backStack.add(AppDestination.Auth.RecoveryPassword)
                             })
@@ -232,7 +242,9 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
 
                     Text(
                         text = stringResource(Res.string.or_continue_with),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            color = MaterialTheme.colorScheme.primary
+                        ),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
@@ -277,8 +289,8 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                 ) {
                     Text(
                         text = stringResource(Res.string.by_continuing_you_agree_to_the),
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = adjustedFontSize(9f), fontWeight = FontWeight.W400
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontSize = adjustedFontSize(8f), fontWeight = FontWeight.W400,
                         ),
                     )
 
@@ -293,8 +305,8 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         val underlineColor = MaterialTheme.colorScheme.primary
                         Text(
                             text = stringResource(Res.string.t_and_c),
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontSize = adjustedFontSize(9f), fontWeight = FontWeight.W400
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontSize = adjustedFontSize(8f), fontWeight = FontWeight.W400,
                             ),
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
@@ -308,7 +320,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                                         end = Offset(size.width, verticalOffset)
                                     )
                                 }
-                                .clickable{
+                                .clickable {
                                     viewModel.isOpenTermsAndConditionBottomSheet = true
                                 }
                         )
@@ -319,10 +331,8 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
 
                     Text(
                         text = stringResource(Res.string.and),
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = adjustedFontSize(9f),
-                            fontWeight = FontWeight.W400,
-                            color = MaterialTheme.colorScheme.primary
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontSize = adjustedFontSize(8f), fontWeight = FontWeight.W400,
                         ),
                     )
                     WidthGap(
@@ -336,8 +346,8 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         val underlineColor = Color.Blue
                         Text(
                             text = stringResource(Res.string.privacy_policy),
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontWeight = FontWeight.W400, fontSize = adjustedFontSize(9f)
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontSize = adjustedFontSize(8f), fontWeight = FontWeight.W400,
                             ),
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
@@ -364,13 +374,15 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                 }
             }
 
-            if(viewModel.isOpenTermsAndConditionBottomSheet){
-                TermsAndConditionBottomSheet(privacyPolicyViewModel = privacyPolicyViewModel,
+            if (viewModel.isOpenTermsAndConditionBottomSheet) {
+                TermsAndConditionBottomSheet(
+                    privacyPolicyViewModel = privacyPolicyViewModel,
                     {
                         viewModel.isOpenTermsAndConditionBottomSheet = false
                     },
                 )
             }
         }
+    }
     }
 }

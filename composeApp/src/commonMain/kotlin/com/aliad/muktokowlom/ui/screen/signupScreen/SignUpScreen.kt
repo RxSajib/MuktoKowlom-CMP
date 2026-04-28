@@ -3,6 +3,7 @@ package org.example.project.ui.screen.signupScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -98,6 +100,8 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
         }
     }
 
+    Surface(modifier = Modifier.fillMaxSize().background(color = Color.Red)) {
+
     Scaffold(
         topBar = {
             MyCustomAppBar(
@@ -118,8 +122,10 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
     ) { innerPadding ->
 
 
-        Surface(
+        Box(
             modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
+
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 16.dp)
@@ -128,13 +134,12 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
                     .imePadding()
             ) {
 
 
                 Column(
-                    modifier = Modifier .weight(1f)
+                    modifier = Modifier.weight(1f)
                         .verticalScroll(
                             rememberScrollState()
                         )
@@ -142,8 +147,9 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                     HeightGap(height = 10.dp)
                     Text(
                         text = stringResource(Res.string.sign_up_now),
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.W500
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
@@ -156,7 +162,9 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         Text(
                             text = stringResource(Res.string.already_have_account),
                             style = MaterialTheme.typography.bodySmall.copy(
-                                fontSize = adjustedFontSize(10.0f)
+                                fontSize = adjustedFontSize(10.0f),
+
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                             )
                         )
                         WidthGap(width = 4.dp)
@@ -180,7 +188,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
                         isPasswordVisibility = true,
-                    ){}
+                    ) {}
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_email),
@@ -191,7 +199,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
                         isPasswordVisibility = true
-                    ){}
+                    ) {}
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.enter_password),
@@ -204,7 +212,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                             viewModel.isPasswordShows.value = !viewModel.isPasswordShows.value
                         },
                         isPasswordVisibility = viewModel.isPasswordShows.value
-                    ){}
+                    ) {}
                     HeightGap(height = 10.dp)
                     MyCustomInputFiled(
                         placeHolderText = stringResource(Res.string.confirm_password),
@@ -218,13 +226,15 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                                 !viewModel.isConfirmPasswordShows.value
                         },
                         isPasswordVisibility = viewModel.isConfirmPasswordShows.value
-                    ){}
+                    ) {}
                     HeightGap(height = 20.dp)
 
 
                     Text(
                         text = stringResource(Res.string.or_continue_with),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            color = MaterialTheme.colorScheme.primary
+                        ),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
@@ -268,8 +278,9 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                 ) {
                     Text(
                         text = stringResource(Res.string.by_continuing_you_agree_to_the),
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = adjustedFontSize(9f), fontWeight = FontWeight.W400
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontSize = adjustedFontSize(8f), fontWeight = FontWeight.W400,
+                            color = MaterialTheme.colorScheme.primary
                         ),
                     )
 
@@ -284,8 +295,8 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         val underlineColor = MaterialTheme.colorScheme.primary
                         Text(
                             text = stringResource(Res.string.t_and_c),
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontSize = adjustedFontSize(9f), fontWeight = FontWeight.W400
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontSize = adjustedFontSize(8f), fontWeight = FontWeight.W400,
                             ),
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
@@ -298,7 +309,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                                         start = Offset(0f, verticalOffset),
                                         end = Offset(size.width, verticalOffset)
                                     )
-                                }.clickable{
+                                }.clickable {
                                     viewModel.isOpenTermsAndConditionBottomSheet = true
                                 }
                         )
@@ -310,7 +321,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                     Text(
                         text = stringResource(Res.string.and),
                         style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = adjustedFontSize(9f),
+                            fontSize = adjustedFontSize(8f),
                             fontWeight = FontWeight.W400,
                             color = MaterialTheme.colorScheme.primary
                         ),
@@ -323,11 +334,11 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         modifier = Modifier.wrapContentWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        val underlineColor = Color.Blue
+                        val underlineColor = MaterialTheme.colorScheme.primary
                         Text(
                             text = stringResource(Res.string.privacy_policy),
                             style = MaterialTheme.typography.bodySmall.copy(
-                                fontWeight = FontWeight.W400, fontSize = adjustedFontSize(9f)
+                                fontWeight = FontWeight.W400, fontSize = adjustedFontSize(8f)
                             ),
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
@@ -340,7 +351,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                                         start = Offset(0f, verticalOffset),
                                         end = Offset(size.width, verticalOffset)
                                     )
-                                }.clickable{
+                                }.clickable {
                                     viewModel.isOpenPrivacyPolicyBottomSheet = true
                                 }
                         )
@@ -354,7 +365,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                 }
             }
 
-            if(viewModel.isOpenTermsAndConditionBottomSheet){
+            if (viewModel.isOpenTermsAndConditionBottomSheet) {
                 TermsAndConditionBottomSheet(
                     privacyPolicyViewModel = privacyPolicyViewModel,
                 ) {
@@ -362,6 +373,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                 }
             }
         }
+    }
     }
 }
 

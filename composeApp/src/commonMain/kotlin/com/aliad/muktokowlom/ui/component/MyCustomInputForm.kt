@@ -57,8 +57,9 @@ fun MyCustomInputFiled(
         ),
         enabled = !readOnly,
         readOnly = readOnly,
-        textStyle = MaterialTheme.typography.bodyMedium.copy(
-            fontWeight = FontWeight.W400
+        textStyle = MaterialTheme.typography.titleSmall.copy(
+            fontWeight = FontWeight.W500,
+            color = MaterialTheme.colorScheme.primary
         ),
         keyboardActions = KeyboardActions(
             onSearch = {
@@ -107,8 +108,9 @@ fun MyCustomInputFiled(
                 text = placeHolderText,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.W400
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.W400,
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                 )
             )
         },

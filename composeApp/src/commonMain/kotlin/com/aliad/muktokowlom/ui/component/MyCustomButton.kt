@@ -73,9 +73,10 @@ fun MyCustomButton(
                     }
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontWeight = FontWeight.W500,
-                            fontSize = adjustedFontSize(12f)
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.W600,
+                            fontSize = adjustedFontSize(12f),
+                            color = MaterialTheme.colorScheme.inversePrimary
                         ),
                         modifier = Modifier.padding(padding)
                     )
