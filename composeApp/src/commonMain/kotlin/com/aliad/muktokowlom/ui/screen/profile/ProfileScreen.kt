@@ -40,6 +40,7 @@ import com.aliad.muktokowlom.ui.bottomSheet.LogoutBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomMenu
+import com.aliad.muktokowlom.ui.component.ProfileEditButton
 import com.aliad.muktokowlom.ui.component.SignUpSignInMenu
 import com.aliad.muktokowlom.ui.component.UserInfo
 import com.aliad.muktokowlom.ui.component.UserInfoItem
@@ -210,7 +211,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                             color = MaterialTheme.colorScheme.primary
                         )
                     )
-                    Text(
+                   /* Text(
                         text = stringResource(Res.string.edit),
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = Color.White
@@ -225,6 +226,17 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                                 )
                             }
                             .padding(horizontal = 10.dp, vertical = 5.dp)
+                    )*/
+
+                    ProfileEditButton(
+                        onClick = {
+                             backStack.add(
+                            AppDestination.Dest(
+                                firstDestName = AppDestination.Dest.EditProfile::class.simpleName
+                                    ?: ""
+                            )
+                        )
+                        }
                     )
                 }
 
