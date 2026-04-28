@@ -2,6 +2,7 @@
 
 <resources>
 
+    <string name="home">Home</string>
     <string name="best_deal">Best Deal</string>
     <string name="smart_chose">Smart Chose</string>
     <string name="starter">Starter Plan</string>

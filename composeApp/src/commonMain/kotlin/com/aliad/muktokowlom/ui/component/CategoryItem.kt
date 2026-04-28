@@ -69,7 +69,7 @@ fun CategoryItem(category: Category, onClick: () -> Unit) {
             modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleSmall.copy(
-                color = MaterialTheme.colorScheme.primary,
+                color = Color.White,
                 fontWeight = FontWeight.Bold
             )
         )

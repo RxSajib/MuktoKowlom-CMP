@@ -18,14 +18,18 @@
     android:height="24dp"
     android:viewportWidth="25"
     android:viewportHeight="24">
-  <group>
-    <clip-path
-        android:pathData="M0.5,0h24v24H0.5z"/>
-    <path
-        android:pathData="M5.25,3.75a1,1 0,0 1,1 -1h12.5a1,1 0,0 1,1 1v15.974c0,1.193 -1.325,1.908 -2.322,1.255L12.5,17.75l-4.928,3.229c-0.998,0.653 -2.322,-0.062 -2.322,-1.255z"
-        android:strokeLineJoin="round"
-        android:strokeWidth="1.5"
-        android:fillColor="#00000000"
-        android:strokeColor="#242424"/>
-  </group>
+  <path
+      android:pathData="M17.75,20.25c-1.79,0 -3.25,-1.46 -3.25,-3.25s1.46,-3.25 3.25,-3.25S21,15.21 21,17a3.25,3.25 0,0 1,-3.25 3.25m2,-16.5h-4a1,1 0,0 0,-1 1v4a1,1 0,0 0,1 1h4a1,1 0,0 0,1 -1v-4a1,1 0,0 0,-1 -1m-15.46,6 l3.46,-6 3.46,6z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="1.5"
+      android:fillColor="#121331"
+      android:strokeColor="#121331"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M4.88,14.25 L10.62,20m0,-5.75L4.88,20"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#121331"
+      android:strokeLineCap="round"/>
 </vector>
