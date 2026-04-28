@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import coil3.Image
 import com.aliad.model.SnackBarDetails
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -126,14 +127,12 @@ fun CustomSnackBar(
     modifier: Modifier = Modifier
 ) {
     Card(
+        shape = CircleShape,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-        shape = RoundedCornerShape(size = 6.dp)
+     //   shape = RoundedCornerShape(size = 6.dp)
     ) {
         Row(
             modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
@@ -149,12 +148,14 @@ fun CustomSnackBar(
             )
 
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(2.dp))
 
             Text(
                 text = message,
                 modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontSize = adjustedFontSize(12f)
+                )
             )
 
             Spacer(modifier = Modifier.width(12.dp))

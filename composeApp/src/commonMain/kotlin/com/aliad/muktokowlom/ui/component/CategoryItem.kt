@@ -68,8 +68,8 @@ fun CategoryItem(category: Category, onClick: () -> Unit) {
             text = getTitle(selectLn = selectLn.value, title = category.name, titleBn =category.name_bn) ,
             modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = Color.White,
+            style = MaterialTheme.typography.titleSmall.copy(
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
             )
         )

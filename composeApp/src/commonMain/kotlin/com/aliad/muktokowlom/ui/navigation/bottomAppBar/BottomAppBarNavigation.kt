@@ -1,8 +1,14 @@
 package com.aliad.muktokowlom.ui.navigation.bottomAppBar
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -13,7 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -31,6 +39,7 @@ import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.screen.homeScreen.HomeScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
 import com.aliad.muktokowlom.ui.screen.search.Search
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.sajib.data.appConstant.AppConstant
@@ -91,19 +100,19 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
     val profileBackStack = rememberNavBackStack(appConfig, AppDestination.BottomAppBar.Profile)
 
 
-    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
-    val userName by dataStoreViewModel.getStringData(key = AppConstant.USER_NAME).collectAsStateWithLifecycle("")
-    val userEmailAddress by dataStoreViewModel.getStringData(key = AppConstant.USER_EMAIL_ADDRESS).collectAsStateWithLifecycle("")
-    val userProfileImage by dataStoreViewModel.getStringData(key = AppConstant.USER_PROFILE_IMAGE).collectAsStateWithLifecycle(null)
+    val dataStoreViewModel: DataStoreViewModel = koinViewModel()
+    val userName by dataStoreViewModel.getStringData(key = AppConstant.USER_NAME)
+        .collectAsStateWithLifecycle("")
+    val userEmailAddress by dataStoreViewModel.getStringData(key = AppConstant.USER_EMAIL_ADDRESS)
+        .collectAsStateWithLifecycle("")
+    val userProfileImage by dataStoreViewModel.getStringData(key = AppConstant.USER_PROFILE_IMAGE)
+        .collectAsStateWithLifecycle(null)
 
-    val AppDestinationSaver: Saver<AppDestination, String> = Saver(
-        save = { destination ->
-            Json.encodeToString(AppDestination.serializer(), destination)
-        },
-        restore = { jsonString ->
-            Json.decodeFromString(AppDestination.serializer(), jsonString)
-        }
-    )
+    val AppDestinationSaver: Saver<AppDestination, String> = Saver(save = { destination ->
+        Json.encodeToString(AppDestination.serializer(), destination)
+    }, restore = { jsonString ->
+        Json.decodeFromString(AppDestination.serializer(), jsonString)
+    })
 
     var currentTab by rememberSaveable(
         stateSaver = AppDestinationSaver
@@ -122,97 +131,127 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
 
     val webLink = userEmailAddress.ifEmpty { stringResource(Res.string.muktokowlom_web_link) }
 
-    Scaffold(
-        topBar = {
-            MyCustomAppBar(
-                isActonButtonEnable = true,
-                isBackButtonEnable = false,
-                title = stringResource(Res.string.muktokowlom),
-                homeHeaderEnable = true,
-                userProfileImage = userProfileImage,
-                userName = userName.ifEmpty { stringResource(Res.string.muktokowlom) },
-                userEmailAddress = webLink,
-                onBackPress = {},
-                editProfile = {
-
-                }
-
-            )
-
-        },
-        bottomBar = {
-
-            NavigationBar {
-                NavigationBarItem(
-                    selected = currentTab is AppDestination.BottomAppBar.DashBoard,
-                    onClick = { currentTab = AppDestination.BottomAppBar.DashBoard },
-                    icon = {
-                        Icon(
-                            painter = painterResource(Res.drawable.ic_home),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = {
-                        Text(
-                            stringResource(Res.string.dashBoard)
-                        )
-                    }
-                )
-                NavigationBarItem(
-                    selected = currentTab is AppDestination.BottomAppBar.Category,
-                    onClick = { currentTab = AppDestination.BottomAppBar.Category },
-                    icon = {
-                        Icon(
-                            painter = painterResource(Res.drawable.ic_filter),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = { Text(stringResource(Res.string.category)) }
-                )
-
-                NavigationBarItem(
-                    selected = currentTab is AppDestination.BottomAppBar.Search,
-                    onClick = { currentTab = AppDestination.BottomAppBar.Search },
-                    icon = {
-                        Icon(
-                            painter = painterResource(Res.drawable.search_alt_svgrepo_com),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = { Text(stringResource(Res.string.search)) }
-                )
-                NavigationBarItem(
-                    selected = currentTab is AppDestination.BottomAppBar.FavoriteStory,
-                    onClick = { currentTab = AppDestination.BottomAppBar.FavoriteStory },
-                    icon = {
-                        Icon(
-                            painter = painterResource(Res.drawable.ic_fav_unselected),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = { Text(stringResource(Res.string.favorite)) }
-                )
-                NavigationBarItem(
-                    selected = currentTab is AppDestination.BottomAppBar.Profile,
-                    onClick = { currentTab = AppDestination.BottomAppBar.Profile },
-                    icon = {
-                        Icon(
-                            painter = painterResource(Res.drawable.ic_profile),
-                            null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = { Text(stringResource(Res.string.profile)) }
-                )
+    Scaffold(topBar = {
+        MyCustomAppBar(
+            isActonButtonEnable = true,
+            isBackButtonEnable = false,
+            title = stringResource(Res.string.muktokowlom),
+            homeHeaderEnable = true,
+            userProfileImage = userProfileImage,
+            userName = userName.ifEmpty { stringResource(Res.string.muktokowlom) },
+            userEmailAddress = webLink,
+            onBackPress = {},
+            editProfile = {
 
             }
 
+        )
+
+    }, bottomBar = {
+
+        NavigationBar(
+            containerColor = MaterialTheme.colorScheme.inverseSurface,
+        ) {
+
+            NavigationBarItem(
+                selected = currentTab is AppDestination.BottomAppBar.DashBoard,
+                onClick = { currentTab = AppDestination.BottomAppBar.DashBoard },
+                icon = {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_home),
+                        null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
+                label = {
+                    Text(
+                        stringResource(Res.string.dashBoard),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = adjustedFontSize(8.0f),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    )
+                })
+            NavigationBarItem(
+                selected = currentTab is AppDestination.BottomAppBar.Category,
+                onClick = { currentTab = AppDestination.BottomAppBar.Category },
+                icon = {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_filter),
+                        null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
+                label = {
+                    Text(
+                        stringResource(Res.string.category),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = adjustedFontSize(8.0f),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    )
+                })
+
+            NavigationBarItem(
+                selected = currentTab is AppDestination.BottomAppBar.Search,
+                onClick = { currentTab = AppDestination.BottomAppBar.Search },
+                icon = {
+                    Icon(
+                        painter = painterResource(Res.drawable.search_alt_svgrepo_com),
+                        null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
+                label = {
+                    Text(
+                        stringResource(Res.string.search),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = adjustedFontSize(8.0f),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    )
+                })
+            NavigationBarItem(
+                selected = currentTab is AppDestination.BottomAppBar.FavoriteStory,
+                onClick = { currentTab = AppDestination.BottomAppBar.FavoriteStory },
+                icon = {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_fav_unselected),
+                        null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
+                label = {
+                    Text(
+                        stringResource(Res.string.favorite),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = adjustedFontSize(8.0f),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    )
+                })
+            NavigationBarItem(
+                selected = currentTab is AppDestination.BottomAppBar.Profile,
+                onClick = { currentTab = AppDestination.BottomAppBar.Profile },
+                icon = {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_profile),
+                        null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
+                label = {
+                    Text(
+                        stringResource(Res.string.profile),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = adjustedFontSize(8.0f),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    )
+                })
         }
-    ) { innerPadding ->
+
+    }) { innerPadding ->
         NavDisplay(
             modifier = Modifier.padding(innerPadding),
             backStack = activeBackStack,
@@ -234,9 +273,8 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
                     FavoriteStoryScreen(backStack = rootBackStack)
                 }
                 entry<AppDestination.BottomAppBar.Profile> {
-                    ProfileScreen(backStack = rootBackStack,  sharedViewModel = sharedViewModel)
+                    ProfileScreen(backStack = rootBackStack, sharedViewModel = sharedViewModel)
                 }
-            }
-        )
+            })
     }
 }

@@ -47,7 +47,7 @@ fun StoryItemFixedSize(item: MyBookItem?){
                 error = painterResource(Res.drawable.placeholder)
             )
             if(item?.isPaidStory == true){
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.DiagonalCornerView()
+                DiagonalCornerView()
             }
 
         }
@@ -59,12 +59,13 @@ fun StoryItemFixedSize(item: MyBookItem?){
             onStarClick = {},
             isIndicator = true
         )
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(2.dp)
+        HeightGap(2.dp)
         Text(
             text = getTitle(selectLn = selectLn.value, title = item?.titleEn?: "", titleBn = item?.titleBn?: ""),
             modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.W600,
+                color = MaterialTheme.colorScheme.primary
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -74,7 +75,7 @@ fun StoryItemFixedSize(item: MyBookItem?){
             maxLines = 1, overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodySmall.copy(
                 color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f),
-                fontSize = adjustedFontSize(10f)
+                fontSize = adjustedFontSize(8f)
             )
         )
 

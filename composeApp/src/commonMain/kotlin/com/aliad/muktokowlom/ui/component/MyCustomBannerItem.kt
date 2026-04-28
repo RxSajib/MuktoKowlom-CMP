@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.data.app_constant.AppConstant
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.utils.getStoryData
 import com.aliad.muktokowlom.utils.getTitle
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
@@ -64,8 +65,9 @@ fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem)
                 Text(
                     text = getTitle(selectLn = selectLn.value, title = myBookItem.titleEn, titleBn = myBookItem.titleBn) ,
                     modifier = Modifier.fillMaxWidth(),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
                     ),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -79,14 +81,15 @@ fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem)
                     ) ,
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.inverseSurface,
+                        fontSize = adjustedFontSize(10.0f),
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                     ),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 4,
                 )
             }
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.MyRatingBar(
+            HeightGap(height = 10.dp)
+            MyRatingBar(
                 rating = myBookItem.ratingToInt?.toFloat() ?: 0f,
                 starSize = 15.dp,
                 onStarClick = {},

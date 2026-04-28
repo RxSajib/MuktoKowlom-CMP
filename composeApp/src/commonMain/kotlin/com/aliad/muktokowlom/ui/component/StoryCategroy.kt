@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliad.muktokowlom.ui.navigation.AppDestination
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.most_popular
 import muktokowlomcmp.composeapp.generated.resources.view_all
@@ -29,8 +30,9 @@ fun StoryCategoryWithAllButton(categoryTitle : String, onClick: () -> Unit){
         Text(
             text = categoryTitle,
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.W500
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontWeight = FontWeight.W500,
+                color = MaterialTheme.colorScheme.primary
             )
         )
         TextButton(
@@ -38,8 +40,10 @@ fun StoryCategoryWithAllButton(categoryTitle : String, onClick: () -> Unit){
         ){
             Text(
                 text = stringResource(Res.string.view_all),
-                color = MaterialTheme.colorScheme.inverseSurface,
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontSize = adjustedFontSize(10.0f),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                )
             )
         }
     }

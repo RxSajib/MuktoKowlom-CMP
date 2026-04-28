@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.dashboard_web_link
 import muktokowlomcmp.composeapp.generated.resources.details_dashboard
@@ -46,18 +47,19 @@ fun HomeSeaBanner(onCLickWeb: () -> Unit){
                 Text(
                     text = stringResource(Res.string.title_dashboard),
                     modifier = Modifier.fillMaxWidth(),
-                    style = MaterialTheme.typography.bodyMedium.copy(
+                    style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
                 )
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 5.dp)
+                HeightGap(height = 5.dp)
                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(Res.string.details_dashboard),
                         modifier = Modifier,
                         style = MaterialTheme.typography.bodySmall.copy(
-                            color = Color.White
+                            color = Color.White,
+                            fontSize = adjustedFontSize(8.0f)
                         )
                     )
                     Text(
@@ -65,6 +67,7 @@ fun HomeSeaBanner(onCLickWeb: () -> Unit){
                         modifier = Modifier,
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = Color.Red,
+                            fontSize = adjustedFontSize(8.0f)
                         )
                     )
                 }
