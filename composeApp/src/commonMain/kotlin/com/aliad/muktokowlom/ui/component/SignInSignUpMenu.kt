@@ -61,7 +61,8 @@ fun SignUpSignInMenu(signIn: () -> Unit, signUp: () -> Unit){
                 text = stringResource(Res.string.muktokowlom),
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.W600
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
                 )
             )
 
@@ -70,9 +71,10 @@ fun SignUpSignInMenu(signIn: () -> Unit, signUp: () -> Unit){
             Row {
                 Text(
                     text = stringResource(Res.string.sign_in),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontSize = adjustedFontSize(10f),
-                        fontWeight = FontWeight.W300
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontSize = adjustedFontSize(8f),
+                        fontWeight = FontWeight.W400,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                     ),
                     modifier = Modifier.clickable{
                         signIn.invoke()
@@ -80,16 +82,18 @@ fun SignUpSignInMenu(signIn: () -> Unit, signUp: () -> Unit){
                 )
                 Text(
                     text = " / ",
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontSize = adjustedFontSize(10f),
-                        fontWeight = FontWeight.W300
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontSize = adjustedFontSize(8f),
+                        fontWeight = FontWeight.W400,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                     )
                 )
                 Text(
                     text = stringResource(Res.string.sign_up),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontSize = adjustedFontSize(10f),
-                        fontWeight = FontWeight.W300
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontSize = adjustedFontSize(8f),
+                        fontWeight = FontWeight.W400,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                     ),
                     modifier = Modifier.clickable{
                         signUp.invoke()

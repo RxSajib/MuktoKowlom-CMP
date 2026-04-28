@@ -10,6 +10,7 @@ val darkColorScheme = darkColorScheme(
     inverseSurface = colorSurfaceTintDark,
     onSurface = White,
     onPrimary = onPrimaryDark,
+    inversePrimary = Color.DarkGray
 )
 
 val lightColorScheme = lightColorScheme(
@@ -17,5 +18,6 @@ val lightColorScheme = lightColorScheme(
     primary = textColorLight,
     inverseSurface = colorSurfaceTintLight,
     onSurface = Black,
-    onPrimary = onPrimaryLight
+    onPrimary = onPrimaryLight,
+    inversePrimary = White
 )

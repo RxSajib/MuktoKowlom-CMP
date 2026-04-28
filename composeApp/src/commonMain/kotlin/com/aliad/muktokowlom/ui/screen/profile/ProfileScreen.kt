@@ -205,8 +205,9 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                     Text(
                         text = stringResource(Res.string.basic_info),
                         modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.W500
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     )
                     Text(

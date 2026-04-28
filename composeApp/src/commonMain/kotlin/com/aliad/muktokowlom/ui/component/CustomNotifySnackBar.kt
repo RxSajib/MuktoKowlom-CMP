@@ -132,6 +132,7 @@ fun CustomSnackBar(
             .fillMaxWidth()
             .padding(horizontal = 10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inversePrimary)
      //   shape = RoundedCornerShape(size = 6.dp)
     ) {
         Row(
@@ -154,7 +155,8 @@ fun CustomSnackBar(
                 text = message,
                 modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.titleSmall.copy(
-                    fontSize = adjustedFontSize(12f)
+                    fontSize = adjustedFontSize(12f),
+                    color = MaterialTheme.colorScheme.primary
                 )
             )
 

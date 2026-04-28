@@ -103,7 +103,9 @@ fun PrivacyPolicyScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                             Text(
                                 text = getTitle(selectLn = selectLn.value, title = privacyPolicyDetailsEn, titleBn = privacyPolicyDetailsBn),
                                 modifier = Modifier.fillMaxSize(),
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    color = MaterialTheme.colorScheme.primary
+                                )
                             )
                         }
                     }

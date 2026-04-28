@@ -68,8 +68,8 @@ fun MyCustomMenu(
         Column(modifier = Modifier.weight(1f).padding(end = 10.dp)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.W600,
                     color = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier.fillMaxWidth(),
@@ -80,7 +80,7 @@ fun MyCustomMenu(
             Text(
                 text = details,
                 style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f),
+                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f),
                     fontSize = adjustedFontSize(10.0f)
                 ),
                 modifier = Modifier.fillMaxWidth()

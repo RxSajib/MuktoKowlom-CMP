@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomButton
 import com.aliad.muktokowlom.ui.component.WidthGap
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.cancel
@@ -39,7 +40,10 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit, logoutButtonClick: () -> Uni
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val scope = rememberCoroutineScope()
 
-    ModalBottomSheet(onDismissRequest = { onDismissRequest.invoke() }, sheetState = state) {
+    ModalBottomSheet(
+        containerColor = MaterialTheme.colorScheme.inversePrimary,
+        onDismissRequest = { onDismissRequest.invoke() }, sheetState = state
+    ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -48,17 +52,18 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit, logoutButtonClick: () -> Uni
 
                 Text(
                     text = stringResource(Res.string.logout_dialog_title),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.W500
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.Bold
                     ),
                     modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center
                 )
                 _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
                 Text(
                     text = stringResource(Res.string.logout_dialog_details),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontSize = 10.sp,
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontSize = adjustedFontSize(10f),
                         color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
                     ),
                     modifier = Modifier.fillMaxWidth(),

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomButton
 import com.aliad.muktokowlom.ui.component.WidthGap
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.are_you_sure
@@ -42,21 +43,18 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeleteAccountBottomSheet(
-    isProgress: Boolean = false,
-    deleteAccountButtonClick: () -> Unit,
-    onDismissRequest: () -> Unit
+    isProgress: Boolean = false, deleteAccountButtonClick: () -> Unit, onDismissRequest: () -> Unit
 ) {
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
     ModalBottomSheet(
+        containerColor = MaterialTheme.colorScheme.inversePrimary,
         onDismissRequest = { onDismissRequest.invoke() },
-        containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
                 modifier = Modifier.size(50.dp).clip(shape = CircleShape)
@@ -73,23 +71,31 @@ fun DeleteAccountBottomSheet(
                 text = stringResource(Res.string.are_you_sure),
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.W500
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 2.dp)
+            HeightGap(height = 2.dp)
             Text(
                 text = stringResource(Res.string.delete_account_dialog_title),
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontSize = adjustedFontSize(10f),
+                    fontWeight = FontWeight.W600,
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
+                )
             )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
+            HeightGap(height = 10.dp)
             Text(
                 text = stringResource(Res.string.delete_account_dialog_details),
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontSize = adjustedFontSize(10f),
+                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.4f)
+                )
             )
             _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
             Row(
@@ -112,9 +118,12 @@ fun DeleteAccountBottomSheet(
                 _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomButton(
                     onClickButton = {
                         deleteAccountButtonClick.invoke()
-                    }, backgroundColor = Color.Red, title = stringResource(Res.string.delete),
+                    },
+                    backgroundColor = Color.Red,
+                    title = stringResource(Res.string.delete),
                     showProgress = isProgress,
-                    modifier = Modifier.weight(1f), padding = 0.dp
+                    modifier = Modifier.weight(1f),
+                    padding = 0.dp
                 )
             }
         }
@@ -124,8 +133,5 @@ fun DeleteAccountBottomSheet(
 @Composable
 @Preview
 fun DeleteAccountBottomSheetPreview() {
-    DeleteAccountBottomSheet(
-        deleteAccountButtonClick = { },
-        onDismissRequest = {}
-    )
+    DeleteAccountBottomSheet(deleteAccountButtonClick = { }, onDismissRequest = {})
 }

@@ -63,7 +63,7 @@ fun PrivacyPolicyBottomSheet(
 
     ModalBottomSheet(
         onDismissRequest = { onDismissRequest.invoke() },
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.inversePrimary,
         sheetState = sheetState,
     ) {
 
@@ -81,7 +81,8 @@ fun PrivacyPolicyBottomSheet(
                 }) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = null
+                        contentDescription = null,
+                        tint =  MaterialTheme.colorScheme.primary
                     )
                 }
 
@@ -89,15 +90,17 @@ fun PrivacyPolicyBottomSheet(
 
                 Text(
                     text = stringResource(Res.string.privacy_policy),
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.W500
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
             }
 
 
             Box(
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                contentAlignment = Alignment.Center
             ) {
                 if (privacyPolicyViewModel.isLoading) {
                     WatchRunningAnimation(
@@ -113,7 +116,9 @@ fun PrivacyPolicyBottomSheet(
                         Text(
                             text = getTitle(selectLn = selectLn.value, title = privacyPolicyDetailsEn, titleBn = privacyPolicyDetailsBn) ,
                             modifier = Modifier.fillMaxSize(),
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                color = MaterialTheme.colorScheme.primary
+                            )
                         )
                     }
                 }

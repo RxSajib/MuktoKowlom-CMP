@@ -53,7 +53,10 @@ fun TermsAndConditionBottomSheet(
     val privacyPolicyDetailsEn = htmlToString(privacyPolicy.value?.description ?: "")
     val privacyPolicyDetailsBn = htmlToString(privacyPolicy.value?.descriptionBn ?: "")
 
-    ModalBottomSheet(onDismissRequest = {onDismissRequest.invoke()}){
+    ModalBottomSheet(
+        containerColor = MaterialTheme.colorScheme.inversePrimary,
+
+        onDismissRequest = {onDismissRequest.invoke()}){
         val coroutineScope = rememberCoroutineScope()
         val sheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = true,
@@ -61,7 +64,8 @@ fun TermsAndConditionBottomSheet(
 
         ModalBottomSheet(
             onDismissRequest = { onDismissRequest.invoke() },
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.inversePrimary,
+
             sheetState = sheetState,
         ) {
 
@@ -79,7 +83,8 @@ fun TermsAndConditionBottomSheet(
                     }) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint =  MaterialTheme.colorScheme.primary
                         )
                     }
 
@@ -87,15 +92,17 @@ fun TermsAndConditionBottomSheet(
 
                     Text(
                         text = stringResource(Res.string.terms_and_conditions),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.W500
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     )
                 }
 
 
                 Box(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp)
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     if(privacyPolicyViewModel.isLoading){
                         WatchRunningAnimation(
@@ -111,7 +118,9 @@ fun TermsAndConditionBottomSheet(
                             Text(
                                 text = getTitle(selectLn = selectLn.value, title = privacyPolicyDetailsEn, titleBn = privacyPolicyDetailsBn),
                                 modifier = Modifier.fillMaxSize(),
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    color = MaterialTheme.colorScheme.primary
+                                )
                             )
                         }
                     }
