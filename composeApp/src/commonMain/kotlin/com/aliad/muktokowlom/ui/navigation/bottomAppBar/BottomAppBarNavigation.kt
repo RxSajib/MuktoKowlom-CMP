@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Colors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -179,7 +180,9 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
         )
 
     }, bottomBar = {
-        Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(5.dp)) {
+        Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(8.dp),
+            shape = RoundedCornerShape(bottomEnd = 0.dp, bottomStart = 0.dp, topEnd = 10.dp, topStart = 10.dp)
+            ) {
 
 
             NavigationBar(
