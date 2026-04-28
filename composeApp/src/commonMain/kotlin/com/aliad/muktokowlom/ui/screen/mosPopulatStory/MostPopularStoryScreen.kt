@@ -65,7 +65,7 @@ fun MostPopularStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBa
                 )
             }
         ) { innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(horizontal = 16.dp)) {
+            Column(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(horizontal = 16.dp)) {
                 MyCustomInputFiled(
                     placeHolderText = stringResource(Res.string.search_your_favourite_genre),
                     text = viewModel.searchStoryData,

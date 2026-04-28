@@ -72,7 +72,7 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
             }
         ) { innerPadding ->
             Column(
-                modifier = Modifier.fillMaxSize().padding(innerPadding)
+                modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding)
                     .padding(start = 16.dp, end = 16.dp)
             ) {
 

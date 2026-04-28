@@ -65,6 +65,7 @@ fun StoryItemFixedSize(item: MyBookItem?){
             modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.W600,
+                color = MaterialTheme.colorScheme.primary
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis

@@ -211,22 +211,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                             color = MaterialTheme.colorScheme.primary
                         )
                     )
-                   /* Text(
-                        text = stringResource(Res.string.edit),
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = Color.White
-                        ),
-                        modifier = Modifier.clip(shape = CircleShape)
-                            .background(color = MaterialTheme.colorScheme.primary).clickable {
-                                backStack.add(
-                                    AppDestination.Dest(
-                                        firstDestName = AppDestination.Dest.EditProfile::class.simpleName
-                                            ?: ""
-                                    )
-                                )
-                            }
-                            .padding(horizontal = 10.dp, vertical = 5.dp)
-                    )*/
+
 
                     ProfileEditButton(
                         onClick = {

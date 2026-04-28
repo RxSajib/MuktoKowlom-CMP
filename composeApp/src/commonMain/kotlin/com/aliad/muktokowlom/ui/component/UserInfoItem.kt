@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -62,10 +63,11 @@ fun UserInfoItem(icon: Painter, title: String, isDivider: Boolean = true) {
         }
         if (isDivider) {
             HorizontalDivider(
-                modifier = Modifier.fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f))
+                color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f),
+                thickness  = 0.5.dp
             )
         }
+
     }
 
 }

@@ -19,6 +19,7 @@ import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.most_popular
 import muktokowlomcmp.composeapp.generated.resources.view_all
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun StoryCategoryWithAllButton(categoryTitle : String, onClick: () -> Unit){
@@ -29,7 +30,6 @@ fun StoryCategoryWithAllButton(categoryTitle : String, onClick: () -> Unit){
     ) {
         Text(
             text = categoryTitle,
-            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
@@ -47,4 +47,13 @@ fun StoryCategoryWithAllButton(categoryTitle : String, onClick: () -> Unit){
             )
         }
     }
+}
+
+@Composable
+@Preview
+fun StoryCategoryWithAllButtonPreview(){
+    StoryCategoryWithAllButton(
+        categoryTitle = "All Story",
+        onClick = {}
+    )
 }
