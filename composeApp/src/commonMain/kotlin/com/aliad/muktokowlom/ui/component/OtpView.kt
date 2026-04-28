@@ -117,8 +117,11 @@ fun AnimatedOtpInput(
                         ) { value ->
                             Text(
                                 text = value,
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold
+                                style = MaterialTheme.typography.bodySmall.copy(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold
+                                ),
+
                             )
                         }
                     }

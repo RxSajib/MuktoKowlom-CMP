@@ -124,7 +124,8 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
                     text = stringResource(Res.string.popular_searches),
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
                 HeightGap(height = 10.dp)
@@ -144,7 +145,8 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
                     text = stringResource(Res.string.recent_searches),
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
                 HeightGap(height = 10.dp)

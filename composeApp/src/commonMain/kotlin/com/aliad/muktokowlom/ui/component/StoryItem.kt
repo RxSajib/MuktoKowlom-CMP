@@ -52,19 +52,19 @@ fun StoryItem(item: MyBookItem?, onClick: (data: MyBookItem) -> Unit) {
                 error = painterResource(Res.drawable.placeholder)
             )
             if(item?.isPaidStory == true){
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.DiagonalCornerView()
+                DiagonalCornerView()
             }
 
         }
 
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(10.dp)
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.MyRatingBar(
+        HeightGap(10.dp)
+        MyRatingBar(
             rating = item?.ratingToInt?.toFloat() ?: 0f,
             starSize = 15.dp,
             onStarClick = {},
             isIndicator = true
         )
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(2.dp)
+        HeightGap(2.dp)
         Text(
             text = getTitle(selectLn = selectLn.value, title = item?.titleEn?: "", titleBn = item?.titleBn?: ""),
             modifier = Modifier.fillMaxWidth(),

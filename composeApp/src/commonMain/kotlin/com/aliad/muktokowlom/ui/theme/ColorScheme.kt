@@ -19,5 +19,5 @@ val lightColorScheme = lightColorScheme(
     inverseSurface = colorSurfaceTintLight,
     onSurface = Black,
     onPrimary = onPrimaryLight,
-    inversePrimary = White
+    inversePrimary = White,
 )

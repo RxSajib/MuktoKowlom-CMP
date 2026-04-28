@@ -30,6 +30,7 @@ import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.AnimatedOtpInput
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.presentation.signIn.ui.otpVerification.OtpVerificationViewModel
 import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import muktokowlomcmp.composeapp.generated.resources.Please_type_the_verification_code_send_to
@@ -92,12 +93,13 @@ fun OtpViewScreen(
                     editProfile = {})
             }
         ) { innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 HeightGap(height = 10.dp)
                 Text(
                     text = stringResource(Res.string.verification_code),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.W500
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
                     ),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -107,14 +109,22 @@ fun OtpViewScreen(
 
                 Text(
                     text = stringResource(Res.string.Please_type_the_verification_code_send_to),
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontSize = adjustedFontSize(10.0f),
+
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                    ),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
 
                 Text(
                     text = emailOrPhoneNumber,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontSize = adjustedFontSize(10.0f),
+
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                    ),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )

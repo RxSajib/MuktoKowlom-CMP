@@ -113,13 +113,14 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                 )
             }
         ) { innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding).imePadding().padding(16.dp)) {
+            Column(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).imePadding().padding(16.dp)) {
                 Column(modifier = Modifier.weight(1f).verticalScroll(state = rememberScrollState())) {
                     HeightGap(height = 20.dp)
                     Text(
                         text = stringResource(Res.string.password_update),
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.W500
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
@@ -186,7 +187,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                 HeightGap(height = 20.dp)
                 MyCustomButton(
                     title = stringResource(Res.string.save),
-                    modifier = Modifier,
+                    modifier = Modifier.fillMaxWidth(),
                     onClickButton = {
                         viewModel.updatePassword(userID = userID.toString())
                     },

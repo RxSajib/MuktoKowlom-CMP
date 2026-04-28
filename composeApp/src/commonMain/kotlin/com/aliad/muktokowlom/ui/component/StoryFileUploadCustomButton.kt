@@ -52,6 +52,7 @@ fun StoryFileUploadCustomButton(
     fileButtonBgColor: Color,
     modifier: Modifier
 ) {
+    val myColor = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f)
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier.drawBehind{
         val strokeWidth = 1.dp.toPx()
@@ -59,7 +60,7 @@ fun StoryFileUploadCustomButton(
         val dashGap = 2.dp.toPx()
 
         drawRoundRect(
-            color = Color(0xFFDFD0FF),
+            color = myColor,
             style = Stroke(
                 width = strokeWidth,
                 pathEffect = PathEffect.dashPathEffect(
@@ -87,16 +88,17 @@ fun StoryFileUploadCustomButton(
             text = title,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleSmall.copy(
+                fontWeight = FontWeight.W500,
+                color = MaterialTheme.colorScheme.primary
             )
         )
         Text(
             text = fileType,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodySmall.copy(
-                color = MaterialTheme.colorScheme.inverseSurface,
+            style = MaterialTheme.typography.titleSmall.copy(
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                 fontWeight = FontWeight.W300,
                 fontSize = adjustedFontSize(9.0f)
             )
@@ -115,6 +117,7 @@ fun StoryFileUploadCustomButton(
                 text = stringResource(Res.string.choose_file),
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = onPrimaryLight,
+                    fontSize = adjustedFontSize(10f),
                     fontWeight = FontWeight.W500
                 )
             )

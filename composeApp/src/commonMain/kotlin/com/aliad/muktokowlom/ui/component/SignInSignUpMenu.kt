@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
@@ -33,13 +34,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SignUpSignInMenu(signIn: () -> Unit, signUp: () -> Unit){
+
+    val myColor = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f)
+
     Row(modifier = Modifier.fillMaxWidth().drawBehind{
         val strokeWidth = 1.dp.toPx()
         val dashWidth = 7.dp.toPx()
         val dashGap = 2.dp.toPx()
 
         drawRoundRect(
-            color = Color(0xFFDFD0FF),
+            color = myColor,
             style = Stroke(
                 width = strokeWidth,
                 pathEffect = PathEffect.dashPathEffect(

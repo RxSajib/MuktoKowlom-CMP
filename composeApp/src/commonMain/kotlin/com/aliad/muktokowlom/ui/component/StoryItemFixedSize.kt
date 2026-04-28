@@ -52,8 +52,8 @@ fun StoryItemFixedSize(item: MyBookItem?){
 
         }
 
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(10.dp)
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.MyRatingBar(
+        HeightGap(10.dp)
+        MyRatingBar(
             rating = item?.ratingToInt?.toFloat() ?: 0f,
             starSize = 15.dp,
             onStarClick = {},
@@ -65,7 +65,6 @@ fun StoryItemFixedSize(item: MyBookItem?){
             modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.W600,
-                color = MaterialTheme.colorScheme.primary
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -75,7 +74,7 @@ fun StoryItemFixedSize(item: MyBookItem?){
             maxLines = 1, overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodySmall.copy(
                 color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f),
-                fontSize = adjustedFontSize(8f)
+                fontSize = adjustedFontSize(10f)
             )
         )
 

@@ -30,8 +30,8 @@ fun StoryCategoryWithAllButton(categoryTitle : String, onClick: () -> Unit){
         Text(
             text = categoryTitle,
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodySmall.copy(
-                fontWeight = FontWeight.W500,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
         )
@@ -40,7 +40,7 @@ fun StoryCategoryWithAllButton(categoryTitle : String, onClick: () -> Unit){
         ){
             Text(
                 text = stringResource(Res.string.view_all),
-                style = MaterialTheme.typography.bodySmall.copy(
+                style = MaterialTheme.typography.bodyMedium.copy(
                     fontSize = adjustedFontSize(10.0f),
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                 )

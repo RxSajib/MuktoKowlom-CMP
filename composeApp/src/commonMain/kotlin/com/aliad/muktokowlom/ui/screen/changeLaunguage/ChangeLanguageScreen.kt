@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -62,7 +63,7 @@ fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
                 )
             }
         ) {innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp).imePadding()) {
+            Column(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(16.dp).imePadding()) {
 
 
                     LazyColumn(
@@ -89,7 +90,7 @@ fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
                 HeightGap(height = 20.dp)
                 MyCustomButton(
                     title = stringResource(Res.string.update),
-                    modifier = Modifier,
+                    modifier = Modifier.fillMaxWidth(),
                     onClickButton = {
 
                         languages.setLocal(chooseLanguageViewModel.selectedLanguage.code?: "en")

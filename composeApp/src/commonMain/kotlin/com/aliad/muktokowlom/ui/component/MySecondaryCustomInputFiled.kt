@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -54,7 +55,10 @@ fun MySecondaryCustomInputFiled(
         placeholder = {
             Text(
                 text = placeholder,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.W400,
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                )
             )
         },
         trailingIcon = {
@@ -67,6 +71,10 @@ fun MySecondaryCustomInputFiled(
             }
 
         },
+        textStyle = MaterialTheme.typography.titleSmall.copy(
+            fontWeight = FontWeight.W500,
+            color = MaterialTheme.colorScheme.primary
+        ),
         readOnly = readOnly
 
     )

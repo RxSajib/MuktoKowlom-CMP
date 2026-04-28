@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.Image
 import com.aliad.model.SnackBarDetails
@@ -157,7 +158,9 @@ fun CustomSnackBar(
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontSize = adjustedFontSize(12f),
                     color = MaterialTheme.colorScheme.primary
-                )
+                ),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.width(12.dp))

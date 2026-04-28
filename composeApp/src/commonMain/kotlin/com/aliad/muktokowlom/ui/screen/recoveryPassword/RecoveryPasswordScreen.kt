@@ -77,7 +77,7 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
                 )
             }
         ) { innerPadding ->
-            Box(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp)) {
+            Box(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(16.dp)) {
 
                 Column(
                     modifier = Modifier
@@ -96,8 +96,9 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
                         HeightGap(height = 10.dp)
                         Text(
                             text = stringResource(Res.string.recovery_password),
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.W500
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
                             ),
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center
@@ -105,8 +106,10 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
 
                         Text(
                             text = stringResource(Res.string.recovery_password_details),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontSize = adjustedFontSize(10.0f)
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = adjustedFontSize(10.0f),
+
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                             ),
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center
@@ -130,7 +133,7 @@ fun RecoveryPasswordScreen(backStack: NavBackStack<NavKey>) {
                     HeightGap(height = 20.dp)
                     MyCustomButton(
                         title = stringResource(Res.string.send_otp),
-                        modifier = Modifier,
+                        modifier = Modifier.fillMaxWidth(),
                         onClickButton = {
                             viewModel.resetPassword()
                         },

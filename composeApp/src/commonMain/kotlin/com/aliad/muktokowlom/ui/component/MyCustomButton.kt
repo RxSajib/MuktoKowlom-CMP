@@ -45,7 +45,7 @@ fun MyCustomButton(
             contentColor = textColor,
             containerColor = if (isEnable) backgroundColor else Color.Gray
         ),
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
     ) {
 
         AnimatedContent(
@@ -76,7 +76,7 @@ fun MyCustomButton(
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.W600,
                             fontSize = adjustedFontSize(12f),
-                            color = MaterialTheme.colorScheme.inversePrimary
+                            color = if(isEnable) Color.White else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         ),
                         modifier = Modifier.padding(padding)
                     )

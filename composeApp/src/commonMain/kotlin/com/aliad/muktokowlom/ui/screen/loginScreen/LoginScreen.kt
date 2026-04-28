@@ -273,7 +273,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                 HeightGap(height = 20.dp)
                 MyCustomButton(
                     title = stringResource(Res.string.sign_in_account),
-                    modifier = Modifier,
+                    modifier = Modifier.fillMaxWidth(),
                     onClickButton = {
                         viewModel.loginAccount()
                     },

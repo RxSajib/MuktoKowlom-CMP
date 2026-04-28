@@ -263,7 +263,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
 
                 MyCustomButton(
                     title = stringResource(Res.string.sign_up_account),
-                    modifier = Modifier,
+                    modifier = Modifier.fillMaxWidth(),
                     onClickButton = {
                         viewModel.signUpAccount()
                     },

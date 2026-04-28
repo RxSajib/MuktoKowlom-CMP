@@ -31,8 +31,9 @@ fun StoryUploadCustomHeader(icon : Painter, title : String){
         WidthGap(width = 8.dp)
         Text(
             text = title,
-            style = MaterialTheme.typography.bodySmall.copy(
-                fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleSmall.copy(
+                fontWeight = FontWeight.W500,
+                color = MaterialTheme.colorScheme.primary
             )
         )
     }

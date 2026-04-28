@@ -44,6 +44,7 @@ fun MySubscriptionButton(
     modifier: Modifier,
     onClick: () -> Unit
 ) {
+
     Box(
         modifier = modifier.fillMaxWidth()
             .clip(shape = RoundedCornerShape(10.dp))
@@ -81,8 +82,9 @@ fun MySubscriptionButton(
                 HeightGap(height = 13.dp)
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.W500,
+                        color = MaterialTheme.colorScheme.primary
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -91,9 +93,9 @@ fun MySubscriptionButton(
 
                 Text(
                     text = details,
-                    style = MaterialTheme.typography.bodySmall.copy(
+                    style = MaterialTheme.typography.titleSmall.copy(
                         fontSize = adjustedFontSize(10.0f),
-                        color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )

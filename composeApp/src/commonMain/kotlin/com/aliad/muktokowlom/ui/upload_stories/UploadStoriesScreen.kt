@@ -126,7 +126,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
         ) { innerPadding ->
 
             Column(
-                modifier = Modifier.fillMaxSize().padding(innerPadding)
+                modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding)
                     .padding(16.dp).imePadding()
             ) {
 
@@ -134,8 +134,9 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
                     Text(
                         text = stringResource(Res.string.share_your_story),
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.W500
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
@@ -143,7 +144,9 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     Text(
                         text = stringResource(Res.string.fill_in_the_details_below_to_submit_your_story),
                         style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = adjustedFontSize(10.0f)
+                            fontSize = adjustedFontSize(10.0f),
+
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
@@ -276,7 +279,9 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
                                 append(" " + stringResource(Res.string.below))
                             },
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontSize = adjustedFontSize(8.0f)
+                            ),
                             color = Color.Gray // default text color
                         )
                         WidthGap(width = 15.dp)
@@ -349,6 +354,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
                 MyCustomButton(
                     isEnable = true,
+                    modifier = Modifier.fillMaxWidth(),
                     title = stringResource(Res.string.upload_stories),
                     leftIcon = painterResource(Res.drawable.icon_send),
                     onClickButton = {
