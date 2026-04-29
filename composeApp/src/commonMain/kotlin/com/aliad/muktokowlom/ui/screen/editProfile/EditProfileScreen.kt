@@ -185,6 +185,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
+                                modifier = Modifier,
                                 isPasswordVisibility = true,
                             ) {}
                         }
@@ -210,6 +211,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
+                                modifier = Modifier,
                                 isPasswordVisibility = true,
                             ) {}
                         }
@@ -237,6 +239,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
+                                modifier = Modifier,
                                 isPasswordVisibility = true,
                             ) {}
                         }
@@ -262,6 +265,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
+                                modifier = Modifier,
                                 isPasswordVisibility = true,
                             ) {}
                         }
@@ -289,6 +293,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
+                                modifier = Modifier,
                                 isPasswordVisibility = true,
                             ) {}
                         }
@@ -315,6 +320,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
+                                modifier = Modifier,
                                 readOnly = true
                             ) {
                                 print("click date of birth")
@@ -346,6 +352,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isNumberType = true,
+                                modifier = Modifier,
                                 isPasswordVisibility = true,
                             ) {}
                         }
@@ -371,6 +378,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 },
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
+                                modifier = Modifier,
                                 isPasswordVisibility = true,
                             ) {}
                         }

@@ -80,6 +80,7 @@ fun NewReleaseScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStac
                     isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
+                    modifier = Modifier,
                     onSearch = {searchKey ->
                         viewModel.searchStory(search = searchKey)
                     }
@@ -98,7 +99,9 @@ fun NewReleaseScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStac
 
                     }
                     else if(pagingUiState.value.isEmpty){
-                        EmptyStoryMessage()
+                        EmptyStoryMessage(
+                            retryAgain = {storyData.retry()}
+                        )
                     }
                     else {
                         LazyVerticalGrid(

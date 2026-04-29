@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.loas_state_append_error
 import muktokowlomcmp.composeapp.generated.resources.retry
@@ -20,17 +21,22 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun LoadStateAppendError(retry: () -> Unit){
     Row(modifier = Modifier.fillMaxWidth().padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+
         Text(
             text = stringResource(Res.string.loas_state_append_error),
             modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.inverseSurface
+            style = MaterialTheme.typography.titleSmall.copy(
+               color =  MaterialTheme.colorScheme.inverseSurface,
+                fontSize = adjustedFontSize(10f)
+            )
         )
 
         TextButton(onClick = {retry.invoke()}, modifier = Modifier.padding(start = 10.dp)){
             Text(text = stringResource(Res.string.retry),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary)
+                style = MaterialTheme.typography.titleSmall.copy(
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
         }
     }
 }

@@ -70,7 +70,11 @@ fun StoryTypeScreen(
 
                 }
                 if(pagingUiState.value.isEmpty){
-                    EmptyStoryMessage()
+                    EmptyStoryMessage(
+                        retryAgain = {
+                            storyItem.retry()
+                        }
+                    )
                 }
                 else {
                     LazyVerticalGrid(

@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import kotlin.math.max
 
@@ -44,6 +45,7 @@ fun MyCustomInputFiled(
     leftIcon: Painter? = null,
     isSearchEnable: Boolean = false,
     onSearch: ((String) -> Unit)? = null,
+    modifier: Modifier,
     onClick: () -> Unit,
 
     ) {
@@ -59,7 +61,8 @@ fun MyCustomInputFiled(
         readOnly = readOnly,
         textStyle = MaterialTheme.typography.titleSmall.copy(
             fontWeight = FontWeight.W500,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
+            textAlign = TextAlign.Start
         ),
         keyboardActions = KeyboardActions(
             onSearch = {
@@ -71,7 +74,7 @@ fun MyCustomInputFiled(
         onValueChange = { passwordInput ->
             onValueChange.invoke(passwordInput)
         },
-        modifier = Modifier.fillMaxWidth().clip(shape = CircleShape)
+        modifier = modifier.fillMaxWidth().clip(shape = CircleShape)
             .background(color = Color.Gray.copy(alpha = 0.1f))
             .clickable(readOnly) { onClick.invoke() },
         shape = CircleShape,

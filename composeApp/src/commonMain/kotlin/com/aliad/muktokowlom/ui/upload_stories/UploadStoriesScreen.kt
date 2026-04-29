@@ -234,7 +234,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     HeightGap(height = 10.dp)
                     MySecondaryCustomInputFiled(
                         placeholder = stringResource(Res.string.write_short_summary_of_your_story),
-                        modifier = Modifier,
+                        modifier = Modifier.height(100.dp),
                         inputData = storySummary.value,
                         onValueChanged = { summary ->
                             viewModel.inputStorySummary(storySummary = summary)
@@ -249,7 +249,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     HeightGap(height = 10.dp)
                     MySecondaryCustomInputFiled(
                         placeholder = stringResource(Res.string.start_writing_your_story),
-                        modifier = Modifier,
+                        modifier = Modifier.height(100.dp),
                         inputData = fullStory.value,
                         onValueChanged = { fullStory ->
                             viewModel.inputFullStoryDetails(fullStoryDetails = fullStory)

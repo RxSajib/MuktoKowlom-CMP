@@ -88,6 +88,7 @@ fun ResetPasswordScreen(){
                         },
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
+                        modifier = Modifier,
                         isPasswordVisibility = true
                     ) {}
                     HeightGap(height = 5.dp)
@@ -116,6 +117,7 @@ fun ResetPasswordScreen(){
                         },
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
+                        modifier = Modifier,
                         isPasswordVisibility = true
                     ) {}
                     HeightGap(height = 10.dp)
@@ -129,6 +131,7 @@ fun ResetPasswordScreen(){
                         isVisiblePasswordChange = {
                             viewModel.isPasswordVisible = !viewModel.isPasswordVisible
                         },
+                        modifier = Modifier,
                         isPasswordVisibility = viewModel.isPasswordVisible
                     ) {}
                     HeightGap(height = 10.dp)
@@ -142,6 +145,7 @@ fun ResetPasswordScreen(){
                         isVisiblePasswordChange = {
                             viewModel.isConfirmPasswordVisible = !viewModel.isConfirmPasswordVisible
                         },
+                        modifier = Modifier,
                         isPasswordVisibility = viewModel.isConfirmPasswordVisible
                     ) {}
 

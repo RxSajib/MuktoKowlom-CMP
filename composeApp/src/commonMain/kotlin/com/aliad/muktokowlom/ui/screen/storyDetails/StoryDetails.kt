@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,6 +46,7 @@ import com.aliad.muktokowlom.ui.component.MyCustomButton
 import com.aliad.muktokowlom.ui.component.QuickAccessButton
 import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.ui.component.WriterInfo
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.utils.AppHelper.toUSFormatWithMonth
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
 import com.eygraber.seymour.SeymourText
@@ -96,6 +98,10 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
         }
     }
 
+    Surface(modifier = Modifier.fillMaxSize().background(
+        color = MaterialTheme.colorScheme.surface
+    )) {
+
     Scaffold(
         topBar = {
             MyCustomAppBar(title = myBookItem.titleBn ?: "Unknown", onBackPress = {
@@ -130,6 +136,10 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                         text = myBookItem.titleBn ?: " Unknown Title",
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                         textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
 
                         )
                     HeightGap(height = 10.dp)
@@ -164,9 +174,11 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                         ) {
                             storyData.value.publishDate?.let {
                                 Text(
-                                    text = LocalDate.parse(it).toUSFormatWithMonth() ,
-                                    style = MaterialTheme.typography.bodyMedium.copy(
-                                        fontWeight = FontWeight.W500
+                                    text = LocalDate.parse(it).toUSFormatWithMonth(),
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.W500,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        fontSize = adjustedFontSize(10f)
                                     ),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
@@ -175,8 +187,10 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
 
                             Text(
                                 text = stringResource(Res.string.published),
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontWeight = FontWeight.W400,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontSize = adjustedFontSize(8f)
                                 ),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -188,17 +202,21 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = storyData.value.views?: "0",
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.W500
+                                text = storyData.value.views ?: "0",
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontWeight = FontWeight.W500,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontSize = adjustedFontSize(10f)
                                 ),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 text = stringResource(Res.string.views),
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontWeight = FontWeight.W400,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontSize = adjustedFontSize(8f)
                                 ),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -210,17 +228,21 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = storyData.value.rating?: "0.0",
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.W500
+                                text = storyData.value.rating ?: "0.0",
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontWeight = FontWeight.W500,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontSize = adjustedFontSize(10f)
                                 ),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 text = stringResource(Res.string.rating),
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontWeight = FontWeight.W400,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontSize = adjustedFontSize(8f)
                                 ),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -230,8 +252,8 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     HeightGap(height = 10.dp)
                     WriterInfo(
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        writerName = storyData.value.user?.name?: "Unknown",
-                        profileImage = storyData.value.user?.profileImage?: ""
+                        writerName = storyData.value.user?.name ?: "Unknown",
+                        profileImage = storyData.value.user?.profileImage ?: ""
                     ) {
 
                     }
@@ -239,22 +261,24 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     Text(
                         text = stringResource(Res.string.about_book),
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.W500
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     )
                     HeightGap(height = 5.dp)
                     SeymourText(
                         onSeeMoreChange = { viewModel.isExpandedText = it },
                         isSeeMoreExpanded = viewModel.isExpandedText,
-                        text = storyData.value.summaryBn?: "",
+                        text = storyData.value.summaryBn ?: "",
                         seeMoreText = stringResource(Res.string.see_more),
                         seeLessText = stringResource(Res.string.see_less),
                         seeMoreMaxLines = 3,
                         seeLessMaxLines = Int.MAX_VALUE,
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = MaterialTheme.colorScheme.inverseSurface
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                            fontSize = adjustedFontSize(10f)
                         )
                     )
                     HeightGap(height = 10.dp)
@@ -304,8 +328,11 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     )
                     HeightGap(height = 5.dp)
 
-                    if(storyData.value.likeStories.isEmpty()){
-                        Box(modifier = Modifier.fillMaxWidth().aspectRatio(3f), contentAlignment = Alignment.Center){
+                    if (storyData.value.likeStories.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth().aspectRatio(3f),
+                            contentAlignment = Alignment.Center
+                        ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Image(
                                     painter = painterResource(Res.drawable.book_svgrepo_com_icon),
@@ -319,7 +346,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                                 )
                             }
                         }
-                    }else {
+                    } else {
                         LazyRow(modifier = Modifier.fillMaxWidth()) {
                             items(storyData.value.likeStories) { myLikeStory ->
                                 LikeStoryItem(item = myLikeStory)
@@ -329,6 +356,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
 
                 }
             }
+        }
         }
     }
 

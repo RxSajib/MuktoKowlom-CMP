@@ -73,7 +73,7 @@ fun CategoryWiseBook(
 
         Scaffold(
             topBar = {
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomAppBar(
+                MyCustomAppBar(
                     title = selectedStory.value.name,
                     isBackButtonEnable = true,
                     onBackPress = {
@@ -89,9 +89,9 @@ fun CategoryWiseBook(
         ) { innerPadding ->
 
             Column(
-                modifier = Modifier.fillMaxSize().padding(innerPadding).padding(horizontal = 16.dp)
+                modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(horizontal = 16.dp)
             ) {
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomInputFiled(
+                MyCustomInputFiled(
                     placeHolderText = stringResource(Res.string.search_your_favourite_genre),
                     text = viewModel.searchStoryData,
                     onValueChange = { firstNameInput ->
@@ -109,6 +109,7 @@ fun CategoryWiseBook(
                     isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
+                    modifier = Modifier,
                     onSearch = { searchKey ->
                         viewModel.categoryByBook(
                             search = searchKey,
@@ -116,7 +117,7 @@ fun CategoryWiseBook(
                         )
                     }
                 ) {}
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
+                HeightGap(height = 10.dp)
                 Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
                     if (pagingUiState.value.isRefreshing) {
                         Box(
@@ -124,16 +125,20 @@ fun CategoryWiseBook(
                                 .fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            _root_ide_package_.com.aliad.muktokowlom.ui.component.StoryLoaderShimmer()
+                            StoryLoaderShimmer()
                         }
                     }
                    else if (pagingUiState.value.refreshError != null) {
-                        _root_ide_package_.com.aliad.muktokowlom.ui.component.LoadStateRefreshError(
+                        LoadStateRefreshError(
                             onRetry = { storyItem.retry() })
 
                     }
                    else if (pagingUiState.value.isEmpty) {
-                        _root_ide_package_.com.aliad.muktokowlom.ui.component.EmptyStoryMessage()
+                        EmptyStoryMessage(
+                            retryAgain = {
+                                storyItem.retry()
+                            }
+                        )
                     } else {
 
 
@@ -146,7 +151,7 @@ fun CategoryWiseBook(
                         ) {
 
                             items(storyItem.itemCount) { position ->
-                                _root_ide_package_.com.aliad.muktokowlom.ui.component.StoryItem(
+                                StoryItem(
                                     storyItem[position]
                                 ) { bookItem ->
                                     backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
@@ -163,7 +168,7 @@ fun CategoryWiseBook(
                                             .padding(16.dp),
                                         contentAlignment = Alignment.Center
                                     ) {
-                                        _root_ide_package_.com.aliad.muktokowlom.ui.component.Loader()
+                                        Loader()
                                     }
                                 }
                             }
@@ -172,7 +177,7 @@ fun CategoryWiseBook(
                                 item(
                                     span = { GridItemSpan(maxLineSpan) }
                                 ) {
-                                    _root_ide_package_.com.aliad.muktokowlom.ui.component.LoadStateAppendError(
+                                    LoadStateAppendError(
                                         retry = { storyItem.retry() })
                                 }
                             }

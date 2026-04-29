@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import io.ktor.util.Platform
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.about_author
@@ -45,13 +46,14 @@ fun WriterInfo(modifier: Modifier,writerName: String, profileImage: String, view
             error = painterResource(Res.drawable.placeholder),
             contentScale = ContentScale.Crop
         )
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 10.dp)
+        WidthGap(width = 10.dp)
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
             Text(
                 text = writerName,
                 modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.W500
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.W500,
+                    color = MaterialTheme.colorScheme.primary
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -59,14 +61,15 @@ fun WriterInfo(modifier: Modifier,writerName: String, profileImage: String, view
             Text(
                 text = stringResource(Res.string.about_author),
                 modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontSize = adjustedFontSize(8f),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
-        _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 10.dp)
+        WidthGap(width = 10.dp)
         Text(
             text = stringResource(Res.string.view_all_story),
             style = MaterialTheme.typography.bodySmall.copy(
@@ -85,7 +88,7 @@ fun WriterInfo(modifier: Modifier,writerName: String, profileImage: String, view
 @Composable
 @Preview
 fun WriterInfoPreview() {
-    _root_ide_package_.com.aliad.muktokowlom.ui.component.WriterInfo(
+    WriterInfo(
         modifier = Modifier,
         writerName = "Sajib Roy",
         profileImage = ""

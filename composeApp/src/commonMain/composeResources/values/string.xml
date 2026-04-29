@@ -2,6 +2,9 @@
 
 <resources>
 
+    <string name="tap_a_star_to_rate">Tap a star to rate</string>
+    <string name="no_results_found">No results found</string>
+    <string name="no_results_found_details">We couldn't find anything matching your search.Try using different keywords.</string>
     <string name="home">Home</string>
     <string name="best_deal">Best Deal</string>
     <string name="smart_chose">Smart Chose</string>
@@ -12,6 +15,7 @@
 
     <string name="instant_access">Instant Access</string>
     <string name="instant_access_details">Get premium instantly</string>
+    <string name="try_again">Try Again</string>
 
     <string name="support">24/7 Support</string>
     <string name="support_details">We're here to help</string>

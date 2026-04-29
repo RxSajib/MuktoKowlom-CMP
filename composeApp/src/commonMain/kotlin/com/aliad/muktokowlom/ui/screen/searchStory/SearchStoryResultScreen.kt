@@ -73,7 +73,7 @@ fun SearchStoryResultScreen(
                 }, title = "Search Result", editProfile = {})
             }
         ) { innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp)) {
+            Column(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(16.dp)) {
                 MyCustomInputFiled(
                     placeHolderText = stringResource(Res.string.search_your_favourite_genre),
                     text = viewModel.searchStoryData,
@@ -89,6 +89,7 @@ fun SearchStoryResultScreen(
                     isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
+                    modifier = Modifier,
                     onSearch = {searchKey ->
                         viewModel.searchStory(search = searchKey)
                     }
@@ -107,7 +108,9 @@ fun SearchStoryResultScreen(
 
                     }
                     else if(pagingUiState.value.isEmpty){
-                        EmptyStoryMessage()
+                        EmptyStoryMessage(
+                            retryAgain = {storyData.retry()}
+                        )
                     }
                     else {
                         LazyVerticalGrid(

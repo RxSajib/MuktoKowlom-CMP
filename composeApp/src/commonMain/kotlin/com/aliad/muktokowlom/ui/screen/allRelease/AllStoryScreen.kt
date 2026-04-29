@@ -92,6 +92,7 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
                     isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
+                    modifier = Modifier,
                     onSearch = {searchKey ->
                      //   viewModel.searchStory(search = searchKey)
                     }
@@ -110,7 +111,11 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
 
                     }
                    else if (pagingUiState.value.isEmpty) {
-                        EmptyStoryMessage()
+                        EmptyStoryMessage(
+                            retryAgain = {
+                                storyData.retry()
+                            }
+                        )
                     } else {
                         LazyVerticalGrid(
                             modifier = Modifier

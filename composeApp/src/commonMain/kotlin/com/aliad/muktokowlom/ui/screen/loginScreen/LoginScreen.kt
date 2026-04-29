@@ -207,6 +207,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         },
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
+                        modifier = Modifier,
                         isPasswordVisibility = true
                     ) {}
                     HeightGap(height = 10.dp)
@@ -221,6 +222,7 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         isVisiblePasswordChange = {
                             viewModel.isPasswordVisible = !viewModel.isPasswordVisible
                         },
+                        modifier = Modifier,
                         isPasswordVisibility = viewModel.isPasswordVisible
                     ) {}
                     HeightGap(height = 5.dp)

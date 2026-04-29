@@ -1,13 +1,16 @@
 package com.aliad.muktokowlom.ui.bottomSheet
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,14 +36,18 @@ import com.aliad.muktokowlom.ui.component.FeedBackInputComponent
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomButton
 import com.aliad.muktokowlom.ui.component.MyRatingBar
+import com.aliad.muktokowlom.ui.component.MySecondaryCustomInputFiled
 import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
+import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.how_was_your_experienced
 import muktokowlomcmp.composeapp.generated.resources.muktokowlom_white
+import muktokowlomcmp.composeapp.generated.resources.no_results_found
 import muktokowlomcmp.composeapp.generated.resources.star_fill
+import muktokowlomcmp.composeapp.generated.resources.start_writing_your_story
 import muktokowlomcmp.composeapp.generated.resources.submit
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -63,7 +70,7 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
 
     ModalBottomSheet(
         onDismissRequest = { onDismissRequest.invoke() },
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.inversePrimary,
         sheetState = state
     ) {
         Column(
@@ -81,52 +88,72 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
                 error = painterResource(Res.drawable.muktokowlom_white),
                 contentScale = ContentScale.Crop,
 
-            )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 15.dp)
+                )
+            HeightGap(height = 15.dp)
             Text(
-                text = storyData.value.titleBn?: "",
+                text = storyData.value.titleBn ?: "",
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
                 )
             )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            HeightGap(height = 10.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clip(shape = CircleShape).background(color = onPrimaryLight.copy(alpha = 0.1f))
+                    .padding(horizontal = 10.dp, vertical = 5.dp)
+            ) {
                 Image(
                     painter = painterResource(Res.drawable.star_fill),
                     contentDescription = null,
                     modifier = Modifier.size(15.dp),
-                    colorFilter = ColorFilter.tint(color = Color.Red)
+                    colorFilter = ColorFilter.tint(color = onPrimaryLight)
                 )
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(5.dp)
+                WidthGap(5.dp)
                 Text(
                     text = "${storyData.value.rating} / 0.5",
-                    style = MaterialTheme.typography.bodySmall.copy(
+                    style = MaterialTheme.typography.titleSmall.copy(
                         fontSize = adjustedFontSize(10.0f),
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = onPrimaryLight
                     )
                 )
             }
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 5.dp)
+            HeightGap(height = 2.dp)
             Text(
-                text = storyData.value.user?.name?: "",
+                text = storyData.value.user?.name ?: "",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall.copy(
+                style = MaterialTheme.typography.titleSmall.copy(
                     fontSize = adjustedFontSize(8.0f),
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f)
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                 )
             )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 10.dp)
+            HeightGap(height = 5.dp)
             Text(
                 text = stringResource(Res.string.how_was_your_experienced),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleSmall.copy(
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = adjustedFontSize(12f)
+                ),
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
                 textAlign = TextAlign.Center
             )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 15.dp)
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.MyRatingBar(
+
+            Text(
+                text = stringResource(Res.string.no_results_found),
+                style = MaterialTheme.typography.titleSmall.copy(
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                    fontSize = adjustedFontSize(10f)
+                ),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                textAlign = TextAlign.Center
+            )
+            HeightGap(height = 10.dp)
+            MyRatingBar(
                 rating = viewModel.inputRatingCount,
                 starSize = 25.dp,
                 onStarClick = { newRatingInput ->
@@ -134,15 +161,19 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
                 },
                 isIndicator = false
             )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 15.dp)
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.FeedBackInputComponent(
-                actualValue = viewModel.inputComment,
-                onValueChange = { newText ->
-                    viewModel.inputComment = newText
+            HeightGap(height = 10.dp)
+
+            MySecondaryCustomInputFiled(
+                placeholder = stringResource(Res.string.start_writing_your_story),
+                modifier = Modifier.height(100.dp),
+                inputData = viewModel.inputComment,
+                onValueChanged = { fullStory ->
+                    viewModel.inputComment = fullStory
                 }
             )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 15.dp)
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomButton(
+            HeightGap(height = 15.dp)
+            MyCustomButton(
+                modifier = Modifier.fillMaxWidth(),
                 isEnable = viewModel.isEnableRatingButton,
                 title = stringResource(Res.string.submit),
                 onClickButton = {
@@ -152,7 +183,7 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
                     }
                 }
             )
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.HeightGap(height = 15.dp)
+            HeightGap(height = 15.dp)
         }
     }
 }

@@ -138,6 +138,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
                         isPasswordVisibility = true,
+                        modifier = Modifier,
                         readOnly = true
                     ){}
                     HeightGap(height = 10.dp)
@@ -152,6 +153,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                         isVisiblePasswordChange = {
                             viewModel.isOldPasswordShow = !viewModel.isOldPasswordShow
                         },
+                        modifier = Modifier,
                         isPasswordVisibility = viewModel.isOldPasswordShow
                     ){}
                     HeightGap(height = 10.dp)
@@ -166,6 +168,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                         isVisiblePasswordChange = {
                             viewModel.isNewPasswordShow = !viewModel.isNewPasswordShow
                         },
+                        modifier = Modifier,
                         isPasswordVisibility = viewModel.isNewPasswordShow
                     ){}
 
@@ -181,6 +184,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                         isVisiblePasswordChange = {
                             viewModel.isConfirmPasswordShow = !viewModel.isConfirmPasswordShow
                         },
+                        modifier = Modifier,
                         isPasswordVisibility = viewModel.isConfirmPasswordShow
                     ){}
                 }

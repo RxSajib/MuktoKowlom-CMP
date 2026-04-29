@@ -187,6 +187,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         },
                         isPasswordInput = false,
                         isVisiblePasswordChange = {},
+                        modifier = Modifier,
                         isPasswordVisibility = true,
                     ) {}
                     HeightGap(height = 10.dp)
@@ -197,6 +198,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                             viewModel.emailInput = emailInput
                         },
                         isPasswordInput = false,
+                        modifier = Modifier,
                         isVisiblePasswordChange = {},
                         isPasswordVisibility = true
                     ) {}
@@ -211,6 +213,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                         isVisiblePasswordChange = {
                             viewModel.isPasswordShows.value = !viewModel.isPasswordShows.value
                         },
+                        modifier = Modifier,
                         isPasswordVisibility = viewModel.isPasswordShows.value
                     ) {}
                     HeightGap(height = 10.dp)
@@ -225,6 +228,7 @@ fun SignUpScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                             viewModel.isConfirmPasswordShows.value =
                                 !viewModel.isConfirmPasswordShows.value
                         },
+                        modifier = Modifier,
                         isPasswordVisibility = viewModel.isConfirmPasswordShows.value
                     ) {}
                     HeightGap(height = 20.dp)

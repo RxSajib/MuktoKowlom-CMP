@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,6 +29,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun LoadStateRefreshError(onRetry: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+            MyCustomLottieAnim(
+                lottieFile = "files/network_error.lottie",
+                modifier = Modifier.size(150.dp)
+            )
+
             Text(
                 text = stringResource(Res.string.loas_state_append_error),
                 style = MaterialTheme.typography.titleSmall.copy(

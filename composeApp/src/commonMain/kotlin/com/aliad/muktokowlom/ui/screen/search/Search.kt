@@ -111,6 +111,7 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
                     isSearchEnable = true,
                     isPasswordVisibility = true,
                     leftIcon = painterResource(Res.drawable.search_alt_svgrepo_com),
+                    modifier = Modifier,
                     onSearch = {
                         sharedViewModel.searchKeyword = it
                         backStack.add(AppDestination.Dest(
