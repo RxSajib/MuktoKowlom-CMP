@@ -2,8 +2,10 @@ package com.aliad.muktokowlom.ui.screen.editProfile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -38,6 +40,7 @@ import com.aliad.muktokowlom.ui.component.MyCustomButton
 import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.component.WheelDatePickerDialog
 import com.aliad.muktokowlom.ui.component.WidthGap
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
 import com.sajib.data.appConstant.AppConstant
@@ -104,6 +107,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
     val isValidSaveButton = viewModel.isValidationSaveButton.collectAsStateWithLifecycle(false)
 
 
+    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
 
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
@@ -121,8 +125,8 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
             }, editProfile = {})
         }) { innerPadding ->
 
-        Surface(
-            modifier = Modifier
+        Box(
+            modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
                 .padding(paddingValues = innerPadding)
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 16.dp)
@@ -144,18 +148,19 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                         model = userProfileImage,
                         error = painterResource(Res.drawable.ic_placeholder),
                         placeholder = painterResource(Res.drawable.ic_placeholder),
-                        modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable{
+                        modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable {
                             viewModel.takeProfileImageFromGallery = true
                         },
                         contentScale = ContentScale.Crop
                     )
                     HeightGap(height = 20.dp)
                     Text(
-                        text = userName?: "",
+                        text = userName ?: "",
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.W500
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     )
                     HeightGap(height = 20.dp)
@@ -166,8 +171,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 modifier = Modifier.fillMaxWidth(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 10.sp
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             )
                             HeightGap(height = 4.dp)
@@ -180,7 +186,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            ){}
+                            ) {}
                         }
                         WidthGap(width = 10.dp)
 
@@ -190,8 +196,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 modifier = Modifier.fillMaxWidth(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 10.sp
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             )
                             HeightGap(height = 4.dp)
@@ -204,7 +211,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            ){}
+                            ) {}
                         }
                     }
 
@@ -216,8 +223,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 modifier = Modifier.fillMaxWidth(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 10.sp
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             )
                             HeightGap(height = 4.dp)
@@ -230,7 +238,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            ){}
+                            ) {}
                         }
                         WidthGap(width = 10.dp)
 
@@ -240,8 +248,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 modifier = Modifier.fillMaxWidth(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 10.sp
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             )
                             HeightGap(height = 4.dp)
@@ -254,7 +263,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            ){}
+                            ) {}
                         }
                     }
 
@@ -266,8 +275,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 modifier = Modifier.fillMaxWidth(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 10.sp
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             )
                             HeightGap(height = 4.dp)
@@ -280,7 +290,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            ){}
+                            ) {}
                         }
                         WidthGap(width = 10.dp)
 
@@ -290,8 +300,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 modifier = Modifier.fillMaxWidth(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 10.sp
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             )
                             HeightGap(height = 4.dp)
@@ -305,7 +316,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
                                 readOnly = true
-                            ){
+                            ) {
                                 print("click date of birth")
                                 viewModel.isOpenDatePicker = true
                             }
@@ -320,8 +331,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 modifier = Modifier.fillMaxWidth(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 10.sp
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             )
                             HeightGap(height = 4.dp)
@@ -335,7 +347,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isVisiblePasswordChange = {},
                                 isNumberType = true,
                                 isPasswordVisibility = true,
-                            ){}
+                            ) {}
                         }
                         WidthGap(width = 10.dp)
 
@@ -345,8 +357,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 modifier = Modifier.fillMaxWidth(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 10.sp
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = adjustedFontSize(10f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             )
                             HeightGap(height = 4.dp)
@@ -359,7 +372,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 isPasswordVisibility = true,
-                            ){}
+                            ) {}
                         }
                     }
 
@@ -382,16 +395,18 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             title = stringResource(Res.string.password_update),
                             modifier = Modifier.weight(1f),
                             onClickButton = {
-                                navBackStack.add(AppDestination.Dest.UpdatePassword(
-                                    emailAddress = userEmailAddress?: "",
-                                ))
+                                navBackStack.add(
+                                    AppDestination.Dest.UpdatePassword(
+                                        emailAddress = userEmailAddress ?: "",
+                                    )
+                                )
                             },
                             isEnable = true
                         )
                     }
                 }
 
-
+            }
             }
         }
 
