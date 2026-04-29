@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.favorite_enable
 import org.jetbrains.compose.resources.painterResource
@@ -30,8 +31,9 @@ fun QuickAccessButton(modifier: Modifier,icon : Painter, title : String){
         _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 5.dp)
         Text(
             text = title,
-            style = MaterialTheme.typography.bodySmall.copy(
-                color = MaterialTheme.colorScheme.inverseSurface
+            style = MaterialTheme.typography.titleSmall.copy(
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                fontSize = adjustedFontSize(10f)
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis

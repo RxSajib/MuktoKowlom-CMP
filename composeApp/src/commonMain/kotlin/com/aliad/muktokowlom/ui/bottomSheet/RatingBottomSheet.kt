@@ -44,11 +44,13 @@ import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.how_was_your_experienced
+import muktokowlomcmp.composeapp.generated.resources.icon_send
 import muktokowlomcmp.composeapp.generated.resources.muktokowlom_white
 import muktokowlomcmp.composeapp.generated.resources.no_results_found
 import muktokowlomcmp.composeapp.generated.resources.star_fill
 import muktokowlomcmp.composeapp.generated.resources.start_writing_your_story
 import muktokowlomcmp.composeapp.generated.resources.submit
+import muktokowlomcmp.composeapp.generated.resources.tap_a_star_to_rate
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -144,7 +146,7 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
             )
 
             Text(
-                text = stringResource(Res.string.no_results_found),
+                text = stringResource(Res.string.tap_a_star_to_rate),
                 style = MaterialTheme.typography.titleSmall.copy(
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                     fontSize = adjustedFontSize(10f)
@@ -176,6 +178,7 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
                 modifier = Modifier.fillMaxWidth(),
                 isEnable = viewModel.isEnableRatingButton,
                 title = stringResource(Res.string.submit),
+                leftIcon = painterResource(Res.drawable.icon_send),
                 onClickButton = {
                     scope.launch {
                         state.hide()

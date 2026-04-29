@@ -62,6 +62,9 @@ import muktokowlomcmp.composeapp.generated.resources.book_svgrepo_com_icon
 import muktokowlomcmp.composeapp.generated.resources.category
 import muktokowlomcmp.composeapp.generated.resources.dashboard
 import muktokowlomcmp.composeapp.generated.resources.favorite_disable
+import muktokowlomcmp.composeapp.generated.resources.icon_category
+import muktokowlomcmp.composeapp.generated.resources.icon_read_svgrepo_com
+import muktokowlomcmp.composeapp.generated.resources.icon_star_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.list
 import muktokowlomcmp.composeapp.generated.resources.no_similar_story
 import muktokowlomcmp.composeapp.generated.resources.placeholder
@@ -150,7 +153,8 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                         MyCustomButton(
                             title = stringResource(Res.string.send_rating),
                             modifier = Modifier.weight(1f),
-                            backgroundColor = MaterialTheme.colorScheme.inverseSurface,
+                            leftIcon = painterResource(Res.drawable.icon_star_svgrepo_com),
+                            backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                             onClickButton = {
                                 viewModel.isOpenRatingBottomSheet = true
                             },
@@ -160,6 +164,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                         MyCustomButton(
                             title = stringResource(Res.string.read_full_story),
                             modifier = Modifier.weight(1f),
+                            leftIcon = painterResource(Res.drawable.icon_read_svgrepo_com),
                             onClickButton = {
                                 backStack.add(AppDestination.Dest.StoryView)
                             },
@@ -189,7 +194,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                                 text = stringResource(Res.string.published),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.W400,
-                                    color = MaterialTheme.colorScheme.primary,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                                     fontSize = adjustedFontSize(8f)
                                 ),
                                 maxLines = 1,
@@ -215,7 +220,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                                 text = stringResource(Res.string.views),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.W400,
-                                    color = MaterialTheme.colorScheme.primary,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                                     fontSize = adjustedFontSize(8f)
                                 ),
                                 maxLines = 1,
@@ -241,7 +246,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                                 text = stringResource(Res.string.rating),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.W400,
-                                    color = MaterialTheme.colorScheme.primary,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                                     fontSize = adjustedFontSize(8f)
                                 ),
                                 maxLines = 1,
@@ -261,7 +266,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     Text(
                         text = stringResource(Res.string.about_book),
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                        style = MaterialTheme.typography.titleSmall.copy(
+                        style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -277,7 +282,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                         seeLessMaxLines = Int.MAX_VALUE,
                         modifier = Modifier.padding(horizontal = 16.dp),
                         style = MaterialTheme.typography.titleSmall.copy(
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                             fontSize = adjustedFontSize(10f)
                         )
                     )
@@ -301,7 +306,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                                 }
 
                             },
-                            icon = painterResource(Res.drawable.list),
+                            icon = painterResource(Res.drawable.icon_category),
                             title = stringResource(Res.string.category)
                         )
                         WidthGap(width = 5.dp)
@@ -323,7 +328,8 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                         text = stringResource(Res.string.similar_story),
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.W500
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     )
                     HeightGap(height = 5.dp)

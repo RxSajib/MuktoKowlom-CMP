@@ -11,14 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SearchKeywordItem(keywordName: String, onClick: () -> Unit) {
     Text(
         text = keywordName,
-        style = MaterialTheme.typography.bodySmall.copy(
-            color = Color.Gray
+        style = MaterialTheme.typography.titleSmall.copy(
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+            fontSize = adjustedFontSize(10f)
         ),
         modifier = Modifier.border(width = 1.dp, color = Color.Gray, shape = CircleShape)
             .clip(shape = CircleShape).clickable{
