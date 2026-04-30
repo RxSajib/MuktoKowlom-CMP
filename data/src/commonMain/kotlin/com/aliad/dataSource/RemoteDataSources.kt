@@ -64,8 +64,11 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                 setBody(commentData)
             }
 
+            print("feedback response ${response.status.value}")
+
             if(response.status.isSuccess()){
                 val body = response.body<GenericResponse<CommentDto>>()
+                print("feedback success $body")
                 return ApiResult.Success(data = body)
             }else {
                 val errorBody = response.bodyAsText()

@@ -17,6 +17,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -31,12 +33,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
+import com.aliad.helper.SnackBarEvent
 import com.aliad.model.MyBookItem
 import com.aliad.model.MyLikeStory
+import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.RatingBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
@@ -60,6 +68,7 @@ import muktokowlomcmp.composeapp.generated.resources.add_favorites
 import muktokowlomcmp.composeapp.generated.resources.all_release
 import muktokowlomcmp.composeapp.generated.resources.book_svgrepo_com_icon
 import muktokowlomcmp.composeapp.generated.resources.category
+import muktokowlomcmp.composeapp.generated.resources.comment_posted_successfully
 import muktokowlomcmp.composeapp.generated.resources.dashboard
 import muktokowlomcmp.composeapp.generated.resources.favorite_disable
 import muktokowlomcmp.composeapp.generated.resources.icon_category
@@ -87,6 +96,8 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
     val viewModel: StoryDetailsViewModel = koinViewModel()
     print("story id ${myBookItem.storyID}")
     val storyData = viewModel.storyData.collectAsStateWithLifecycle()
+    val lifecycle = LocalLifecycleOwner.current
+    val successMessage = stringResource(Res.string.comment_posted_successfully)
 
     LaunchedEffect(myBookItem) {
         viewModel.getStoryDetails(storyID = myBookItem.storyID.toString())
@@ -98,6 +109,33 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
     LaunchedEffect(viewModel.isLoading) {
         if (!viewModel.isLoading) {
             refreshState.setRefreshState(RefreshContentStateEnum.Stop)
+        }
+    }
+
+    LaunchedEffect(lifecycle.lifecycle){
+        lifecycle.lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED){
+            viewModel.ratingAndFeedbackData.collect {commentData ->
+                commentData.status?.let { isSuccess ->
+                    if(isSuccess){
+                        viewModel.isOpenRatingBottomSheet = false
+                        SnackBarEvent.save(
+                            details = SnackBarDetails(
+                                details = successMessage,
+                                show = true,
+                                leftIcon = Icons.Default.LockOpen
+                            )
+                        )
+                    }else {
+                        SnackBarEvent.save(
+                            details = SnackBarDetails(
+                                details = commentData.message_en,
+                                show = true,
+                                leftIcon = Icons.Default.LockOpen
+                            )
+                        )
+                    }
+                }
+            }
         }
     }
 
