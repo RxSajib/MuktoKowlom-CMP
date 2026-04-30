@@ -4,6 +4,8 @@ import com.aliad.model.BookItem
 import com.aliad.model.MyBookItem
 import com.aliad.model.Category
 import com.aliad.model.CategoryDto
+import com.aliad.model.Comment
+import com.aliad.model.CommentDto
 import com.aliad.model.DashBord
 import com.aliad.model.DashboardDto
 import com.aliad.model.ForgotPasswordDto
@@ -187,4 +189,13 @@ object DataMapper {
             titleBn = privacyPolicyDto.title_bn ?: ""
         )
     }
+
+    fun commentDtoToComment(commentDto: CommentDto) : Comment{
+        return Comment(
+            comment = commentDto.comment?: "",
+            id = commentDto.id?: 0,
+            rating = commentDto.rating?: 0
+        )
+    }
+
 }

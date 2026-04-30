@@ -104,10 +104,13 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
     val userPhoneNumber = dataStoreViewModel.getStringData(key = AppConstant.USER_PHONE).collectAsStateWithLifecycle(null)
     val userRegisterDate = dataStoreViewModel.getStringData(key = AppConstant.USER_REGISTER_DATE).collectAsStateWithLifecycle(null)
     val token by dataStoreViewModel.getStringData(key = AppConstant.ACCESS_TOKEN).collectAsStateWithLifecycle("")
+    val userID by dataStoreViewModel.getIntData(key = AppConstant.USER_ID).collectAsStateWithLifecycle(0)
 
     val lifecycle = LocalLifecycleOwner.current
 
 
+    print("token is $token")
+    print("user id ${userID.toString()}")
 
 
     LaunchedEffect(lifecycle.lifecycle) {

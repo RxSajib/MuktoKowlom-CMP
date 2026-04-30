@@ -175,15 +175,13 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
             )
             HeightGap(height = 15.dp)
             MyCustomButton(
+                showProgress = viewModel.loadingRatingAndFeedback,
                 modifier = Modifier.fillMaxWidth(),
                 isEnable = viewModel.isEnableRatingButton,
                 title = stringResource(Res.string.submit),
                 leftIcon = painterResource(Res.drawable.icon_send),
                 onClickButton = {
-                    scope.launch {
-                        state.hide()
-                        onDismissRequest.invoke()
-                    }
+                    viewModel.sendRatingAndFeedback(storyID = storyData.value.storyID?: 0)
                 }
             )
             HeightGap(height = 15.dp)

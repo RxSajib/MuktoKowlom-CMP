@@ -80,7 +80,9 @@ val presentationModule = module {
     }
     viewModel {
         StoryDetailsViewModel(
-            storyDetailsUseCase = get()
+            storyDetailsUseCase = get(),
+            ratingAndFeedbackUseCase = get(),
+            getIntData = get(),
         )
     }
     viewModel {

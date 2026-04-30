@@ -13,6 +13,7 @@ import com.aliad.repository.DashBordRepository
 import com.aliad.repository.DataStoreRepository
 import com.aliad.repository.ProfileRepository
 import com.aliad.repository.SearchRepository
+import com.aliad.repository.StoryManagementRepo
 import com.aliad.repository.StoryType
 import com.aliad.repository.SubscriptionHistoryRepository
 import com.aliad.repositoryImpl.AccountRepositoryImpl
@@ -21,6 +22,7 @@ import com.aliad.repositoryImpl.DashBoardRepositoryImpl
 import com.aliad.repositoryImpl.DataStoreRepositoryImpl
 import com.aliad.repositoryImpl.ProfileRepositoryImpl
 import com.aliad.repositoryImpl.SearchRepositoryImpl
+import com.aliad.repositoryImpl.StoryManagementImpl
 import com.aliad.repositoryImpl.StoryTypeImpl
 import com.aliad.repositoryImpl.SubscriptionHistoryRepositoryImpl
 import io.ktor.client.HttpClient
@@ -121,6 +123,10 @@ val dataModule = module {
 
     single<SubscriptionHistoryRepository> {
         SubscriptionHistoryRepositoryImpl(remoteDataSources = get())
+    }
+
+    single<StoryManagementRepo> {
+        StoryManagementImpl(remoteDataSources = get())
     }
 
     single {

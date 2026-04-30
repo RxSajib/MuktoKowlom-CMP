@@ -10,6 +10,7 @@ import com.aliad.usecase.OtpVerificationUseCase
 import com.aliad.usecase.PopularSearchUseCase
 import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.PrivacyPolicyUseCase
+import com.aliad.usecase.RatingAndFeedbackUseCase
 import com.aliad.usecase.RecoveryPasswordUseCase
 import com.aliad.usecase.SearchBookUseCase
 import com.aliad.usecase.SignUpUseCase
@@ -149,6 +150,12 @@ val domainModule = module {
     factory {
         UpdatePasswordUseCase(
             accountRepository = get()
+        )
+    }
+    
+    factory {
+        RatingAndFeedbackUseCase(
+            storyManagementRepo = get()
         )
     }
 }

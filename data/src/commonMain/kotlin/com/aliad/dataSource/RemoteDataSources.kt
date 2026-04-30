@@ -1,11 +1,12 @@
 package com.aliad.dataSource
 
-import com.aliad.model.ApiException
 import com.aliad.ApiResult
 import com.aliad.model.ApiResponse
 import com.aliad.model.BookItem
 import com.aliad.model.CategoryDto
 import com.aliad.model.CategoryWiseBookDto
+import com.aliad.model.MyCommentData
+import com.aliad.model.CommentDto
 import com.aliad.model.DashboardDto
 import com.aliad.model.ErrorResponse
 import com.aliad.model.ForgotPasswordDto
@@ -13,10 +14,8 @@ import com.aliad.model.GenericResponse
 import com.aliad.model.PopularSearchDto
 import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
-import com.aliad.model.User
 import com.aliad.model.LoginDto
 import com.aliad.model.SearchStoryDto
-import com.aliad.model.storyDetails.StoryDetailsDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
 import com.aliad.utils.StoryType
@@ -24,23 +23,14 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
-import io.ktor.client.request.accept
 import io.ktor.client.request.forms.FormDataContent
-import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
-import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
-import io.ktor.http.headers
 import io.ktor.http.isSuccess
-import io.ktor.http.parameters
-import io.ktor.http.parametersOf
-import io.ktor.util.collections.getValue
 import kotlinx.serialization.json.Json
 
 class RemoteDataSources constructor(val httpClient: HttpClient) {
@@ -65,7 +55,61 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val FORGOT_PASSWORD = "${BASEURL}forgot-password"
     private val DELETE_ACCOUNT = "${BASEURL}user/account/delete"
     private val PASSWORD_UPDATE = "${BASEURL}user/password-update"
+    private val COMMENT_STORY = "${BASEURL}user/comment-store"
 
+
+    suspend fun sendFeedback(commentData: MyCommentData) : ApiResult<GenericResponse<CommentDto>>{
+        return try {
+            val response = httpClient.post(urlString = COMMENT_STORY){
+                setBody(commentData)
+            }
+
+            if(response.status.isSuccess()){
+                val body = response.body<GenericResponse<CommentDto>>()
+                return ApiResult.Success(data = body)
+            }else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+                )
+            }
+        }catch (e: ClientRequestException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+    }
 
     suspend fun updatePassword(userID : String, oldPassword : String,  password : String, confirmPassword : String) : ApiResult<GenericResponse<LoginDto>>{
         return try {

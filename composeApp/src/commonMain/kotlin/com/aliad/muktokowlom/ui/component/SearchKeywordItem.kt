@@ -27,13 +27,11 @@ fun SearchKeywordItem(keywordName: String, onClick: () -> Unit) {
                 onClick.invoke()
             }
             .padding(10.dp)
-
-
     )
 }
 
 @Composable
 @Preview
 fun SearchKeywordItemPreview() {
-    _root_ide_package_.com.aliad.muktokowlom.ui.component.SearchKeywordItem(keywordName = "Jon Walker") {}
+    SearchKeywordItem(keywordName = "Jon Walker") {}
 }
