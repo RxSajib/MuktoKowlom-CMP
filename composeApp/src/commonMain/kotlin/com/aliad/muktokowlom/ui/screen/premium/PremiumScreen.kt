@@ -83,14 +83,14 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
         }
     ) { innerPadding ->
 
-        Box(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)){
+        Box(modifier = Modifier.fillMaxSize().padding(innerPadding).background(color = MaterialTheme.colorScheme.surface)){
 
         PullToRefresh(
             refreshLayoutState = rememberRefreshLayoutState,
             modifier = Modifier.fillMaxSize()
         ) {
 
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+            Column(modifier = Modifier.fillMaxSize()) {
                 Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),

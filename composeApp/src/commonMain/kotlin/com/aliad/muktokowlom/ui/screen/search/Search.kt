@@ -93,9 +93,9 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
         }
     }
 
-
-    PullToRefresh(refreshLayoutState = refreshLayoutState) {
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
+    PullToRefresh(refreshLayoutState = refreshLayoutState) {
+
 
 
             Column(modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(state = rememberScrollState())) {

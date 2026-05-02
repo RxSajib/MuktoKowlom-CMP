@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.aliad.model.Language
 import com.aliad.usecase.dataStore.GetStringData
 import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.code
 
@@ -36,6 +38,10 @@ class ChangeLanguageViewModel constructor(
     var selectedPosition by mutableStateOf(0)
 
     var selectedLanguage by mutableStateOf(Language())
+
+    val  languageSelectedNow  = flow {
+        emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+    }
 
     init {
         getLanguage()

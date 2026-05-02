@@ -37,44 +37,47 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewM
         viewModel.fetchCategory()
     }
 
-    LaunchedEffect(viewModel.isLoading){
-        if(!viewModel.isLoading){
+    LaunchedEffect(viewModel.isLoading) {
+        if (!viewModel.isLoading) {
             refreshState.setRefreshState(state = RefreshContentStateEnum.Stop)
         }
     }
 
+    Box(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
 
-    PullToRefresh(refreshLayoutState = refreshState){
+        PullToRefresh(refreshLayoutState = refreshState) {
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.surface)
-    ) {
+            Box(
+                modifier = Modifier.fillMaxSize()
 
-        if (viewModel.isLoading) {
-            _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryScreenShimmer()
-        } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                items(categoryData.value) { categoryData ->
-                    _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryItem(
-                        category = categoryData,
-                        onClick = {
-                            sharedViewModel.setCategory(category = categoryData)
-                            backStack.add(
-                                AppDestination.Dest(
-                                    AppDestination.Dest.CategoryWiseBook::class.simpleName ?: ""
-                                )
-                            )
-                        })
+
+                if (viewModel.isLoading) {
+                    _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryScreenShimmer()
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        items(categoryData.value) { categoryData ->
+                            _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryItem(
+                                category = categoryData,
+                                onClick = {
+                                    sharedViewModel.setCategory(category = categoryData)
+                                    backStack.add(
+                                        AppDestination.Dest(
+                                            AppDestination.Dest.CategoryWiseBook::class.simpleName
+                                                ?: ""
+                                        )
+                                    )
+                                })
+                        }
+                    }
                 }
             }
         }
-    }
     }
 
 }

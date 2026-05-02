@@ -21,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.aliad.helper.SnackBarEvent
@@ -46,12 +47,18 @@ import kotlin.collections.get
 @Composable
 fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
-    val chooseLanguageViewModel : ChangeLanguageViewModel = koinViewModel()
-    val languages : Localization = koinInject()
-    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
+    val chooseLanguageViewModel: ChangeLanguageViewModel = koinViewModel()
+    val languages: Localization = koinInject()
+    val dataStoreViewModel: DataStoreViewModel = koinViewModel()
     val successData = stringResource(Res.string.launguage_change_success)
+    val selectedLanNow =
+        chooseLanguageViewModel.languageSelectedNow.collectAsStateWithLifecycle("en")
 
-    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
+    print("lan selectedcode is ${chooseLanguageViewModel.selectedLanguage.code}")
+
+    Surface(
+        modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
+    ) {
         Scaffold(
             topBar = {
                 MyCustomAppBar(
@@ -62,39 +69,47 @@ fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
                     editProfile = {}
                 )
             }
-        ) {innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(16.dp).imePadding()) {
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier.fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.surface).padding(innerPadding)
+                    .padding(16.dp).imePadding()
+            ) {
 
 
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        items(chooseLanguageViewModel.languageData.size) { position ->
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    items(chooseLanguageViewModel.languageData.size) { position ->
 
-                            LanguageItem(
-                                data = chooseLanguageViewModel.languageData[position],
-                                isSelected =  chooseLanguageViewModel.selectedPosition == position,
-                                onItemSelect = {
-                                    chooseLanguageViewModel.selectedPosition = position
-                                    chooseLanguageViewModel.selectedLanguage = it
-                                })
+                        LanguageItem(
+                            data = chooseLanguageViewModel.languageData[position],
+                            isSelected = chooseLanguageViewModel.selectedPosition == position,
+                            onItemSelect = {
+                                chooseLanguageViewModel.selectedPosition = position
+                                chooseLanguageViewModel.selectedLanguage = it
+                            })
 
 
-                            if (chooseLanguageViewModel.languageData.indexOf(chooseLanguageViewModel.languageData[position]) != chooseLanguageViewModel.languageData.lastIndex) {
-                                Spacer(modifier = Modifier.height(8.dp))
-                            }
+                        if (chooseLanguageViewModel.languageData.indexOf(chooseLanguageViewModel.languageData[position]) != chooseLanguageViewModel.languageData.lastIndex) {
+                            Spacer(modifier = Modifier.height(8.dp))
                         }
                     }
+                }
 
                 HeightGap(height = 20.dp)
                 MyCustomButton(
                     title = stringResource(Res.string.update),
+                    isEnable = chooseLanguageViewModel.selectedLanguage.code != selectedLanNow.value,
                     modifier = Modifier.fillMaxWidth(),
                     onClickButton = {
 
-                        languages.setLocal(chooseLanguageViewModel.selectedLanguage.code?: "en")
-                        dataStoreViewModel.saveStringData(key = AppConstant.SELECT_LOCAL, chooseLanguageViewModel.selectedLanguage.code?: "en")
+                        languages.setLocal(chooseLanguageViewModel.selectedLanguage.code ?: "en")
+                        dataStoreViewModel.saveStringData(
+                            key = AppConstant.SELECT_LOCAL,
+                            chooseLanguageViewModel.selectedLanguage.code ?: "en"
+                        )
 
                         SnackBarEvent.save(
                             details = SnackBarDetails(
@@ -106,7 +121,6 @@ fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
 
                         rootBackStack.removeLastOrNull()
                     },
-                    isEnable = true,
                     showProgress = false
                 )
 
