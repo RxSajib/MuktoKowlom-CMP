@@ -38,14 +38,17 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem) -> Unit) {
 
-    val viewModel : DataStoreViewModel = koinViewModel()
-    val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
+    val viewModel: DataStoreViewModel = koinViewModel()
+    val selectLn =
+        viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
 
     Row(
-        modifier = Modifier.fillMaxWidth().height(100.dp).padding(horizontal = 16.dp).clickable {
-            onclick.invoke(myBookItem)
-        }.clip(shape = RoundedCornerShape(10.dp))
+        modifier = Modifier.fillMaxWidth().height(100.dp).padding(horizontal = 16.dp)
+            .clip(shape = RoundedCornerShape(10.dp))
             .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f))
+            .clickable {
+                onclick.invoke(myBookItem)
+            }
             .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -63,7 +66,11 @@ fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem)
         Column(modifier = Modifier.weight(1f).padding(start = 10.dp)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = getTitle(selectLn = selectLn.value, title = myBookItem.titleEn, titleBn = myBookItem.titleBn) ,
+                    text = getTitle(
+                        selectLn = selectLn.value,
+                        title = myBookItem.titleEn,
+                        titleBn = myBookItem.titleBn
+                    ),
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Bold,
@@ -78,7 +85,7 @@ fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem)
                     text = getStoryData(
                         dataBn = myBookItem.summaryBn ?: "",
                         dataEn = myBookItem.summaryEn ?: ""
-                    ) ,
+                    ),
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Normal,
                         fontSize = adjustedFontSize(10.0f),

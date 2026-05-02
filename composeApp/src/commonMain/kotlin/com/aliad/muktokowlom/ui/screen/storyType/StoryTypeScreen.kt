@@ -25,11 +25,13 @@ import com.aliad.muktokowlom.ui.component.Loader
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.StoryItem
 import com.aliad.muktokowlom.ui.component.StoryLoaderShimmer
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.aliad.presentation.signIn.ui.storytype.StoryTypeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun StoryTypeScreen(
+    sharedViewModel: SharedViewModel,
     backStack: NavBackStack<NavKey>,
     type: AppDestination.Dest.StoryTypeWiseBook,
     rootBackStack: NavBackStack<NavKey>
@@ -85,7 +87,8 @@ fun StoryTypeScreen(
 
                         items(storyItem.itemCount) { position ->
                             StoryItem(storyItem[position]){bookItem ->
-                                backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
+                                sharedViewModel.selectedBookID = bookItem.storyID?: 0
+                                backStack.add(AppDestination.StoryDetails)
                             }
                         }
 

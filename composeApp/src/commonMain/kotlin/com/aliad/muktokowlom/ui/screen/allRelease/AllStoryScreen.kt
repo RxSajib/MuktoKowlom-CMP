@@ -33,6 +33,7 @@ import com.aliad.muktokowlom.ui.component.StoryItem
 import com.aliad.muktokowlom.ui.component.StoryLoaderShimmer
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.presentation.signIn.ui.allReleaseStory.AllReleaseStoryViewModel
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.all_release
 import muktokowlomcmp.composeapp.generated.resources.search_alt_svgrepo_com
@@ -42,7 +43,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
+fun AllStoryScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: AllReleaseStoryViewModel = koinViewModel()
     val storyData = viewModel.storyData.collectAsLazyPagingItems()
@@ -127,7 +128,8 @@ fun AllStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<
 
                             items(storyData.itemCount) { position ->
                                 StoryItem(storyData[position]) { bookItem ->
-                                    backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
+                                    sharedViewModel.selectedBookID = bookItem.storyID?: 0
+                                    backStack.add(AppDestination.StoryDetails)
                                 }
                             }
 

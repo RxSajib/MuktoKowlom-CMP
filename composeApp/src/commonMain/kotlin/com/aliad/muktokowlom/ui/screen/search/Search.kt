@@ -134,7 +134,14 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
                     if(!viewModel.isLoading){
                         LazyRow {
                             items(popularSearchData.value.storyList.size){ position ->
-                                StoryItemFixedSize(item = popularSearchData.value.storyList[position])
+                                StoryItemFixedSize(item = popularSearchData.value.storyList[position]){myBookItem ->
+                                    sharedViewModel.selectedBookID = myBookItem.storyID?: 0
+                                    backStack.add(
+                                        AppDestination.Dest(
+                                            AppDestination.Dest.StoryDetails::class.simpleName?: ""
+                                        )
+                                    )
+                                }
                             }
                         }
                     }else {

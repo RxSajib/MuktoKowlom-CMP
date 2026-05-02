@@ -40,6 +40,9 @@ sealed class AppDestination : NavKey {
     data class Dest(val firstDestName : String) : AppDestination() {
 
         @Serializable
+        data object StoryDetails : AppDestination()
+
+        @Serializable
         data object ChangeLanguage : AppDestination()
 
         @Serializable
@@ -140,7 +143,7 @@ sealed class AppDestination : NavKey {
 
 
     @Serializable
-    data class StoryDetails(val myBookItem: MyBookItem) : AppDestination()
+    data object StoryDetails : AppDestination()
 
     @Serializable
     data object Profile : AppDestination()

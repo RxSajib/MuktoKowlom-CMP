@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ import com.aliad.muktokowlom.ui.component.MyCustomBannerItem
 import com.aliad.muktokowlom.ui.component.StoryCategoryWithAllButton
 import com.aliad.muktokowlom.ui.component.StoryItemFixedSize
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.lt.compose_views.banner.Banner
 import com.lt.compose_views.banner.rememberBannerState
 import com.lt.compose_views.refresh_layout.PullToRefresh
@@ -42,16 +44,18 @@ import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun HomeScreen(backStack: NavBackStack<NavKey>) {
+fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>) {
 
     val dashBoardViewModel: DashBoardViewModel = koinViewModel()
     val dashBoardData = dashBoardViewModel.dashBoard.collectAsStateWithLifecycle()
+
 
     val scope = rememberCoroutineScope()
     print("dashboard data ${dashBoardData.value}")
     val mostPopularStory = stringResource(Res.string.most_popular)
     val newReleaseStory = stringResource(Res.string.new_release)
     val allStory = stringResource(Res.string.all_release)
+
 
 
     val refreshState = rememberRefreshLayoutState {
@@ -106,7 +110,12 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
                                 myBookItem = dashBoardData.value?.lisOfPopularStories[index]
                                     ?: MyBookItem()
                             ) { myBookItem ->
-                                print("my book item $myBookItem")
+                                sharedViewModel.selectedBookID = myBookItem.storyID?: 0
+                                backStack.add(
+                                    AppDestination.Dest(
+                                        AppDestination.Dest.StoryDetails::class.simpleName?: ""
+                                    )
+                                )
                             }
                         }
 
@@ -124,7 +133,14 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
                             items(
                                 dashBoardData.value?.listOfNewReleaseStories ?: emptyList()
                             ) { bookItem ->
-                                StoryItemFixedSize(item = bookItem)
+                                StoryItemFixedSize(item = bookItem){myBookItem ->
+                                    sharedViewModel.selectedBookID = myBookItem.storyID?: 0
+                                    backStack.add(
+                                        AppDestination.Dest(
+                                            AppDestination.Dest.StoryDetails::class.simpleName?: ""
+                                        )
+                                    )
+                                }
                             }
                         }
                         StoryCategoryWithAllButton(
@@ -137,7 +153,14 @@ fun HomeScreen(backStack: NavBackStack<NavKey>) {
                             })
                         LazyRow {
                             items(dashBoardData.value?.lifOfAllStories ?: emptyList()) { bookItem ->
-                                StoryItemFixedSize(item = bookItem)
+                                StoryItemFixedSize(item = bookItem){myBookItem ->
+                                    sharedViewModel.selectedBookID = myBookItem.storyID?: 0
+                                    backStack.add(
+                                        AppDestination.Dest(
+                                            AppDestination.Dest.StoryDetails::class.simpleName?: ""
+                                        )
+                                    )
+                                }
                             }
                         }
                     }

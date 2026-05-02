@@ -7,16 +7,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliad.model.Subscription
 import com.aliad.usecase.PremiumPlanUseCase
+import com.aliad.usecase.dataStore.GetStringData
+import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SubscriptionPlanViewModel constructor(val premiumPlanUseCase: PremiumPlanUseCase) : ViewModel() {
+class SubscriptionPlanViewModel constructor(
+    val premiumPlanUseCase: PremiumPlanUseCase,
+) : ViewModel() {
 
     private var premiumPlanMutableStateFlow = MutableStateFlow<List<Subscription>>(emptyList())
     val premiumPlanStateFlow = premiumPlanMutableStateFlow.asStateFlow()
@@ -28,11 +35,12 @@ class SubscriptionPlanViewModel constructor(val premiumPlanUseCase: PremiumPlanU
 
     var sharedFlow = MutableSharedFlow<String>()
 
-    fun sendFlow(data : String){
+    fun sendFlow(data: String) {
         viewModelScope.launch {
             sharedFlow.emit(data)
         }
     }
+
 
 
     init {
@@ -41,23 +49,21 @@ class SubscriptionPlanViewModel constructor(val premiumPlanUseCase: PremiumPlanU
 
     fun getPremiumPlanList() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 loading = true
                 val response = premiumPlanUseCase.getPremiumPlanList()
                 loading = false
-                if(response.isSuccess){
-                    premiumPlanMutableStateFlow.value = response.getOrNull()?: emptyList()
-                    selectedPackage = response.getOrNull()?.get(0)?: Subscription()
-                }
-                else {
+                if (response.isSuccess) {
+                    premiumPlanMutableStateFlow.value = response.getOrNull() ?: emptyList()
+                    selectedPackage = response.getOrNull()?.get(0) ?: Subscription()
+                } else {
                     premiumPlanMutableStateFlow.value = emptyList()
                 }
             }
 
         }
-        
+
     }
 
 
-    
 }

@@ -21,11 +21,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aliad.model.Subscription
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import com.aliad.muktokowlom.utils.getTitle
+import com.aliad.presentation.signIn.ui.subscriptionPlan.SubscriptionPlanViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.membership_valid_days
 import muktokowlomcmp.composeapp.generated.resources.premium_svgrepo_com
@@ -37,9 +39,11 @@ fun SubscriptionPlanItem(
     selected: Boolean = false,
     subscription: Subscription,
     selectLn: State<String>,
-    onClick: () -> Unit
+    mViewModel: SubscriptionPlanViewModel,
+    onClick: () -> Unit,
 ) {
 
+    print("selected ln ${selectLn.value}")
 
     fun generateRandomColor(): Color {
         return Color(

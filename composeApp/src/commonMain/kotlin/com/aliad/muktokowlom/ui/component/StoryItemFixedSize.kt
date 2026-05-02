@@ -1,5 +1,6 @@
 package com.aliad.muktokowlom.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,13 +31,15 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun StoryItemFixedSize(item: MyBookItem?){
+fun StoryItemFixedSize(item: MyBookItem?, onClick: (MyBookItem) -> Unit){
 
     val viewModel : DataStoreViewModel = koinViewModel()
     val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
 
 
-    Column(modifier = Modifier.width(220.dp).padding(10.dp)) {
+    Column(modifier = Modifier.width(220.dp).clip(shape = RoundedCornerShape(10.dp)).clickable{
+        onClick.invoke(item?: MyBookItem())
+    }.padding(10.dp)) {
         Box{
             AsyncImage(
                 modifier = Modifier.fillMaxWidth().height(100.dp)

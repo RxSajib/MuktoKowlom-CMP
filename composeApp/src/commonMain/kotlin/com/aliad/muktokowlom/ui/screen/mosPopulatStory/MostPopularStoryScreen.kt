@@ -34,6 +34,7 @@ import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.component.StoryItem
 import com.aliad.muktokowlom.ui.component.StoryLoaderShimmer
 import com.aliad.presentation.signIn.ui.mostPopularStory.MostPopularStoryViewModel
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.most_popular
 import muktokowlomcmp.composeapp.generated.resources.search_alt_svgrepo_com
@@ -43,7 +44,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MostPopularStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
+fun MostPopularStoryScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
     Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
 
         val viewModel : MostPopularStoryViewModel = koinViewModel()
@@ -116,7 +117,8 @@ fun MostPopularStoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBa
 
                             items(storyData.itemCount) { position ->
                                 StoryItem(storyData[position]){bookItem ->
-                                    backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
+                                    sharedViewModel.selectedBookID = bookItem.storyID?: 0
+                                    backStack.add(AppDestination.StoryDetails)
                                 }
                             }
 

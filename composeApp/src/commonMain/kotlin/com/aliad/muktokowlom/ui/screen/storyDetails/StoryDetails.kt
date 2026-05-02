@@ -56,6 +56,7 @@ import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.ui.component.WriterInfo
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.utils.AppHelper.toUSFormatWithMonth
+import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
 import com.eygraber.seymour.SeymourText
 import com.lt.compose_views.refresh_layout.PullToRefresh
@@ -91,20 +92,19 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) {
+fun StoryDetailsScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>) {
 
     val viewModel: StoryDetailsViewModel = koinViewModel()
-    print("story id ${myBookItem.storyID}")
     val storyData = viewModel.storyData.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current
     val successMessage = stringResource(Res.string.comment_posted_successfully)
 
-    LaunchedEffect(myBookItem) {
-        viewModel.getStoryDetails(storyID = myBookItem.storyID.toString())
+    LaunchedEffect(sharedViewModel.selectedBookID) {
+        viewModel.getStoryDetails(storyID = sharedViewModel.selectedBookID.toString())
     }
     val refreshState = rememberRefreshLayoutState {
         setRefreshState(RefreshContentStateEnum.Refreshing)
-        viewModel.getStoryDetails(storyID = myBookItem.storyID.toString())
+        viewModel.getStoryDetails(storyID = sharedViewModel.selectedBookID.toString())
     }
     LaunchedEffect(viewModel.isLoading) {
         if (!viewModel.isLoading) {
@@ -145,8 +145,8 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
 
     Scaffold(
         topBar = {
-            MyCustomAppBar(title = myBookItem.titleBn ?: "Unknown", onBackPress = {
-                backStack.remove(AppDestination.StoryDetails(myBookItem = myBookItem))
+            MyCustomAppBar(title = storyData.value.titleBn ?: "Unknown", onBackPress = {
+                backStack.removeLastOrNull()
             }, editProfile = {})
         }
     ) { innerPadding ->
@@ -174,7 +174,7 @@ fun StoryDetailsScreen(myBookItem: MyBookItem, backStack: NavBackStack<NavKey>) 
                     )
                     HeightGap(height = 15.dp)
                     Text(
-                        text = myBookItem.titleBn ?: " Unknown Title",
+                        text = storyData.value.titleBn ?: " Unknown Title",
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleSmall.copy(

@@ -120,6 +120,10 @@ fun DestNavigation(
                     AppDestination.Dest.ChangeLanguage::class,
                     AppDestination.Dest.ChangeLanguage.serializer()
                 )
+                subclass(
+                    AppDestination.Dest.StoryDetails::class,
+                    AppDestination.Dest.StoryDetails.serializer()
+                )
             }
         }
     }
@@ -143,6 +147,7 @@ fun DestNavigation(
         startDest.firstDestName == AppDestination.Dest.NewReleaseStory::class.simpleName -> AppDestination.Dest.NewReleaseStory
         startDest.firstDestName == AppDestination.Dest.MostPopular::class.simpleName -> AppDestination.Dest.MostPopular
         startDest.firstDestName == AppDestination.Dest.ChangeLanguage::class.simpleName -> AppDestination.Dest.ChangeLanguage
+        startDest.firstDestName == AppDestination.Dest.StoryDetails::class.simpleName -> AppDestination.Dest.StoryDetails
         else -> throw Exception("Invalid destination")
     }
 
@@ -160,7 +165,7 @@ fun DestNavigation(
             entryProvider = entryProvider {
 
                 entry<AppDestination.HomeScreen> {
-                    HomeScreen(backStack = backStack)
+                    HomeScreen(sharedViewModel = sharedViewModel, backStack = backStack)
                 }
                 entry<AppDestination.CategoryScreen> {
                     CategoryScreen(backStack = backStack, sharedViewModel = sharedViewModel)
@@ -170,13 +175,14 @@ fun DestNavigation(
                 }
                 entry<AppDestination.Dest.StoryTypeWiseBook> { type ->
                     StoryTypeScreen(
+                        sharedViewModel = sharedViewModel,
                         backStack = backStack,
                         rootBackStack = rootBackStack,
                         type = type
                     )
                 }
                 entry<AppDestination.StoryDetails> { type ->
-                    StoryDetailsScreen(myBookItem = type.myBookItem, backStack = backStack)
+                    StoryDetailsScreen(sharedViewModel = sharedViewModel, backStack = backStack)
                 }
                 entry<AppDestination.Profile> {
                     ProfileScreen(backStack = backStack, sharedViewModel = sharedViewModel)
@@ -217,15 +223,17 @@ fun DestNavigation(
                     )
                 }
                 entry<AppDestination.Dest.AllReleaseStory> {
-                    AllStoryScreen(backStack = backStack,
+                    AllStoryScreen(
+                        sharedViewModel = sharedViewModel,
+                        backStack = backStack,
                         rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.Dest.NewReleaseStory> {
-                    NewReleaseScreen(backStack = backStack,
+                    NewReleaseScreen(sharedViewModel = sharedViewModel, backStack = backStack,
                         rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.Dest.MostPopular> {
-                    MostPopularStoryScreen(backStack = backStack,
+                    MostPopularStoryScreen(sharedViewModel = sharedViewModel, backStack = backStack,
                         rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.Dest.AllCategory> {
@@ -238,6 +246,12 @@ fun DestNavigation(
                     ChangeLanguageScreen(
                         backStack = backStack,
                         rootBackStack = rootBackStack,
+                    )
+                }
+                entry<AppDestination.Dest.StoryDetails> {
+                    StoryDetailsScreen(
+                        sharedViewModel = sharedViewModel,
+                        backStack = backStack
                     )
                 }
 

@@ -154,7 +154,8 @@ fun CategoryWiseBook(
                                 StoryItem(
                                     storyItem[position]
                                 ) { bookItem ->
-                                    backStack.add(AppDestination.StoryDetails(myBookItem = bookItem))
+                                    sharedViewModel.selectedBookID = bookItem.storyID?: 0
+                                    backStack.add(AppDestination.StoryDetails)
                                 }
                             }
 

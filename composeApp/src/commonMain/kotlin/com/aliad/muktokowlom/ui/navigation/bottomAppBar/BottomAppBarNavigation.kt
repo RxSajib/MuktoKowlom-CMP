@@ -379,7 +379,7 @@ fun BottomAppBarNavigation(rootBackStack: NavBackStack<NavKey>, sharedViewModel:
             ),
             entryProvider = entryProvider {
                 entry<AppDestination.BottomAppBar.DashBoard> {
-                    HomeScreen(backStack = rootBackStack)
+                    HomeScreen(sharedViewModel= sharedViewModel, backStack = rootBackStack)
                 }
                 entry<AppDestination.BottomAppBar.Category> {
                     CategoryScreen(backStack = rootBackStack, sharedViewModel = sharedViewModel)

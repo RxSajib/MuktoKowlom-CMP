@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class SharedViewModel constructor() : ViewModel() {
 
 
-
+    var selectedBookID by mutableStateOf(0)
 
 
     private var isPendingStoryMutableStateFlow = MutableStateFlow(false)
