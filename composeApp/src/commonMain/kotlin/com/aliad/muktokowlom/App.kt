@@ -8,6 +8,10 @@ import com.aliad.muktokowlom.ui.theme.MuktoKowlomTheme
 import com.aliad.muktokowlom.utils.Localization
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.sajib.data.appConstant.AppConstant
+import dev.shivathapaa.logger.api.LogLevel
+import dev.shivathapaa.logger.api.LoggerFactory
+import dev.shivathapaa.logger.core.LoggerConfig
+import dev.shivathapaa.logger.sink.DefaultLogSink
 import kotlinx.coroutines.CoroutineExceptionHandler
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -23,12 +27,10 @@ fun App() {
     MuktoKowlomTheme {
 
         languages.setLocal(local.value)
-
-      //  key(local.value){
-            RootNavigation()
-      //  }
+        RootNavigation()
 
 
+        initLogger()
     }
 
 
@@ -40,4 +42,13 @@ fun App() {
     }
     // global exception handler
 
+}
+
+fun initLogger() {
+    val config = LoggerConfig.Builder()
+        .minLevel(LogLevel.DEBUG)
+        .addSink(DefaultLogSink())
+        .build()
+
+    LoggerFactory.install(config)
 }

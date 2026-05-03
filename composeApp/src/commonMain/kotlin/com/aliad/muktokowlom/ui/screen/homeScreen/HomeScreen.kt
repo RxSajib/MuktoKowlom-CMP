@@ -28,6 +28,7 @@ import com.aliad.muktokowlom.ui.component.HomeSeaBanner
 import com.aliad.muktokowlom.ui.component.MyCustomBannerItem
 import com.aliad.muktokowlom.ui.component.StoryCategoryWithAllButton
 import com.aliad.muktokowlom.ui.component.StoryItemFixedSize
+import com.aliad.muktokowlom.utils.MyCustomLogger
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.lt.compose_views.banner.Banner
@@ -35,6 +36,8 @@ import com.lt.compose_views.banner.rememberBannerState
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
+import io.github.alexzhirkevich.compottie.Compottie.logger
+import io.ktor.util.logging.Logger
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.all_release
 import muktokowlomcmp.composeapp.generated.resources.most_popular
@@ -43,6 +46,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 
+private const val TAG = "HomeScreen"
 @Composable
 fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>) {
 
@@ -55,7 +59,6 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
     val mostPopularStory = stringResource(Res.string.most_popular)
     val newReleaseStory = stringResource(Res.string.new_release)
     val allStory = stringResource(Res.string.all_release)
-
 
 
     val refreshState = rememberRefreshLayoutState {

@@ -52,6 +52,10 @@ kotlin {
                 implementation(libs.koin.compose.viewmodel)
 
                 implementation("androidx.paging:paging-common:3.3.6")
+
+                // logger cmp
+                implementation(libs.logger)
+                implementation(libs.logger.coroutines)
             }
         }
 

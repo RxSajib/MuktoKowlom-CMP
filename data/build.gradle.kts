@@ -105,6 +105,10 @@ kotlin {
 
                 // time date converter
                 implementation(libs.kotlinx.datetime)
+
+                // logger cmp
+                implementation(libs.logger)
+                implementation(libs.logger.coroutines)
             }
         }
     }

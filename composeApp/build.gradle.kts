@@ -113,6 +113,10 @@ kotlin {
             // shimmer effect
             implementation(libs.compose.shimmer)
 
+            // logger cmp
+            implementation(libs.logger)
+            implementation(libs.logger.coroutines)
+
 
             implementation(project(":data"))
             implementation(project(":domain"))
