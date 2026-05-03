@@ -28,13 +28,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -42,8 +42,6 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
 import com.aliad.helper.SnackBarEvent
-import com.aliad.model.MyBookItem
-import com.aliad.model.MyLikeStory
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.RatingBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
@@ -62,6 +60,7 @@ import com.eygraber.seymour.SeymourText
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
+import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import kotlinx.datetime.LocalDate
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.about_book
@@ -75,13 +74,11 @@ import muktokowlomcmp.composeapp.generated.resources.favorite_disable
 import muktokowlomcmp.composeapp.generated.resources.icon_category
 import muktokowlomcmp.composeapp.generated.resources.icon_read_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.icon_star_svgrepo_com
-import muktokowlomcmp.composeapp.generated.resources.list
 import muktokowlomcmp.composeapp.generated.resources.no_similar_story
 import muktokowlomcmp.composeapp.generated.resources.placeholder
 import muktokowlomcmp.composeapp.generated.resources.published
 import muktokowlomcmp.composeapp.generated.resources.rating
 import muktokowlomcmp.composeapp.generated.resources.read_full_story
-import muktokowlomcmp.composeapp.generated.resources.sampleText
 import muktokowlomcmp.composeapp.generated.resources.see_less
 import muktokowlomcmp.composeapp.generated.resources.see_more
 import muktokowlomcmp.composeapp.generated.resources.send_rating
@@ -90,21 +87,28 @@ import muktokowlomcmp.composeapp.generated.resources.views
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
-fun StoryDetailsScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>) {
+fun StoryDetailsScreen(
+    sharedViewModel: SharedViewModel,
+    backStack: NavBackStack<NavKey>,
+    rootBackStack: NavBackStack<NavKey>
+) {
 
-    val viewModel: StoryDetailsViewModel = koinViewModel()
+    val viewModel: StoryDetailsViewModel = koinViewModel(
+        parameters = {
+            parametersOf(sharedViewModel.selectedBookID.toString())
+        }
+    )
     val storyData = viewModel.storyData.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current
     val successMessage = stringResource(Res.string.comment_posted_successfully)
 
-    LaunchedEffect(sharedViewModel.selectedBookID) {
-        viewModel.getStoryDetails(storyID = sharedViewModel.selectedBookID.toString())
-    }
+
     val refreshState = rememberRefreshLayoutState {
         setRefreshState(RefreshContentStateEnum.Refreshing)
-        viewModel.getStoryDetails(storyID = sharedViewModel.selectedBookID.toString())
+        viewModel.getStoryDetails()
     }
     LaunchedEffect(viewModel.isLoading) {
         if (!viewModel.isLoading) {
@@ -147,13 +151,28 @@ fun StoryDetailsScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack
 
         Scaffold(
             topBar = {
-                MyCustomAppBar(title = storyData.value.titleBn ?: "Unknown", onBackPress = {
-                    backStack.removeLastOrNull()
+                MyCustomAppBar(title = storyData.value.titleBn ?: "", onBackPress = {
+                    try {
+                        if (backStack.size > 1) {
+                            backStack.removeLastOrNull()
+                        }else {
+                            rootBackStack.removeLastOrNull()
+                        }
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
                 }, editProfile = {})
             }
         ) { innerPadding ->
-            Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
+            Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface), contentAlignment = Alignment.Center) {
 
+                if(viewModel.isLoading){
+                    WatchRunningAnimation(
+                        clockColor = Color.Gray.copy(alpha = 0.1f),
+                        handColor = Color.Gray,
+                        clockSize = 30.dp
+                    )
+                }else {
                 PullToRefresh(
                     refreshLayoutState = refreshState,
                     modifier = Modifier.padding(innerPadding)
@@ -403,7 +422,7 @@ fun StoryDetailsScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack
                                     }
                                 }
                             }
-
+                        }
                         }
                     }
                 }

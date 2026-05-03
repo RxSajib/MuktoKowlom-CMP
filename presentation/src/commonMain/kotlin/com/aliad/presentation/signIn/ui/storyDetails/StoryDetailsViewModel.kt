@@ -2,9 +2,12 @@ package com.aliad.presentation.signIn.ui.storyDetails
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.aliad.ApiResult
 import com.aliad.model.Comment
 import com.aliad.model.MyCommentData
@@ -13,21 +16,38 @@ import com.aliad.model.MyBookItem
 import com.aliad.usecase.RatingAndFeedbackUseCase
 import com.aliad.usecase.StoryDetailsUseCase
 import com.aliad.usecase.dataStore.GetIntData
+import com.aliad.utils.MyCustomLogger
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+
+
+private const val TAG = "StoryDetailsViewModel"
 
 class StoryDetailsViewModel constructor(
     val storyDetailsUseCase: StoryDetailsUseCase,
     val ratingAndFeedbackUseCase: RatingAndFeedbackUseCase,
-    val getIntData: GetIntData
+    val getIntData: GetIntData,
+    val savedStateHandle: SavedStateHandle,
+    val storyID: String
 ) : ViewModel() {
 
+    private var storyIDSaveStateHandle: String = "SaveStateHandleByStoryID"
     var isExpandedText by mutableStateOf(false)
 
     var isOpenRatingBottomSheet by mutableStateOf(false)
@@ -47,9 +67,18 @@ class StoryDetailsViewModel constructor(
     }
 
     var isLoading by mutableStateOf(false)
+    val searchKey = MutableStateFlow<String>(savedStateHandle[storyIDSaveStateHandle] ?: "0")
+
+    init {
+        try {
+            getStoryDetails()
+        } catch (e: Exception) {
+            MyCustomLogger.logInfo(tag = TAG, message = e.message?: "Something went wrong")
+        }
+    }
 
 
-    fun getStoryDetails(storyID: String) {
+    fun getStoryDetails() {
         isLoading = true
         viewModelScope.launch(Dispatchers.IO) {
 
@@ -75,27 +104,29 @@ class StoryDetailsViewModel constructor(
     var loadingRatingAndFeedback by mutableStateOf(false)
     var ratingAndFeedbackData = MutableSharedFlow<GenericResponse<Comment>>()
 
-    fun sendRatingAndFeedback(storyID : Int) {
+    fun sendRatingAndFeedback(storyID: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             loadingRatingAndFeedback = true
-            val response = ratingAndFeedbackUseCase.sendRatingAndFeedback(comment = MyCommentData(
-                comment = inputComment,
-                rating = inputRatingCount.toInt(),
-                story_id = storyID,
-                user_id = getIntData.getIntData(key = AppConstant.USER_ID).first()
-            ))
+            val response = ratingAndFeedbackUseCase.sendRatingAndFeedback(
+                comment = MyCommentData(
+                    comment = inputComment,
+                    rating = inputRatingCount.toInt(),
+                    story_id = storyID,
+                    user_id = getIntData.getIntData(key = AppConstant.USER_ID).first()
+                )
+            )
             loadingRatingAndFeedback = false
 
 
 
             when (response) {
                 is ApiResult.Success -> {
-                  //  print("rating data success")
+                    //  print("rating data success")
                     ratingAndFeedbackData.emit(GenericResponse(data = response.data, status = true))
                 }
 
                 is ApiResult.Error -> {
-                   // print("error rating data")
+                    // print("error rating data")
                     ratingAndFeedbackData.emit(
                         GenericResponse(
                             status = false,
@@ -110,4 +141,9 @@ class StoryDetailsViewModel constructor(
 
 
     // rating and feedback implementation
+
+
+    fun searchStoryDetailsByStoryID() {
+        savedStateHandle[storyIDSaveStateHandle] = storyID
+    }
 }

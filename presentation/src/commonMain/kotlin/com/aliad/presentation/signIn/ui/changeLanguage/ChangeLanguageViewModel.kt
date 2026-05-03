@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliad.model.Language
 import com.aliad.usecase.dataStore.GetStringData
+import com.aliad.utils.MyCustomLogger
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.code
 
+private const val TAG = "ChangeLanguageViewModel"
 class ChangeLanguageViewModel constructor(
     val getStringData: GetStringData
 ) : ViewModel() {
@@ -37,22 +39,12 @@ class ChangeLanguageViewModel constructor(
 
     var selectedPosition by mutableStateOf(0)
 
-    var selectedLanguage by mutableStateOf(Language())
+    var selectedLanguage by mutableStateOf(languageData[selectedPosition])
 
     val  languageSelectedNow  = flow {
         emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
     }
 
-    init {
-        getLanguage()
-    }
 
-    fun getLanguage(){
-        viewModelScope.launch {
-            getStringData.getStringData(key = AppConstant.SELECT_LOCAL).collect { lan ->
-                selectedLanguage = selectedLanguage.copy(code = lan)
-            }
-        }
-    }
 
 }

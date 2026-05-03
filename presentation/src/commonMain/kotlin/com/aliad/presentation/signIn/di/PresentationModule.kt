@@ -78,11 +78,13 @@ val presentationModule = module {
     viewModel {
         StoryTypeViewModel(storyTypeUseCase = get())
     }
-    viewModel {
+    viewModel { (storyID: String)  ->
         StoryDetailsViewModel(
             storyDetailsUseCase = get(),
             ratingAndFeedbackUseCase = get(),
             getIntData = get(),
+            savedStateHandle = get(),
+            storyID = storyID
         )
     }
     viewModel {

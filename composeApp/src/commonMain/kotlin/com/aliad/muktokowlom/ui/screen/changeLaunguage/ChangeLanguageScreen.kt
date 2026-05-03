@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,6 +33,7 @@ import com.aliad.muktokowlom.ui.component.LanguageItem
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.MyCustomButton
 import com.aliad.muktokowlom.utils.Localization
+import com.aliad.muktokowlom.utils.MyCustomLogger
 import com.aliad.presentation.signIn.ui.changeLanguage.ChangeLanguageViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -44,6 +46,7 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.collections.get
 
+private const val TAG = "ChangeLanguageScreen"
 @Composable
 fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
@@ -54,7 +57,9 @@ fun ChangeLanguageScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
     val selectedLanNow =
         chooseLanguageViewModel.languageSelectedNow.collectAsStateWithLifecycle("en")
 
-    print("lan selectedcode is ${chooseLanguageViewModel.selectedLanguage.code}")
+    LaunchedEffect(chooseLanguageViewModel.selectedLanguage.code){
+        MyCustomLogger.logInfo(tag = TAG, message = "current save ${chooseLanguageViewModel.selectedLanguage.code}")
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)

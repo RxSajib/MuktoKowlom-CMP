@@ -182,7 +182,7 @@ fun DestNavigation(
                     )
                 }
                 entry<AppDestination.StoryDetails> { type ->
-                    StoryDetailsScreen(sharedViewModel = sharedViewModel, backStack = backStack)
+                    StoryDetailsScreen(sharedViewModel = sharedViewModel, backStack = backStack, rootBackStack = rootBackStack)
                 }
                 entry<AppDestination.Profile> {
                     ProfileScreen(backStack = backStack, sharedViewModel = sharedViewModel)
@@ -251,7 +251,8 @@ fun DestNavigation(
                 entry<AppDestination.Dest.StoryDetails> {
                     StoryDetailsScreen(
                         sharedViewModel = sharedViewModel,
-                        backStack = backStack
+                        backStack = backStack,
+                        rootBackStack = rootBackStack
                     )
                 }
 
