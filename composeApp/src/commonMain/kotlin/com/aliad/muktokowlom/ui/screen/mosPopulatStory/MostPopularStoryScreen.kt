@@ -70,10 +70,12 @@ fun MostPopularStoryScreen(sharedViewModel: SharedViewModel, backStack: NavBackS
                 MyCustomInputFiled(
                     placeHolderText = stringResource(Res.string.search_your_favourite_genre),
                     text = viewModel.searchStoryData,
-                    onValueChange = { firstNameInput ->
-                        viewModel.searchStoryData = firstNameInput
-                        if(firstNameInput.isEmpty()){
+                    onValueChange = { valueChange ->
+                        viewModel.searchStoryData = valueChange
+                        if(valueChange.isEmpty()){
                             viewModel.searchStory(search = "All")
+                        }else {
+                            viewModel.searchStory(search = valueChange)
                         }
                     },
                     isPasswordInput = false,

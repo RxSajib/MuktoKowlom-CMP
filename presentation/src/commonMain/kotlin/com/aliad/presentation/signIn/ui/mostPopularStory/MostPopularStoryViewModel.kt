@@ -15,9 +15,12 @@ import com.aliad.model.PagingUiState
 import com.aliad.presentation.utils.StoryType
 import com.aliad.usecase.StoryTypeUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 
 class MostPopularStoryViewModel constructor(
@@ -26,8 +29,6 @@ class MostPopularStoryViewModel constructor(
 ) : ViewModel() {
 
     var searchStoryData by mutableStateOf("")
-
-
 
 
     private val _pagingUiState = MutableStateFlow(PagingUiState())
@@ -57,25 +58,25 @@ class MostPopularStoryViewModel constructor(
     // Cache the latest PagingData result in a StateFlow
     private val _currentPagingData = MutableStateFlow<Flow<PagingData<MyBookItem>>?>(null)
 
-    // Expose the paging data as a non-null flow
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val storyData : Flow<PagingData<MyBookItem>> = _currentPagingData
-        .flatMapLatest {
-            it ?: storyTypeUseCase.getStoryType(
-                searchKey = _queryCategorySearchName.value,
-                searchType = StoryType.MOST_POPULAR_STORY.name
-            ).cachedIn(viewModelScope).also { newPagingData ->
-                _currentPagingData.value = newPagingData // Cache the first-time result
+
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    val storyData =
+        _queryCategorySearchName
+            .debounce(500)
+            .distinctUntilChanged()
+            .flatMapLatest { query ->
+                storyTypeUseCase.getStoryType(
+                    searchKey = query,
+                    searchType = StoryType.MOST_POPULAR_STORY.name
+                )
             }
-        }
+            .cachedIn(viewModelScope)
 
     // Update search query function
     fun searchStory(search: String) {
-        if (_queryCategorySearchName.value != search) {
-            _queryCategorySearchName.value = search
-            savedStateHandle[QUERY_SEARCH_KEY] = search  // Save query in SavedStateHandle
-            _currentPagingData.value = null // Invalidate cache to load new data for new search
-        }
+        _queryCategorySearchName.value = search
+        savedStateHandle[QUERY_SEARCH_KEY] = search  // Save query in SavedStateHandle
+        _currentPagingData.value = null // Invalidate cache to load new data for new search
     }
 
     //todo category by book

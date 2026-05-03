@@ -78,6 +78,8 @@ fun NewReleaseScreen(
                         viewModel.searchStoryData = firstNameInput
                         if(firstNameInput.isEmpty()){
                             viewModel.searchStory(search = "All")
+                        }else {
+                            viewModel.searchStory(search = firstNameInput)
                         }
                     },
                     isPasswordInput = false,

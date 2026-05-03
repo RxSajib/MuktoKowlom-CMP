@@ -1,5 +1,6 @@
 package com.aliad.presentation.signIn.ui.allReleaseStory
 
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,13 +16,17 @@ import com.aliad.model.PagingUiState
 import com.aliad.presentation.utils.StoryType
 import com.aliad.usecase.AllReleaseUseCase
 import com.aliad.usecase.StoryTypeUseCase
+import com.aliad.utils.MyCustomLogger.logInfo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+
+private const val TAG = "AllReleaseStoryViewMode"
 
 class AllReleaseStoryViewModel constructor(
     val allReleaseUseCase: AllReleaseUseCase,
@@ -60,25 +65,23 @@ class AllReleaseStoryViewModel constructor(
     // Cache the latest PagingData result in a StateFlow
     private val _currentPagingData = MutableStateFlow<Flow<PagingData<MyBookItem>>?>(null)
 
-    // Expose the paging data as a non-null flow
-    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-    val storyData : Flow<PagingData<MyBookItem>> = _currentPagingData
-        .debounce(1000)
-        .flatMapLatest {
-            it ?: allReleaseUseCase.getAllReleaseStory(
-                searchKey = _queryCategorySearchName.value
-            ).cachedIn(viewModelScope).also { newPagingData ->
-                _currentPagingData.value = newPagingData // Cache the first-time result
-            }
-        }
+
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    val storyData : Flow<PagingData<MyBookItem>> =
+        _queryCategorySearchName
+            .debounce(500)
+            .distinctUntilChanged()
+            .flatMapLatest { searchKey ->
+                allReleaseUseCase.getAllReleaseStory(
+                    searchKey = searchKey
+                )
+            }.cachedIn(viewModelScope)
 
     // Update search query function
     fun searchStory(search: String) {
-        if (_queryCategorySearchName.value != search) {
             _queryCategorySearchName.value = search
             savedStateHandle[QUERY_SEARCH_KEY] = search  // Save query in SavedStateHandle
             _currentPagingData.value = null // Invalidate cache to load new data for new search
-        }
     }
 
     //todo category by book
