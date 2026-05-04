@@ -2,7 +2,7 @@ package com.aliad.model.mapper
 
 import com.aliad.model.BookItem
 import com.aliad.model.MyBookItem
-import com.aliad.model.Category
+import com.aliad.model.MyCategory
 import com.aliad.model.CategoryDto
 import com.aliad.model.Comment
 import com.aliad.model.CommentDto
@@ -22,10 +22,24 @@ import com.aliad.model.LoginDto
 import com.aliad.model.ResetPasswordResponse
 import com.aliad.model.SearchStoryDto
 import com.aliad.model.subscription_history.Payment
-import kotlin.math.log
 
 object DataMapper {
 
+
+    fun categoryDtoToMyCategory(categoryDto: CategoryDto) : MyCategory {
+        return MyCategory(
+            name = categoryDto.name,
+            name_bn = categoryDto.name_bn,
+            id = categoryDto.id,
+            image = categoryDto.image
+        )
+    }
+
+    fun toMyCategoryList(list: List<CategoryDto>) : List<MyCategory> {
+        return list.map { categoryDto ->
+            categoryDtoToMyCategory(categoryDto = categoryDto)
+        }
+    }
 
     
     fun resetPasswordDtoTOResetPasswordResponse(forgotPasswordDto: ForgotPasswordDto) : ResetPasswordResponse{
@@ -71,8 +85,8 @@ object DataMapper {
         )
     }
 
-    fun toCategory(categoryDto: CategoryDto): Category {
-        return Category(
+    fun toCategory(categoryDto: CategoryDto): MyCategory {
+        return MyCategory(
             name = categoryDto.name,
             name_bn = categoryDto.name_bn,
             id = categoryDto.id,
@@ -80,8 +94,8 @@ object DataMapper {
         )
     }
 
-    fun toCategoryList(categoryDtoList: List<CategoryDto>): List<Category> {
-        val categoryList = mutableListOf<Category>()
+    fun toCategoryList(categoryDtoList: List<CategoryDto>): List<MyCategory> {
+        val categoryList = mutableListOf<MyCategory>()
         categoryDtoList.forEach {
             categoryList.add(toCategory(it))
         }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -23,16 +22,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.aliad.model.Category
+import com.aliad.model.MyCategory
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.utils.getTitle
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
-import muktokowlomcmp.composeapp.generated.resources.Res
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CategoryItem(category: Category, onClick: () -> Unit) {
+fun CategoryItem(category: MyCategory, onClick: () -> Unit) {
 
     val viewModel : DataStoreViewModel = koinViewModel()
     val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
@@ -81,7 +79,7 @@ fun CategoryItem(category: Category, onClick: () -> Unit) {
 @Preview
 fun CategoryItem() {
     _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryItem(
-        category = Category(
+        category = MyCategory(
             name = "Category one",
             name_bn = "Category bangla",
             id = 15,

@@ -1,10 +1,6 @@
 package com.aliad.muktokowlom.ui.navigation
 
 import androidx.navigation3.runtime.NavKey
-import com.aliad.model.BookItem
-import com.aliad.model.Category
-import com.aliad.model.MyBookItem
-import com.aliad.repository.StoryType
 import kotlinx.serialization.Serializable
 
 @Serializable

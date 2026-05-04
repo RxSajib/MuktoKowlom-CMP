@@ -16,11 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import com.aliad.muktokowlom.ui.navigation.AppDestination
+import com.aliad.model.MyCategory
 import com.aliad.muktokowlom.ui.component.CategoryItem
 import com.aliad.muktokowlom.ui.component.CategoryScreenShimmer
+import com.aliad.muktokowlom.ui.component.ServerError
+import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
+import com.aliad.presentation.utils.UiState
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
@@ -47,22 +50,22 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewM
 
         PullToRefresh(refreshLayoutState = refreshState) {
 
-            Box(
-                modifier = Modifier.fillMaxSize()
+            when(categoryData.value){
+                is UiState.Loading -> {
+                    CategoryScreenShimmer()
+                }
 
-            ) {
+                is UiState.Success -> {
+                    val data = (categoryData.value as UiState.Success<List<MyCategory>>).data
 
-                if (viewModel.isLoading) {
-                    _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryScreenShimmer()
-                } else {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        items(categoryData.value) { categoryData ->
-                            _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryItem(
+                        items(data) { categoryData ->
+                            CategoryItem(
                                 category = categoryData,
                                 onClick = {
                                     sharedViewModel.setCategory(category = categoryData)
@@ -76,6 +79,12 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewM
                         }
                     }
                 }
+                is UiState.Error -> {
+                    ServerError {
+                        viewModel.fetchCategory()
+                    }
+                }
+
             }
         }
     }

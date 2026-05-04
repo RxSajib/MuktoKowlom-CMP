@@ -19,12 +19,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.model.MyCategory
 import com.aliad.muktokowlom.ui.component.CategoryItem
 import com.aliad.muktokowlom.ui.component.CategoryScreenShimmer
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.component.ServerError
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.presentation.signIn.ui.category.CategoryViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
+import com.aliad.presentation.utils.UiState
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
@@ -73,29 +76,36 @@ fun AllCategoryScreen(
             Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
                 PullToRefresh(refreshLayoutState = refreshState) {
 
-                    Box(
-                        modifier = Modifier.fillMaxSize()
-                            .background(color = MaterialTheme.colorScheme.surface)
-                    ) {
-
-                        if (viewModel.isLoading) {
+                    when(categoryData.value){
+                        is UiState.Loading -> {
                             CategoryScreenShimmer()
-                        } else {
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(2),
-                                contentPadding = PaddingValues(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            ) {
-                                items(categoryData.value) { categoryData ->
-                                    CategoryItem(category = categoryData, onClick = {
-                                        sharedViewModel.setCategory(category = categoryData)
-                                        backStack.add(AppDestination.Dest.CategoryWiseBook)
-                                    })
-                                }
+                        }
+
+                        is UiState.Success -> {
+                            val data = (categoryData.value as UiState.Success<List<MyCategory>>).data
+                                LazyVerticalGrid(
+                                    columns = GridCells.Fixed(2),
+                                    contentPadding = PaddingValues(16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                ) {
+                                    items(data) { categoryData ->
+                                        CategoryItem(category = categoryData, onClick = {
+                                            sharedViewModel.setCategory(category = categoryData)
+                                            backStack.add(AppDestination.Dest.CategoryWiseBook)
+                                        })
+                                    }
+                            }
+                        }
+
+                        is UiState.Error -> {
+                            ServerError {
+
                             }
                         }
                     }
+
+
                 }
             }
         }
