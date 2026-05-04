@@ -49,10 +49,10 @@ fun TermsAndConditionBottomSheet(
     val viewModel : DataStoreViewModel = koinViewModel()
     val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
 
-    val privacyPolicy = privacyPolicyViewModel.privacyPolicy.collectAsStateWithLifecycle()
-    val privacyPolicyDetailsEn = htmlToString(privacyPolicy.value?.description ?: "")
-    val privacyPolicyDetailsBn = htmlToString(privacyPolicy.value?.descriptionBn ?: "")
-
+ //   val privacyPolicy = privacyPolicyViewModel.privacyPolicy.collectAsStateWithLifecycle()
+ //   val privacyPolicyDetailsEn = htmlToString(privacyPolicy.value?.description ?: "")
+ //   val privacyPolicyDetailsBn = htmlToString(privacyPolicy.value?.descriptionBn ?: "")
+//
     ModalBottomSheet(
         containerColor = MaterialTheme.colorScheme.inversePrimary,
 
@@ -115,13 +115,13 @@ fun TermsAndConditionBottomSheet(
                             modifier = Modifier.fillMaxSize()
                                 .verticalScroll(state = rememberScrollState()).padding(16.dp)
                         ) {
-                            Text(
+                           /* Text(
                                 text = getTitle(selectLn = selectLn.value, title = privacyPolicyDetailsEn, titleBn = privacyPolicyDetailsBn),
                                 modifier = Modifier.fillMaxSize(),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     color = MaterialTheme.colorScheme.primary
                                 )
-                            )
+                            )*/
                         }
                     }
                 }

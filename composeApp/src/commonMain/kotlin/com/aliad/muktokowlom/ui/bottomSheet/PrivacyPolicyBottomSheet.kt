@@ -49,8 +49,8 @@ fun PrivacyPolicyBottomSheet(
 ) {
 
     val privacyPolicy = privacyPolicyViewModel.privacyPolicy.collectAsStateWithLifecycle()
-    val privacyPolicyDetailsEn = htmlToString(privacyPolicy.value?.description ?: "")
-    val privacyPolicyDetailsBn = htmlToString(privacyPolicy.value?.descriptionBn ?: "")
+    //val privacyPolicyDetailsEn = htmlToString(privacyPolicy.value?.description ?: "")
+    //val privacyPolicyDetailsBn = htmlToString(privacyPolicy.value?.descriptionBn ?: "")
     val viewModel : DataStoreViewModel = koinViewModel()
     val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
 
@@ -109,7 +109,7 @@ fun PrivacyPolicyBottomSheet(
                         clockSize = 30.dp
                     )
                 } else {
-                    Column(
+                   /* Column(
                         modifier = Modifier.fillMaxSize()
                             .verticalScroll(state = rememberScrollState()).padding(16.dp)
                     ) {
@@ -120,7 +120,7 @@ fun PrivacyPolicyBottomSheet(
                                 color = MaterialTheme.colorScheme.primary
                             )
                         )
-                    }
+                    }*/
                 }
             }
 

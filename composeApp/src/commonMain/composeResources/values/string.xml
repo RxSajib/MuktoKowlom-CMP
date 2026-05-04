@@ -2,6 +2,10 @@
 
 <resources>
 
+    <string name="oops">Oops!</string>
+    <string name="something_went_wrong">Something went wrong.</string>
+    <string name="something_went_wrong_details">We can't seem to load the page you're looking for. Please try again</string>
+
     <string name="comment_posted_successfully">Comment posted successfully!</string>
     <string name="tap_a_star_to_rate">Tap a star to rate</string>
     <string name="no_results_found">No results found</string>
