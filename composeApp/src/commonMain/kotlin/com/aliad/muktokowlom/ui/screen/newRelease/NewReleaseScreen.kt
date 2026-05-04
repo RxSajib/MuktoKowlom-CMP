@@ -30,6 +30,7 @@ import com.aliad.muktokowlom.ui.component.LoadStateRefreshError
 import com.aliad.muktokowlom.ui.component.Loader
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
+import com.aliad.muktokowlom.ui.component.ServerError
 import com.aliad.muktokowlom.ui.component.StoryItem
 import com.aliad.muktokowlom.ui.component.StoryLoaderShimmer
 import com.aliad.presentation.signIn.ui.newReleaseStory.NewReleaseStoryViewModel
@@ -102,7 +103,9 @@ fun NewReleaseScreen(
 
                     }
                     else if(pagingUiState.value.refreshError != null){
-                        LoadStateRefreshError(onRetry = {storyData.retry()})
+                        ServerError {
+                            storyData.retry()
+                        }
 
                     }
                     else if(pagingUiState.value.isEmpty){

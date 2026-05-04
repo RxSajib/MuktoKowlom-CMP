@@ -29,6 +29,7 @@ import com.aliad.muktokowlom.ui.component.LoadStateRefreshError
 import com.aliad.muktokowlom.ui.component.Loader
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
+import com.aliad.muktokowlom.ui.component.ServerError
 import com.aliad.muktokowlom.ui.component.StoryItem
 import com.aliad.muktokowlom.ui.component.StoryLoaderShimmer
 import com.aliad.muktokowlom.ui.navigation.AppDestination
@@ -108,8 +109,9 @@ fun AllStoryScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<Nav
 
                     }
                     else if (pagingUiState.value.refreshError != null) {
-                        LoadStateRefreshError(onRetry = { storyData.retry() })
-
+                        ServerError {
+                            storyData.retry()
+                        }
                     }
                    else if (pagingUiState.value.isEmpty) {
                         EmptyStoryMessage(

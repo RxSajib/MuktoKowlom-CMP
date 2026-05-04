@@ -21,15 +21,19 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.ApiResult
+import com.aliad.model.Subscription
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.PremiumBenefits
 import com.aliad.muktokowlom.ui.component.PremiumPurchaseCustomButton
+import com.aliad.muktokowlom.ui.component.ServerError
 import com.aliad.muktokowlom.ui.component.SubscriptionPlanItem
 import com.aliad.muktokowlom.ui.component.SubscriptionPlanItemShimmer
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.subscriptionPlan.SubscriptionPlanViewModel
+import com.aliad.presentation.utils.UiState
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
@@ -42,7 +46,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: SubscriptionPlanViewModel = koinViewModel()
-    val list = viewModel.premiumPlanStateFlow.collectAsStateWithLifecycle()
+    val premium = viewModel.premiumPlanStateFlow.collectAsStateWithLifecycle()
 
     val dataStoreViewModel: DataStoreViewModel = koinViewModel()
     val selectLn = dataStoreViewModel.getStringData(key = AppConstant.SELECT_LOCAL)
@@ -83,66 +87,79 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
         }
     ) { innerPadding ->
 
-        Box(modifier = Modifier.fillMaxSize().padding(innerPadding).background(color = MaterialTheme.colorScheme.surface)){
+        Box(modifier = Modifier.fillMaxSize().padding(innerPadding).background(color = MaterialTheme.colorScheme.surface)) {
+            PullToRefresh(
+                refreshLayoutState = rememberRefreshLayoutState,
+            ) {
+                when (premium.value) {
+                    is UiState.Success -> {
+                        val data = (premium.value as UiState.Success<List<Subscription>>).data
+                        Column(modifier = Modifier.fillMaxSize()) {
+                            Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
+                                LazyColumn(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentPadding = PaddingValues(
+                                        start = 16.dp,
+                                        end = 16.dp,
+                                        bottom = 16.dp
+                                    ),
+                                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(data) { subscription ->
+                                        SubscriptionPlanItem(
+                                            selected = viewModel.selectedSubscriptionIndex == (subscription.id
+                                                ?: 0),
+                                            subscription = subscription,
+                                            mViewModel = viewModel,
+                                            selectLn = selectLn,
+                                        ) {
+                                            viewModel.selectedSubscriptionIndex =
+                                                subscription.id ?: 0
+                                            viewModel.selectedPackage = subscription
 
-        PullToRefresh(
-            refreshLayoutState = rememberRefreshLayoutState,
-            modifier = Modifier.fillMaxSize()
-        ) {
+                                            viewModel.sendFlow(data = subscription.price ?: "0")
+                                        }
+                                    }
+                                }
 
-            Column(modifier = Modifier.fillMaxSize()) {
-                Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        items(list.value) { subscription ->
-                            SubscriptionPlanItem(
-                                selected = viewModel.selectedSubscriptionIndex == (subscription.id
-                                    ?: 0),
-                                subscription = subscription,
-                                mViewModel = viewModel,
-                                selectLn = selectLn,
-                            ) {
-                                viewModel.selectedSubscriptionIndex = subscription.id ?: 0
-                                viewModel.selectedPackage = subscription
 
-                                viewModel.sendFlow(data = subscription.price ?: "0")
+                            }
+                            if (data.isNotEmpty()) {
+
+                                Column {
+                                    PremiumBenefits()
+
+                                    HeightGap(height = 10.dp)
+
+
+                                    PremiumPurchaseCustomButton(
+                                        price = data[viewModel.selectedSubscriptionIndex - 1].price
+                                            ?: "0",
+                                        selectedLn = selectLn.value,
+                                        onClick = {},
+                                        modifier = Modifier
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    is UiState.Error -> {
+                        ServerError {
+                            viewModel.getPremiumPlanList()
+                        }
+                    }
+
+                    is UiState.Loading -> {
+                        Column(modifier = Modifier.fillMaxSize()) {
+                            repeat(20) {
+                                SubscriptionPlanItemShimmer()
                             }
                         }
                     }
                 }
-
-                if (viewModel.loading) {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        repeat(20) {
-                            SubscriptionPlanItemShimmer()
-                        }
-                    }
-                } else {
-                    if (list.value.isNotEmpty()) {
-
-                        Column {
-                            PremiumBenefits()
-
-                            HeightGap(height = 10.dp)
-
-
-                            PremiumPurchaseCustomButton(
-                                price = list.value[viewModel.selectedSubscriptionIndex - 1].price
-                                    ?: "0",
-                                selectedLn = selectLn.value,
-                                onClick = {},
-                                modifier = Modifier
-                            )
-                        }
-                    }
-                }
-
             }
         }
 
-        }
     }
 }

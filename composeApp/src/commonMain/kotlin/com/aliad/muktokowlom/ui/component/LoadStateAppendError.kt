@@ -20,21 +20,23 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LoadStateAppendError(retry: () -> Unit){
-    Row(modifier = Modifier.fillMaxWidth().padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
 
         Text(
             text = stringResource(Res.string.loas_state_append_error),
             modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.titleSmall.copy(
-               color =  MaterialTheme.colorScheme.inverseSurface,
-                fontSize = adjustedFontSize(10f)
+               color =  MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                fontSize = adjustedFontSize(8f)
             )
         )
+
 
         TextButton(onClick = {retry.invoke()}, modifier = Modifier.padding(start = 10.dp)){
             Text(text = stringResource(Res.string.retry),
                 style = MaterialTheme.typography.titleSmall.copy(
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = adjustedFontSize(8f)
                 )
             )
         }

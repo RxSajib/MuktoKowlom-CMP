@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aliad.ApiResult
 import com.aliad.model.Subscription
+import com.aliad.presentation.utils.UiState
 import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.dataStore.GetStringData
 import com.sajib.data.appConstant.AppConstant
@@ -25,7 +27,7 @@ class SubscriptionPlanViewModel constructor(
     val premiumPlanUseCase: PremiumPlanUseCase,
 ) : ViewModel() {
 
-    private var premiumPlanMutableStateFlow = MutableStateFlow<List<Subscription>>(emptyList())
+    private var premiumPlanMutableStateFlow = MutableStateFlow< UiState<List<Subscription>>>(UiState.Loading)
     val premiumPlanStateFlow = premiumPlanMutableStateFlow.asStateFlow()
 
     var selectedSubscriptionIndex by mutableStateOf(2)
@@ -50,14 +52,18 @@ class SubscriptionPlanViewModel constructor(
     fun getPremiumPlanList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                premiumPlanMutableStateFlow.emit(UiState.Loading)
                 loading = true
                 val response = premiumPlanUseCase.getPremiumPlanList()
                 loading = false
-                if (response.isSuccess) {
-                    premiumPlanMutableStateFlow.value = response.getOrNull() ?: emptyList()
-                    selectedPackage = response.getOrNull()?.get(0) ?: Subscription()
-                } else {
-                    premiumPlanMutableStateFlow.value = emptyList()
+                when(response){
+                    is ApiResult.Success -> {
+                        premiumPlanMutableStateFlow.emit(UiState.Success(data = response.data))
+                        response.data.get(0).also { selectedPackage = it }
+                    }
+                    is ApiResult.Error -> {
+                        premiumPlanMutableStateFlow.emit(UiState.Error(messageBn = response.messageBn?: "Something went wrong", messageEn = response.messageEn?: "Something went wrong"))
+                    }
                 }
             }
 
