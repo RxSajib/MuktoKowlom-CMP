@@ -13,6 +13,7 @@ import com.aliad.model.Comment
 import com.aliad.model.MyCommentData
 import com.aliad.model.GenericResponse
 import com.aliad.model.MyBookItem
+import com.aliad.presentation.utils.UiState
 import com.aliad.usecase.RatingAndFeedbackUseCase
 import com.aliad.usecase.StoryDetailsUseCase
 import com.aliad.usecase.dataStore.GetIntData
@@ -57,14 +58,14 @@ class StoryDetailsViewModel constructor(
 
     val isEnableRatingButton get() = inputRatingCount > 0
 
-    var storyDataMutableStateFlow = MutableStateFlow(MyBookItem())
+    var storyDataMutableStateFlow = MutableStateFlow<UiState<MyBookItem>>(UiState.Loading)
     val storyData = storyDataMutableStateFlow.asStateFlow()
 
-    fun setStoryData(myBookItem: MyBookItem) {
+   /* fun setStoryData(myBookItem: MyBookItem) {
         viewModelScope.launch {
             storyDataMutableStateFlow.emit(myBookItem)
         }
-    }
+    }*/
 
     var isLoading by mutableStateOf(false)
     val searchKey = MutableStateFlow<String>(savedStateHandle[storyIDSaveStateHandle] ?: "0")
@@ -79,9 +80,10 @@ class StoryDetailsViewModel constructor(
 
 
     fun getStoryDetails() {
+
         isLoading = true
         viewModelScope.launch(Dispatchers.IO) {
-
+            storyDataMutableStateFlow.emit(UiState.Loading)
             when (
                 val response =
                     storyDetailsUseCase.getStoryDetails(storyID = storyID)
@@ -89,11 +91,15 @@ class StoryDetailsViewModel constructor(
             ) {
                 is ApiResult.Success -> {
                     print("success fetch data ${response.data}")
-                    setStoryData(myBookItem = response.data)
+                    storyDataMutableStateFlow.emit(UiState.Success(data = response.data))
                     isLoading = false
                 }
 
                 is ApiResult.Error -> {
+                    storyDataMutableStateFlow.emit(UiState.Error(
+                        messageBn = response.messageBn?: "Something went wrong",
+                        messageEn = response.messageEn?: "Something went wrong"
+                    ))
                     isLoading = false
                 }
             }

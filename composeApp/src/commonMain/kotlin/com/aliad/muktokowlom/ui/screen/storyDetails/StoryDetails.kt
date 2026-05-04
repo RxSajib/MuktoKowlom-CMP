@@ -42,6 +42,7 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
 import com.aliad.helper.SnackBarEvent
+import com.aliad.model.MyBookItem
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.RatingBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
@@ -50,12 +51,14 @@ import com.aliad.muktokowlom.ui.component.LikeStoryItem
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.MyCustomButton
 import com.aliad.muktokowlom.ui.component.QuickAccessButton
+import com.aliad.muktokowlom.ui.component.ServerError
 import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.ui.component.WriterInfo
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.utils.AppHelper.toUSFormatWithMonth
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
+import com.aliad.presentation.utils.UiState
 import com.eygraber.seymour.SeymourText
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
@@ -143,6 +146,8 @@ fun StoryDetailsScreen(
         }
     }
 
+
+
     Surface(
         modifier = Modifier.fillMaxSize().background(
             color = MaterialTheme.colorScheme.surface
@@ -151,95 +156,137 @@ fun StoryDetailsScreen(
 
         Scaffold(
             topBar = {
-                MyCustomAppBar(title = storyData.value.titleBn ?: "", onBackPress = {
+                MyCustomAppBar(title = "", onBackPress = {
                     try {
                         if (backStack.size > 1) {
                             backStack.removeLastOrNull()
-                        }else {
+                        } else {
                             rootBackStack.removeLastOrNull()
                         }
-                    }catch (e : Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }, editProfile = {})
             }
         ) { innerPadding ->
-            Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface), contentAlignment = Alignment.Center) {
-
-                if(viewModel.isLoading){
-                    WatchRunningAnimation(
-                        clockColor = Color.Gray.copy(alpha = 0.1f),
-                        handColor = Color.Gray,
-                        clockSize = 30.dp
-                    )
-                }else {
+            Box(
+                modifier = Modifier.fillMaxSize().padding(innerPadding).background(MaterialTheme.colorScheme.surface),
+                contentAlignment = Alignment.Center
+            ) {
                 PullToRefresh(
                     refreshLayoutState = refreshState,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.fillMaxSize()
                 ) {
 
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Column(
-                            modifier = Modifier.fillMaxSize()
-                                .verticalScroll(state = rememberScrollState()),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                when (storyData.value) {
+                    is UiState.Loading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
-                            HeightGap(height = 15.dp)
-                            AsyncImage(
-                                model = storyData.value.completedImageUri,
-                                contentScale = ContentScale.Crop,
-                                contentDescription = null,
-                                placeholder = painterResource(Res.drawable.placeholder),
-                                error = painterResource(Res.drawable.placeholder),
-                                modifier = Modifier.fillMaxWidth(.5f).aspectRatio(2f)
-                                    .clip(shape = RoundedCornerShape(10.dp))
-                            )
-                            HeightGap(height = 15.dp)
-                            Text(
-                                text = storyData.value.titleBn ?: " Unknown Title",
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
 
+                            WatchRunningAnimation(
+                                clockColor = Color.Gray.copy(alpha = 0.1f),
+                                handColor = Color.Gray,
+                                clockSize = 30.dp
                             )
-                            HeightGap(height = 10.dp)
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                        }
+                    }
+
+                    is UiState.Success -> {
+                        val data = (storyData.value as UiState.Success<MyBookItem>).data
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Column(
+                                modifier = Modifier.fillMaxSize()
+                                    .verticalScroll(state = rememberScrollState()),
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                MyCustomButton(
-                                    title = stringResource(Res.string.send_rating),
-                                    modifier = Modifier.weight(1f),
-                                    leftIcon = painterResource(Res.drawable.icon_star_svgrepo_com),
-                                    backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                    onClickButton = {
-                                        viewModel.isOpenRatingBottomSheet = true
-                                    },
-                                    padding = 0.dp
+                                HeightGap(height = 15.dp)
+                                AsyncImage(
+                                    model = data.completedImageUri,
+                                    contentScale = ContentScale.Crop,
+                                    contentDescription = null,
+                                    placeholder = painterResource(Res.drawable.placeholder),
+                                    error = painterResource(Res.drawable.placeholder),
+                                    modifier = Modifier.fillMaxWidth(.5f).aspectRatio(2f)
+                                        .clip(shape = RoundedCornerShape(10.dp))
                                 )
-                                WidthGap(width = 20.dp)
-                                MyCustomButton(
-                                    title = stringResource(Res.string.read_full_story),
-                                    modifier = Modifier.weight(1f),
-                                    leftIcon = painterResource(Res.drawable.icon_read_svgrepo_com),
-                                    onClickButton = {
-                                        backStack.add(AppDestination.Dest.StoryView)
-                                    },
-                                    padding = 0.dp
+                                HeightGap(height = 15.dp)
+                                Text(
+                                    text = data.titleBn ?: " Unknown Title",
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+
                                 )
-                            }
-                            HeightGap(height = 10.dp)
-                            Row(modifier = Modifier.fillMaxWidth()) {
-                                Column(
-                                    modifier = Modifier.weight(1f),
-                                    horizontalAlignment = Alignment.CenterHorizontally
+                                HeightGap(height = 10.dp)
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    storyData.value.publishDate?.let {
+                                    MyCustomButton(
+                                        title = stringResource(Res.string.send_rating),
+                                        modifier = Modifier.weight(1f),
+                                        leftIcon = painterResource(Res.drawable.icon_star_svgrepo_com),
+                                        backgroundColor = MaterialTheme.colorScheme.primary.copy(
+                                            alpha = 0.8f
+                                        ),
+                                        onClickButton = {
+                                            viewModel.isOpenRatingBottomSheet = true
+                                        },
+                                        padding = 0.dp
+                                    )
+                                    WidthGap(width = 20.dp)
+                                    MyCustomButton(
+                                        title = stringResource(Res.string.read_full_story),
+                                        modifier = Modifier.weight(1f),
+                                        leftIcon = painterResource(Res.drawable.icon_read_svgrepo_com),
+                                        onClickButton = {
+                                            backStack.add(AppDestination.Dest.StoryView)
+                                        },
+                                        padding = 0.dp
+                                    )
+                                }
+                                HeightGap(height = 10.dp)
+                                Row(modifier = Modifier.fillMaxWidth()) {
+                                    Column(
+                                        modifier = Modifier.weight(1f),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        data.publishDate?.let {
+                                            Text(
+                                                text = LocalDate.parse(it).toUSFormatWithMonth(),
+                                                style = MaterialTheme.typography.titleSmall.copy(
+                                                    fontWeight = FontWeight.W500,
+                                                    color = MaterialTheme.colorScheme.primary,
+                                                    fontSize = adjustedFontSize(10f)
+                                                ),
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
+                                        }
+
                                         Text(
-                                            text = LocalDate.parse(it).toUSFormatWithMonth(),
+                                            text = stringResource(Res.string.published),
+                                            style = MaterialTheme.typography.titleSmall.copy(
+                                                fontWeight = FontWeight.W400,
+                                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                                                fontSize = adjustedFontSize(8f)
+                                            ),
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
+
+                                    Column(
+                                        modifier = Modifier.weight(1f),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Text(
+                                            text = data.views ?: "0",
                                             style = MaterialTheme.typography.titleSmall.copy(
                                                 fontWeight = FontWeight.W500,
                                                 color = MaterialTheme.colorScheme.primary,
@@ -248,191 +295,180 @@ fun StoryDetailsScreen(
                                             maxLines = 1,
                                             overflow = TextOverflow.Ellipsis
                                         )
-                                    }
-
-                                    Text(
-                                        text = stringResource(Res.string.published),
-                                        style = MaterialTheme.typography.titleSmall.copy(
-                                            fontWeight = FontWeight.W400,
-                                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                            fontSize = adjustedFontSize(8f)
-                                        ),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                }
-
-                                Column(
-                                    modifier = Modifier.weight(1f),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text(
-                                        text = storyData.value.views ?: "0",
-                                        style = MaterialTheme.typography.titleSmall.copy(
-                                            fontWeight = FontWeight.W500,
-                                            color = MaterialTheme.colorScheme.primary,
-                                            fontSize = adjustedFontSize(10f)
-                                        ),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                    Text(
-                                        text = stringResource(Res.string.views),
-                                        style = MaterialTheme.typography.titleSmall.copy(
-                                            fontWeight = FontWeight.W400,
-                                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                            fontSize = adjustedFontSize(8f)
-                                        ),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                }
-
-                                Column(
-                                    modifier = Modifier.weight(1f),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text(
-                                        text = storyData.value.rating ?: "0.0",
-                                        style = MaterialTheme.typography.titleSmall.copy(
-                                            fontWeight = FontWeight.W500,
-                                            color = MaterialTheme.colorScheme.primary,
-                                            fontSize = adjustedFontSize(10f)
-                                        ),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                    Text(
-                                        text = stringResource(Res.string.rating),
-                                        style = MaterialTheme.typography.titleSmall.copy(
-                                            fontWeight = FontWeight.W400,
-                                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                            fontSize = adjustedFontSize(8f)
-                                        ),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                }
-                            }
-                            HeightGap(height = 10.dp)
-                            WriterInfo(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                writerName = storyData.value.user?.name ?: "Unknown",
-                                profileImage = storyData.value.user?.profileImage ?: ""
-                            ) {
-
-                            }
-                            HeightGap(height = 10.dp)
-                            Text(
-                                text = stringResource(Res.string.about_book),
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 5.dp)
-                            SeymourText(
-                                onSeeMoreChange = { viewModel.isExpandedText = it },
-                                isSeeMoreExpanded = viewModel.isExpandedText,
-                                text = storyData.value.summaryBn ?: "",
-                                seeMoreText = stringResource(Res.string.see_more),
-                                seeLessText = stringResource(Res.string.see_less),
-                                seeMoreMaxLines = 3,
-                                seeLessMaxLines = Int.MAX_VALUE,
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                                    fontSize = adjustedFontSize(10f)
-                                )
-                            )
-                            HeightGap(height = 10.dp)
-                            Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
-                                QuickAccessButton(
-                                    modifier = Modifier.weight(1f).clip(shape = CircleShape)
-                                        .clickable {
-
-                                        },
-                                    icon = painterResource(Res.drawable.favorite_disable),
-                                    title = stringResource(Res.string.add_favorites)
-                                )
-                                WidthGap(width = 5.dp)
-                                QuickAccessButton(
-                                    modifier = Modifier.weight(1f).clip(shape = CircleShape)
-                                        .clickable {
-                                            if (backStack.contains(AppDestination.Dest.AllCategory)) {
-                                                backStack.removeLastOrNull()
-                                                backStack.removeLastOrNull()
-                                            } else {
-                                                backStack.add(AppDestination.Dest.AllCategory)
-                                            }
-
-                                        },
-                                    icon = painterResource(Res.drawable.icon_category),
-                                    title = stringResource(Res.string.category)
-                                )
-                                WidthGap(width = 5.dp)
-                                QuickAccessButton(
-                                    modifier = Modifier.weight(1f).clip(shape = CircleShape)
-                                        .clickable {
-
-                                            if (backStack.contains(AppDestination.Dest.AllReleaseStory)) {
-                                                backStack.removeLastOrNull()
-                                            } else {
-                                                backStack.add(AppDestination.Dest.AllReleaseStory)
-                                            }
-                                        },
-                                    icon = painterResource(Res.drawable.dashboard),
-                                    title = stringResource(Res.string.all_release)
-                                )
-                            }
-                            HeightGap(height = 10.dp)
-                            Text(
-                                text = stringResource(Res.string.similar_story),
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 5.dp)
-
-                            if (storyData.value.likeStories.isEmpty()) {
-                                Box(
-                                    modifier = Modifier.fillMaxWidth().aspectRatio(3f),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        Image(
-                                            painter = painterResource(Res.drawable.book_svgrepo_com_icon),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(40.dp)
-                                        )
-                                        HeightGap(height = 10.dp)
                                         Text(
-                                            text = stringResource(Res.string.no_similar_story),
-                                            style = MaterialTheme.typography.bodySmall
+                                            text = stringResource(Res.string.views),
+                                            style = MaterialTheme.typography.titleSmall.copy(
+                                                fontWeight = FontWeight.W400,
+                                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                                                fontSize = adjustedFontSize(8f)
+                                            ),
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
+
+                                    Column(
+                                        modifier = Modifier.weight(1f),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Text(
+                                            text = data.rating ?: "0.0",
+                                            style = MaterialTheme.typography.titleSmall.copy(
+                                                fontWeight = FontWeight.W500,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                fontSize = adjustedFontSize(10f)
+                                            ),
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                        Text(
+                                            text = stringResource(Res.string.rating),
+                                            style = MaterialTheme.typography.titleSmall.copy(
+                                                fontWeight = FontWeight.W400,
+                                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                                                fontSize = adjustedFontSize(8f)
+                                            ),
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
                                         )
                                     }
                                 }
-                            } else {
-                                LazyRow(modifier = Modifier.fillMaxWidth()) {
-                                    items(storyData.value.likeStories) { myLikeStory ->
-                                        LikeStoryItem(item = myLikeStory)
+                                HeightGap(height = 10.dp)
+                                WriterInfo(
+                                    modifier = Modifier.padding(horizontal = 16.dp),
+                                    writerName = data.user?.name ?: "Unknown",
+                                    profileImage = data.user?.profileImage ?: ""
+                                ) {
+
+                                }
+                                HeightGap(height = 10.dp)
+                                Text(
+                                    text = stringResource(Res.string.about_book),
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                                HeightGap(height = 5.dp)
+                                SeymourText(
+                                    onSeeMoreChange = { viewModel.isExpandedText = it },
+                                    isSeeMoreExpanded = viewModel.isExpandedText,
+                                    text = data.summaryBn ?: "",
+                                    seeMoreText = stringResource(Res.string.see_more),
+                                    seeLessText = stringResource(Res.string.see_less),
+                                    seeMoreMaxLines = 3,
+                                    seeLessMaxLines = Int.MAX_VALUE,
+                                    modifier = Modifier.padding(horizontal = 16.dp),
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                        fontSize = adjustedFontSize(10f)
+                                    )
+                                )
+                                HeightGap(height = 10.dp)
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                                ) {
+                                    QuickAccessButton(
+                                        modifier = Modifier.weight(1f).clip(shape = CircleShape)
+                                            .clickable {
+
+                                            },
+                                        icon = painterResource(Res.drawable.favorite_disable),
+                                        title = stringResource(Res.string.add_favorites)
+                                    )
+                                    WidthGap(width = 5.dp)
+                                    QuickAccessButton(
+                                        modifier = Modifier.weight(1f).clip(shape = CircleShape)
+                                            .clickable {
+                                                if (backStack.contains(AppDestination.Dest.AllCategory)) {
+                                                    backStack.removeLastOrNull()
+                                                    backStack.removeLastOrNull()
+                                                } else {
+                                                    backStack.add(AppDestination.Dest.AllCategory)
+                                                }
+
+                                            },
+                                        icon = painterResource(Res.drawable.icon_category),
+                                        title = stringResource(Res.string.category)
+                                    )
+                                    WidthGap(width = 5.dp)
+                                    QuickAccessButton(
+                                        modifier = Modifier.weight(1f).clip(shape = CircleShape)
+                                            .clickable {
+
+                                                if (backStack.contains(AppDestination.Dest.AllReleaseStory)) {
+                                                    backStack.removeLastOrNull()
+                                                } else {
+                                                    backStack.add(AppDestination.Dest.AllReleaseStory)
+                                                }
+                                            },
+                                        icon = painterResource(Res.drawable.dashboard),
+                                        title = stringResource(Res.string.all_release)
+                                    )
+                                }
+                                HeightGap(height = 10.dp)
+                                Text(
+                                    text = stringResource(Res.string.similar_story),
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                                HeightGap(height = 5.dp)
+
+                                if (data.likeStories.isEmpty()) {
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth().aspectRatio(3f),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                            Image(
+                                                painter = painterResource(Res.drawable.book_svgrepo_com_icon),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(40.dp)
+                                            )
+                                            HeightGap(height = 10.dp)
+                                            Text(
+                                                text = stringResource(Res.string.no_similar_story),
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    LazyRow(modifier = Modifier.fillMaxWidth()) {
+                                        items(data.likeStories) { myLikeStory ->
+                                            LikeStoryItem(item = myLikeStory)
+                                        }
                                     }
                                 }
                             }
-                        }
+
+                            if (viewModel.isOpenRatingBottomSheet) {
+                                RatingBottomSheet(myBookItem = data, viewModel = viewModel) {
+                                    viewModel.isOpenRatingBottomSheet = false
+                                }
+                            }
                         }
                     }
+
+                    is UiState.Error -> {
+                        ServerError {
+                            viewModel.getStoryDetails()
+                        }
+                    }
+                }
+
+
+
+
                 }
             }
         }
     }
 
-    if (viewModel.isOpenRatingBottomSheet) {
-        RatingBottomSheet(viewModel) {
-            viewModel.isOpenRatingBottomSheet = false
-        }
-    }
+
 }
+
+

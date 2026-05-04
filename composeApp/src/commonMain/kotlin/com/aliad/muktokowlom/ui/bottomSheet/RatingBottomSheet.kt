@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.ui.component.FeedBackInputComponent
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomButton
@@ -56,11 +57,10 @@ import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> Unit) {
+fun RatingBottomSheet(myBookItem: MyBookItem, viewModel: StoryDetailsViewModel, onDismissRequest: () -> Unit) {
 
     val scope = rememberCoroutineScope()
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-    val storyData = viewModel.storyData.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         try {
@@ -84,7 +84,7 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
             AsyncImage(
                 modifier = Modifier.fillMaxWidth(.65f).aspectRatio(2f)
                     .clip(shape = RoundedCornerShape(10.dp)),
-                model = storyData.value.completedImageUri,
+                model = myBookItem.completedImageUri,
                 contentDescription = null,
                 placeholder = painterResource(Res.drawable.muktokowlom_white),
                 error = painterResource(Res.drawable.muktokowlom_white),
@@ -93,7 +93,7 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
                 )
             HeightGap(height = 15.dp)
             Text(
-                text = storyData.value.titleBn ?: "",
+                text = myBookItem.titleBn ?: "",
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleSmall.copy(
@@ -115,7 +115,7 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
                 )
                 WidthGap(5.dp)
                 Text(
-                    text = "${storyData.value.rating} / 0.5",
+                    text = "${myBookItem.rating} / 0.5",
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontSize = adjustedFontSize(10.0f),
                         fontWeight = FontWeight.Bold,
@@ -125,7 +125,7 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
             }
             HeightGap(height = 2.dp)
             Text(
-                text = storyData.value.user?.name ?: "",
+                text = myBookItem.user?.name ?: "",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleSmall.copy(
@@ -181,7 +181,7 @@ fun RatingBottomSheet(viewModel: StoryDetailsViewModel, onDismissRequest: () -> 
                 title = stringResource(Res.string.submit),
                 leftIcon = painterResource(Res.drawable.icon_send),
                 onClickButton = {
-                    viewModel.sendRatingAndFeedback(storyID = storyData.value.storyID?: 0)
+                    viewModel.sendRatingAndFeedback(storyID = myBookItem.storyID?: 0)
                 }
             )
             HeightGap(height = 15.dp)
