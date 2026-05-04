@@ -558,22 +558,56 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         return myResponse.body<GenericResponse<CategoryWiseBookDto>>()
     }
 
-    suspend fun getDashBoard(): Result<DashboardDto> {
-        try {
+    suspend fun getDashBoard(): ApiResult<DashboardDto> {
+       return try {
             val response = httpClient.get(urlString = DASHBOARDSTORIES)
             if (response.status.isSuccess()) {
                 val data = response.body<DashboardDto>()
-                return Result.success(data)
+                return ApiResult.Success(data)
             } else {
-                return Result.failure(Exception("error fetch category"))
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+
+                )
             }
         } catch (e: ClientRequestException) {
-            return Result.failure(e)
-        } catch (e: ServerResponseException) {
-            return Result.failure(e)
-        } catch (e: Exception) {
-            return Result.failure(e)
-        }
+
+           val errorBody = e.response.bodyAsText()
+
+           ApiResult.Error(
+               messageBn = errorBody,
+               messageEn = errorBody
+           )
+
+       } catch (e: ServerResponseException) {
+
+           val errorBody = e.response.bodyAsText()
+
+           ApiResult.Error(
+               messageBn = errorBody,
+               messageEn = errorBody
+           )
+
+       } catch (e: Exception) {
+
+           ApiResult.Error(
+               messageBn = e.message,
+               messageEn = e.message
+           )
+       }
     }
 
     suspend fun getStoryType(

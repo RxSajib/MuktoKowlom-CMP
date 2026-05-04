@@ -20,17 +20,20 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.model.DashBord
 import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.HomeScreenShimmer
 import com.aliad.muktokowlom.ui.component.HomeSeaBanner
 import com.aliad.muktokowlom.ui.component.MyCustomBannerItem
+import com.aliad.muktokowlom.ui.component.ServerError
 import com.aliad.muktokowlom.ui.component.StoryCategoryWithAllButton
 import com.aliad.muktokowlom.ui.component.StoryItemFixedSize
 import com.aliad.muktokowlom.utils.MyCustomLogger
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
+import com.aliad.presentation.utils.UiState
 import com.lt.compose_views.banner.Banner
 import com.lt.compose_views.banner.rememberBannerState
 import com.lt.compose_views.refresh_layout.PullToRefresh
@@ -54,11 +57,11 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
     val dashBoardData = dashBoardViewModel.dashBoard.collectAsStateWithLifecycle()
 
 
-    val scope = rememberCoroutineScope()
+    rememberCoroutineScope()
     print("dashboard data ${dashBoardData.value}")
-    val mostPopularStory = stringResource(Res.string.most_popular)
-    val newReleaseStory = stringResource(Res.string.new_release)
-    val allStory = stringResource(Res.string.all_release)
+    stringResource(Res.string.most_popular)
+    stringResource(Res.string.new_release)
+    stringResource(Res.string.all_release)
 
 
     val refreshState = rememberRefreshLayoutState {
@@ -78,11 +81,12 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
             refreshLayoutState = refreshState,
         ) {
 
-            Box(modifier = Modifier.fillMaxSize()) {
-
-                if (dashBoardViewModel.isLoading) {
+            when(dashBoardData.value){
+                is UiState.Loading -> {
                     HomeScreenShimmer()
-                } else {
+                }
+                is UiState.Success -> {
+                    val data = (dashBoardData.value as UiState.Success<DashBord>).data
 
                     Column(
                         modifier = Modifier.fillMaxSize()
@@ -103,15 +107,14 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                                 )
                             })
                         Banner(
-                            pageCount = dashBoardData.value?.lisOfPopularStories?.size ?: 0,
+                            pageCount = data.lisOfPopularStories.size,
                             autoScrollTime = 5000L,
                             bannerState = rememberBannerState(),
                             orientation = Orientation.Horizontal,
-                            bannerKey = { index -> dashBoardData.value?.lisOfPopularStories[index].toString() }) {
+                            bannerKey = { index -> data.lisOfPopularStories[index].toString() }) {
 
                             MyCustomBannerItem(
-                                myBookItem = dashBoardData.value?.lisOfPopularStories[index]
-                                    ?: MyBookItem()
+                                myBookItem = data.lisOfPopularStories[index]
                             ) { myBookItem ->
                                 sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                 backStack.add(
@@ -134,7 +137,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                             })
                         LazyRow {
                             items(
-                                dashBoardData.value?.listOfNewReleaseStories ?: emptyList()
+                                data.listOfNewReleaseStories
                             ) { bookItem ->
                                 StoryItemFixedSize(item = bookItem){myBookItem ->
                                     sharedViewModel.selectedBookID = myBookItem.storyID?: 0
@@ -155,7 +158,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                                 )
                             })
                         LazyRow {
-                            items(dashBoardData.value?.lifOfAllStories ?: emptyList()) { bookItem ->
+                            items(data.lifOfAllStories) { bookItem ->
                                 StoryItemFixedSize(item = bookItem){myBookItem ->
                                     sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                     backStack.add(
@@ -166,6 +169,11 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                                 }
                             }
                         }
+                    }
+                }
+                is UiState.Error -> {
+                    ServerError {
+                        dashBoardViewModel.getDashBoardData()
                     }
                 }
             }
