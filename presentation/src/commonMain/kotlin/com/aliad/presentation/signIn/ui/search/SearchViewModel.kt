@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aliad.ApiResult
 import com.aliad.model.PopularSearch
+import com.aliad.presentation.utils.UiState
 import com.aliad.usecase.PopularSearchUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +20,9 @@ class SearchViewModel constructor(val popularSearchUseCase: PopularSearchUseCase
 
     var isLoading by mutableStateOf(false)
 
-    private val popularSearchStoryMutableStateFlow = MutableStateFlow(PopularSearch())
+    private val popularSearchStoryMutableStateFlow = MutableStateFlow<UiState<PopularSearch>>(
+        UiState.Loading
+    )
     val popularSearch = popularSearchStoryMutableStateFlow.asStateFlow()
 
     init {
@@ -27,18 +31,25 @@ class SearchViewModel constructor(val popularSearchUseCase: PopularSearchUseCase
 
     fun fetchPopularSearch() {
         viewModelScope.launch {
+            popularSearchStoryMutableStateFlow.emit(UiState.Loading)
             isLoading = true
             val result = popularSearchUseCase.getPopularSearchStory()
             isLoading = false
 
-            if(result.isSuccess){
-                popularSearchStoryMutableStateFlow.emit(result.getOrNull()?: PopularSearch())
 
-                println("success popular search story fetch data")
-            }else {
-                popularSearchStoryMutableStateFlow.emit( PopularSearch())
+            when (result) {
+                is ApiResult.Success -> {
+                    popularSearchStoryMutableStateFlow.emit(UiState.Success(data = result.data))
+                }
 
-                println("error popular search story fetch data")
+                is ApiResult.Error -> {
+                    popularSearchStoryMutableStateFlow.emit(
+                        UiState.Error(
+                            messageBn = result.messageBn ?: "Something went wrong",
+                            messageEn = result.messageEn ?: "Something went wrong"
+                        )
+                    )
+                }
             }
         }
     }

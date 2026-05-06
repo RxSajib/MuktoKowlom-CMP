@@ -26,12 +26,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import be.digitalia.compose.htmlconverter.htmlToString
+import com.aliad.model.PrivacyPolicy
 import com.aliad.muktokowlom.data.app_constant.AppConstant
+import com.aliad.muktokowlom.ui.component.ServerError
 import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.utils.getStoryData
 import com.aliad.muktokowlom.utils.getTitle
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
+import com.aliad.presentation.utils.UiState
 import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -46,17 +49,16 @@ fun TermsAndConditionBottomSheet(
     onDismissRequest: () -> Unit,
 ) {
 
-    val viewModel : DataStoreViewModel = koinViewModel()
-    val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
+    val viewModel: DataStoreViewModel = koinViewModel()
+    val selectLn =
+        viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
+    val privacyPolicy = privacyPolicyViewModel.privacyPolicy.collectAsStateWithLifecycle()
 
- //   val privacyPolicy = privacyPolicyViewModel.privacyPolicy.collectAsStateWithLifecycle()
- //   val privacyPolicyDetailsEn = htmlToString(privacyPolicy.value?.description ?: "")
- //   val privacyPolicyDetailsBn = htmlToString(privacyPolicy.value?.descriptionBn ?: "")
-//
+
     ModalBottomSheet(
         containerColor = MaterialTheme.colorScheme.inversePrimary,
 
-        onDismissRequest = {onDismissRequest.invoke()}){
+        onDismissRequest = { onDismissRequest.invoke() }) {
         val coroutineScope = rememberCoroutineScope()
         val sheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = true,
@@ -84,11 +86,11 @@ fun TermsAndConditionBottomSheet(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = null,
-                            tint =  MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
 
-                    _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 10.dp)
+                    WidthGap(width = 10.dp)
 
                     Text(
                         text = stringResource(Res.string.terms_and_conditions),
@@ -104,28 +106,42 @@ fun TermsAndConditionBottomSheet(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    if(privacyPolicyViewModel.isLoading){
-                        WatchRunningAnimation(
-                            clockColor = Color.Gray.copy(alpha = 0.1f),
-                            handColor = Color.Gray,
-                            clockSize = 30.dp
-                        )
-                    }else {
-                        Column(
-                            modifier = Modifier.fillMaxSize()
-                                .verticalScroll(state = rememberScrollState()).padding(16.dp)
-                        ) {
-                           /* Text(
-                                text = getTitle(selectLn = selectLn.value, title = privacyPolicyDetailsEn, titleBn = privacyPolicyDetailsBn),
-                                modifier = Modifier.fillMaxSize(),
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    color = MaterialTheme.colorScheme.primary
+                    when (privacyPolicy.value) {
+                        is UiState.Loading -> {
+                            WatchRunningAnimation(
+                                clockColor = Color.Gray.copy(alpha = 0.1f),
+                                handColor = Color.Gray,
+                                clockSize = 30.dp
+                            )
+                        }
+
+                        is UiState.Success -> {
+                            val data = (privacyPolicy.value as UiState.Success<PrivacyPolicy>).data
+                            Column(
+                                modifier = Modifier.fillMaxSize()
+                                    .verticalScroll(state = rememberScrollState()).padding(16.dp)
+                            ) {
+                                Text(
+                                    text = getTitle(
+                                        selectLn = selectLn.value,
+                                        title = htmlToString(data.description),
+                                        titleBn = htmlToString(data.descriptionBn)
+                                    ),
+                                    modifier = Modifier.fillMaxSize(),
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
                                 )
-                            )*/
+                            }
+                        }
+
+                        is UiState.Error -> {
+                            ServerError {
+                                privacyPolicyViewModel.getPrivacyPolicy()
+                            }
                         }
                     }
                 }
-
 
             }
 

@@ -622,10 +622,10 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     ): GenericResponse<CategoryWiseBookDto> {
 
 
-        val URL =
+        val url =
             if (storyType == StoryType.MOST_POPULAR_STORY.name) MOSTPOPULARSTORY else if (storyType == StoryType.ALL_STORY.name) ALLSTORY else NEWRELEASESTORY
 
-        val response = httpClient.get(urlString = URL) {
+        val response = httpClient.get(urlString = url) {
             parameter("page", page)
             parameter("search", searchKey)
         }
@@ -769,25 +769,56 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             }
         }
 
-        suspend fun getPopularSearch(): Result<PopularSearchDto> {
-            try {
+        suspend fun getPopularSearch(): ApiResult<PopularSearchDto> {
+           return try {
                 val response = httpClient.get(urlString = POPULAR_SEARCH)
                 if (response.status.isSuccess()) {
                     val data = response.body<PopularSearchDto>()
-                    return Result.success(data)
+                    return ApiResult.Success(data = data)
                 } else {
-                    return Result.failure(Exception("error fetch popular search story"))
+                    val errorBody = response.bodyAsText()
+                    val errorResponse = try {
+                        Json.decodeFromString<ErrorResponse>(errorBody)
+                    } catch (e: Exception) {
+                        ErrorResponse(
+                            message_en = e.message ?: "Something went wrong",
+                            message_bn = e.message ?: "Something went wrong",
+                            success = false
+                        )
+                    }
+
+                    ApiResult.Error(
+
+                        messageBn = errorResponse.message_bn,
+                        messageEn = errorResponse.message_en
+
+                    )
                 }
             } catch (e: ClientRequestException) {
-                //  print("error fetch privacy policy ${e.message}")
-                return Result.failure(e)
-            } catch (e: ServerResponseException) {
-                //   print("error fetch privacy policy ${e.message}")
-                return Result.failure(e)
-            } catch (e: Exception) {
-                //  print("error fetch privacy policy ${e.message}")
-                return Result.failure(e)
-            }
+
+               val errorBody = e.response.bodyAsText()
+
+               ApiResult.Error(
+                   messageBn = errorBody,
+                   messageEn = errorBody
+               )
+
+           } catch (e: ServerResponseException) {
+
+               val errorBody = e.response.bodyAsText()
+
+               ApiResult.Error(
+                   messageBn = errorBody,
+                   messageEn = errorBody
+               )
+
+           } catch (e: Exception) {
+
+               ApiResult.Error(
+                   messageBn = e.message,
+                   messageEn = e.message
+               )
+           }
         }
 
         suspend fun getSubscriptionHistory(page: Int): GenericResponse<SubscriptionHistoryDto> {

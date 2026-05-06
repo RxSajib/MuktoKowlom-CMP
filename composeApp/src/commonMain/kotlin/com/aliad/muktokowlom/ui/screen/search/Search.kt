@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.model.PopularSearch
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
@@ -35,6 +37,7 @@ import com.aliad.muktokowlom.ui.component.StoryItemFixedSize
 import com.aliad.muktokowlom.ui.component.StoryShimmerRow
 import com.aliad.presentation.signIn.ui.search.SearchViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
+import com.aliad.presentation.utils.UiState
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
@@ -131,21 +134,29 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
                 )
                 HeightGap(height = 10.dp)
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    if(!viewModel.isLoading){
-                        LazyRow {
-                            items(popularSearchData.value.storyList.size){ position ->
-                                StoryItemFixedSize(item = popularSearchData.value.storyList[position]){myBookItem ->
-                                    sharedViewModel.selectedBookID = myBookItem.storyID?: 0
-                                    backStack.add(
-                                        AppDestination.Dest(
-                                            AppDestination.Dest.StoryDetails::class.simpleName?: ""
+
+                    when(popularSearchData.value){
+                        is UiState.Error -> {
+                            StoryShimmerRow()
+                        }
+                        is UiState.Success -> {
+                            val popularSearchData = (popularSearchData.value as UiState.Success<PopularSearch>).data
+                            LazyRow {
+                                items(popularSearchData.storyList){ story ->
+                                    StoryItemFixedSize(item = story){myBookItem ->
+                                        sharedViewModel.selectedBookID = myBookItem.storyID?: 0
+                                        backStack.add(
+                                            AppDestination.Dest(
+                                                AppDestination.Dest.StoryDetails::class.simpleName?: ""
+                                            )
                                         )
-                                    )
+                                    }
                                 }
                             }
                         }
-                    }else {
-                        StoryShimmerRow()
+                        is UiState.Loading -> {
+                            StoryShimmerRow()
+                        }
                     }
                 }
                 HeightGap(height = 10.dp)

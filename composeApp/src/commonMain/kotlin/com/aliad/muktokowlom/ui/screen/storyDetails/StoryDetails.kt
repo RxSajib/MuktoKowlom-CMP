@@ -45,6 +45,7 @@ import com.aliad.helper.SnackBarEvent
 import com.aliad.model.MyBookItem
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.RatingBottomSheet
+import com.aliad.muktokowlom.ui.component.EmptySimilarStory
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.LikeStoryItem
@@ -420,20 +421,11 @@ fun StoryDetailsScreen(
 
                                 if (data.likeStories.isEmpty()) {
                                     Box(
-                                        modifier = Modifier.fillMaxWidth().aspectRatio(3f),
+                                        modifier = Modifier.fillMaxWidth(),
                                         contentAlignment = Alignment.Center
                                     ) {
-                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                            Image(
-                                                painter = painterResource(Res.drawable.book_svgrepo_com_icon),
-                                                contentDescription = null,
-                                                modifier = Modifier.size(40.dp)
-                                            )
-                                            HeightGap(height = 10.dp)
-                                            Text(
-                                                text = stringResource(Res.string.no_similar_story),
-                                                style = MaterialTheme.typography.bodySmall
-                                            )
+                                        EmptySimilarStory(modifier = Modifier.padding(vertical = 15.dp)){
+                                            viewModel.getStoryDetails()
                                         }
                                     }
                                 } else {
