@@ -47,6 +47,7 @@ import com.aliad.helper.SnackBarEvent
 import com.aliad.model.MyBookItem
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.RatingBottomSheet
+import com.aliad.muktokowlom.ui.component.EmptyBookDetails
 import com.aliad.muktokowlom.ui.component.EmptySimilarStory
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
@@ -58,6 +59,7 @@ import com.aliad.muktokowlom.ui.component.ServerError
 import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.ui.component.WriterInfo
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
+import com.aliad.muktokowlom.ui.theme.onPrimaryDark
 import com.aliad.muktokowlom.utils.AppHelper.toUSFormatWithMonth
 import com.aliad.muktokowlom.utils.getStoryData
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
@@ -355,26 +357,35 @@ fun StoryDetailsScreen(
                                     )
                                 )
                                 HeightGap(height = 5.dp)
-                                SeymourText(
-                                    onSeeMoreChange = { viewModel.isExpandedText = it },
-                                    isSeeMoreExpanded = viewModel.isExpandedText,
-                                    text = getStoryData(dataBn = htmlToString( data.summaryBn ?: ""), dataEn = htmlToString( data.summaryEn ?: "")) ,
-                                    seeMoreText = stringResource(Res.string.see_more),
-                                    seeLessText = stringResource(Res.string.see_less),
-                                    seeLessStyle = SpanStyle(
-                                        color = Color.Red
-                                    ),
-                                    seeMoreStyle = SpanStyle(
-                                        color = Color.Red
-                                    ),
-                                    seeMoreMaxLines = 3,
-                                    seeLessMaxLines = Int.MAX_VALUE,
-                                    modifier = Modifier.padding(horizontal = 16.dp),
-                                    style = MaterialTheme.typography.titleSmall.copy(
-                                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                                        fontSize = adjustedFontSize(10f)
+
+                                val storyDetailsData = getStoryData(dataBn = htmlToString( data.summaryBn ?: ""), dataEn = htmlToString( data.summaryEn ?: ""))
+                                if(storyDetailsData.isEmpty()){
+                                    EmptyBookDetails(
+                                        modifier = Modifier.padding(horizontal = 16.dp)
                                     )
-                                )
+                                }else {
+                                    SeymourText(
+                                        onSeeMoreChange = { viewModel.isExpandedText = it },
+                                        isSeeMoreExpanded = viewModel.isExpandedText,
+                                        text = storyDetailsData,
+                                        seeMoreText = stringResource(Res.string.see_more),
+                                        seeLessText = stringResource(Res.string.see_less),
+                                        seeLessStyle = SpanStyle(
+                                            color = onPrimaryDark
+                                        ),
+                                        seeMoreStyle = SpanStyle(
+                                            color = onPrimaryDark
+                                        ),
+                                        seeMoreMaxLines = 3,
+                                        seeLessMaxLines = Int.MAX_VALUE,
+                                        modifier = Modifier.padding(horizontal = 16.dp),
+                                        style = MaterialTheme.typography.titleSmall.copy(
+                                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                            fontSize = adjustedFontSize(10f)
+                                        )
+                                    )
+                                }
+
                                 HeightGap(height = 10.dp)
                                 Row(
                                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)

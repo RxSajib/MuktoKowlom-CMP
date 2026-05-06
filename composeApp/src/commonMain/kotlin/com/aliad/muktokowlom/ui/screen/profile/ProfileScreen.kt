@@ -56,6 +56,7 @@ import com.aliad.muktokowlom.ui.theme.teal
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
+import com.aliad.utils.MyCustomLogger
 import com.sajib.data.appConstant.AppConstant
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.basic_info
@@ -93,6 +94,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
+private const val TAG = "ProfileScreen"
 @Composable
 fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
 
@@ -107,10 +109,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
     val userID by dataStoreViewModel.getIntData(key = AppConstant.USER_ID).collectAsStateWithLifecycle(0)
 
     val lifecycle = LocalLifecycleOwner.current
-
-
-    print("token is $token")
-    print("user id ${userID.toString()}")
+    MyCustomLogger.logInfo(tag = TAG, message = "token $token")
+    MyCustomLogger.logInfo(tag = TAG, message = "user id $userID")
 
 
     LaunchedEffect(lifecycle.lifecycle) {

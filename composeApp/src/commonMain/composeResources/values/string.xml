@@ -15,7 +15,7 @@
     <string name="smart_chose">Smart Chose</string>
     <string name="starter">Starter Plan</string>
     <string name="matching_story_notfound_details">No stories matching this story have been added yet.</string>
-
+    <string name="empty_story_details">No details available for this story</string>
 
 
     <string name="secure_payment">Secure Payment</string>
