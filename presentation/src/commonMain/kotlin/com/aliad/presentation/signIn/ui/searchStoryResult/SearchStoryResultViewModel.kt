@@ -14,15 +14,25 @@ import com.aliad.model.MyBookItem
 import com.aliad.model.PagingUiState
 import com.aliad.presentation.utils.StoryType
 import com.aliad.usecase.SearchBookUseCase
+import com.aliad.usecase.dataStore.GetStringData
+import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class SearchStoryResultViewModel constructor(val searchBookUseCase: SearchBookUseCase,
-    val savedStateHandle: SavedStateHandle) : ViewModel() {
+class SearchStoryResultViewModel constructor(
+    val searchBookUseCase: SearchBookUseCase,
+    val savedStateHandle: SavedStateHandle,
+    val getStringData: GetStringData
+) : ViewModel() {
 
     var searchStoryData by mutableStateOf("")
     var readFirstTimeSearchValue by mutableStateOf(false)
@@ -58,7 +68,7 @@ class SearchStoryResultViewModel constructor(val searchBookUseCase: SearchBookUs
 
     // Expose the paging data as a non-null flow
     @OptIn(ExperimentalCoroutinesApi::class)
-    val searchStory : Flow<PagingData<MyBookItem>> = _currentPagingData
+    val searchStory: Flow<PagingData<MyBookItem>> = _currentPagingData
         .flatMapLatest {
             it ?: searchBookUseCase.searchStory(
                 searchKey = _queryCategorySearchName.value,
@@ -75,7 +85,10 @@ class SearchStoryResultViewModel constructor(val searchBookUseCase: SearchBookUs
             _currentPagingData.value = null // Invalidate cache to load new data for new search
         }
     }
-
     //todo category by book
+
+    val selectedLan = flow {
+        emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+    }.flowOn(context = Dispatchers.IO)
 
 }

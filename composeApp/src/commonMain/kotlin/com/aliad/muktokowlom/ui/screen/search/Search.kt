@@ -85,7 +85,7 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
 
     val viewModel: SearchViewModel = koinViewModel<SearchViewModel>()
     val popularSearchData = viewModel.popularSearch.collectAsStateWithLifecycle()
-
+    val selectedLan = viewModel.selectedLan.collectAsStateWithLifecycle("en")
     val refreshLayoutState = rememberRefreshLayoutState {
         setRefreshState(state = RefreshContentStateEnum.Refreshing)
         viewModel.fetchPopularSearch()
@@ -143,7 +143,7 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
                             val popularSearchData = (popularSearchData.value as UiState.Success<PopularSearch>).data
                             LazyRow {
                                 items(popularSearchData.storyList){ story ->
-                                    StoryItemFixedSize(item = story){myBookItem ->
+                                    StoryItemFixedSize(selectLn = selectedLan.value, item = story){myBookItem ->
                                         sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                         backStack.add(
                                             AppDestination.Dest(

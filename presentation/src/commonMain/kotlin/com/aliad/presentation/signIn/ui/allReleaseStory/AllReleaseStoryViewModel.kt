@@ -16,7 +16,9 @@ import com.aliad.model.PagingUiState
 import com.aliad.presentation.utils.StoryType
 import com.aliad.usecase.AllReleaseUseCase
 import com.aliad.usecase.StoryTypeUseCase
+import com.aliad.usecase.dataStore.GetStringData
 import com.aliad.utils.MyCustomLogger.logInfo
+import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -24,13 +26,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 
 private const val TAG = "AllReleaseStoryViewMode"
 
 class AllReleaseStoryViewModel constructor(
     val allReleaseUseCase: AllReleaseUseCase,
-    val savedStateHandle: SavedStateHandle
+    val savedStateHandle: SavedStateHandle,
+    val getStringData: GetStringData
 ) : ViewModel() {
 
     var searchStoryData by mutableStateOf("")
@@ -85,4 +90,8 @@ class AllReleaseStoryViewModel constructor(
     }
 
     //todo category by book
+
+    val selectedLan = flow {
+       emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+    }
 }

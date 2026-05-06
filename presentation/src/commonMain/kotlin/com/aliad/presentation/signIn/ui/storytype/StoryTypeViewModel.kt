@@ -7,10 +7,17 @@ import androidx.paging.LoadState
 import androidx.paging.cachedIn
 import com.aliad.model.PagingUiState
 import com.aliad.usecase.StoryTypeUseCase
+import com.aliad.usecase.dataStore.GetStringData
+import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
-class StoryTypeViewModel constructor(val storyTypeUseCase: StoryTypeUseCase) : ViewModel() {
+class StoryTypeViewModel constructor(val storyTypeUseCase: StoryTypeUseCase, val getStringData: GetStringData) : ViewModel() {
 
     val storysData = storyTypeUseCase.getStoryType(searchKey = "All", searchType = "PopularStory")
         .cachedIn(viewModelScope)
@@ -28,4 +35,8 @@ class StoryTypeViewModel constructor(val storyTypeUseCase: StoryTypeUseCase) : V
             isEmpty = loadStates.refresh is LoadState.NotLoading && itemCount == 0
         )
     }
+
+    val selectedLan = flow {
+        emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+    }.flowOn(context = Dispatchers.IO)
 }

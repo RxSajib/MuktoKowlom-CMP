@@ -9,11 +9,19 @@ import com.aliad.ApiResult
 import com.aliad.model.DashBord
 import com.aliad.presentation.utils.UiState
 import com.aliad.usecase.DashBoardUseCase
+import com.aliad.usecase.dataStore.GetStringData
+import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class DashBoardViewModel constructor(val dashBoardUseCase: DashBoardUseCase) : ViewModel() {
+class DashBoardViewModel constructor(val dashBoardUseCase: DashBoardUseCase,
+    val getStringData: GetStringData) : ViewModel() {
 
     private val dashBoardMutableStateFlow = MutableStateFlow<UiState<DashBord>>(UiState.Loading)
     val dashBoard = dashBoardMutableStateFlow.asStateFlow()
@@ -40,4 +48,8 @@ class DashBoardViewModel constructor(val dashBoardUseCase: DashBoardUseCase) : V
             }
         }
     }
+
+    val selectedLan = flow {
+        emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+    }.flowOn(context = Dispatchers.IO)
 }

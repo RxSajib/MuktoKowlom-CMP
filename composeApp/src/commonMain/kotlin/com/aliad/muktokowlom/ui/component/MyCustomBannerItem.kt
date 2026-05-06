@@ -36,11 +36,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem) -> Unit) {
+fun MyCustomBannerItem(selectedLan : String,  myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem) -> Unit) {
 
-    val viewModel: DataStoreViewModel = koinViewModel()
-    val selectLn =
-        viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
 
     Row(
         modifier = Modifier.fillMaxWidth().height(100.dp).padding(horizontal = 16.dp)
@@ -67,7 +64,7 @@ fun MyCustomBannerItem(myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem)
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = getTitle(
-                        selectLn = selectLn.value,
+                        selectLn = selectedLan,
                         title = myBookItem.titleEn,
                         titleBn = myBookItem.titleBn
                     ),

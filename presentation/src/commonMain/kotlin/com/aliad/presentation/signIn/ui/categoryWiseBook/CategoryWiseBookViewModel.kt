@@ -13,16 +13,24 @@ import androidx.paging.cachedIn
 import com.aliad.model.MyBookItem
 import com.aliad.model.PagingUiState
 import com.aliad.usecase.CategoryWiseBookUseCase
+import com.aliad.usecase.dataStore.GetStringData
+import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class CategoryWiseBookViewModel constructor(
     val categoryWiseBookUseCase: CategoryWiseBookUseCase,
-    val savedStateHandle: SavedStateHandle
+    val savedStateHandle: SavedStateHandle,
+    val getStringData: GetStringData
 ) :
     ViewModel() {
 
@@ -87,4 +95,8 @@ class CategoryWiseBookViewModel constructor(
     }
 
     //todo category by book
+
+    val selectedLan = flow {
+        emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+    }.flowOn(context = Dispatchers.IO)
 }

@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -52,7 +53,8 @@ fun NewReleaseScreen(
 
     val viewModel : NewReleaseStoryViewModel = koinViewModel()
     val storyData = viewModel.storyData.collectAsLazyPagingItems()
-    val pagingUiState = viewModel.pagingUiState.collectAsState()
+    val pagingUiState = viewModel.pagingUiState.collectAsStateWithLifecycle()
+    val selectedLan = viewModel.selectedLan.collectAsStateWithLifecycle("en")
 
     LaunchedEffect(storyData.loadState){
         viewModel.updatePagingLoadStates( loadStates = storyData.loadState, itemCount = storyData.itemCount)
@@ -123,7 +125,7 @@ fun NewReleaseScreen(
                         ) {
 
                             items(storyData.itemCount) { position ->
-                                StoryItem(storyData[position]){bookItem ->
+                                StoryItem(selectedLan = selectedLan.value, item = storyData[position]){bookItem ->
                                     sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                     backStack.add(AppDestination.StoryDetails)
                                 }

@@ -14,17 +14,27 @@ import com.aliad.model.MyBookItem
 import com.aliad.model.PagingUiState
 import com.aliad.presentation.utils.StoryType
 import com.aliad.usecase.StoryTypeUseCase
+import com.aliad.usecase.dataStore.GetStringData
+import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
-class NewReleaseStoryViewModel constructor(val storyTypeUseCase: StoryTypeUseCase,
-    val savedStateHandle: SavedStateHandle) : ViewModel() {
+class NewReleaseStoryViewModel constructor(
+    val storyTypeUseCase: StoryTypeUseCase,
+    val savedStateHandle: SavedStateHandle,
+    val getStringData: GetStringData
+) : ViewModel() {
 
     var searchStoryData by mutableStateOf("")
 
@@ -59,7 +69,7 @@ class NewReleaseStoryViewModel constructor(val storyTypeUseCase: StoryTypeUseCas
 
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    val storyData : Flow<PagingData<MyBookItem>> =
+    val storyData: Flow<PagingData<MyBookItem>> =
         _queryCategorySearchName
             .debounce(500)
             .distinctUntilChanged()
@@ -80,4 +90,8 @@ class NewReleaseStoryViewModel constructor(val storyTypeUseCase: StoryTypeUseCas
     }
 
     //todo category by book
+
+    val selectedLan = flow {
+        emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+    }.flowOn(context = Dispatchers.IO)
 }

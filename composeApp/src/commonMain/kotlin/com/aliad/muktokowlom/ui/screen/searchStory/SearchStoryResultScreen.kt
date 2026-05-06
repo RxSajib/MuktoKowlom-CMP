@@ -52,6 +52,7 @@ fun SearchStoryResultScreen(
     val viewModel : SearchStoryResultViewModel = koinViewModel()
     val storyData = viewModel.searchStory.collectAsLazyPagingItems()
     val pagingUiState = viewModel.pagingUiState.collectAsState()
+    val selectedLan = viewModel.selectedLan.collectAsState("en")
 
     LaunchedEffect(storyData.loadState){
         viewModel.updatePagingLoadStates( loadStates = storyData.loadState, itemCount = storyData.itemCount)
@@ -122,7 +123,7 @@ fun SearchStoryResultScreen(
                         ) {
 
                             items(storyData.itemCount) { position ->
-                                StoryItem(storyData[position]){bookItem ->
+                                StoryItem(selectedLan = selectedLan.value, item = storyData[position]){bookItem ->
                                     sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                     backStack.add(AppDestination.StoryDetails)
                                 }

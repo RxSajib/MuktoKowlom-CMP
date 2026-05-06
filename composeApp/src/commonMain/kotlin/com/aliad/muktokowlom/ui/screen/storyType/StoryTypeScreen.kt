@@ -41,7 +41,7 @@ fun StoryTypeScreen(
     val storyItem = viewModel.storysData.collectAsLazyPagingItems()
 
     val pagingUiState = viewModel.pagingUiState.collectAsState()
-
+    val selectedLan = viewModel.selectedLan.collectAsState("en")
 
     LaunchedEffect(storyItem.loadState) {
         viewModel.updatePagingLoadStates(storyItem.loadState, storyItem.itemCount)
@@ -86,7 +86,7 @@ fun StoryTypeScreen(
                     ) {
 
                         items(storyItem.itemCount) { position ->
-                            StoryItem(storyItem[position]){bookItem ->
+                            StoryItem(selectedLan = selectedLan.value, item = storyItem[position]){bookItem ->
                                 sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                 backStack.add(AppDestination.StoryDetails)
                             }

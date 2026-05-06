@@ -56,9 +56,9 @@ fun CategoryWiseBook(
 
     val viewModel: CategoryWiseBookViewModel = koinViewModel()
     val storyItem = viewModel.categoryWiseSearch.collectAsLazyPagingItems()
-    val pagingUiState = viewModel.pagingUiState.collectAsState()
+    val pagingUiState = viewModel.pagingUiState.collectAsStateWithLifecycle()
     val selectedStory = sharedViewModel.selectedCategory.collectAsStateWithLifecycle()
-
+    val selectedLan = viewModel.selectedLan.collectAsStateWithLifecycle("en")
      print("selected category id ${selectedStory.value.id}")
 
 
@@ -152,7 +152,8 @@ fun CategoryWiseBook(
 
                             items(storyItem.itemCount) { position ->
                                 StoryItem(
-                                    storyItem[position]
+                                    selectedLan = selectedLan.value,
+                                    item = storyItem[position]
                                 ) { bookItem ->
                                     sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                     backStack.add(AppDestination.StoryDetails)

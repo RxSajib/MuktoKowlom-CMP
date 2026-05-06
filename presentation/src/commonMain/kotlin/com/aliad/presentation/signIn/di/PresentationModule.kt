@@ -67,16 +67,17 @@ val presentationModule = module {
     viewModel { (stateHandle: SavedStateHandle) ->
         CategoryWiseBookViewModel(
             categoryWiseBookUseCase = get(),
-            savedStateHandle = stateHandle
+            savedStateHandle = stateHandle,
+            getStringData = get()
         )
     }
 
     viewModel {
-        DashBoardViewModel(dashBoardUseCase = get())
+        DashBoardViewModel(dashBoardUseCase = get(), getStringData = get())
     }
 
     viewModel {
-        StoryTypeViewModel(storyTypeUseCase = get())
+        StoryTypeViewModel(storyTypeUseCase = get(), getStringData = get())
     }
     viewModel { (storyID: String)  ->
         StoryDetailsViewModel(
@@ -117,7 +118,7 @@ val presentationModule = module {
     }
 
     viewModel {
-        SearchViewModel(popularSearchUseCase = get())
+        SearchViewModel(popularSearchUseCase = get(), getStringData = get())
     }
 
     viewModel {
@@ -135,21 +136,24 @@ val presentationModule = module {
     viewModel {(saveStateHandle : SavedStateHandle) ->
         AllReleaseStoryViewModel(
             allReleaseUseCase = get(),
-            savedStateHandle = saveStateHandle
+            savedStateHandle = saveStateHandle,
+            getStringData = get()
         )
     }
 
     viewModel {(savestateHandle : SavedStateHandle) ->
         NewReleaseStoryViewModel(
             storyTypeUseCase = get(),
-            savedStateHandle = savestateHandle
+            savedStateHandle = savestateHandle,
+            getStringData = get()
         )
     }
 
     viewModel {(saveStateHandle : SavedStateHandle) ->
         MostPopularStoryViewModel(
             storyTypeUseCase = get(),
-            savedStateHandle = saveStateHandle
+            savedStateHandle = saveStateHandle,
+            getStringData = get()
         )
     }
 
@@ -160,7 +164,8 @@ val presentationModule = module {
     viewModel {(saveStateHandle : SavedStateHandle) ->
         SearchStoryResultViewModel(
             searchBookUseCase = get(),
-            savedStateHandle = saveStateHandle
+            savedStateHandle = saveStateHandle,
+            getStringData = get()
         )
     }
 

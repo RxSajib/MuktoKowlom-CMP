@@ -21,7 +21,9 @@ import coil3.compose.AsyncImage
 import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
+import com.aliad.muktokowlom.utils.MyCustomLogger
 import com.aliad.muktokowlom.utils.getTitle
+import com.aliad.presentation.signIn.ui.allReleaseStory.AllReleaseStoryViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.placeholder
@@ -29,12 +31,12 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
+private const val TAG = "StoryItem"
 @Composable
-fun StoryItem(item: MyBookItem?, onClick: (data: MyBookItem) -> Unit) {
+fun StoryItem(selectedLan: String, item: MyBookItem?, onClick: (data: MyBookItem) -> Unit) {
 
-    val viewModel : DataStoreViewModel = koinViewModel()
-    val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
-
+    MyCustomLogger.logInfo(tag = TAG, message = "title bangla ${item?.titleBn}")
+    MyCustomLogger.logInfo(tag = TAG, message = "title english ${item?.titleEn}")
 
     Column(
         modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(10.dp))
@@ -66,7 +68,7 @@ fun StoryItem(item: MyBookItem?, onClick: (data: MyBookItem) -> Unit) {
         )
         HeightGap(2.dp)
         Text(
-            text = getTitle(selectLn = selectLn.value, title = item?.titleEn?: "", titleBn = item?.titleBn?: ""),
+            text = getTitle(selectLn = selectedLan, title = item?.titleEn, titleBn = item?.titleBn),
             modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.W600,

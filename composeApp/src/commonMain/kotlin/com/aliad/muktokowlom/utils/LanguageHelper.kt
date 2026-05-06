@@ -15,7 +15,7 @@ package com.aliad.muktokowlom.utils
 
             else -> {
                 // Default case: return title if available, else title_bn
-                title ?: title ?: "Default"  // Default if both are null
+                title ?: titleBn ?: "Default"  // Default if both are null
             }
         }
     }

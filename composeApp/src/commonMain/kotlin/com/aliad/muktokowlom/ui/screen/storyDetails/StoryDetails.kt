@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import be.digitalia.compose.htmlconverter.htmlToString
 import coil3.compose.AsyncImage
 import com.aliad.helper.SnackBarEvent
 import com.aliad.model.MyBookItem
@@ -57,6 +59,7 @@ import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.ui.component.WriterInfo
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.utils.AppHelper.toUSFormatWithMonth
+import com.aliad.muktokowlom.utils.getStoryData
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.aliad.presentation.signIn.ui.storyDetails.StoryDetailsViewModel
 import com.aliad.presentation.utils.UiState
@@ -355,9 +358,15 @@ fun StoryDetailsScreen(
                                 SeymourText(
                                     onSeeMoreChange = { viewModel.isExpandedText = it },
                                     isSeeMoreExpanded = viewModel.isExpandedText,
-                                    text = data.summaryBn ?: "",
+                                    text = getStoryData(dataBn = htmlToString( data.summaryBn ?: ""), dataEn = htmlToString( data.summaryEn ?: "")) ,
                                     seeMoreText = stringResource(Res.string.see_more),
                                     seeLessText = stringResource(Res.string.see_less),
+                                    seeLessStyle = SpanStyle(
+                                        color = Color.Red
+                                    ),
+                                    seeMoreStyle = SpanStyle(
+                                        color = Color.Red
+                                    ),
                                     seeMoreMaxLines = 3,
                                     seeLessMaxLines = Int.MAX_VALUE,
                                     modifier = Modifier.padding(horizontal = 16.dp),

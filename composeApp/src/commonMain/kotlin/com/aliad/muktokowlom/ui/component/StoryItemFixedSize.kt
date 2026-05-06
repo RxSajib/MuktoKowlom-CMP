@@ -31,11 +31,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun StoryItemFixedSize(item: MyBookItem?, onClick: (MyBookItem) -> Unit){
-
-    val viewModel : DataStoreViewModel = koinViewModel()
-    val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
-
+fun StoryItemFixedSize(selectLn : String, item: MyBookItem?, onClick: (MyBookItem) -> Unit){
 
     Column(modifier = Modifier.width(220.dp).clip(shape = RoundedCornerShape(10.dp)).clickable{
         onClick.invoke(item?: MyBookItem())
@@ -65,7 +61,7 @@ fun StoryItemFixedSize(item: MyBookItem?, onClick: (MyBookItem) -> Unit){
         )
         HeightGap(2.dp)
         Text(
-            text = getTitle(selectLn = selectLn.value, title = item?.titleEn?: "", titleBn = item?.titleBn?: ""),
+            text = getTitle(selectLn = selectLn, title = item?.titleEn, titleBn = item?.titleBn),
             modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.W600,
