@@ -4,8 +4,10 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.aliad.dataSource.RemoteDataSources
 import com.aliad.model.subscription_history.Payment
+import com.aliad.utils.MyCustomLogger
 
-val PAGE_CURRENT_KEY = 1
+private const val TAG = "SubscriptionHistoryPage"
+private const val PAGE_CURRENT_KEY = 1
 class SubscriptionHistoryPager constructor(val remoteDataSources: RemoteDataSources) : PagingSource<Int, Payment>() {
     override fun getRefreshKey(state: PagingState<Int, Payment>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -16,6 +18,7 @@ class SubscriptionHistoryPager constructor(val remoteDataSources: RemoteDataSour
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Payment> {
         return try {
+            MyCustomLogger.logInfo(tag = TAG, message = "success")
             val page = params.key?: PAGE_CURRENT_KEY
             val response = remoteDataSources.getSubscriptionHistory(
                 page = page
@@ -26,7 +29,7 @@ class SubscriptionHistoryPager constructor(val remoteDataSources: RemoteDataSour
                 nextKey = if(response.data?.payments?.isEmpty() == true) null else page + 1
             )
         }catch (e : Exception){
-            print("error paging 3 ${e.message}")
+            MyCustomLogger.logInfo(tag = TAG, message = e.message?: "Something went wrong")
             LoadResult.Error(e)
         }
     }

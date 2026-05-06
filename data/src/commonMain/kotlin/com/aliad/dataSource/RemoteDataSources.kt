@@ -18,6 +18,7 @@ import com.aliad.model.LoginDto
 import com.aliad.model.SearchStoryDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
+import com.aliad.utils.MyCustomLogger
 import com.aliad.utils.StoryType
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -33,6 +34,7 @@ import io.ktor.http.Parameters
 import io.ktor.http.isSuccess
 import kotlinx.serialization.json.Json
 
+private const val TAG = "RemoteDataSources"
 class RemoteDataSources constructor(val httpClient: HttpClient) {
 
     private val BASEURL = BuildKonfig.BASE_URL
@@ -64,11 +66,9 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                 setBody(commentData)
             }
 
-            print("feedback response ${response.status.value}")
 
             if (response.status.isSuccess()) {
                 val body = response.body<GenericResponse<CommentDto>>()
-                print("feedback success $body")
                 return ApiResult.Success(data = body)
             } else {
                 val errorBody = response.bodyAsText()
@@ -370,7 +370,6 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                 parameter("last_name", lastName)
                 parameter("is_writer_status", isWritterStatus)
             }
-            print("sign up success ${response.status.isSuccess()}")
             if (response.status.isSuccess()) {
 
                 ApiResult.Success(
@@ -433,11 +432,13 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     ): ApiResult<GenericResponse<LoginDto>> {
 
         return try {
-
+            MyCustomLogger.logInfo(tag = TAG, message = "email $email")
+            MyCustomLogger.logInfo(tag = TAG, message = "password $password")
             val response = httpClient.post(LOGINACCOUNT) {
                 parameter("email", email)
                 parameter("password", password)
             }
+
 
             if (response.status.isSuccess()) {
 
@@ -451,6 +452,8 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                 val errorResponse = try {
                     Json.decodeFromString<ErrorResponse>(errorBody)
                 } catch (e: Exception) {
+
+
                     ErrorResponse(
                         message_en = e.message ?: "Something went wrong",
                         message_bn = e.message ?: "Something went wrong",
@@ -694,20 +697,15 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                 if (response.status.isSuccess()) {
 
                     val data = response.body<GenericResponse<PrivacyPolicyDto>>()
-                    //   print("privacy policy ${data.data}")
                     return Result.success(data)
                 } else {
-                    //   print("error fetch privacy policy")
                     return Result.failure(Exception("error fetch privacy policy"))
                 }
             } catch (e: ClientRequestException) {
-                //  print("error fetch privacy policy ${e.message}")
                 return Result.failure(e)
             } catch (e: ServerResponseException) {
-                //   print("error fetch privacy policy ${e.message}")
                 return Result.failure(e)
             } catch (e: Exception) {
-                //  print("error fetch privacy policy ${e.message}")
                 return Result.failure(e)
             }
         }
@@ -825,7 +823,6 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             val response = httpClient.get(urlString = SUBSCRIPTION_HISTORY) {
                 parameter("page", page)
             }
-            //  print("response with data ${response.status.description}")
             return response.body<GenericResponse<SubscriptionHistoryDto>>()
         }
 

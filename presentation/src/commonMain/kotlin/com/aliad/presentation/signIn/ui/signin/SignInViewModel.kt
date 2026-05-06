@@ -39,40 +39,6 @@ class SignInViewModel constructor(
 
     var isOpenTermsAndConditionBottomSheet by mutableStateOf(false)
 
-    // aliadpolok@gmail.com
-    // Aliad321@@
-    fun loginAccount() {
-        viewModelScope.launch {
-
-            showProgress = true
-
-            val result = loginUseCase.loginAccount(
-                email = inputEmailAddressInput,
-                password = passwordInput
-            )
-
-            showProgress = false
-
-            when (result) {
-
-                is ApiResult.Success -> {
-                    val user = result.data
-                    saveUserInfo(user)
-                    userMutableSharedFlow.emit(user)
-                    print("login success ______________$user")
-                    isLoginSuccess.emit(true)
-                }
-
-                is ApiResult.Error -> {
-                    isLoginSuccess.emit(false)
-                    errorResponse = errorResponse.copy(
-                        message_bn = result.messageBn,
-                        message_en = result.messageEn
-                    )
-                }
-            }
-        }
-    }
 
 
     var inputEmailAddressInput by mutableStateOf("")
@@ -128,6 +94,42 @@ class SignInViewModel constructor(
     }
 
     // button validation using kotlin combain
+
+    // aliadpolok@gmail.com
+    // Aliad321@@
+    fun loginAccount() {
+        viewModelScope.launch {
+
+            showProgress = true
+
+            val result = loginUseCase.loginAccount(
+                email = emailMutableStateFlow.value,
+                password = passwordMutableStateFlow.value
+            )
+
+            showProgress = false
+
+            when (result) {
+
+                is ApiResult.Success -> {
+                    val user = result.data
+                    saveUserInfo(user)
+                    userMutableSharedFlow.emit(user)
+                    print("login success ______________$user")
+                    isLoginSuccess.emit(true)
+                }
+
+                is ApiResult.Error -> {
+                    isLoginSuccess.emit(false)
+                    errorResponse = errorResponse.copy(
+                        message_bn = result.messageBn,
+                        message_en = result.messageEn
+                    )
+                }
+            }
+        }
+    }
+
 
 
     suspend fun saveUserInfo(user: User) {
