@@ -11,10 +11,14 @@ import com.aliad.model.mapper.DataMapper.toBookFromSearchStoryDto
 import com.aliad.model.mapper.DataMapper.toBookModel
 import com.aliad.model.SearchStoryDto
 import com.aliad.pager.AllStoryPagingSource
+import com.aliad.pager.PendingStoryPagingSource
 import com.aliad.pager.SearchStoryPagingSource
 import com.aliad.pager.StoryTypePagingSource
 import com.aliad.repository.StoryType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class StoryTypeImpl constructor(val remoteDataSources: RemoteDataSources) : StoryType {
@@ -25,7 +29,7 @@ class StoryTypeImpl constructor(val remoteDataSources: RemoteDataSources) : Stor
         return Pager(
             config =  PagingConfig(pageSize = 20, enablePlaceholders = false) ,
             pagingSourceFactory = { StoryTypePagingSource(remoteDataSources = remoteDataSources, searchKey = searchKey, storyType = storyType)},
-        ).flow.map {pagingData ->
+        ).flow.flowOn(context = Dispatchers.IO).map { pagingData ->
             pagingData.map { bookItem ->
                 toBookModel(bookItem = bookItem)
             }
@@ -36,7 +40,7 @@ class StoryTypeImpl constructor(val remoteDataSources: RemoteDataSources) : Stor
         return Pager(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false),
             pagingSourceFactory = { SearchStoryPagingSource(searchKey = searchKey, remoteDataSources = remoteDataSources)}
-        ).flow.map {pagingData ->
+        ).flow.flowOn(context = Dispatchers.IO).map { pagingData ->
             pagingData.map { bookItem ->
                 toBookModel(bookItem = bookItem)
             }
@@ -50,7 +54,7 @@ class StoryTypeImpl constructor(val remoteDataSources: RemoteDataSources) : Stor
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { AllStoryPagingSource(remoteDataSources = remoteDataSources, searchKey = searchKey)}
-        ).flow.map {pagingData ->
+        ).flow.flowOn(context = Dispatchers.IO).map { pagingData ->
             pagingData.map { bookItem ->
                 toBookModel(bookItem = bookItem)
             }
@@ -66,6 +70,20 @@ class StoryTypeImpl constructor(val remoteDataSources: RemoteDataSources) : Stor
             }
             is ApiResult.Error -> {
                 ApiResult.Error(messageEn = response.messageEn, messageBn = response.messageBn)
+            }
+        }
+    }
+
+    override fun getAllPendingStoryList(userID: String): Flow<PagingData<MyBookItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { PendingStoryPagingSource(remoteDataSources = remoteDataSources, userID = userID)}
+        ).flow.flowOn(context = Dispatchers.IO).map { pagingData ->
+            pagingData.map { bookItem ->
+                toBookModel(bookItem = bookItem)
             }
         }
     }

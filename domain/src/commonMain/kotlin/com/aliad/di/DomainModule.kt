@@ -10,6 +10,7 @@ import com.aliad.usecase.OtpVerificationUseCase
 import com.aliad.usecase.PopularSearchUseCase
 import com.aliad.usecase.PremiumPlanUseCase
 import com.aliad.usecase.PrivacyPolicyUseCase
+import com.aliad.usecase.PublishedPendingStoryUseCase
 import com.aliad.usecase.RatingAndFeedbackUseCase
 import com.aliad.usecase.RecoveryPasswordUseCase
 import com.aliad.usecase.SearchBookUseCase
@@ -156,6 +157,12 @@ val domainModule = module {
     factory {
         RatingAndFeedbackUseCase(
             storyManagementRepo = get()
+        )
+    }
+    
+    factory {
+        PublishedPendingStoryUseCase(
+            storyType = get()
         )
     }
 }

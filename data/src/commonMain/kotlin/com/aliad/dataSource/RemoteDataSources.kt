@@ -15,6 +15,7 @@ import com.aliad.model.PopularSearchDto
 import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.LoginDto
+import com.aliad.model.PendingStoryDto
 import com.aliad.model.SearchStoryDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
@@ -58,7 +59,16 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val DELETE_ACCOUNT = "${BASEURL}user/account/delete"
     private val PASSWORD_UPDATE = "${BASEURL}user/password-update"
     private val COMMENT_STORY = "${BASEURL}user/comment-store"
+    private val PENDING_STORY_LIST = "${BASEURL}pending-story-list"
 
+
+    suspend fun pendingStoryList(page : Int, userID : String) : PendingStoryDto{
+        val response = httpClient.get(urlString = PENDING_STORY_LIST){
+            parameter("user_id", userID)
+            parameter("page", page)
+        }
+        return response.body<PendingStoryDto>()
+    }
 
     suspend fun sendFeedback(commentData: MyCommentData): ApiResult<GenericResponse<CommentDto>> {
         return try {

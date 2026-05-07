@@ -14,6 +14,7 @@ import com.aliad.presentation.signIn.ui.newReleaseStory.NewReleaseStoryViewModel
 import com.aliad.presentation.signIn.ui.otpVerification.OtpVerificationViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
+import com.aliad.presentation.signIn.ui.publishedPendingStory.PublishedPendingStoryViewModel
 import com.aliad.presentation.signIn.ui.recoveryPassword.RecoveryPasswordViewModel
 import com.aliad.presentation.signIn.ui.resetPassword.ResetPasswordViewModel
 import com.aliad.presentation.signIn.ui.search.SearchViewModel
@@ -90,7 +91,9 @@ val presentationModule = module {
     }
     viewModel {
         ProfileViewModel(
-            deleteAccountUseCase = get()
+            deleteAccountUseCase = get(),
+            getStringData = get(),
+            getIntData = get()
         )
     }
     viewModel {
@@ -181,5 +184,13 @@ val presentationModule = module {
 
     viewModel {
         UploadStoriesViewModel()
+    }
+
+    viewModel {
+        PublishedPendingStoryViewModel(
+            publishedPendingStoryUseCase = get(),
+            getIntData = get(),
+            getStringData = get()
+        )
     }
 }

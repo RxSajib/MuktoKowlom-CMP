@@ -10,13 +10,18 @@ import com.aliad.model.ApiException
 import com.aliad.model.ApiResponse
 import com.aliad.model.GenericResponse
 import com.aliad.usecase.DeleteAccountUseCase
+import com.aliad.usecase.dataStore.GetIntData
+import com.aliad.usecase.dataStore.GetStringData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class ProfileViewModel constructor(val deleteAccountUseCase: DeleteAccountUseCase) : ViewModel() {
+class ProfileViewModel constructor(val deleteAccountUseCase: DeleteAccountUseCase,
+    val getStringData: GetStringData,
+    val getIntData: GetIntData
+    ) : ViewModel() {
 
 
     var logoutDialogShow by mutableStateOf(false)

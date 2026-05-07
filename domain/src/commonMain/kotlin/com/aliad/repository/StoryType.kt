@@ -13,4 +13,6 @@ interface StoryType {
     fun getAllReleaseStory(searchKey : String) : Flow<PagingData<MyBookItem>>
 
     suspend fun getStoryDetails(storyID : String) : ApiResult<MyBookItem>
+
+    fun getAllPendingStoryList(userID : String) : Flow<PagingData<MyBookItem>>
 }
