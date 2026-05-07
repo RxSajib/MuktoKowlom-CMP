@@ -17,6 +17,7 @@ import com.aliad.model.SubscriptionDto
 import com.aliad.model.LoginDto
 import com.aliad.model.PendingStoryDto
 import com.aliad.model.SearchStoryDto
+import com.aliad.model.StoryCountDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
 import com.aliad.utils.MyCustomLogger
@@ -60,7 +61,60 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val PASSWORD_UPDATE = "${BASEURL}user/password-update"
     private val COMMENT_STORY = "${BASEURL}user/comment-store"
     private val PENDING_STORY_LIST = "${BASEURL}pending-story-list"
+    private val WRITER_DASHBOARD = "${BASEURL}user/writer-dashborad"
 
+
+    suspend fun getWriterDashboard(userID : String) : ApiResult<StoryCountDto>{
+     return try {
+         val response = httpClient.get(urlString = WRITER_DASHBOARD) {
+             parameter("user_id", userID)
+         }
+         if (response.status.isSuccess()) {
+             ApiResult.Success(response.body<StoryCountDto>())
+         } else {
+             val errorBody = response.bodyAsText()
+             val errorResponse = try {
+                 Json.decodeFromString<ErrorResponse>(errorBody)
+             } catch (e: Exception) {
+                 ErrorResponse(
+                     message_en = e.message ?: "Something went wrong",
+                     message_bn = e.message ?: "Something went wrong",
+                     success = false
+                 )
+             }
+
+             ApiResult.Error(
+                 messageBn = errorResponse.message_bn,
+                 messageEn = errorResponse.message_en
+             )
+         }
+     }catch (e: ClientRequestException) {
+
+         val errorBody = e.response.bodyAsText()
+
+         ApiResult.Error(
+             messageBn = errorBody,
+             messageEn = errorBody
+         )
+
+     } catch (e: ServerResponseException) {
+
+         val errorBody = e.response.bodyAsText()
+
+         ApiResult.Error(
+             messageBn = errorBody,
+             messageEn = errorBody
+         )
+
+     } catch (e: Exception) {
+
+         ApiResult.Error(
+             messageBn = e.message,
+             messageEn = e.message
+         )
+     }
+
+    }
 
     suspend fun pendingStoryList(page : Int, userID : String) : PendingStoryDto{
         val response = httpClient.get(urlString = PENDING_STORY_LIST){

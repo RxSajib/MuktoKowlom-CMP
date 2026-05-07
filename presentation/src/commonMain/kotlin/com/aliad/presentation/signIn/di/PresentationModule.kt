@@ -93,7 +93,10 @@ val presentationModule = module {
         ProfileViewModel(
             deleteAccountUseCase = get(),
             getStringData = get(),
-            getIntData = get()
+            getIntData = get(),
+            storyCountUseCase = get(),
+            saveIntData = get(),
+            saveStringData = get()
         )
     }
     viewModel {

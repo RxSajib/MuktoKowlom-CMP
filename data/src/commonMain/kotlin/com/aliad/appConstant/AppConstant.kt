@@ -19,6 +19,10 @@ object AppConstant {
     const val USER_ID = "userID"
     const val SELECT_LOCAL = "selectLocal"
 
+    const val ACTIVE_STORY_COUNT = "activeStoryCount"
+    const val PENDING_STORY_COUNT = "pendingStoryCount"
+    const val JOIN_SINCE = "joinSince"
+
     fun formatDate(input: String): String {
         if (input.isNullOrBlank()) return ""
 

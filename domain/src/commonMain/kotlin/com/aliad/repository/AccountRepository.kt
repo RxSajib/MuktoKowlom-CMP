@@ -3,6 +3,7 @@ package com.aliad.repository
 import com.aliad.ApiResult
 import com.aliad.model.ApiResponse
 import com.aliad.model.ResetPasswordResponse
+import com.aliad.model.StoryCount
 import com.aliad.model.User
 
 interface AccountRepository {
@@ -26,4 +27,6 @@ interface AccountRepository {
     suspend fun deleteAccount() : ApiResult<ApiResponse>
 
     suspend fun updatePassword(userID : String, oldPassword : String,  password : String, confirmPassword : String) : ApiResult<User>
+
+    suspend fun storyCount(userID : String) : ApiResult<StoryCount>
 }

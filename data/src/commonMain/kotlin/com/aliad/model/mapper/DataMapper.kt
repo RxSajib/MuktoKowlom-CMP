@@ -21,10 +21,19 @@ import com.aliad.model.User
 import com.aliad.model.LoginDto
 import com.aliad.model.ResetPasswordResponse
 import com.aliad.model.SearchStoryDto
+import com.aliad.model.StoryCount
+import com.aliad.model.StoryCountDto
 import com.aliad.model.subscription_history.Payment
 
 object DataMapper {
 
+    fun storyCountDtoTOStoryCount(storyCountDto: StoryCountDto) : StoryCount {
+        return StoryCount(
+            liveStoryCount = storyCountDto.liveStory,
+            pendingStoryCount = storyCountDto.pendingStory,
+            joinSince = storyCountDto.join_since
+        )
+    }
 
     fun categoryDtoToMyCategory(categoryDto: CategoryDto) : MyCategory {
         return MyCategory(

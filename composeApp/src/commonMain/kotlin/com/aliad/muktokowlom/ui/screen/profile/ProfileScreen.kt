@@ -108,6 +108,10 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
     val token by dataStoreViewModel.getStringData(key = AppConstant.ACCESS_TOKEN).collectAsStateWithLifecycle("")
     val userID by dataStoreViewModel.getIntData(key = AppConstant.USER_ID).collectAsStateWithLifecycle(0)
 
+    val liveStoryCount = viewModel.liveStoryCount.collectAsStateWithLifecycle(0)
+    val pendingStoryCount = viewModel.pendingStoryCount.collectAsStateWithLifecycle(0)
+    val joinSince = viewModel.joinSince.collectAsStateWithLifecycle("")
+
     val lifecycle = LocalLifecycleOwner.current
     MyCustomLogger.logInfo(tag = TAG, message = "token $token")
     MyCustomLogger.logInfo(tag = TAG, message = "user id $userID")
@@ -160,8 +164,8 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                     userName = userName.value ?: "",
                     emailAddress = userEmailAddress.value ?: "",
                     userProfileImage = userProfileImage.value ?: "",
-                    publishedStoryCount = 45,
-                    pendingStoryCount = 52,
+                    publishedStoryCount = liveStoryCount.value,
+                    pendingStoryCount = pendingStoryCount.value,
                     joinedSince = AppConstant.formatDate(input = userRegisterDate.value ?: ""),
                     pendingStoryButtonClick = {
                         sharedViewModel.setIsPendingStory(true)

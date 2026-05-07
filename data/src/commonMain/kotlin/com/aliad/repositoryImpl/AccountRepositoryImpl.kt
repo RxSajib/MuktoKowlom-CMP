@@ -5,7 +5,10 @@ import com.aliad.dataSource.RemoteDataSources
 import com.aliad.model.ApiResponse
 import com.aliad.model.User
 import com.aliad.model.LoginDto
+import com.aliad.model.MyCategory
 import com.aliad.model.ResetPasswordResponse
+import com.aliad.model.StoryCount
+import com.aliad.model.mapper.DataMapper
 import com.aliad.model.mapper.DataMapper.resetPasswordDtoTOResetPasswordResponse
 import com.aliad.model.mapper.DataMapper.toUser
 import com.aliad.repository.AccountRepository
@@ -85,11 +88,12 @@ class AccountRepositoryImpl(
             )
 
 
-        ){
+        ) {
             is ApiResult.Success -> {
                 val body = myResponse.data
                 ApiResult.Success(body)
             }
+
             is ApiResult.Error -> {
                 ApiResult.Error(messageEn = myResponse.messageEn, messageBn = myResponse.messageBn)
             }
@@ -97,16 +101,19 @@ class AccountRepositoryImpl(
     }
 
     override suspend fun otpVerification(otp: String): ApiResult<User> {
-        return when(
+        return when (
             val response = remoteDataSources.emailOTPVerification(otp = otp)
-        ){
+        ) {
             is ApiResult.Success -> {
                 val body = response.data
-                ApiResult.Success(data = toUser(
-                    loginDto = body.data?: LoginDto(),
-                    accessToken = body.access_token?: ""
-                ))
+                ApiResult.Success(
+                    data = toUser(
+                        loginDto = body.data ?: LoginDto(),
+                        accessToken = body.access_token ?: ""
+                    )
+                )
             }
+
             is ApiResult.Error -> {
                 ApiResult.Error(messageEn = response.messageEn, messageBn = response.messageBn)
             }
@@ -114,11 +121,12 @@ class AccountRepositoryImpl(
     }
 
     override suspend fun resetPassword(emailAddress: String): ApiResult<ResetPasswordResponse> {
-        return when(val response = remoteDataSources.forGotPassword(emailAddress = emailAddress)){
+        return when (val response = remoteDataSources.forGotPassword(emailAddress = emailAddress)) {
             is ApiResult.Success -> {
                 val body = response.data
                 ApiResult.Success(resetPasswordDtoTOResetPasswordResponse(forgotPasswordDto = body))
             }
+
             is ApiResult.Error -> {
                 ApiResult.Error(messageEn = response.messageEn, messageBn = response.messageBn)
             }
@@ -126,25 +134,52 @@ class AccountRepositoryImpl(
     }
 
     override suspend fun deleteAccount(): ApiResult<ApiResponse> {
-        return when(val response = remoteDataSources.deleteAccount()){
+        return when (val response = remoteDataSources.deleteAccount()) {
             is ApiResult.Success -> {
                 val body = response.data
                 ApiResult.Success(body)
             }
+
             is ApiResult.Error -> {
                 ApiResult.Error(messageBn = response.messageBn, messageEn = response.messageEn)
             }
         }
     }
 
-    override suspend fun updatePassword(userID : String, oldPassword : String,  password : String, confirmPassword : String): ApiResult<User> {
-        return when(val response = remoteDataSources.updatePassword(userID = userID, oldPassword = oldPassword, password = password, confirmPassword = confirmPassword)){
+    override suspend fun updatePassword(
+        userID: String,
+        oldPassword: String,
+        password: String,
+        confirmPassword: String
+    ): ApiResult<User> {
+        return when (val response = remoteDataSources.updatePassword(
+            userID = userID,
+            oldPassword = oldPassword,
+            password = password,
+            confirmPassword = confirmPassword
+        )) {
             is ApiResult.Success -> {
                 val body = response.data
-                ApiResult.Success(toUser(loginDto = body.data?: LoginDto()))
+                ApiResult.Success(toUser(loginDto = body.data ?: LoginDto()))
             }
+
             is ApiResult.Error -> {
                 ApiResult.Error(messageEn = response.messageEn, messageBn = response.messageBn)
+            }
+        }
+    }
+
+    override suspend fun storyCount(userID: String): ApiResult<StoryCount> {
+        return when (val response = remoteDataSources.getWriterDashboard(userID = userID)) {
+            is ApiResult.Success -> {
+                ApiResult.Success(data = DataMapper.storyCountDtoTOStoryCount(storyCountDto = response.data))
+            }
+
+            is ApiResult.Error -> {
+                ApiResult.Error(
+                    messageEn = response.messageEn ?: "Something went wrong",
+                    messageBn = response.messageBn ?: "Something went wrong"
+                )
             }
         }
     }

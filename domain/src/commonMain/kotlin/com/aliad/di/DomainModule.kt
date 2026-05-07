@@ -15,6 +15,7 @@ import com.aliad.usecase.RatingAndFeedbackUseCase
 import com.aliad.usecase.RecoveryPasswordUseCase
 import com.aliad.usecase.SearchBookUseCase
 import com.aliad.usecase.SignUpUseCase
+import com.aliad.usecase.StoryCountUseCase
 import com.aliad.usecase.StoryDetailsUseCase
 import com.aliad.usecase.StoryTypeUseCase
 import com.aliad.usecase.SubscriptionHistoryUseCase
@@ -163,6 +164,12 @@ val domainModule = module {
     factory {
         PublishedPendingStoryUseCase(
             storyType = get()
+        )
+    }
+
+    factory {
+        StoryCountUseCase(
+            accountRepository = get()
         )
     }
 }
