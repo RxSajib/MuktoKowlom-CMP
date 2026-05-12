@@ -9,12 +9,14 @@ import com.aliad.presentation.signIn.ui.changeLanguage.ChangeLanguageViewModel
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
+import com.aliad.presentation.signIn.ui.liveStory.LiveStoryListViewModel
 import com.aliad.presentation.signIn.ui.mostPopularStory.MostPopularStoryViewModel
 import com.aliad.presentation.signIn.ui.newReleaseStory.NewReleaseStoryViewModel
 import com.aliad.presentation.signIn.ui.otpVerification.OtpVerificationViewModel
 import com.aliad.presentation.signIn.ui.privacy_policy.PrivacyPolicyViewModel
 import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.publishedPendingStory.PublishedPendingStoryViewModel
+import com.aliad.presentation.signIn.ui.publishedStory.PublishedStoryViewModel
 import com.aliad.presentation.signIn.ui.recoveryPassword.RecoveryPasswordViewModel
 import com.aliad.presentation.signIn.ui.resetPassword.ResetPasswordViewModel
 import com.aliad.presentation.signIn.ui.search.SearchViewModel
@@ -195,5 +197,13 @@ val presentationModule = module {
             getIntData = get(),
             getStringData = get()
         )
+    }
+
+    viewModel {
+        PublishedStoryViewModel()
+    }
+
+    viewModel {
+        LiveStoryListViewModel(storyType = get(), getIntData = get(), getStringData = get())
     }
 }

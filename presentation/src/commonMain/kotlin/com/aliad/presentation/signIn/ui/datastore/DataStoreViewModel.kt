@@ -17,10 +17,13 @@ import com.aliad.usecase.dataStore.SaveBoolData
 import com.aliad.usecase.dataStore.SaveIntData
 import com.aliad.usecase.dataStore.SaveStringData
 import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 
 class DataStoreViewModel constructor(
     private val saveStringData: SaveStringData,
@@ -59,72 +62,65 @@ class DataStoreViewModel constructor(
     fun getStringData(key: String): Flow<String> = getStringData.getStringData(key = key)
 
 
-
-
-    fun deleteStringData(key : String){
+    fun deleteStringData(key: String) {
         viewModelScope.launch {
             deleteStringDataUseCase.removeStringData(key = key)
         }
     }
 
-    fun deleteIntData(key : String){
+    fun deleteIntData(key: String) {
         viewModelScope.launch {
             deleteIntDataUseCase.deleteIntData(key = key)
         }
     }
 
-    fun deleteBoolData(key : String){
+    fun deleteBoolData(key: String) {
         viewModelScope.launch {
             deleteBoolDataUseCase.deleteBoolData(key = key)
         }
     }
 
 
-    fun deleteUser(){
+    fun deleteUser() {
         viewModelScope.launch {
-            val job1 = async {
-                deleteStringData(key = AppConstant.USER_NAME)
-            }
-            val job2 = async {
-                deleteStringData(key = AppConstant.USER_PHONE)
-            }
-            val job3 = async {
-                deleteStringData(key = AppConstant.USER_REGISTER_DATE)
-            }
-            val job4 = async {
-                deleteStringData(key = AppConstant.USER_PROFILE_IMAGE)
-            }
-            val job5 = async {
-                deleteStringData(key = AppConstant.USER_EMAIL_ADDRESS)
-            }
-            val job6 = async {
-                deleteStringData(key = AppConstant.ACCESS_TOKEN)
-            }
-            val job7 = async {
-                deleteStringData(key = AppConstant.USER_SECOND_NUMBER)
-            }
-            val job8 = async {
-                deleteStringData(key = AppConstant.USER_DATE_OF_BIRTH)
-            }
-            val job9 = async {
-                deleteStringData(key = AppConstant.USER_AGE)
-            }
-            val job10 = async {
-                deleteStringData(key = AppConstant.USER_ADDRESS)
-            }
+            supervisorScope {
 
-
-            job1.join()
-            job2.join()
-            job3.join()
-            job4.join()
-            job5.join()
-            job6.join()
-            job7.join()
-            job8.join()
-            job9.join()
-            job10.join()
+                val jobs = listOf(
+                    async {
+                        deleteStringData(key = AppConstant.USER_NAME)
+                    },
+                    async {
+                        deleteStringData(key = AppConstant.USER_PHONE)
+                    },
+                    async {
+                        deleteStringData(key = AppConstant.USER_REGISTER_DATE)
+                    },
+                    async {
+                        deleteStringData(key = AppConstant.USER_PROFILE_IMAGE)
+                    },
+                    async {
+                        deleteStringData(key = AppConstant.USER_EMAIL_ADDRESS)
+                    },
+                    async {
+                        deleteStringData(key = AppConstant.ACCESS_TOKEN)
+                    },
+                    async {
+                        deleteStringData(key = AppConstant.USER_SECOND_NUMBER)
+                    },
+                    async {
+                        deleteStringData(key = AppConstant.USER_DATE_OF_BIRTH)
+                    },
+                    async {
+                        deleteStringData(key = AppConstant.USER_AGE)
+                    },
+                    async {
+                        deleteStringData(key = AppConstant.USER_ADDRESS)
+                    }
+                )
+                jobs.joinAll()
+            }
         }
+
     }
 
 }

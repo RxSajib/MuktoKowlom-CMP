@@ -7,19 +7,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliad.ApiResult
 import com.aliad.model.DashBord
+import com.aliad.presentation.utils.MyCustomLogger
 import com.aliad.presentation.utils.UiState
 import com.aliad.usecase.DashBoardUseCase
 import com.aliad.usecase.dataStore.GetStringData
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.retry
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 
+private const val TAG = "DashBoardViewModel"
 class DashBoardViewModel constructor(val dashBoardUseCase: DashBoardUseCase,
     val getStringData: GetStringData) : ViewModel() {
 
@@ -30,6 +37,7 @@ class DashBoardViewModel constructor(val dashBoardUseCase: DashBoardUseCase,
 
     init {
         getDashBoardData()
+
     }
 
     fun getDashBoardData(){
@@ -52,4 +60,6 @@ class DashBoardViewModel constructor(val dashBoardUseCase: DashBoardUseCase,
     val selectedLan = flow {
         emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
     }.flowOn(context = Dispatchers.IO)
+    
+
 }

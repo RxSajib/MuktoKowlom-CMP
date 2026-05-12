@@ -18,6 +18,7 @@ import com.aliad.model.LoginDto
 import com.aliad.model.PendingStoryDto
 import com.aliad.model.SearchStoryDto
 import com.aliad.model.StoryCountDto
+import com.aliad.model.LiveStoryDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
 import com.aliad.utils.MyCustomLogger
@@ -62,7 +63,16 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val COMMENT_STORY = "${BASEURL}user/comment-store"
     private val PENDING_STORY_LIST = "${BASEURL}pending-story-list"
     private val WRITER_DASHBOARD = "${BASEURL}user/writer-dashborad"
+    private val LIVE_STORY_LIST = "${BASEURL}live-story-list"
 
+
+    suspend fun getLiveStoryList(userID : String, page : Int) : LiveStoryDto {
+        val response = httpClient.get(urlString = LIVE_STORY_LIST){
+            parameter("user_id", userID)
+            parameter("page", page)
+        }
+        return response.body<LiveStoryDto>()
+    }
 
     suspend fun getWriterDashboard(userID : String) : ApiResult<StoryCountDto>{
      return try {

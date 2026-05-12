@@ -84,6 +84,25 @@ class ProfileViewModel constructor(val deleteAccountUseCase: DeleteAccountUseCas
         }
     }
 
+    val userName = flow {
+        emit(getStringData.getStringData(key = AppConstant.USER_NAME).first())
+    }
+    val userEmailAddress = flow {
+        emit(getStringData.getStringData(key = AppConstant.USER_EMAIL_ADDRESS).first())
+    }
+    val userProfileImage = flow {
+        emit(getStringData.getStringData(key = AppConstant.USER_PROFILE_IMAGE).first())
+    }
+    val userPhone = flow {
+        emit(getStringData.getStringData(key = AppConstant.USER_PHONE).first())
+    }
+    val userRegisterData = flow {
+        emit(getStringData.getStringData(key = AppConstant.USER_REGISTER_DATE).first())
+    }
+    val accessToken = flow {
+        emit(getStringData.getStringData(key = AppConstant.ACCESS_TOKEN).first())
+    }
+
     val liveStoryCount = flow {
         emit(getIntData.getIntData(key = AppConstant.ACTIVE_STORY_COUNT).first())
     }

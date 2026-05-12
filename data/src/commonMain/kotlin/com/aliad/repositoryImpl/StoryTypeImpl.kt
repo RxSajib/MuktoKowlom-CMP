@@ -11,6 +11,7 @@ import com.aliad.model.mapper.DataMapper.toBookFromSearchStoryDto
 import com.aliad.model.mapper.DataMapper.toBookModel
 import com.aliad.model.SearchStoryDto
 import com.aliad.pager.AllStoryPagingSource
+import com.aliad.pager.LiveStoryPagingSource
 import com.aliad.pager.PendingStoryPagingSource
 import com.aliad.pager.SearchStoryPagingSource
 import com.aliad.pager.StoryTypePagingSource
@@ -82,6 +83,22 @@ class StoryTypeImpl constructor(val remoteDataSources: RemoteDataSources) : Stor
             ),
             pagingSourceFactory = { PendingStoryPagingSource(remoteDataSources = remoteDataSources, userID = userID)}
         ).flow.flowOn(context = Dispatchers.IO).map { pagingData ->
+            pagingData.map { bookItem ->
+                toBookModel(bookItem = bookItem)
+            }
+        }
+    }
+
+    override fun getLiveStoryList(userID: Int): Flow<PagingData<MyBookItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                LiveStoryPagingSource(remoteDataSources = remoteDataSources, userID = userID.toString())
+            }
+        ).flow.map { pagingData ->
             pagingData.map { bookItem ->
                 toBookModel(bookItem = bookItem)
             }

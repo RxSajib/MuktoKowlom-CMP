@@ -30,6 +30,7 @@ import com.aliad.muktokowlom.ui.screen.premium.PremiumScreen
 import com.aliad.muktokowlom.ui.screen.privacy_policy.PrivacyPolicyScreen
 import com.aliad.muktokowlom.ui.screen.profile.ProfileScreen
 import com.aliad.muktokowlom.ui.screen.publishedPendingStoryList.PublishedPendingStoryListScreen
+import com.aliad.muktokowlom.ui.screen.publishedStory.PublishedStoryScreen
 import com.aliad.muktokowlom.ui.screen.searchStory.SearchStoryResultScreen
 import com.aliad.muktokowlom.ui.screen.storyDetails.StoryDetailsScreen
 import com.aliad.muktokowlom.ui.screen.storyType.StoryTypeScreen
@@ -124,6 +125,10 @@ fun DestNavigation(
                     AppDestination.Dest.StoryDetails::class,
                     AppDestination.Dest.StoryDetails.serializer()
                 )
+                subclass(
+                    AppDestination.Dest.PublishedStory::class,
+                    AppDestination.Dest.PublishedStory.serializer()
+                )
             }
         }
     }
@@ -148,6 +153,8 @@ fun DestNavigation(
         startDest.firstDestName == AppDestination.Dest.MostPopular::class.simpleName -> AppDestination.Dest.MostPopular
         startDest.firstDestName == AppDestination.Dest.ChangeLanguage::class.simpleName -> AppDestination.Dest.ChangeLanguage
         startDest.firstDestName == AppDestination.Dest.StoryDetails::class.simpleName -> AppDestination.Dest.StoryDetails
+        startDest.firstDestName == AppDestination.Dest.PublishedStory::class.simpleName -> AppDestination.Dest.PublishedStory
+
         else -> throw Exception("Invalid destination")
     }
 
@@ -254,6 +261,9 @@ fun DestNavigation(
                         backStack = backStack,
                         rootBackStack = rootBackStack
                     )
+                }
+                entry<AppDestination.Dest.PublishedStory> {
+                    PublishedStoryScreen(backStack = backStack, rootBackStack = rootBackStack)
                 }
 
             },

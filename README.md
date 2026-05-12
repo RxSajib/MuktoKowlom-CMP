@@ -1,5 +1,7 @@
 This is a Kotlin Multiplatform project targeting Android, iOS, Desktop (JVM).
 
+**Multi-module layout:** Gradle modules `:composeApp`, `:presentation`, `:data`, and `:domain` — see [**docs/MULTI_MODULE_ARCHITECTURE.md**](docs/MULTI_MODULE_ARCHITECTURE.md) for layers, dependency rules, DI, and `BASE_URL` setup.
+
 * [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
   It contains several subfolders:
   - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.

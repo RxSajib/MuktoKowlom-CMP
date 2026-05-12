@@ -100,21 +100,18 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
 
     val viewModel: ProfileViewModel = koinViewModel()
     val dataStoreViewModel : DataStoreViewModel = koinViewModel()
-    val userName = dataStoreViewModel.getStringData(key = AppConstant.USER_NAME).collectAsStateWithLifecycle(null)
-    val userEmailAddress = dataStoreViewModel.getStringData(key = AppConstant.USER_EMAIL_ADDRESS).collectAsStateWithLifecycle(null)
-    val userProfileImage = dataStoreViewModel.getStringData(key = AppConstant.USER_PROFILE_IMAGE).collectAsStateWithLifecycle(null)
-    val userPhoneNumber = dataStoreViewModel.getStringData(key = AppConstant.USER_PHONE).collectAsStateWithLifecycle(null)
-    val userRegisterDate = dataStoreViewModel.getStringData(key = AppConstant.USER_REGISTER_DATE).collectAsStateWithLifecycle(null)
-    val token by dataStoreViewModel.getStringData(key = AppConstant.ACCESS_TOKEN).collectAsStateWithLifecycle("")
-    val userID by dataStoreViewModel.getIntData(key = AppConstant.USER_ID).collectAsStateWithLifecycle(0)
+    val userName = viewModel.userName.collectAsStateWithLifecycle("")
+    val userEmailAddress = viewModel.userEmailAddress.collectAsStateWithLifecycle("")
+    val userProfileImage = viewModel.userProfileImage.collectAsStateWithLifecycle("")
+    val userPhoneNumber = viewModel.userPhone.collectAsStateWithLifecycle("")
+    val userRegisterDate = viewModel.userRegisterData.collectAsStateWithLifecycle("")
+    val token = viewModel.accessToken.collectAsStateWithLifecycle("")
 
     val liveStoryCount = viewModel.liveStoryCount.collectAsStateWithLifecycle(0)
     val pendingStoryCount = viewModel.pendingStoryCount.collectAsStateWithLifecycle(0)
-    val joinSince = viewModel.joinSince.collectAsStateWithLifecycle("")
 
     val lifecycle = LocalLifecycleOwner.current
-    MyCustomLogger.logInfo(tag = TAG, message = "token $token")
-    MyCustomLogger.logInfo(tag = TAG, message = "user id $userID")
+
 
 
     LaunchedEffect(lifecycle.lifecycle) {
@@ -159,7 +156,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                 .padding(16.dp)
         ) {
 
-            if (!token.isEmpty()) {
+            if (!token.value.isEmpty()) {
                 UserInfo(
                     userName = userName.value ?: "",
                     emailAddress = userEmailAddress.value ?: "",
@@ -176,10 +173,9 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                         )
                     },
                     publishedStoryButtonClick = {
-                        sharedViewModel.setIsPendingStory(false)
                         backStack.add(
                             AppDestination.Dest(
-                                AppDestination.Dest.PublishedPendingStory::class.simpleName ?: ""
+                                AppDestination.Dest.PublishedStory::class.simpleName ?: ""
                             )
                         )
                     },
@@ -205,7 +201,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
 
             HeightGap(height = 10.dp)
 
-            if (!token.isEmpty()) {
+            if (!token.value.isEmpty()) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -250,7 +246,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
             }
             HeightGap(height = 10.dp)
 
-            if (!token.isEmpty()) {
+            if (!token.value.isEmpty()) {
                 MyCustomMenu(
                     modifier = Modifier,
                     title = stringResource(Res.string.upload_stories),
@@ -300,7 +296,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
 
             HeightGap(height = 10.dp)
 
-            if (!token.isEmpty()) {
+            if (!token.value.isEmpty()) {
 
                 MyCustomMenu(
                     modifier = Modifier,
@@ -350,7 +346,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
 
             HeightGap(height = 10.dp)
 
-            if (!token.isEmpty()) {
+            if (!token.value.isEmpty()) {
                 MyCustomMenu(
                     modifier = Modifier,
                     title = stringResource(Res.string.delete_account),
@@ -365,7 +361,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
             }
 
 
-            if (!token.isEmpty()) {
+            if (!token.value.isEmpty()) {
                 MyCustomMenu(
                     modifier = Modifier,
                     title = stringResource(Res.string.logout),
