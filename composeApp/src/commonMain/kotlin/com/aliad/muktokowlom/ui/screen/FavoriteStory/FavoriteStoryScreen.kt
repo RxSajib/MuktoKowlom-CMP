@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.muktokowlom.ui.component.EmptySaveBook
 import com.aliad.presentation.signIn.ui.FavoriteStory.FavoriteStoryViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -21,9 +22,7 @@ fun FavoriteStoryScreen(backStack: NavBackStack<NavKey>) {
 
     Surface(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                Text(
-                    text = "FavoriteStory",
-                )
+                EmptySaveBook()
             }
     }
 }
