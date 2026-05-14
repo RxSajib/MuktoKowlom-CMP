@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
+import com.aliad.muktokowlom.utils.getTitle
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.amount
 import muktokowlomcmp.composeapp.generated.resources.buy
@@ -56,9 +57,10 @@ fun PremiumPurchaseCustomButton(modifier: Modifier, price : String, selectedLn :
                 )
                 WidthGap(width = 1.dp)
                 Text(
-                    text = if (selectedLn == "en") price
-                        ?: "0" else AppConstant.toBanglaDigits(
-                        price ?: "0"
+                    text = getTitle(
+                        selectLn = selectedLn,
+                        title = price ,
+                        titleBn = AppConstant.toBanglaDigits(price)
                     ),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,

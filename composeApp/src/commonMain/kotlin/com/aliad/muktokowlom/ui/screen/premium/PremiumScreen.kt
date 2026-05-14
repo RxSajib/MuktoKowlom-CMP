@@ -48,9 +48,7 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
     val viewModel: SubscriptionPlanViewModel = koinViewModel()
     val premium = viewModel.premiumPlanStateFlow.collectAsStateWithLifecycle()
 
-    val dataStoreViewModel: DataStoreViewModel = koinViewModel()
-    val selectLn = dataStoreViewModel.getStringData(key = AppConstant.SELECT_LOCAL)
-        .collectAsStateWithLifecycle("en")
+    val selectLn = viewModel.selectedLan.collectAsStateWithLifecycle("en")
     val lifecycle = LocalLifecycleOwner.current
     val scope = rememberCoroutineScope()
 

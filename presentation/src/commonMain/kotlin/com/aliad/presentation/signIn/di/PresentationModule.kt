@@ -106,7 +106,8 @@ val presentationModule = module {
     }
     viewModel {
         SubscriptionPlanViewModel(
-            premiumPlanUseCase = get()
+            premiumPlanUseCase = get(),
+            getStringData = get()
         )
     }
     viewModel {

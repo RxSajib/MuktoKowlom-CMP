@@ -25,6 +25,7 @@ import kotlinx.coroutines.withContext
 
 class SubscriptionPlanViewModel constructor(
     val premiumPlanUseCase: PremiumPlanUseCase,
+    val getStringData: GetStringData
 ) : ViewModel() {
 
     private var premiumPlanMutableStateFlow = MutableStateFlow< UiState<List<Subscription>>>(UiState.Loading)
@@ -44,6 +45,9 @@ class SubscriptionPlanViewModel constructor(
     }
 
 
+    val selectedLan = flow {
+        emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+    }
 
     init {
         getPremiumPlanList()

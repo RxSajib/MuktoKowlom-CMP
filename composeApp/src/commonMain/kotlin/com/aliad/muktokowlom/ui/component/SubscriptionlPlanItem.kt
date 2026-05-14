@@ -43,7 +43,6 @@ fun SubscriptionPlanItem(
     onClick: () -> Unit,
 ) {
 
-    print("selected ln ${selectLn.value}")
 
     fun generateRandomColor(): Color {
         return Color(
@@ -92,8 +91,8 @@ fun SubscriptionPlanItem(
                     Text(
                         text = getTitle(
                             selectLn = selectLn.value,
-                            title = subscription.name ?: "",
-                            titleBn = subscription.name_bn ?: ""
+                            title = subscription.name ,
+                            titleBn = subscription.name_bn
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         style = MaterialTheme.typography.bodySmall.copy(
@@ -130,8 +129,11 @@ fun SubscriptionPlanItem(
                     )
                     WidthGap(width = 1.dp)
                     Text(
-                        text = if (selectLn.value == "en") subscription.price
-                            ?: "0" else AppConstant.toBanglaDigits(subscription.price ?: "0"),
+                        text =  getTitle(
+                            selectLn = selectLn.value,
+                            title = subscription.price ,
+                            titleBn = AppConstant.toBanglaDigits(subscription.price ?: "0")
+                        ),
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = if (selected) FontWeight.Bold else FontWeight.W300,
                             color = MaterialTheme.colorScheme.primary
