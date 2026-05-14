@@ -417,7 +417,6 @@ The architecture is designed for:
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Login.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Change%20Lan.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Premium.png?raw=true" width="250"/>
-    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Search%20Android.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Single%20Search%20Story.png?raw=true" width="250"/>
 </p>
 
@@ -428,11 +427,10 @@ The architecture is designed for:
   <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Category.png?raw=true" width="250"/>
   <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Search.png?raw=true" width="250"/>
    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Bookmark.png?raw=true" width="250"/>
-    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/AndroidProfile.png?raw=true" width="250"/>
+    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Login.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Profile.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Change%20Lan.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Premium.png?raw=true" width="250"/>
-    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Search%20Android.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Search%20Single%20Story.png?raw=true" width="250"/>
 </p>
 
