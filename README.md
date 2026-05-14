@@ -425,11 +425,11 @@ The architecture is designed for:
 
 <p align="center">
   <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Home.png?raw=true" width="250"/>
-  <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android_Category.png?raw=true" width="250"/>
-  <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Search%20Android.png?raw=true" width="250"/>
-   <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Favorite%20Android.png?raw=true" width="250"/>
+  <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Category.png?raw=true" width="250"/>
+  <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Search.png?raw=true" width="250"/>
+   <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Bookmark.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/AndroidProfile.png?raw=true" width="250"/>
-    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Login.png?raw=true" width="250"/>
+    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/desktop/Desktop%20Profile.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Change%20Lan.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Premium.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Search%20Android.png?raw=true" width="250"/>
