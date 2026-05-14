@@ -406,21 +406,17 @@ The architecture is designed for:
 
 ---
 
-# 📸 Screenshots
+# 📸 Screenshots (Android)
 
-```text
-Add your screenshots here
-```
+<p align="center">
+  <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Home.png?raw=true" width="250"/>
+  <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android_Category.png?raw=true" width="250"/>
+  <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Search%20Android.png?raw=true" width="250"/>
+   <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Favorite%20Android.png?raw=true" width="250"/>
+    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/AndroidProfile.png?raw=true" width="250"/>
+</p>
 
-Example:
 
-```md
-| Home Screen | Details Screen |
-|---|---|
-| ![](screenshots/home.png) | ![](screenshots/details.png) |
-```
-
----
 
 # ⚙️ Setup & Installation
 
