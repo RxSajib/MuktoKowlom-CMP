@@ -423,7 +423,7 @@ The architecture is designed for:
 ## Clone Repository
 
 ```bash
-git clone https://github.com/your-username/muktokowlom-cmp.git
+git clone https://github.com/RxSajib/MuktoKowlom-CMP.git
 ```
 
 ---
