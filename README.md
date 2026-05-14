@@ -414,6 +414,8 @@ The architecture is designed for:
   <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Search%20Android.png?raw=true" width="250"/>
    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Favorite%20Android.png?raw=true" width="250"/>
     <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/AndroidProfile.png?raw=true" width="250"/>
+    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Login.png?raw=true" width="250"/>
+    <img src="https://github.com/RxSajib/MuktoKowlom-CMP/blob/main/screenShot/Android%20Change%20Lan.png?raw=true" width="250"/>
 </p>
 
 
