@@ -27,7 +27,6 @@ import com.aliad.muktokowlom.data.app_constant.AppConstant.paymentTypeToImage
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.orange
 import muktokowlomcmp.composeapp.generated.resources.Res
-import muktokowlomcmp.composeapp.generated.resources.bkash_bkash_logo
 import muktokowlomcmp.composeapp.generated.resources.expired_on
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

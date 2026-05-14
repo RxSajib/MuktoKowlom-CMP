@@ -26,3 +26,6 @@ val purpleBlue = Color(0xFF6F38D6)
 val pink = Color(0xFFE4187B)
 val teal = Color(0xFF008080)
 val purple = Color(0xFF800080)
+
+
+val bkashColor = Color(0xffD12053)
