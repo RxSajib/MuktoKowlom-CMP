@@ -68,7 +68,7 @@ fun SubscriptionHistoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: Na
         ) {
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(subscriptionHistory.itemCount){
+                items(subscriptionHistory.itemCount, key = {index -> subscriptionHistory[index]?.id?: index}){
                     Text(
                         text = "item $it"
                     )

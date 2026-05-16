@@ -126,7 +126,7 @@ fun NewReleaseScreen(
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
 
-                            items(storyData.itemCount) { position ->
+                            items(storyData.itemCount, key = {index -> storyData[index]?.storyID?: index}) { position ->
                                 StoryItem(selectedLan = selectedLan.value, item = storyData[position], context = contextCoil){bookItem ->
                                     sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                     backStack.add(AppDestination.StoryDetails)

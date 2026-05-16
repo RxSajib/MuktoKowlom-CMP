@@ -346,7 +346,8 @@ fun StoryDetailsScreen(
                                 WriterInfo(
                                     modifier = Modifier.padding(horizontal = 16.dp),
                                     writerName = data.user?.name ?: "Unknown",
-                                    profileImage = data.user?.profileImage ?: ""
+                                    profileImage = data.user?.profileImage ?: "",
+                                    context = contextCoil
                                 ) {
 
                                 }
@@ -453,7 +454,7 @@ fun StoryDetailsScreen(
                                     }
                                 } else {
                                     LazyRow(modifier = Modifier.fillMaxWidth()) {
-                                        items(data.likeStories) { myLikeStory ->
+                                        items(data.likeStories, key = {it.storyID?: it.hashCode()}) { myLikeStory ->
                                             LikeStoryItem(item = myLikeStory, context = contextCoil)
                                         }
                                     }

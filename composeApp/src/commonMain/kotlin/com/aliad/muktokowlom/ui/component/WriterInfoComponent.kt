@@ -20,7 +20,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.PlatformContext
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import io.ktor.util.Platform
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -34,12 +37,18 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun WriterInfo(modifier: Modifier,writerName: String, profileImage: String, viewAllButtonClick: () -> Unit) {
+fun WriterInfo(
+    modifier: Modifier,
+    writerName: String,
+    profileImage: String,
+    context : PlatformContext,
+    viewAllButtonClick: () -> Unit
+) {
 
 
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         AsyncImage(
-            model = profileImage,
+            model = ImageRequest.Builder(context).data(profileImage).size(200).build(),
             contentDescription = null,
             modifier = Modifier.size(50.dp).clip(shape = CircleShape),
             placeholder = painterResource(Res.drawable.placeholder),
@@ -77,8 +86,8 @@ fun WriterInfo(modifier: Modifier,writerName: String, profileImage: String, view
             ),
             modifier = Modifier.clip(shape = CircleShape)
                 .background(color = MaterialTheme.colorScheme.primary).clickable {
-                viewAllButtonClick.invoke()
-            }
+                    viewAllButtonClick.invoke()
+                }
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         )
 
@@ -88,10 +97,12 @@ fun WriterInfo(modifier: Modifier,writerName: String, profileImage: String, view
 @Composable
 @Preview
 fun WriterInfoPreview() {
+    val context = LocalPlatformContext.current
     WriterInfo(
         modifier = Modifier,
         writerName = "Sajib Roy",
-        profileImage = ""
+        profileImage = "",
+        context = context
     ) {
 
     }

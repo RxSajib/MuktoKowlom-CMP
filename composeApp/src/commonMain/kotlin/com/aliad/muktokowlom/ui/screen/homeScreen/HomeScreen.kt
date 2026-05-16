@@ -142,7 +142,8 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                             })
                         LazyRow {
                             items(
-                                data.listOfNewReleaseStories
+                                data.listOfNewReleaseStories,
+                                key = {it.storyID?: it.hashCode()}
                             ) { bookItem ->
                                 StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem, context = context){myBookItem ->
                                     sharedViewModel.selectedBookID = myBookItem.storyID?: 0
@@ -163,7 +164,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                                 )
                             })
                         LazyRow {
-                            items(data.lifOfAllStories) { bookItem ->
+                            items(data.lifOfAllStories, key = {it.storyID?: it.hashCode()}) { bookItem ->
                                 StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem, context = context){myBookItem ->
                                     sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                     backStack.add(

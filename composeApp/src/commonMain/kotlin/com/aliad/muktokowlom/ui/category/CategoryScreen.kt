@@ -66,7 +66,7 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewM
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        items(data) { categoryData ->
+                        items(data, key = {it.id}) { categoryData ->
                             CategoryItem(
                                 category = categoryData,
                                 context = context,

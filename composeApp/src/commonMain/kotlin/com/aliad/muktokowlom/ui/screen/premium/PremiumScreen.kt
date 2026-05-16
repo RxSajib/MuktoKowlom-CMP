@@ -103,7 +103,7 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                                     ),
                                     verticalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
-                                    items(data) { subscription ->
+                                    items(data, key = {it.id?: it.hashCode()}) { subscription ->
                                         SubscriptionPlanItem(
                                             selected = viewModel.selectedSubscriptionIndex == (subscription.id
                                                 ?: 0),

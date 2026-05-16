@@ -144,7 +144,7 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
                         is UiState.Success -> {
                             val popularSearchData = (popularSearchData.value as UiState.Success<PopularSearch>).data
                             LazyRow {
-                                items(popularSearchData.storyList){ story ->
+                                items(popularSearchData.storyList, key = {it.storyID?: it.hashCode()}){ story ->
                                     StoryItemFixedSize(selectLn = selectedLan.value, item = story, context = context){myBookItem ->
                                         sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                         backStack.add(

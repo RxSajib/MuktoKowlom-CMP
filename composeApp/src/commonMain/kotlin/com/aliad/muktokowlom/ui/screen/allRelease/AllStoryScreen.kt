@@ -132,7 +132,7 @@ fun AllStoryScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<Nav
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
 
-                            items(storyData.itemCount) { position ->
+                            items(storyData.itemCount, key = {index -> storyData[index]?.storyID?: index}) { position ->
                                 StoryItem(selectedLan = selectedLan.value,  storyData[position], context = contextCoil) { bookItem ->
                                     sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                     backStack.add(AppDestination.StoryDetails)
