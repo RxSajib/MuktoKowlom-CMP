@@ -16,7 +16,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.PlatformContext
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
 import com.aliad.model.MyLikeStory
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -24,13 +26,13 @@ import muktokowlomcmp.composeapp.generated.resources.placeholder
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun LikeStoryItem(item: MyLikeStory){
+fun LikeStoryItem(item: MyLikeStory, context : PlatformContext){
     Column(modifier = Modifier.width(220.dp).padding(10.dp)) {
         Box{
             AsyncImage(
                 modifier = Modifier.fillMaxWidth().height(100.dp)
                     .clip(shape = RoundedCornerShape(10.dp)),
-                model = item.completedImageUri ?: "",
+                model = ImageRequest.Builder(context).data(item.completedImageUri).size(500).build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(Res.drawable.placeholder),

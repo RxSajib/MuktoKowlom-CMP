@@ -43,6 +43,8 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import be.digitalia.compose.htmlconverter.htmlToString
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
 import com.aliad.helper.SnackBarEvent
 import com.aliad.model.MyBookItem
 import com.aliad.model.SnackBarDetails
@@ -110,6 +112,7 @@ fun StoryDetailsScreen(
             parametersOf(sharedViewModel.selectedBookID.toString())
         }
     )
+    val contextCoil = LocalPlatformContext.current
     val storyData = viewModel.storyData.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current
     val successMessage = stringResource(Res.string.comment_posted_successfully)
@@ -209,7 +212,7 @@ fun StoryDetailsScreen(
                             ) {
                                 HeightGap(height = 15.dp)
                                 AsyncImage(
-                                    model = data.completedImageUri,
+                                    model = ImageRequest.Builder(contextCoil).data(data.completedImageUri).size(500).build(),
                                     contentScale = ContentScale.Crop,
                                     contentDescription = null,
                                     placeholder = painterResource(Res.drawable.placeholder),
@@ -451,7 +454,7 @@ fun StoryDetailsScreen(
                                 } else {
                                     LazyRow(modifier = Modifier.fillMaxWidth()) {
                                         items(data.likeStories) { myLikeStory ->
-                                            LikeStoryItem(item = myLikeStory)
+                                            LikeStoryItem(item = myLikeStory, context = contextCoil)
                                         }
                                     }
                                 }

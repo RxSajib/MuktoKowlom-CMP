@@ -17,7 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.PlatformContext
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
 import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
@@ -33,7 +35,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 private const val TAG = "StoryItem"
 @Composable
-fun StoryItem(selectedLan: String, item: MyBookItem?, onClick: (data: MyBookItem) -> Unit) {
+fun StoryItem(selectedLan: String, item: MyBookItem?, context : PlatformContext, onClick: (data: MyBookItem) -> Unit) {
 
     MyCustomLogger.logInfo(tag = TAG, message = "title bangla ${item?.titleBn}")
     MyCustomLogger.logInfo(tag = TAG, message = "title english ${item?.titleEn}")
@@ -45,9 +47,9 @@ fun StoryItem(selectedLan: String, item: MyBookItem?, onClick: (data: MyBookItem
         Box{
 
             AsyncImage(
-                modifier = Modifier.fillMaxWidth().height(100.dp)
+                modifier =  Modifier.fillMaxWidth().height(100.dp)
                     .clip(shape = RoundedCornerShape(10.dp)),
-                model = item?.completedImageUri ?: "",
+                model = ImageRequest.Builder(context).data(item?.completedImageUri ?: "").size(500).build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(Res.drawable.placeholder),

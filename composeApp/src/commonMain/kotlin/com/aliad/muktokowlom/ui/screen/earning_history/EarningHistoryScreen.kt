@@ -1,6 +1,7 @@
 package com.aliad.muktokowlom.ui.screen.earning_history
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,9 +14,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.model.MyEarnHistory
+import com.aliad.muktokowlom.ui.component.EarnHistoryItem
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.presentation.signIn.ui.earningHistory.EarningHistoryViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
@@ -42,12 +46,12 @@ fun EarningHistoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
         ) { innerPadding ->
             Box(
                 modifier = Modifier.fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.surface).padding(innerPadding)
+                    .background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(horizontal = 16.dp, )
             ) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(earningHistoryData.value){earningHistory ->
-                        Text(
-                            text = earningHistory.amount
+                LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    items(earningHistoryData.value, key = {it.id}){earningHistory ->
+                        EarnHistoryItem(
+                            myEarnHistory = earningHistory
                         )
                     }
                 }

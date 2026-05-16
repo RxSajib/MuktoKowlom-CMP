@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import coil3.compose.LocalPlatformContext
 import com.aliad.model.MyCategory
 import com.aliad.muktokowlom.ui.component.CategoryItem
 import com.aliad.muktokowlom.ui.component.CategoryScreenShimmer
@@ -45,6 +46,7 @@ fun AllCategoryScreen(
 
     val viewModel: CategoryViewModel = koinViewModel()
     val categoryData = viewModel.categoryData.collectAsStateWithLifecycle()
+    val contextCoil = LocalPlatformContext.current
 
 
     val refreshState = rememberRefreshLayoutState {
@@ -90,7 +92,7 @@ fun AllCategoryScreen(
                                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 ) {
                                     items(data) { categoryData ->
-                                        CategoryItem(category = categoryData, onClick = {
+                                        CategoryItem(category = categoryData, context = contextCoil, onClick = {
                                             sharedViewModel.setCategory(category = categoryData)
                                             backStack.add(AppDestination.Dest.CategoryWiseBook)
                                         })

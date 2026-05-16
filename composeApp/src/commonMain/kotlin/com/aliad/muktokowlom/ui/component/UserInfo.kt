@@ -26,7 +26,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.PlatformContext
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.joined_since
@@ -42,6 +45,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun UserInfo(
+    context : PlatformContext,
     userName: String,
     emailAddress: String,
     userProfileImage: String,
@@ -64,7 +68,7 @@ fun UserInfo(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 AsyncImage(
-                    model = userProfileImage,
+                    model = ImageRequest.Builder(context).data(userProfileImage).size(500).build(),
                     modifier = Modifier.size(80.dp).clip(shape = CircleShape),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
@@ -193,7 +197,9 @@ fun UserInfo(
 @Composable
 @Preview
 fun UserInfoPreview() {
+    val context = LocalPlatformContext.current
     _root_ide_package_.com.aliad.muktokowlom.ui.component.UserInfo(
+        context = context,
         userName = "Sajib Roy",
         emailAddress = "Sajibroy206@gmail.com",
         publishedStoryCount = 45,

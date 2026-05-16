@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.paging.compose.collectAsLazyPagingItems
+import coil3.compose.LocalPlatformContext
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.EmptyStoryMessage
 import com.aliad.muktokowlom.ui.component.LoadStateAppendError
@@ -42,6 +43,7 @@ fun StoryTypeScreen(
 
     val pagingUiState = viewModel.pagingUiState.collectAsState()
     val selectedLan = viewModel.selectedLan.collectAsState("en")
+    val contextCoil = LocalPlatformContext.current
 
     LaunchedEffect(storyItem.loadState) {
         viewModel.updatePagingLoadStates(storyItem.loadState, storyItem.itemCount)
@@ -85,8 +87,8 @@ fun StoryTypeScreen(
                         columns = GridCells.Fixed(2)
                     ) {
 
-                        items(storyItem.itemCount) { position ->
-                            StoryItem(selectedLan = selectedLan.value, item = storyItem[position]){bookItem ->
+                        items(storyItem.itemCount, key = {index -> storyItem[index]?.storyID?: index}) { position ->
+                            StoryItem(selectedLan = selectedLan.value, item = storyItem[position], context = contextCoil){bookItem ->
                                 sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                 backStack.add(AppDestination.StoryDetails)
                             }

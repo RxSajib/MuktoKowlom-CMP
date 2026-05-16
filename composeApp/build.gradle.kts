@@ -118,6 +118,11 @@ kotlin {
             implementation(libs.logger.coroutines)
 
 
+            // cmp chart
+           // implementation(libs.chart)
+
+
+
             implementation(project(":data"))
             implementation(project(":domain"))
             implementation(project(":presentation"))

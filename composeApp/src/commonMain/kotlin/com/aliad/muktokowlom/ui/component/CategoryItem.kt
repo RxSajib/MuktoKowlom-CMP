@@ -21,7 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.PlatformContext
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
 import com.aliad.model.MyCategory
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.utils.getTitle
@@ -30,21 +33,23 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CategoryItem(category: MyCategory, onClick: () -> Unit) {
+fun CategoryItem(category: MyCategory, context: PlatformContext, onClick: () -> Unit) {
 
-    val viewModel : DataStoreViewModel = koinViewModel()
-    val selectLn = viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
+    val viewModel: DataStoreViewModel = koinViewModel()
+    val selectLn =
+        viewModel.getStringData(key = AppConstant.SELECT_LOCAL).collectAsStateWithLifecycle("en")
 
 
     Box(
         modifier = Modifier.fillMaxWidth().aspectRatio(1.5f)
-            .clip(shape = RoundedCornerShape(10.dp)).clickable{onClick.invoke()}, contentAlignment = Alignment.Center
+            .clip(shape = RoundedCornerShape(10.dp)).clickable { onClick.invoke() },
+        contentAlignment = Alignment.Center
     ) {
 
 
-
         AsyncImage(
-            model = category.completedImageUrl,
+            model = ImageRequest.Builder(context).data(category.completedImageUrl)
+                .size(500).build(),
             modifier = Modifier.fillMaxSize(),
             contentDescription = category.name,
             contentScale = ContentScale.FillBounds
@@ -63,7 +68,11 @@ fun CategoryItem(category: MyCategory, onClick: () -> Unit) {
         )
 
         Text(
-            text = getTitle(selectLn = selectLn.value, title = category.name, titleBn =category.name_bn) ,
+            text = getTitle(
+                selectLn = selectLn.value,
+                title = category.name,
+                titleBn = category.name_bn
+            ),
             modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleSmall.copy(
@@ -78,11 +87,13 @@ fun CategoryItem(category: MyCategory, onClick: () -> Unit) {
 @Composable
 @Preview
 fun CategoryItem() {
+    val context = LocalPlatformContext.current
     _root_ide_package_.com.aliad.muktokowlom.ui.component.CategoryItem(
+        context = context,
         category = MyCategory(
             name = "Category one",
             name_bn = "Category bangla",
             id = 15,
-            image = "imageurl"
+            image = "imageurl",
         ), onClick = {})
 }

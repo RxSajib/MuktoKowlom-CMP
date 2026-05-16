@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import coil3.compose.LocalPlatformContext
 import com.aliad.model.PopularSearch
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
@@ -83,6 +84,7 @@ val bookSearchList = listOf(
 @Composable
 fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
 
+    val context = LocalPlatformContext.current
     val viewModel: SearchViewModel = koinViewModel<SearchViewModel>()
     val popularSearchData = viewModel.popularSearch.collectAsStateWithLifecycle()
     val selectedLan = viewModel.selectedLan.collectAsStateWithLifecycle("en")
@@ -143,7 +145,7 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
                             val popularSearchData = (popularSearchData.value as UiState.Success<PopularSearch>).data
                             LazyRow {
                                 items(popularSearchData.storyList){ story ->
-                                    StoryItemFixedSize(selectLn = selectedLan.value, item = story){myBookItem ->
+                                    StoryItemFixedSize(selectLn = selectedLan.value, item = story, context = context){myBookItem ->
                                         sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                         backStack.add(
                                             AppDestination.Dest(

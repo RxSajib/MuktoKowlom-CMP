@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.paging.compose.collectAsLazyPagingItems
+import coil3.compose.LocalPlatformContext
 import com.aliad.muktokowlom.ui.component.EmptyStoryMessage
 import com.aliad.muktokowlom.ui.component.LoadStateAppendError
 import com.aliad.muktokowlom.ui.component.Loader
@@ -50,6 +51,7 @@ fun PublishedPendingStoryListScreen(
     val isPendingStory = viewModel.pendingStoryState.collectAsStateWithLifecycle()
     val selectedLan = publishedPendingViewModel.getSelectedLn.collectAsStateWithLifecycle("en")
     val pagingUiState = publishedPendingViewModel.pagingUiState.collectAsStateWithLifecycle()
+    val context = LocalPlatformContext.current
 
     LaunchedEffect(pendingStory.loadState) {
         publishedPendingViewModel.updatePagingLoadStates(
@@ -101,7 +103,7 @@ fun PublishedPendingStoryListScreen(
                     ) {
 
                         items(pendingStory.itemCount) { position ->
-                            StoryItem(selectedLan = selectedLan.value,  pendingStory[position]) { bookItem ->
+                            StoryItem(selectedLan = selectedLan.value,  pendingStory[position], context = context) { bookItem ->
                             //    sharedViewModel.selectedBookID = bookItem.storyID?: 0
                              //   backStack.add(AppDestination.StoryDetails)
                             }

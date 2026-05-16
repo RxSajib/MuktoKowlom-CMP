@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.paging.compose.collectAsLazyPagingItems
+import coil3.compose.LocalPlatformContext
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.EmptyStoryMessage
 import com.aliad.muktokowlom.ui.component.HeightGap
@@ -53,6 +54,7 @@ fun SearchStoryResultScreen(
     val storyData = viewModel.searchStory.collectAsLazyPagingItems()
     val pagingUiState = viewModel.pagingUiState.collectAsState()
     val selectedLan = viewModel.selectedLan.collectAsState("en")
+    val contextCoil = LocalPlatformContext.current
 
     LaunchedEffect(storyData.loadState){
         viewModel.updatePagingLoadStates( loadStates = storyData.loadState, itemCount = storyData.itemCount)
@@ -123,7 +125,7 @@ fun SearchStoryResultScreen(
                         ) {
 
                             items(storyData.itemCount) { position ->
-                                StoryItem(selectedLan = selectedLan.value, item = storyData[position]){bookItem ->
+                                StoryItem(selectedLan = selectedLan.value, item = storyData[position], context = contextCoil){bookItem ->
                                     sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                     backStack.add(AppDestination.StoryDetails)
                                 }

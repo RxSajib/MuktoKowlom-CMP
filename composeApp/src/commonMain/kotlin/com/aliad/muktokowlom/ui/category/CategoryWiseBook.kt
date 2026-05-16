@@ -25,6 +25,7 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import coil3.compose.LocalPlatformContext
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.EmptyStoryMessage
 import com.aliad.muktokowlom.ui.component.HeightGap
@@ -59,7 +60,7 @@ fun CategoryWiseBook(
     val pagingUiState = viewModel.pagingUiState.collectAsStateWithLifecycle()
     val selectedStory = sharedViewModel.selectedCategory.collectAsStateWithLifecycle()
     val selectedLan = viewModel.selectedLan.collectAsStateWithLifecycle("en")
-     print("selected category id ${selectedStory.value.id}")
+    val contextCoil = LocalPlatformContext.current
 
 
     LaunchedEffect(storyItem.loadState) {
@@ -153,7 +154,8 @@ fun CategoryWiseBook(
                             items(storyItem.itemCount) { position ->
                                 StoryItem(
                                     selectedLan = selectedLan.value,
-                                    item = storyItem[position]
+                                    item = storyItem[position],
+                                    context = contextCoil
                                 ) { bookItem ->
                                     sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                     backStack.add(AppDestination.StoryDetails)

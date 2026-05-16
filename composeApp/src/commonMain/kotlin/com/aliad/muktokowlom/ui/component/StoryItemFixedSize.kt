@@ -19,7 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.PlatformContext
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
 import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
@@ -31,7 +33,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun StoryItemFixedSize(selectLn : String, item: MyBookItem?, onClick: (MyBookItem) -> Unit){
+fun StoryItemFixedSize(selectLn : String, item: MyBookItem?, context : PlatformContext, onClick: (MyBookItem) -> Unit){
 
     Column(modifier = Modifier.width(220.dp).clip(shape = RoundedCornerShape(10.dp)).clickable{
         onClick.invoke(item?: MyBookItem())
@@ -40,7 +42,7 @@ fun StoryItemFixedSize(selectLn : String, item: MyBookItem?, onClick: (MyBookIte
             AsyncImage(
                 modifier = Modifier.fillMaxWidth().height(100.dp)
                     .clip(shape = RoundedCornerShape(10.dp)),
-                model = item?.completedImageUri ?: "",
+                model = ImageRequest.Builder(context).data(item?.completedImageUri ?: "").size(500).build() ,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(Res.drawable.placeholder),

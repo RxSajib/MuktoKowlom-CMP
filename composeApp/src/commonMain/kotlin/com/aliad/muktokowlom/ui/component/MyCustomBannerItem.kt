@@ -21,7 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.PlatformContext
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
 import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
@@ -36,7 +38,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MyCustomBannerItem(selectedLan : String,  myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem) -> Unit) {
+fun MyCustomBannerItem(context : PlatformContext,selectedLan : String,  myBookItem: MyBookItem, onclick: (myBookItem: MyBookItem) -> Unit) {
 
 
     Row(
@@ -50,7 +52,7 @@ fun MyCustomBannerItem(selectedLan : String,  myBookItem: MyBookItem, onclick: (
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = myBookItem.completedImageUri,
+            model = ImageRequest.Builder(context).data(myBookItem.completedImageUri).size(500).build(),
             contentDescription = null,
             modifier = Modifier.weight(0.2f).aspectRatio(1f)
                 .clip(shape = RoundedCornerShape(10.dp)),

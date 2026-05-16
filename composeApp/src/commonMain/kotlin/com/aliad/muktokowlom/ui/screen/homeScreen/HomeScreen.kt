@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import coil3.compose.LocalPlatformContext
 import com.aliad.model.DashBord
 import com.aliad.model.MyBookItem
 import com.aliad.muktokowlom.ui.navigation.AppDestination
@@ -57,6 +58,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
     val dashBoardViewModel: DashBoardViewModel = koinViewModel()
     val dashBoardData = dashBoardViewModel.dashBoard.collectAsStateWithLifecycle()
     val selectedLan = dashBoardViewModel.selectedLan.collectAsStateWithLifecycle("en")
+    val context = LocalPlatformContext.current
 
     rememberCoroutineScope()
     print("dashboard data ${dashBoardData.value}")
@@ -116,6 +118,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
 
                             MyCustomBannerItem(
                                 selectedLan = selectedLan.value,
+                                context = context,
                                 myBookItem = data.lisOfPopularStories[index]
                             ) { myBookItem ->
                                 sharedViewModel.selectedBookID = myBookItem.storyID?: 0
@@ -141,7 +144,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                             items(
                                 data.listOfNewReleaseStories
                             ) { bookItem ->
-                                StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem){myBookItem ->
+                                StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem, context = context){myBookItem ->
                                     sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                     backStack.add(
                                         AppDestination.Dest(
@@ -161,7 +164,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                             })
                         LazyRow {
                             items(data.lifOfAllStories) { bookItem ->
-                                StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem){myBookItem ->
+                                StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem, context = context){myBookItem ->
                                     sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                     backStack.add(
                                         AppDestination.Dest(

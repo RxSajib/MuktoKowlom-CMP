@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import coil3.compose.LocalPlatformContext
 import com.aliad.model.MyCategory
 import com.aliad.muktokowlom.ui.component.CategoryItem
 import com.aliad.muktokowlom.ui.component.CategoryScreenShimmer
@@ -33,6 +34,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
     val viewModel: CategoryViewModel = koinViewModel()
     val categoryData = viewModel.categoryData.collectAsStateWithLifecycle()
+    val context = LocalPlatformContext.current
 
 
     val refreshState = rememberRefreshLayoutState {
@@ -67,6 +69,7 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewM
                         items(data) { categoryData ->
                             CategoryItem(
                                 category = categoryData,
+                                context = context,
                                 onClick = {
                                     sharedViewModel.setCategory(category = categoryData)
                                     backStack.add(

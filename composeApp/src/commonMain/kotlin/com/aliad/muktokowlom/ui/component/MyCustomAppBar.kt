@@ -23,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
 import com.aliad.helper.ResetAppEvent.triggerResetEvent
 import com.aliad.muktokowlom.platform.backButtonIcon
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
@@ -47,19 +49,23 @@ fun MyCustomAppBar(
     title: String,
     onBackPress: () -> Unit,
     editProfile: () -> Unit,
-    userName : String?= null,
-    userEmailAddress : String?= null,
-    userProfileImage : String?= null,
+    userName: String? = null,
+    userEmailAddress: String? = null,
+    userProfileImage: String? = null,
 ) {
+
+    val contextCoil = LocalPlatformContext.current
+
     TopAppBar(
         title = {
             if (homeHeaderEnable) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     AsyncImage(
-                        model = userProfileImage,
+                        model = ImageRequest.Builder(context = contextCoil).data(userProfileImage)
+                            .size(200).build(),
                         contentDescription = null,
                         modifier = Modifier.size(40.dp).clip(shape = CircleShape)
-                            .clickable{
+                            .clickable {
                                 editProfile.invoke()
                             },
                         contentScale = ContentScale.Crop,
@@ -69,7 +75,7 @@ fun MyCustomAppBar(
                     WidthGap(15.dp)
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = userName?: "",
+                            text = userName ?: "",
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -80,21 +86,23 @@ fun MyCustomAppBar(
                         )
 
                         Text(
-                            text = userEmailAddress?: "",
+                            text = userEmailAddress ?: "",
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.bodySmall.copy(
-                               fontSize =  adjustedFontSize(8.0f),
+                                fontSize = adjustedFontSize(8.0f),
                                 color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.3f)
                             )
                         )
                     }
                 }
             } else {
-                Text(text = title, style = MaterialTheme.typography.titleMedium.copy(
-                    color = MaterialTheme.colorScheme.primary
-                ))
+                Text(
+                    text = title, style = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                )
             }
 
         },

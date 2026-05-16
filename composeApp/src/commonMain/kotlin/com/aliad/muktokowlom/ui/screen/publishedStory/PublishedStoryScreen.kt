@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.paging.compose.collectAsLazyPagingItems
+import coil3.compose.LocalPlatformContext
 import com.aliad.muktokowlom.ui.component.EmptyStoryMessage
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.LoadStateAppendError
@@ -50,6 +51,7 @@ fun PublishedStoryScreen(rootBackStack: NavBackStack<NavKey>, backStack: NavBack
     val liveStoryPagingData = viewModel.liveStory.collectAsLazyPagingItems()
     val selectedLan = viewModel.selectedLan.collectAsStateWithLifecycle("en")
     val pagingUiState = viewModel.pagingUiState.collectAsStateWithLifecycle()
+    val contextCoil = LocalPlatformContext.current
 
 
     LaunchedEffect(liveStoryPagingData.loadState) {
@@ -106,7 +108,7 @@ fun PublishedStoryScreen(rootBackStack: NavBackStack<NavKey>, backStack: NavBack
                         ) {
 
                             items(liveStoryPagingData.itemCount) { position ->
-                                StoryItem(selectedLan = selectedLan.value,  liveStoryPagingData[position]) { bookItem ->
+                                StoryItem(selectedLan = selectedLan.value,  liveStoryPagingData[position], context = contextCoil) { bookItem ->
                                  //   viewModel.selectedBookID = bookItem.storyID?: 0
                                  //   backStack.add(AppDestination.StoryDetails)
                                 }

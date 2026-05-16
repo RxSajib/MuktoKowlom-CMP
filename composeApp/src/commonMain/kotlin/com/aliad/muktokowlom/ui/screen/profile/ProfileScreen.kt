@@ -33,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import coil3.compose.LocalPlatformContext
 import com.aliad.helper.SnackBarEvent
 import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.bottomSheet.DeleteAccountBottomSheet
@@ -106,7 +107,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
     val userPhoneNumber = viewModel.userPhone.collectAsStateWithLifecycle("")
     val userRegisterDate = viewModel.userRegisterData.collectAsStateWithLifecycle("")
     val token = viewModel.accessToken.collectAsStateWithLifecycle("")
-
+    val contextCoil = LocalPlatformContext.current
     val liveStoryCount = viewModel.liveStoryCount.collectAsStateWithLifecycle(0)
     val pendingStoryCount = viewModel.pendingStoryCount.collectAsStateWithLifecycle(0)
 
@@ -158,6 +159,7 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
 
             if (!token.value.isEmpty()) {
                 UserInfo(
+                    context = contextCoil,
                     userName = userName.value ?: "",
                     emailAddress = userEmailAddress.value ?: "",
                     userProfileImage = userProfileImage.value ?: "",
