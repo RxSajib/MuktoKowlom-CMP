@@ -8,6 +8,7 @@ import com.aliad.presentation.signIn.ui.categoryWiseBook.CategoryWiseBookViewMod
 import com.aliad.presentation.signIn.ui.changeLanguage.ChangeLanguageViewModel
 import com.aliad.presentation.signIn.ui.dashboard.DashBoardViewModel
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
+import com.aliad.presentation.signIn.ui.earningHistory.EarningHistoryViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
 import com.aliad.presentation.signIn.ui.liveStory.LiveStoryListViewModel
 import com.aliad.presentation.signIn.ui.mostPopularStory.MostPopularStoryViewModel
@@ -206,5 +207,12 @@ val presentationModule = module {
 
     viewModel {
         LiveStoryListViewModel(storyType = get(), getIntData = get(), getStringData = get())
+    }
+
+    viewModel {
+        EarningHistoryViewModel(
+            earningHistoryUseCase = get(),
+            getIntData = get()
+        )
     }
 }

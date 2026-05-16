@@ -19,6 +19,7 @@ import com.aliad.model.PendingStoryDto
 import com.aliad.model.SearchStoryDto
 import com.aliad.model.StoryCountDto
 import com.aliad.model.LiveStoryDto
+import com.aliad.model.earn_history.EarnHistoryDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
 import com.aliad.utils.MyCustomLogger
@@ -64,7 +65,63 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val PENDING_STORY_LIST = "${BASEURL}pending-story-list"
     private val WRITER_DASHBOARD = "${BASEURL}user/writer-dashborad"
     private val LIVE_STORY_LIST = "${BASEURL}live-story-list"
+    private val STORY_EARN_HISTORY= "${BASEURL}user/story-earn-history"
 
+    suspend fun storyEarnHistory(userID : String) : ApiResult<GenericResponse<EarnHistoryDto>> {
+        return try {
+            val response = httpClient.get(urlString = STORY_EARN_HISTORY) {
+                parameter("user_id", userID)
+            }
+
+            if (response.status.isSuccess()) {
+                MyCustomLogger.logInfo(tag = TAG, message = "earning history api code ${response.body< GenericResponse<EarnHistoryDto>>()}")
+               ApiResult.Success( response.body< GenericResponse<EarnHistoryDto>>())
+            } else {
+                MyCustomLogger.logInfo(tag = TAG, message = "earning history api error")
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+                )
+            }
+        } catch (e: ClientRequestException) {
+            MyCustomLogger.logInfo(tag = TAG, message = "earning history api ClientRequestException ${e.response.bodyAsText()}")
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+            MyCustomLogger.logInfo(tag = TAG, message = "earning history api ServerResponseException ${e.response.bodyAsText()}")
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+            MyCustomLogger.logInfo(tag = TAG, message = "earning history api Exception ${e.message}")
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+    }
 
     suspend fun getLiveStoryList(userID : String, page : Int) : LiveStoryDto {
         val response = httpClient.get(urlString = LIVE_STORY_LIST){

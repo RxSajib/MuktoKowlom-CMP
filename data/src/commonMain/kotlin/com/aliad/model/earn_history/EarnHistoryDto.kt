@@ -5,35 +5,35 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EarnHistoryDto(
-    val current_page: Int,
-    val `data`: List<EarnHistory>,
-    val first_page_url: String,
-    val from: Int,
-    val last_page: Int,
-    val last_page_url: String,
-    val links: List<Link>,
-    val next_page_url: String,
-    val path: String,
-    val per_page: Int,
-    val prev_page_url: String,
-    val to: Int,
-    val total: Int
+    val current_page: Int?= null,
+    val `data`: List<EarnHistory> = emptyList(),
+    val first_page_url: String?= null,
+    val from: Int?= null,
+    val last_page: Int?= null,
+    val last_page_url: String?= null,
+    val links: List<Link> = emptyList(),
+    val next_page_url: String?= null,
+    val path: String?= null,
+    val per_page: Int?= null,
+    val prev_page_url: String?= null,
+    val to: Int?= null,
+    val total: Int?= null
 )
 
 @Serializable
 data class EarnHistory(
-    val amount: String,
-    val bank_txn: String,
-    val card_type: String,
-    val created_at: String,
-    val id: Int,
-    val mer_txnid: String,
-    val pg_txnid: String,
-    val story: Story,
-    val story_id: String,
-    val updated_at: String,
-    val user_id: String,
-    val views: String
+    val amount: String?= null,
+    val bank_txn: String?= null,
+    val card_type: String?= null,
+    val created_at: String?= null,
+    val id: Int?= null,
+    val mer_txnid: String?= null,
+    val pg_txnid: String?= null,
+    val story: Story?= null,
+    val story_id: String?= null,
+    val updated_at: String?= null,
+    val user_id: String?= null,
+    val views: String?= null
 )
 
 @Serializable

@@ -19,13 +19,32 @@ import com.aliad.model.Subscription
 import com.aliad.model.SubscriptionDto
 import com.aliad.model.User
 import com.aliad.model.LoginDto
+import com.aliad.model.MyEarnHistory
 import com.aliad.model.ResetPasswordResponse
 import com.aliad.model.SearchStoryDto
 import com.aliad.model.StoryCount
 import com.aliad.model.StoryCountDto
+import com.aliad.model.earn_history.EarnHistory
+import com.aliad.model.earn_history.EarnHistoryDto
 import com.aliad.model.subscription_history.Payment
 
 object DataMapper {
+
+    fun earningHistoryDtoToEarningHistory(earnHistoryDto: EarnHistoryDto) : List<MyEarnHistory>{
+        val earningHistoryList  = ArrayList<MyEarnHistory>()
+        earnHistoryDto.data.forEach { dataDto ->
+           earningHistoryList.add(MyEarnHistory(
+               amount = dataDto.amount?: "0",
+               cardType = dataDto.card_type?: "",
+               id = dataDto.id?: 0,
+               storyNameBn = dataDto.story?.title_bn?: "",
+               createAt = dataDto.created_at?: "",
+               views = dataDto.views?: "0",
+               userId = dataDto.user_id?: "0"
+           ))
+       }
+        return earningHistoryList
+    }
 
     fun storyCountDtoTOStoryCount(storyCountDto: StoryCountDto) : StoryCount {
         return StoryCount(

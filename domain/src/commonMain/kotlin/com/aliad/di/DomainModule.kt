@@ -5,6 +5,7 @@ import com.aliad.usecase.CategoryUseCase
 import com.aliad.usecase.CategoryWiseBookUseCase
 import com.aliad.usecase.DashBoardUseCase
 import com.aliad.usecase.DeleteAccountUseCase
+import com.aliad.usecase.EarningHistoryUseCase
 import com.aliad.usecase.LoginUseCase
 import com.aliad.usecase.OtpVerificationUseCase
 import com.aliad.usecase.PopularSearchUseCase
@@ -170,6 +171,12 @@ val domainModule = module {
     factory {
         StoryCountUseCase(
             accountRepository = get()
+        )
+    }
+    
+    factory {
+        EarningHistoryUseCase(
+            profileRepository = get()
         )
     }
 }
