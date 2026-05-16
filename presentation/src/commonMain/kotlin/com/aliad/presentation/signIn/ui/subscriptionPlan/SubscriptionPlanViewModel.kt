@@ -63,7 +63,7 @@ class SubscriptionPlanViewModel constructor(
                 when(response){
                     is ApiResult.Success -> {
                         premiumPlanMutableStateFlow.emit(UiState.Success(data = response.data))
-                        response.data.get(0).also { selectedPackage = it }
+                        response.data[0].also { selectedPackage = it }
                     }
                     is ApiResult.Error -> {
                         premiumPlanMutableStateFlow.emit(UiState.Error(messageBn = response.messageBn?: "Something went wrong", messageEn = response.messageEn?: "Something went wrong"))

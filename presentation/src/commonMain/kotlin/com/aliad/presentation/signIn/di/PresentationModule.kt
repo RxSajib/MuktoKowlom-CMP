@@ -212,7 +212,8 @@ val presentationModule = module {
     viewModel {
         EarningHistoryViewModel(
             earningHistoryUseCase = get(),
-            getIntData = get()
+            getIntData = get(),
+            getStringData = get()
         )
     }
 }

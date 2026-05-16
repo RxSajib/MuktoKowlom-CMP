@@ -26,16 +26,27 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliad.model.MyEarnHistory
+import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.bkashColor
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.bkash_icon
+import muktokowlomcmp.composeapp.generated.resources.money_cash
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun EarnHistoryItem(myEarnHistory: MyEarnHistory) {
+fun EarnHistoryItem(myEarnHistory: MyEarnHistory, selectedLan : String) {
+
+    fun generateRandomColor(): Color {
+        return Color(
+            red = (0..255).random(),
+            green = (0..255).random(),
+            blue = (0..255).random()
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth().border(
             width = 1.dp, color = MaterialTheme.colorScheme.inverseSurface.copy(
@@ -50,14 +61,14 @@ fun EarnHistoryItem(myEarnHistory: MyEarnHistory) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
-                modifier = Modifier.size(40.dp).clip(shape = CircleShape).background(bkashColor),
+                modifier = Modifier.size(40.dp).clip(shape = CircleShape).background(generateRandomColor().copy(alpha = 0.1f)),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(Res.drawable.bkash_icon),
+                    painter = painterResource(Res.drawable.money_cash),
                     modifier = Modifier.fillMaxWidth(.5f).aspectRatio(1f),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = Color.White)
+                    colorFilter = ColorFilter.tint(color = generateRandomColor())
                 )
             }
             WidthGap(width = 10.dp)
@@ -66,7 +77,7 @@ fun EarnHistoryItem(myEarnHistory: MyEarnHistory) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "bKash-bKash",
+                    text = myEarnHistory.cardType,
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = MaterialTheme.colorScheme.primary,
@@ -74,7 +85,7 @@ fun EarnHistoryItem(myEarnHistory: MyEarnHistory) {
                     )
                 )
                 Text(
-                    text = "Amar protom kobita",
+                    text = myEarnHistory.storyNameBn,
                     modifier = Modifier,
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = adjustedFontSize(10f),
@@ -84,7 +95,7 @@ fun EarnHistoryItem(myEarnHistory: MyEarnHistory) {
             }
 
             Text(
-                text = "$100",
+                text = "৳${if (selectedLan == "en") myEarnHistory.amount else AppConstant.toBanglaDigits(myEarnHistory.amount)}",
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
@@ -92,38 +103,7 @@ fun EarnHistoryItem(myEarnHistory: MyEarnHistory) {
             )
         }
 
-        /*    HeightGap(height = 10.dp)
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-                    Text(
-                        text = "My Earning",
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontSize = adjustedFontSize(8f),
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-                        )
-                    )
 
-                    Text(
-                        text = "100$",
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    )
-
-                }
-
-                Text(
-                    text = "200 Views",
-                    modifier = Modifier.clip(shape = CircleShape).background(onPrimaryLight.copy(alpha = 0.2f))
-                        .padding(horizontal = 10.dp, vertical = 5.dp),
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontSize = adjustedFontSize(10f),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                )
-            }
-    */
     }
 }
 
@@ -131,6 +111,7 @@ fun EarnHistoryItem(myEarnHistory: MyEarnHistory) {
 @Preview(showBackground = true)
 fun EarnHistoryItemPreview() {
     EarnHistoryItem(
+        selectedLan = "en",
         myEarnHistory = MyEarnHistory(
             amount = "50",
             cardType = "DBBL-NEXUS",

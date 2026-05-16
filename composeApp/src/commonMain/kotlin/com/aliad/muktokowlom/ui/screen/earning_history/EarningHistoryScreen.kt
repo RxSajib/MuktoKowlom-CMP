@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,20 +23,41 @@ import androidx.navigation3.runtime.NavKey
 import com.aliad.model.MyEarnHistory
 import com.aliad.muktokowlom.ui.component.EarnHistoryItem
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
+import com.aliad.muktokowlom.ui.component.ServerError
+import com.aliad.muktokowlom.ui.component.SubscriptionPlanItemShimmer
 import com.aliad.presentation.signIn.ui.earningHistory.EarningHistoryViewModel
+import com.aliad.presentation.utils.UiState
+import com.lt.compose_views.refresh_layout.PullToRefresh
+import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
+import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.earning_history
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun EarningHistoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>){
+fun EarningHistoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
 
-    val viewModel : EarningHistoryViewModel = koinViewModel()
-    val earningHistoryData = viewModel.getEarningHistory.collectAsStateWithLifecycle(emptyList())
+    val viewModel: EarningHistoryViewModel = koinViewModel()
+    val earningHistoryData = viewModel.earningHistoryData.collectAsStateWithLifecycle()
+    val selectedLan = viewModel.selectedLan.collectAsStateWithLifecycle("en")
 
-    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
+    val rememberRefreshLayoutState = rememberRefreshLayoutState {
+        this.setRefreshState(state = RefreshContentStateEnum.Refreshing)
+        viewModel.getEarningHistory()
+    }
+
+
+    LaunchedEffect(viewModel.loading) {
+        if (!viewModel.loading) {
+            rememberRefreshLayoutState.setRefreshState(state = RefreshContentStateEnum.Stop)
+        }
+    }
+
+    Surface(
+        modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
+    ) {
 
         Scaffold(
             topBar = {
@@ -47,13 +69,46 @@ fun EarningHistoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
         ) { innerPadding ->
             Box(
                 modifier = Modifier.fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(horizontal = 16.dp, )
+                    .background(color = MaterialTheme.colorScheme.surface).padding(innerPadding)
+                    .padding(horizontal = 16.dp)
             ) {
-                LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(10.dp), state = rememberLazyListState()) {
-                    items(earningHistoryData.value, key = {it.id}, contentType = {it.cardType}){earningHistory ->
-                        EarnHistoryItem(
-                            myEarnHistory = earningHistory
-                        )
+                PullToRefresh(
+                    refreshLayoutState = rememberRefreshLayoutState,
+                ) {
+                    when (earningHistoryData.value) {
+                        is UiState.Loading -> {
+                            Column(modifier = Modifier.fillMaxSize()) {
+                                repeat(20) {
+                                    SubscriptionPlanItemShimmer()
+                                }
+                            }
+                        }
+
+                        is UiState.Success -> {
+                            val data =
+                                (earningHistoryData.value as UiState.Success<List<MyEarnHistory>>).data
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.spacedBy(10.dp),
+                                state = rememberLazyListState()
+                            ) {
+                                items(
+                                    data,
+                                    key = { it.id },
+                                    contentType = { it.cardType }) { earningHistory ->
+                                    EarnHistoryItem(
+                                        myEarnHistory = earningHistory,
+                                        selectedLan = selectedLan.value
+                                    )
+                                }
+                            }
+                        }
+
+                        is UiState.Error -> {
+                            ServerError {
+                                viewModel.getEarningHistory()
+                            }
+                        }
                     }
                 }
             }
