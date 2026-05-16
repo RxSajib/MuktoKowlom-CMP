@@ -1,8 +1,10 @@
 package com.aliad.model.storyDetails
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
 
+@Immutable
 @Serializable
 data class AllStoryComments(
     val current_page: Int,

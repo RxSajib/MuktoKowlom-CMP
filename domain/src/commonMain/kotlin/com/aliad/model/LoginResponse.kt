@@ -1,7 +1,9 @@
 package com.aliad.model
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 data class User(
     val name : String?= null,

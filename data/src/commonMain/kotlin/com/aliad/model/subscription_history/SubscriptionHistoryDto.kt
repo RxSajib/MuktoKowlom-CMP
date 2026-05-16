@@ -1,8 +1,9 @@
 package com.aliad.model.subscription_history
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
-
+@Immutable
 @Serializable
 data class Payment(
     val amount: String,
@@ -18,7 +19,7 @@ data class Payment(
     val user_name: String
 )
 
-
+@Immutable
 @Serializable
 data class SubscriptionHistoryDto(
     val current_page: Int,

@@ -1,8 +1,9 @@
 package com.aliad.model
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
-
+@Immutable
 @Serializable
 data class MyBookItem(
     val storyID: Int? = null,
@@ -33,7 +34,7 @@ fun convertStringToInt(input: String): Int? {
     return doubleValue?.toInt()
 }
 
-
+@Immutable
 @Serializable
 data class MyLikeStory(
     val storyID: Int? = null,

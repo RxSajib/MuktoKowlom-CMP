@@ -1,7 +1,9 @@
 package com.aliad.model
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 data class PrivacyPolicyDto(
     val created_at: String? = null,

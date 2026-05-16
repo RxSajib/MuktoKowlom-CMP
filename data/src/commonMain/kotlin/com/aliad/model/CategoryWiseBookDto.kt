@@ -1,10 +1,11 @@
 package com.aliad.model
 
+import androidx.compose.runtime.Immutable
 import com.aliad.model.LoginDto
 import kotlinx.serialization.Serializable
 
 
-
+@Immutable
 @Serializable
 data class CategoryWiseBookDto(
     val current_page: Int?= null,
@@ -21,7 +22,7 @@ data class CategoryWiseBookDto(
     val to: Int ?= null,
     val total: Int ?= null
 )
-
+@Immutable
 @Serializable
 data class BookItem(
     val category_name: String?= null,
@@ -44,7 +45,7 @@ data class BookItem(
     val views: String ?= null,
     val user: LoginDto?= null,
 )
-
+@Immutable
 @Serializable
 data class LikeStory(
     val category_name: String?= null,
@@ -60,6 +61,8 @@ data class LikeStory(
     val user_name: String ?= null,
     val views: String ?= null
 )
+
+@Immutable
 @Serializable
 data class Link(
     val active: Boolean?= null,

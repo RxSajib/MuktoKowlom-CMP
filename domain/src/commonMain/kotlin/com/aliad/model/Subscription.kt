@@ -1,5 +1,8 @@
 package com.aliad.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Subscription(
     val days: String? = null,
     val id: Int? = null,

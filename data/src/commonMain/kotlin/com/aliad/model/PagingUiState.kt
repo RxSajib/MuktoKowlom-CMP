@@ -1,8 +1,9 @@
 package com.aliad.model
 
+import androidx.compose.runtime.Immutable
 import androidx.paging.LoadState
 
-
+@Immutable
 data class PagingUiState(
     val isRefreshing: Boolean = false,
     val isAppending: Boolean = false,

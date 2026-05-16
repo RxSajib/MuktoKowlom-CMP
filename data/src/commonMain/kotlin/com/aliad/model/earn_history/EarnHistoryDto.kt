@@ -1,8 +1,10 @@
 package com.aliad.model.earn_history
 
+import androidx.compose.runtime.Immutable
 import com.aliad.model.Link
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 data class EarnHistoryDto(
     val current_page: Int?= null,
@@ -20,6 +22,7 @@ data class EarnHistoryDto(
     val total: Int?= null
 )
 
+@Immutable
 @Serializable
 data class EarnHistory(
     val amount: String?= null,
@@ -36,6 +39,7 @@ data class EarnHistory(
     val views: String?= null
 )
 
+@Immutable
 @Serializable
 data class Story(
     val id: Int,

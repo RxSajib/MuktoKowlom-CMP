@@ -1,7 +1,8 @@
 package com.aliad.model
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
-
+@Immutable
 @Serializable
 data class LoginDto(
     val account_holder_name: String?= null,

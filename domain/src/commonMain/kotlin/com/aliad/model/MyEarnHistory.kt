@@ -1,5 +1,8 @@
 package com.aliad.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class MyEarnHistory(
     val amount : String,
     val cardType : String,

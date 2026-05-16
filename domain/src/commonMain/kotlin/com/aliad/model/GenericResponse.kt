@@ -1,8 +1,9 @@
 package com.aliad.model
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
-
+@Immutable
 @Serializable
 data class ApiResponse(
     val message_bn: String ?= null,
@@ -10,7 +11,7 @@ data class ApiResponse(
     val success : Boolean? = null
 )
 
-
+@Immutable
 @Serializable
 data class GenericResponse<T : Any>(
     val access_token : String?= null,
@@ -23,7 +24,7 @@ data class GenericResponse<T : Any>(
     val errorResponse : ErrorResponse? = null,
     val last_page : Int?= null
 )
-
+@Immutable
 @Serializable
 data class ErrorResponse(val success : Boolean  =false, val message_en : String?= null, val message_bn : String?= null)
 
