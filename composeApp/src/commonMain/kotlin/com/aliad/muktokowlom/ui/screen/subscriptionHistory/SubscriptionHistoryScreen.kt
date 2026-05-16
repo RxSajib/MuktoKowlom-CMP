@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -67,8 +68,8 @@ fun SubscriptionHistoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: Na
                 .padding(innerPadding)
         ) {
 
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(subscriptionHistory.itemCount, key = {index -> subscriptionHistory[index]?.id?: index}){
+            LazyColumn(modifier = Modifier.fillMaxSize(), state = rememberLazyListState()) {
+                items(subscriptionHistory.itemCount, key = {index -> subscriptionHistory[index]?.id?: index}, contentType = {index -> subscriptionHistory[index]?.cardType}){
                     Text(
                         text = "item $it"
                     )

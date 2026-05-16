@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -140,10 +141,11 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                                     )
                                 )
                             })
-                        LazyRow {
+                        LazyRow(state = rememberLazyListState()) {
                             items(
                                 data.listOfNewReleaseStories,
-                                key = {it.storyID?: it.hashCode()}
+                                key = {it.storyID?: it.hashCode()},
+                                contentType = {it.category_name}
                             ) { bookItem ->
                                 StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem, context = context){myBookItem ->
                                     sharedViewModel.selectedBookID = myBookItem.storyID?: 0
@@ -163,8 +165,8 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                                     )
                                 )
                             })
-                        LazyRow {
-                            items(data.lifOfAllStories, key = {it.storyID?: it.hashCode()}) { bookItem ->
+                        LazyRow(state = rememberLazyListState()) {
+                            items(data.lifOfAllStories, key = {it.storyID?: it.hashCode()}, contentType = {it.category_name}) { bookItem ->
                                 StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem, context = context){myBookItem ->
                                     sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                     backStack.add(

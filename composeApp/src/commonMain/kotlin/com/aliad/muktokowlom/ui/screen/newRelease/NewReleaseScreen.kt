@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -123,10 +124,11 @@ fun NewReleaseScreen(
                                 .fillMaxSize(),
                             columns = GridCells.Fixed(2),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            state = rememberLazyGridState()
                         ) {
 
-                            items(storyData.itemCount, key = {index -> storyData[index]?.storyID?: index}) { position ->
+                            items(storyData.itemCount, key = {index -> storyData[index]?.storyID?: index}, contentType = {index -> storyData[index]?.category_name}) { position ->
                                 StoryItem(selectedLan = selectedLan.value, item = storyData[position], context = contextCoil){bookItem ->
                                     sharedViewModel.selectedBookID = bookItem.storyID?: 0
                                     backStack.add(AppDestination.StoryDetails)

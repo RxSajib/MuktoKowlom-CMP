@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -95,6 +96,7 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                         Column(modifier = Modifier.fillMaxSize()) {
                             Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
                                 LazyColumn(
+                                    state = rememberLazyListState(),
                                     modifier = Modifier.fillMaxSize(),
                                     contentPadding = PaddingValues(
                                         start = 16.dp,
@@ -103,7 +105,7 @@ fun PremiumScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<N
                                     ),
                                     verticalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
-                                    items(data, key = {it.id?: it.hashCode()}) { subscription ->
+                                    items(data, key = {it.id?: it.hashCode()}, contentType = {it.days}) { subscription ->
                                         SubscriptionPlanItem(
                                             selected = viewModel.selectedSubscriptionIndex == (subscription.id
                                                 ?: 0),

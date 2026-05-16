@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -48,8 +49,8 @@ fun EarningHistoryScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBack
                 modifier = Modifier.fillMaxSize()
                     .background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(horizontal = 16.dp, )
             ) {
-                LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    items(earningHistoryData.value, key = {it.id}){earningHistory ->
+                LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(10.dp), state = rememberLazyListState()) {
+                    items(earningHistoryData.value, key = {it.id}, contentType = {it.cardType}){earningHistory ->
                         EarnHistoryItem(
                             myEarnHistory = earningHistory
                         )

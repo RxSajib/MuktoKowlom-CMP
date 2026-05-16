@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,8 +66,9 @@ fun CategoryScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewM
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        state = rememberLazyGridState(),
                     ) {
-                        items(data, key = {it.id}) { categoryData ->
+                        items(data, key = {it.id}, contentType = {it.name}) { categoryData ->
                             CategoryItem(
                                 category = categoryData,
                                 context = context,

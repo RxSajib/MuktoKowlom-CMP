@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -47,7 +48,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun PublishedStoryScreen(rootBackStack: NavBackStack<NavKey>, backStack: NavBackStack<NavKey>) {
 
-    val viewModel : LiveStoryListViewModel = koinViewModel()
+    val viewModel: LiveStoryListViewModel = koinViewModel()
     val liveStoryPagingData = viewModel.liveStory.collectAsLazyPagingItems()
     val selectedLan = viewModel.selectedLan.collectAsStateWithLifecycle("en")
     val pagingUiState = viewModel.pagingUiState.collectAsStateWithLifecycle()
@@ -61,7 +62,9 @@ fun PublishedStoryScreen(rootBackStack: NavBackStack<NavKey>, backStack: NavBack
         )
     }
 
-    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
+    Surface(
+        modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
+    ) {
         Scaffold(
             topBar = {
                 MyCustomAppBar(
@@ -72,12 +75,12 @@ fun PublishedStoryScreen(rootBackStack: NavBackStack<NavKey>, backStack: NavBack
                     }
                 )
             }
-        ) {innerPadding ->
+        ) { innerPadding ->
             Column(
-                modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding)
+                modifier = Modifier.fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.surface).padding(innerPadding)
                     .padding(start = 16.dp, end = 16.dp)
             ) {
-
 
 
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -86,13 +89,11 @@ fun PublishedStoryScreen(rootBackStack: NavBackStack<NavKey>, backStack: NavBack
 
                         StoryLoaderShimmer()
 
-                    }
-                    else if (pagingUiState.value.refreshError != null) {
+                    } else if (pagingUiState.value.refreshError != null) {
                         ServerError {
                             liveStoryPagingData.retry()
                         }
-                    }
-                    else if (pagingUiState.value.isEmpty) {
+                    } else if (pagingUiState.value.isEmpty) {
                         EmptyStoryMessage(
                             retryAgain = {
                                 liveStoryPagingData.retry()
@@ -104,13 +105,25 @@ fun PublishedStoryScreen(rootBackStack: NavBackStack<NavKey>, backStack: NavBack
                                 .fillMaxSize(),
                             columns = GridCells.Fixed(2),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            state = rememberLazyGridState()
                         ) {
 
-                            items(liveStoryPagingData.itemCount) { position ->
-                                StoryItem(selectedLan = selectedLan.value,  liveStoryPagingData[position], context = contextCoil) { bookItem ->
-                                 //   viewModel.selectedBookID = bookItem.storyID?: 0
-                                 //   backStack.add(AppDestination.StoryDetails)
+                            items(
+                                liveStoryPagingData.itemCount,
+                                key = { index ->
+                                    liveStoryPagingData[index]?.storyID ?: index.hashCode()
+                                },
+                                contentType = {
+                                    index -> liveStoryPagingData[index]?.category_name
+                                }) { position ->
+                                StoryItem(
+                                    selectedLan = selectedLan.value,
+                                    liveStoryPagingData[position],
+                                    context = contextCoil,
+                                ) { bookItem ->
+                                    //   viewModel.selectedBookID = bookItem.storyID?: 0
+                                    //   backStack.add(AppDestination.StoryDetails)
                                 }
                             }
 

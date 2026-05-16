@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -143,8 +144,8 @@ fun Search(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewModel) {
                         }
                         is UiState.Success -> {
                             val popularSearchData = (popularSearchData.value as UiState.Success<PopularSearch>).data
-                            LazyRow {
-                                items(popularSearchData.storyList, key = {it.storyID?: it.hashCode()}){ story ->
+                            LazyRow(state = rememberLazyListState()) {
+                                items(popularSearchData.storyList, key = {it.storyID?: it.hashCode()}, contentType = {it.category_name}){ story ->
                                     StoryItemFixedSize(selectLn = selectedLan.value, item = story, context = context){myBookItem ->
                                         sharedViewModel.selectedBookID = myBookItem.storyID?: 0
                                         backStack.add(
