@@ -85,6 +85,7 @@ fun RootNavigation() {
 
             MyCustomNotifySnackBar(
                 modifier = Modifier.fillMaxSize(),
+                isSuccess = snackBarEvent.value.isSuccess,
                 message = snackBarEvent.value.details ?: "",
                 //     leftIcon = snackBarEvent.value.leftIcon, //  painterResource(snackBarEvent.value.leftIcon ?: Res.drawable.muktokowlom),
                 onDismiss = {

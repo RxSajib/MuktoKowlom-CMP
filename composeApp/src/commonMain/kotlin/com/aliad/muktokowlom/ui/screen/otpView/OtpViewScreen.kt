@@ -36,6 +36,8 @@ import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import muktokowlomcmp.composeapp.generated.resources.Please_type_the_verification_code_send_to
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.enter_otp
+import muktokowlomcmp.composeapp.generated.resources.sign_up
+import muktokowlomcmp.composeapp.generated.resources.signup_success
 import muktokowlomcmp.composeapp.generated.resources.verification_code
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -49,6 +51,7 @@ fun OtpViewScreen(
 
     val viewModel : OtpVerificationViewModel = koinViewModel()
     val lifecycle = LocalLifecycleOwner.current
+    val signupSuccessText = stringResource(Res.string.signup_success)
 
     LaunchedEffect(lifecycle.lifecycle) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
@@ -63,14 +66,16 @@ fun OtpViewScreen(
             if(isLoginSuccess){
                 SnackBarEvent.save(
                     details = SnackBarDetails(
-                        details = "Login success",
+                        details = signupSuccessText,
                         show = true,
+                        isSuccess = true,
                         leftIcon = Icons.Default.LockOpen
                     )
                 )
             }else {
                 SnackBarEvent.save(
                     details = SnackBarDetails(
+                        isSuccess = false,
                         details = viewModel.errorResponse.message_bn,
                         show = true,
                         leftIcon = Icons.Default.LockOpen

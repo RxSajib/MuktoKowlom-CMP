@@ -2,6 +2,9 @@
 
 <resources>
 
+    <string name="signup_success">SignUp Success</string>
+    <string name="login_success">Login Success</string>
+
     <string name="nothing_saved">Nothing Saved</string>
     <string name="nothing_saved_details">You haven’t added any favorite items yet. Browse content and tap the bookmark icon to save them.</string>
     <string name="payment_method">Payment Method</string>

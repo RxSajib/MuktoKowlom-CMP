@@ -42,17 +42,27 @@ import com.lt.compose_views.banner.rememberBannerState
 import com.lt.compose_views.refresh_layout.PullToRefresh
 import com.lt.compose_views.refresh_layout.RefreshContentStateEnum
 import com.lt.compose_views.refresh_layout.rememberRefreshLayoutState
+import dev.shivathapaa.logger.core.LogContextHolder.withContext
 import io.github.alexzhirkevich.compottie.Compottie.logger
 import io.ktor.util.logging.Logger
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.all_release
 import muktokowlomcmp.composeapp.generated.resources.most_popular
 import muktokowlomcmp.composeapp.generated.resources.new_release
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.coroutines.ContinuationInterceptor
 
 
 private const val TAG = "HomeScreen"
+
 @Composable
 fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>) {
 
@@ -60,6 +70,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
     val dashBoardData = dashBoardViewModel.dashBoard.collectAsStateWithLifecycle()
     val selectedLan = dashBoardViewModel.selectedLan.collectAsStateWithLifecycle("en")
     val context = LocalPlatformContext.current
+    val scope = rememberCoroutineScope()
 
     rememberCoroutineScope()
     print("dashboard data ${dashBoardData.value}")
@@ -70,7 +81,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
 
     val refreshState = rememberRefreshLayoutState {
         setRefreshState(RefreshContentStateEnum.Refreshing)
-            dashBoardViewModel.getDashBoardData()
+        dashBoardViewModel.getDashBoardData()
     }
 
     LaunchedEffect(dashBoardViewModel.isLoading) {
@@ -85,10 +96,11 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
             refreshLayoutState = refreshState,
         ) {
 
-            when(dashBoardData.value){
+            when (dashBoardData.value) {
                 is UiState.Loading -> {
                     HomeScreenShimmer()
                 }
+
                 is UiState.Success -> {
                     val data = (dashBoardData.value as UiState.Success<DashBord>).data
 
@@ -122,10 +134,10 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                                 context = context,
                                 myBookItem = data.lisOfPopularStories[index]
                             ) { myBookItem ->
-                                sharedViewModel.selectedBookID = myBookItem.storyID?: 0
+                                sharedViewModel.selectedBookID = myBookItem.storyID ?: 0
                                 backStack.add(
                                     AppDestination.Dest(
-                                        AppDestination.Dest.StoryDetails::class.simpleName?: ""
+                                        AppDestination.Dest.StoryDetails::class.simpleName ?: ""
                                     )
                                 )
                             }
@@ -144,14 +156,18 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                         LazyRow(state = rememberLazyListState()) {
                             items(
                                 data.listOfNewReleaseStories,
-                                key = {it.storyID?: it.hashCode()},
-                                contentType = {it.category_name}
+                                key = { it.storyID ?: it.hashCode() },
+                                contentType = { it.category_name }
                             ) { bookItem ->
-                                StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem, context = context){myBookItem ->
-                                    sharedViewModel.selectedBookID = myBookItem.storyID?: 0
+                                StoryItemFixedSize(
+                                    selectLn = selectedLan.value,
+                                    item = bookItem,
+                                    context = context
+                                ) { myBookItem ->
+                                    sharedViewModel.selectedBookID = myBookItem.storyID ?: 0
                                     backStack.add(
                                         AppDestination.Dest(
-                                            AppDestination.Dest.StoryDetails::class.simpleName?: ""
+                                            AppDestination.Dest.StoryDetails::class.simpleName ?: ""
                                         )
                                     )
                                 }
@@ -166,12 +182,19 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                                 )
                             })
                         LazyRow(state = rememberLazyListState()) {
-                            items(data.lifOfAllStories, key = {it.storyID?: it.hashCode()}, contentType = {it.category_name}) { bookItem ->
-                                StoryItemFixedSize(selectLn = selectedLan.value, item = bookItem, context = context){myBookItem ->
-                                    sharedViewModel.selectedBookID = myBookItem.storyID?: 0
+                            items(
+                                data.lifOfAllStories,
+                                key = { it.storyID ?: it.hashCode() },
+                                contentType = { it.category_name }) { bookItem ->
+                                StoryItemFixedSize(
+                                    selectLn = selectedLan.value,
+                                    item = bookItem,
+                                    context = context
+                                ) { myBookItem ->
+                                    sharedViewModel.selectedBookID = myBookItem.storyID ?: 0
                                     backStack.add(
                                         AppDestination.Dest(
-                                            AppDestination.Dest.StoryDetails::class.simpleName?: ""
+                                            AppDestination.Dest.StoryDetails::class.simpleName ?: ""
                                         )
                                     )
                                 }
@@ -179,6 +202,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
                         }
                     }
                 }
+
                 is UiState.Error -> {
                     ServerError {
                         dashBoardViewModel.getDashBoardData()

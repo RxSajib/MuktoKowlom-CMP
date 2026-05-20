@@ -8,5 +8,6 @@ data class SnackBarDetails(
     var details: String? = null,
     val title: String? = null,
     val show : Boolean = false,
+    val isSuccess : Boolean = true,
     val leftIcon : ImageVector? = null
 )

@@ -57,6 +57,7 @@ enum class MySnackPosition {
 fun MyCustomNotifySnackBar(
     modifier: Modifier = Modifier.fillMaxSize(),
     message: String,
+    isSuccess : Boolean = true,
     //  leftIcon: ImageVector? = null,
     position: com.aliad.muktokowlom.ui.component.MySnackPosition = _root_ide_package_.com.aliad.muktokowlom.ui.component.MySnackPosition.TOP,
     onDismiss: (() -> Unit)? = null
@@ -109,6 +110,7 @@ fun MyCustomNotifySnackBar(
             _root_ide_package_.com.aliad.muktokowlom.ui.component.CustomSnackBar(
                 message = message,
                 //  leftIcon = leftIcon,
+                isSuccess = isSuccess,
                 modifier = Modifier
                     .padding(
                         horizontal = 16.dp,
@@ -124,6 +126,7 @@ fun MyCustomNotifySnackBar(
 @Composable
 fun CustomSnackBar(
     message: String,
+    isSuccess : Boolean =true,
     //   leftIcon: ImageVector? = null,
     modifier: Modifier = Modifier
 ) {
@@ -166,7 +169,7 @@ fun CustomSnackBar(
             Spacer(modifier = Modifier.width(12.dp))
 
             MyCustomLottieAnim(
-                lottieFile = "files/checkmark.lottie",
+                lottieFile = if(isSuccess)"files/checkmark.lottie" else "files/error.lottie",
                 modifier = Modifier.size(25.dp)
             )
         }

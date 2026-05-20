@@ -103,12 +103,14 @@ fun SignInScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<Na
                     details = SnackBarDetails(
                         details = "Login success",
                         show = true,
+                        isSuccess = true,
                         leftIcon = Icons.Default.LockOpen
                     )
                 )
             } else {
                 SnackBarEvent.save(
                     details = SnackBarDetails(
+                        isSuccess = false,
                         details = viewModel.errorResponse.message_bn,
                         show = true,
                         leftIcon = Icons.Default.LockOpen

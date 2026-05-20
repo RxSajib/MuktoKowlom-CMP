@@ -119,8 +119,8 @@ kotlin {
 
 
             // cmp chart
-           // implementation(libs.chart)
-
+         //   implementation(libs.chart)
+            implementation("io.github.thechance101:chart:1.1.0")
 
 
             implementation(project(":data"))
