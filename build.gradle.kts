@@ -12,5 +12,7 @@ plugins {
 
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.buildkonfig) apply false
+    alias(libs.plugins.hotswan.compiler) apply false
+    alias(libs.plugins.stability.analyzer) apply false
 
 }

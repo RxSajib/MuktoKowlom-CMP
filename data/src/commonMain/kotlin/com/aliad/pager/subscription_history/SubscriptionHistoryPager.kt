@@ -23,10 +23,16 @@ class SubscriptionHistoryPager constructor(val remoteDataSources: RemoteDataSour
             val response = remoteDataSources.getSubscriptionHistory(
                 page = page
             )
+            val payments = response.data?.payments ?: emptyList()
+            val total = response.data?.total ?: 0
+            val perPage = response.data?.per_page ?: 10
+
+            val isLastPage = (page * perPage) >= total
+
             LoadResult.Page(
-                data = response.data?.payments?: emptyList(),
-                prevKey = if(page == PAGE_CURRENT_KEY) null else page - 1,
-                nextKey = if(response.data?.payments?.isEmpty() == true) null else page + 1
+                data = payments,
+                prevKey = if (page == PAGE_CURRENT_KEY) null else page - 1,
+                nextKey = if (isLastPage || payments.isEmpty()) null else page + 1
             )
         }catch (e : Exception){
             MyCustomLogger.logInfo(tag = TAG, message = e.message?: "Something went wrong")

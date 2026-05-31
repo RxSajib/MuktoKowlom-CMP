@@ -79,6 +79,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                 if(isSuccess){
                     SnackBarEvent.save(
                         details = SnackBarDetails(
+                            isSuccess = true,
                             details = successData,
                             show = true,
                             leftIcon = Icons.Default.LockOpen
@@ -88,6 +89,7 @@ fun UpdatePasswordScreen(backStack: NavBackStack<NavKey>, data: AppDestination.D
                 } else {
                     SnackBarEvent.save(
                         details = SnackBarDetails(
+                            isSuccess = false,
                             details = if(selectedLocal.value == "en") response.message_en else response.message_bn,
                             show = true,
                             leftIcon = Icons.Default.LockOpen

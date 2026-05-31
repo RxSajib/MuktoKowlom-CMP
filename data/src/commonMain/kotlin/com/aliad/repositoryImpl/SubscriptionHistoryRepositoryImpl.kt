@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.map
 class SubscriptionHistoryRepositoryImpl constructor(val remoteDataSources: RemoteDataSources) : SubscriptionHistoryRepository {
     override fun getSubscriptionHistory(): Flow<PagingData<Payment>> {
         return Pager(
-            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
             pagingSourceFactory = { SubscriptionHistoryPager(remoteDataSources = remoteDataSources)}
         ).flow.map {
             it.map {myPayment ->

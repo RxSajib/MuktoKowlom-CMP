@@ -11,9 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,12 +23,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.aliad.model.Payment
+import com.aliad.muktokowlom.data.app_constant.AppConstant
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.bkashColor
 import com.aliad.muktokowlom.ui.theme.green
+import com.aliad.muktokowlom.utils.getTitle
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.amount
 import muktokowlomcmp.composeapp.generated.resources.bkash_icon
+import muktokowlomcmp.composeapp.generated.resources.end
+import muktokowlomcmp.composeapp.generated.resources.paid
 import muktokowlomcmp.composeapp.generated.resources.payment_method
 import muktokowlomcmp.composeapp.generated.resources.success
 import org.jetbrains.compose.resources.painterResource
@@ -35,18 +41,24 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun PaymentHistoryItem() {
-    Column(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
+fun PaymentHistoryItem(payment: Payment?, selectedBn : String) {
+    Column(
+        modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(10.dp))
+            .background(color = MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.2f))
+            .padding(10.dp)
+    ) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
                 Box(
-                    modifier = Modifier.size(45.dp).clip(shape = CircleShape)
-                        .background(color = bkashColor), contentAlignment = Alignment.Center
+                    modifier = Modifier.size(40.dp).clip(shape = CircleShape)
+                        .background(color = AppConstant.paymentTypeToColor(type = payment?.cardType ?: "")), contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(Res.drawable.bkash_icon),
+                       painter = painterResource(AppConstant.paymentTypeToImage(
+                            type = payment?.cardType ?: ""
+                        )),
                         contentDescription = null,
-                        modifier = Modifier.fillMaxWidth(.5f).aspectRatio(1f),
+                        modifier = Modifier.fillMaxWidth(.7f).aspectRatio(1f),
                         colorFilter = ColorFilter.tint(color = Color.White)
                     )
                 }
@@ -54,7 +66,7 @@ fun PaymentHistoryItem() {
                 WidthGap(width = 10.dp)
                 Column {
                     Text(
-                        text = "Weekly Package",
+                        text = getTitle(selectLn = selectedBn, title = payment?.planName?: "", titleBn = payment?.planNameBn?: ""),
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary,
@@ -63,7 +75,7 @@ fun PaymentHistoryItem() {
                     )
 
                     Text(
-                        text = "End: 15 JUN 2026",
+                        text = "${stringResource(Res.string.end)} ${payment?.expiryDate?: ""}",
                         style = MaterialTheme.typography.titleSmall.copy(
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                             fontSize = adjustedFontSize(8f)
@@ -74,7 +86,8 @@ fun PaymentHistoryItem() {
             }
             Row(
                 modifier = Modifier.clip(shape = CircleShape)
-                    .background(color = green.copy(alpha = 0.2f)).padding(horizontal = 8.dp, vertical = 3.dp),
+                    .background(color = green.copy(alpha = 0.2f))
+                    .padding(horizontal = 8.dp, vertical = 3.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
@@ -86,7 +99,7 @@ fun PaymentHistoryItem() {
 
                 WidthGap(width = 10.dp)
                 Text(
-                    text = "Paid",
+                    text = stringResource(Res.string.paid),
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontSize = adjustedFontSize(8f),
                         color = green
@@ -107,7 +120,7 @@ fun PaymentHistoryItem() {
                 )
 
                 Text(
-                    text = "$100",
+                    text = "৳${AppConstant.toBanglaDigits(payment?.amount?: "0")}",
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -129,15 +142,18 @@ fun PaymentHistoryItem() {
                     horizontalArrangement = Arrangement.End
                 ) {
                     Image(
-                        painter = painterResource(Res.drawable.bkash_icon),
+                        painter =painterResource(AppConstant.paymentTypeToImage(
+                            type = payment?.cardType ?: ""
+                        )),
                         contentDescription = null,
+                        colorFilter = ColorFilter.tint(color = AppConstant.paymentTypeToColor(type = payment?.cardType ?: "")),
                         modifier = Modifier.size(30.dp)
                     )
                     WidthGap(width = 10.dp)
                     Text(
-                        text = "bKash-bKash",
+                        text = payment?.cardType?: "",
                         style = MaterialTheme.typography.titleSmall.copy(
-                            color = bkashColor,
+                            color = AppConstant.paymentTypeToColor(type = payment?.cardType ?: ""),
                             fontSize = adjustedFontSize(10f)
                         )
                     )
@@ -147,8 +163,3 @@ fun PaymentHistoryItem() {
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun PaymentHistoryItemPreview() {
-    PaymentHistoryItem()
-}

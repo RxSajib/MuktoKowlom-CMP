@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,17 +43,16 @@ import com.aliad.muktokowlom.ui.component.StoryFileUploadCustomButton
 import com.aliad.muktokowlom.ui.component.StoryUploadCustomHeader
 import com.aliad.muktokowlom.ui.component.WheelDatePickerDialog
 import com.aliad.muktokowlom.ui.component.WidthGap
+import com.aliad.muktokowlom.ui.dialog.CategoryDialog
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.green
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import com.aliad.presentation.signIn.ui.uploadStories.UploadStoriesViewModel
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.add_tags
-import muktokowlomcmp.composeapp.generated.resources.arrow_right_svgrepo_com
 import muktokowlomcmp.composeapp.generated.resources.below
 import muktokowlomcmp.composeapp.generated.resources.category
 import muktokowlomcmp.composeapp.generated.resources.dashboard
-import muktokowlomcmp.composeapp.generated.resources.dont_have_an_account
 import muktokowlomcmp.composeapp.generated.resources.fill_in_the_details_below_to_submit_your_story
 import muktokowlomcmp.composeapp.generated.resources.free
 import muktokowlomcmp.composeapp.generated.resources.free_details
@@ -77,7 +77,6 @@ import muktokowlomcmp.composeapp.generated.resources.published_date
 import muktokowlomcmp.composeapp.generated.resources.select_category
 import muktokowlomcmp.composeapp.generated.resources.select_date
 import muktokowlomcmp.composeapp.generated.resources.share_your_story
-import muktokowlomcmp.composeapp.generated.resources.sign_in_now
 import muktokowlomcmp.composeapp.generated.resources.start_writing_your_story
 import muktokowlomcmp.composeapp.generated.resources.story_summary_max_word
 import muktokowlomcmp.composeapp.generated.resources.story_title
@@ -106,6 +105,13 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
     val publishedDate = viewModel.publishedDateFlow.collectAsStateWithLifecycle()
     val storySummary = viewModel.storySummaryFlow.collectAsStateWithLifecycle()
     val fullStory = viewModel.fullStoryFlow.collectAsStateWithLifecycle()
+    val categoryData = viewModel.categoryData.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel.saveCategory){
+        if(viewModel.saveCategory.name.isNotBlank()){
+            viewModel.inputCategory(category = viewModel.saveCategory.name)
+        }
+    }
 
     Surface(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)) {
 
@@ -413,7 +419,13 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
         }
 
         if (viewModel.showCategoryDialog) {
+            CategoryDialog(onDismissRequest = {
+                viewModel.showCategoryDialog = false
 
+            }, onSelected = {myCategory ->
+                viewModel.saveCategory = myCategory
+                viewModel.showCategoryDialog = false
+            }, value = categoryData.value, viewModel = viewModel)
         }
     }
 }

@@ -42,6 +42,8 @@ seymourText = "0.0.20"
 composeviews = "1.10.0.1"
 
 buildkonfig = "0.17.1"
+hotswan = "1.3.2"
+stabilityAnalyzer = "0.6.1"
 
 [libraries]
 be-htmlconverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlconverterVersion" }
@@ -97,7 +99,6 @@ seymour-text = { module = "com.eygraber:seymour-text", version.ref = "seymourTex
 
 composeviews = { module = "io.github.ltttttttttttt:ComposeViews", version.ref = "composeviews" }
 
-
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -110,3 +111,5 @@ androidLint = { id = "com.android.lint", version.ref = "agp" }
 
 kotlinx-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization"}
 buildkonfig = {id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig"}
+hotswan-compiler = { id = "com.github.skydoves.compose.hotswan.compiler", version.ref = "hotswan" }
+stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version.ref = "stabilityAnalyzer" }

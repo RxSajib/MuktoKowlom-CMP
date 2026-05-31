@@ -36,7 +36,6 @@ import io.github.rhobus.kloading.animation.WatchRunningAnimation
 import muktokowlomcmp.composeapp.generated.resources.Please_type_the_verification_code_send_to
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.enter_otp
-import muktokowlomcmp.composeapp.generated.resources.sign_up
 import muktokowlomcmp.composeapp.generated.resources.signup_success
 import muktokowlomcmp.composeapp.generated.resources.verification_code
 import org.jetbrains.compose.resources.stringResource
@@ -49,7 +48,7 @@ fun OtpViewScreen(
     rootBackStack: NavBackStack<NavKey>
 ) {
 
-    val viewModel : OtpVerificationViewModel = koinViewModel()
+    val viewModel: OtpVerificationViewModel = koinViewModel()
     val lifecycle = LocalLifecycleOwner.current
     val signupSuccessText = stringResource(Res.string.signup_success)
 
@@ -61,9 +60,9 @@ fun OtpViewScreen(
         }
     }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.isLoginSuccess.collect { isLoginSuccess ->
-            if(isLoginSuccess){
+            if (isLoginSuccess) {
                 SnackBarEvent.save(
                     details = SnackBarDetails(
                         details = signupSuccessText,
@@ -72,7 +71,7 @@ fun OtpViewScreen(
                         leftIcon = Icons.Default.LockOpen
                     )
                 )
-            }else {
+            } else {
                 SnackBarEvent.save(
                     details = SnackBarDetails(
                         isSuccess = false,
@@ -98,7 +97,12 @@ fun OtpViewScreen(
                     editProfile = {})
             }
         ) { innerPadding ->
-            Column(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface).padding(innerPadding).padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier.fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.surface)
+                    .padding(innerPadding).padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 HeightGap(height = 10.dp)
                 Text(
                     text = stringResource(Res.string.verification_code),
@@ -137,12 +141,12 @@ fun OtpViewScreen(
                 HeightGap(height = 15.dp)
 
                 AnimatedOtpInput { otpNumber ->
-                   viewModel.otpVerification(otp = otpNumber)
+                    viewModel.otpVerification(otp = otpNumber)
                 }
 
                 HeightGap(height = 15.dp)
 
-                if(viewModel.loading){
+                if (viewModel.loading) {
                     WatchRunningAnimation(
                         clockColor = Color.Gray.copy(alpha = 0.1f),
                         handColor = Color.Gray,
@@ -150,8 +154,6 @@ fun OtpViewScreen(
                     )
                 }
                 HeightGap(height = 15.dp)
-
-
             }
         }
     }

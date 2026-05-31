@@ -5,11 +5,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aliad.ApiResult
+import com.aliad.model.MyCategory
+import com.aliad.usecase.CategoryUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class UploadStoriesViewModel : ViewModel() {
+class UploadStoriesViewModel constructor(
+    val categoryUseCase: CategoryUseCase
+) : ViewModel() {
+
+    var selectedCategory by mutableStateOf(MyCategory())
+    var saveCategory by mutableStateOf(MyCategory())
+
 
     var showCategoryDialog by mutableStateOf(false)
     var showCalender by mutableStateOf(false)
@@ -59,4 +68,29 @@ class UploadStoriesViewModel : ViewModel() {
             fullStoryMutableStateFlow.emit(fullStoryDetails)
         }
     }
+
+    private var getCategoryMutableStateFlow = MutableStateFlow<List<MyCategory>>(emptyList())
+    val categoryData = getCategoryMutableStateFlow.asStateFlow()
+
+    var selectedCategoryPosition by mutableStateOf(-1)
+
+    init {
+        getCategory()
+    }
+
+    private fun getCategory(){
+        viewModelScope.launch {
+            val response = categoryUseCase.getCategory()
+            when(response){
+                is ApiResult.Success -> {
+                    getCategoryMutableStateFlow.emit(response.data)
+                }
+
+                is ApiResult.Error -> {
+                    getCategoryMutableStateFlow.emit(emptyList())
+                }
+            }
+        }
+    }
+
 }

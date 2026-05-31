@@ -2,6 +2,9 @@
 
 <resources>
 
+    <string name="end">End:</string>
+    <string name="paid">Paid</string>
+    <string name="select">Select</string>
     <string name="signup_success">SignUp Success</string>
     <string name="login_success">Login Success</string>
 

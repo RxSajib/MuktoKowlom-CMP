@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.implementation
+import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -9,6 +10,8 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.hotswan.compiler)
+    alias(libs.plugins.stability.analyzer)
 }
 
 kotlin {
@@ -40,8 +43,8 @@ kotlin {
 
             implementation("androidx.paging:paging-runtime:3.4.2")
             implementation("io.github.grizzi91:bouquet:1.1.3")
-
-            // pdf view for android
+            
+            // leakcanary android
         }
         commonMain.dependencies {
             implementation(compose.runtime)

@@ -83,7 +83,7 @@ val presentationModule = module {
     viewModel {
         StoryTypeViewModel(storyTypeUseCase = get(), getStringData = get())
     }
-    viewModel { (storyID: String)  ->
+    viewModel { (storyID: String) ->
         StoryDetailsViewModel(
             storyDetailsUseCase = get(),
             ratingAndFeedbackUseCase = get(),
@@ -132,7 +132,10 @@ val presentationModule = module {
     }
 
     viewModel {
-        SubscriptionHistoryViewModel(subscriptionHistoryUseCase = get())
+        SubscriptionHistoryViewModel(
+            subscriptionHistoryUseCase = get(),
+            getStringData = get()
+        )
     }
 
     viewModel {
@@ -143,7 +146,7 @@ val presentationModule = module {
         )
     }
 
-    viewModel {(saveStateHandle : SavedStateHandle) ->
+    viewModel { (saveStateHandle: SavedStateHandle) ->
         AllReleaseStoryViewModel(
             allReleaseUseCase = get(),
             savedStateHandle = saveStateHandle,
@@ -151,7 +154,7 @@ val presentationModule = module {
         )
     }
 
-    viewModel {(savestateHandle : SavedStateHandle) ->
+    viewModel { (savestateHandle: SavedStateHandle) ->
         NewReleaseStoryViewModel(
             storyTypeUseCase = get(),
             savedStateHandle = savestateHandle,
@@ -159,7 +162,7 @@ val presentationModule = module {
         )
     }
 
-    viewModel {(saveStateHandle : SavedStateHandle) ->
+    viewModel { (saveStateHandle: SavedStateHandle) ->
         MostPopularStoryViewModel(
             storyTypeUseCase = get(),
             savedStateHandle = saveStateHandle,
@@ -171,7 +174,7 @@ val presentationModule = module {
         FavoriteStoryViewModel()
     }
 
-    viewModel {(saveStateHandle : SavedStateHandle) ->
+    viewModel { (saveStateHandle: SavedStateHandle) ->
         SearchStoryResultViewModel(
             searchBookUseCase = get(),
             savedStateHandle = saveStateHandle,
@@ -190,7 +193,7 @@ val presentationModule = module {
     }
 
     viewModel {
-        UploadStoriesViewModel()
+        UploadStoriesViewModel(categoryUseCase = get())
     }
 
     viewModel {

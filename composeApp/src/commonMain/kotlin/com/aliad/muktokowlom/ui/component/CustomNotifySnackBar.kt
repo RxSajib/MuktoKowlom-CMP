@@ -59,7 +59,7 @@ fun MyCustomNotifySnackBar(
     message: String,
     isSuccess : Boolean = true,
     //  leftIcon: ImageVector? = null,
-    position: com.aliad.muktokowlom.ui.component.MySnackPosition = _root_ide_package_.com.aliad.muktokowlom.ui.component.MySnackPosition.TOP,
+    position: MySnackPosition = MySnackPosition.TOP,
     onDismiss: (() -> Unit)? = null
 ) {
     // visible resets when message changes

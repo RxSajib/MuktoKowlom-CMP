@@ -8,6 +8,7 @@ enum class PaymentType {
     Nagad,
     @SerialName("bKash-bKash")
     bKash,
-    UPAY
+    UPAY,
+    CARD
 
 }

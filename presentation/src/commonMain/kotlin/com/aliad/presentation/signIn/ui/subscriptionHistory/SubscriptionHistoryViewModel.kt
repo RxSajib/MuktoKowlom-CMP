@@ -7,12 +7,19 @@ import androidx.paging.LoadState
 import androidx.paging.cachedIn
 import com.aliad.model.PagingUiState
 import com.aliad.usecase.SubscriptionHistoryUseCase
+import com.aliad.usecase.dataStore.GetStringData
+import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
-class SubscriptionHistoryViewModel constructor(val subscriptionHistoryUseCase: SubscriptionHistoryUseCase) : ViewModel() {
+class SubscriptionHistoryViewModel constructor(val subscriptionHistoryUseCase: SubscriptionHistoryUseCase,
+    val getStringData: GetStringData
+    ) : ViewModel() {
 
-    fun getSubscriptionHistory() = subscriptionHistoryUseCase.getSubscriptionHistory().cachedIn(viewModelScope)
+    val subscriptionHistory = subscriptionHistoryUseCase.getSubscriptionHistory().cachedIn(viewModelScope)
 
     private val _pagingUiState = MutableStateFlow(PagingUiState())
     val pagingUiState: StateFlow<PagingUiState> = _pagingUiState
@@ -26,5 +33,9 @@ class SubscriptionHistoryViewModel constructor(val subscriptionHistoryUseCase: S
             prependError = loadStates.prepend as? LoadState.Error,
             isEmpty = loadStates.refresh is LoadState.NotLoading && itemCount == 0
         )
+    }
+
+    val selectedLan = flow {
+        emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
     }
 }

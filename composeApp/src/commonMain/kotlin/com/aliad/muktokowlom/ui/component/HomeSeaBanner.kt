@@ -5,11 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,6 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.dashboard_web_link
 import muktokowlomcmp.composeapp.generated.resources.details_dashboard
@@ -35,12 +39,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HomeSeaBanner(onCLickWeb: () -> Unit){
+
+
+
     Box(modifier = Modifier.padding(horizontal = 16.dp
     ).fillMaxWidth().aspectRatio(3f).clip(shape = RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center){
         Image(
             painter = painterResource(Res.drawable.sea),
             contentDescription = null,
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
         )
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f).padding(end = 16.dp)) {
@@ -84,7 +92,7 @@ fun HomeSeaBanner(onCLickWeb: () -> Unit){
 @Composable
 @Preview
 fun HomeSeaBannerPreview(){
-    _root_ide_package_.com.aliad.muktokowlom.ui.component.HomeSeaBanner {
+    HomeSeaBanner {
 
     }
 }

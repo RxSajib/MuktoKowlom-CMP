@@ -29,41 +29,45 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun WheelDatePickerDialog(onDismissRequest: () -> Unit, onDateSelected: (LocalDate) -> Unit) {
     WheelDatePickerView(
+        containerColor = MaterialTheme.colorScheme.inversePrimary,
         modifier = Modifier,
-    showDatePicker = true,
-    title = stringResource(Res.string.select_date),
-    doneLabel = stringResource(Res.string.done),
-    titleStyle = LocalTextStyle.current,
-    doneLabelStyle = LocalTextStyle.current,
-    startDate = LocalDate.now(),
-    minDate = LocalDate.MIN(),
-    maxDate = LocalDate.MAX(),
-    yearsRange= IntRange(1922, 2122),
+        showDatePicker = true,
+        title = stringResource(Res.string.select_date),
+        doneLabel = stringResource(Res.string.done),
+        titleStyle = MaterialTheme.typography.titleSmall.copy(
+            color = MaterialTheme.colorScheme.primary
+        ),
+        doneLabelStyle = MaterialTheme.typography.titleSmall.copy(
+            color = MaterialTheme.colorScheme.primary
+        ),
+        startDate = LocalDate.now(),
+        minDate = LocalDate.MIN(),
+        maxDate = LocalDate.now(),
+        yearsRange = IntRange(1922, 2122),
 
-    height = 150.dp,
-    rowCount = 3,
-    showShortMonths = false,
-    showMonthAsNumber = false,
-    selectedDateTextStyle = MaterialTheme.typography.titleMedium.copy(
-    color = LocalContentColor.current,
-    fontSize = 15.sp
-    ),
-    defaultDateTextStyle = MaterialTheme.typography.titleSmall.copy(
-    color = Color.Black,
-    fontSize = 18.sp
-    ),
-    hideHeader = false,
-    customMonthNames = null,
-    containerColor = Color.White,
-    shape = RoundedCornerShape(10.dp),
-    dateTimePickerView = DateTimePickerView.BOTTOM_SHEET_VIEW,
-    selectorProperties = WheelPickerDefaults.selectorProperties(),
-    dragHandle = { BottomSheetDefaults.DragHandle() },
-    onDoneClick = {localDate ->
-        onDateSelected.invoke(localDate)
-    },
-    onDateChangeListener = {},
-    onDismiss = {onDismissRequest.invoke()}
+        height = 150.dp,
+        rowCount = 3,
+        showShortMonths = false,
+        showMonthAsNumber = false,
+        selectedDateTextStyle = MaterialTheme.typography.titleMedium.copy(
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 15.sp
+        ),
+        defaultDateTextStyle = MaterialTheme.typography.titleSmall.copy(
+            color = Color.Black,
+            fontSize = 18.sp
+        ),
+        hideHeader = false,
+        customMonthNames = null,
+        shape = RoundedCornerShape(10.dp),
+        dateTimePickerView = DateTimePickerView.BOTTOM_SHEET_VIEW,
+        selectorProperties = WheelPickerDefaults.selectorProperties(),
+        dragHandle = { BottomSheetDefaults.DragHandle() },
+        onDoneClick = { localDate ->
+            onDateSelected.invoke(localDate)
+        },
+        onDateChangeListener = {},
+        onDismiss = { onDismissRequest.invoke() }
     )
 
 }
@@ -71,6 +75,7 @@ fun WheelDatePickerDialog(onDismissRequest: () -> Unit, onDateSelected: (LocalDa
 @Composable
 @Preview
 fun WheelDatePickerDialogPreview() {
+    val curentDate = LocalDate.now()
     _root_ide_package_.com.aliad.muktokowlom.ui.component.WheelDatePickerDialog(
         onDismissRequest = {},
         onDateSelected = {}

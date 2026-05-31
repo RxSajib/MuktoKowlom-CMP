@@ -78,7 +78,7 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit, logoutButtonClick: () -> Uni
                     .background(color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.1f))
                     .padding(16.dp)
             ) {
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomButton(
+                MyCustomButton(
                     title = stringResource(Res.string.cancel),
                     modifier = Modifier.weight(1f),
                     onClickButton = {
@@ -91,8 +91,8 @@ fun LogoutBottomSheet(onDismissRequest: () -> Unit, logoutButtonClick: () -> Uni
                     isEnable = true,
                     padding = 0.dp
                 )
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.WidthGap(width = 20.dp)
-                _root_ide_package_.com.aliad.muktokowlom.ui.component.MyCustomButton(
+                WidthGap(width = 20.dp)
+                MyCustomButton(
                     backgroundColor = Color.Red,
                     title = stringResource(Res.string.logout),
                     modifier = Modifier.weight(1f),

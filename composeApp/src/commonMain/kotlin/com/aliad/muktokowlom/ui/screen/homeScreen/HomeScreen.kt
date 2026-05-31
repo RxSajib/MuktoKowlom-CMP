@@ -47,6 +47,7 @@ import io.github.alexzhirkevich.compottie.Compottie.logger
 import io.ktor.util.logging.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
@@ -77,6 +78,10 @@ fun HomeScreen(sharedViewModel: SharedViewModel, backStack: NavBackStack<NavKey>
     stringResource(Res.string.most_popular)
     stringResource(Res.string.new_release)
     stringResource(Res.string.all_release)
+
+
+
+
 
 
     val refreshState = rememberRefreshLayoutState {
