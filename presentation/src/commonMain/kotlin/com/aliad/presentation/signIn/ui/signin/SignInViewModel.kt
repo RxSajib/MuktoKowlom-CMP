@@ -15,6 +15,7 @@ import com.aliad.usecase.dataStore.SaveIntData
 import com.aliad.usecase.dataStore.SaveStringData
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -133,44 +134,46 @@ class SignInViewModel constructor(
 
 
     suspend fun saveUserInfo(user: User) {
-        supervisorScope { // if one corotine cancel other corotine run
-            val job1 = async {
-                saveStringData.saveStringData(AppConstant.USER_EMAIL_ADDRESS, user.email ?: "")
-            }
-            val job2 = async {
-                saveStringData.saveStringData(AppConstant.USER_NAME, user.name ?: "")
-            }
-            val job3 = async {
-                saveStringData.saveStringData(AppConstant.USER_PHONE, user.phone ?: "")
-            }
-            val job4 = async {
-                saveStringData.saveStringData(
-                    AppConstant.USER_PROFILE_IMAGE,
-                    user.profileImage ?: ""
-                )
-            }
-            val job5 = async {
-                saveStringData.saveStringData(AppConstant.ACCESS_TOKEN, user.accessToken ?: "")
-            }
-            val job6 = async {
-                saveStringData.saveStringData(
-                    AppConstant.USER_REGISTER_DATE,
-                    user.createAtDate ?: ""
-                )
-            }
-            val job7 = async {
-                saveIntData.saveIntData(
-                    key = AppConstant.USER_ID,
-                    value = user.id ?: -1
-                )
-            }
-            job1.join()
-            job2.join()
-            job3.join()
-            job4.join()
-            job5.join()
-            job6.join()
-            job7.join()
+        supervisorScope {
+
+            awaitAll(
+                async {
+                    saveStringData.saveStringData(AppConstant.USER_EMAIL_ADDRESS, user.email ?: "")
+                },
+                async {
+                    saveStringData.saveStringData(AppConstant.USER_NAME, user.name ?: "")
+                },
+                async {
+                    saveStringData.saveStringData(
+                        AppConstant.USER_PROFILE_IMAGE,
+                        user.profileImage ?: ""
+                    )
+                },
+                async {
+                    saveStringData.saveStringData(AppConstant.ACCESS_TOKEN, user.accessToken ?: "")
+                },
+                async {
+                    saveStringData.saveStringData(
+                        AppConstant.USER_REGISTER_DATE,
+                        user.createAtDate ?: ""
+                    )
+                },
+                async {
+                    saveIntData.saveIntData(
+                        key = AppConstant.USER_ID,
+                        value = user.id ?: -1
+                    )
+                },
+                async {
+                    saveStringData.saveStringData(
+                        key = AppConstant.USER_SECOND_NUMBER,
+                        value = user.phoneTwo?: ""
+                    )
+                },
+                async {
+                    saveStringData.saveStringData(AppConstant.USER_PHONE, user.phone ?: "")
+                }
+            )
         }
 
     }
