@@ -103,7 +103,9 @@ val presentationModule = module {
         )
     }
     viewModel {
-        EditProfileViewModel()
+        EditProfileViewModel(
+            getStringData = get()
+        )
     }
     viewModel {
         SubscriptionPlanViewModel(

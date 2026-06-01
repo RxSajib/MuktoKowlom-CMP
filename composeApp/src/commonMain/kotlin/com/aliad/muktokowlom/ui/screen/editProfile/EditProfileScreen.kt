@@ -33,6 +33,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
@@ -41,6 +43,7 @@ import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.component.WheelDatePickerDialog
 import com.aliad.muktokowlom.ui.component.WidthGap
 import com.aliad.muktokowlom.ui.theme.adjustedFontSize
+import com.aliad.muktokowlom.utils.MyCustomLogger
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
 import com.sajib.data.appConstant.AppConstant
@@ -70,31 +73,15 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.collections.removeLastOrNull
 
+private const val TAG = "EditProfileScreen"
 @Composable
 fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: EditProfileViewModel = koinViewModel()
-    val dataStoreViewModel : DataStoreViewModel = koinViewModel()
+    val emailAddress = viewModel.emailAddressState.collectAsStateWithLifecycle("")
+    val userProfileImage = viewModel.userProfileImage.collectAsStateWithLifecycle("")
 
-    val userEmailAddress by dataStoreViewModel.getStringData(key = AppConstant.USER_EMAIL_ADDRESS).collectAsStateWithLifecycle(null)
-    val userProfileImage by dataStoreViewModel.getStringData(key = AppConstant.USER_PROFILE_IMAGE).collectAsStateWithLifecycle(null)
-    val userPhoneNumber by dataStoreViewModel.getStringData(key = AppConstant.USER_PHONE).collectAsStateWithLifecycle(null)
-    val userName by dataStoreViewModel.getStringData(key = AppConstant.USER_NAME).collectAsStateWithLifecycle(null)
-    val userSecondNumber by dataStoreViewModel.getStringData(key = AppConstant.USER_SECOND_NUMBER).collectAsStateWithLifecycle(null)
-    val userDateOfBirth by dataStoreViewModel.getStringData(key = AppConstant.USER_DATE_OF_BIRTH).collectAsStateWithLifecycle(null)
-    val userAge by dataStoreViewModel.getStringData(key = AppConstant.USER_AGE).collectAsStateWithLifecycle(null)
-    val userAddress by dataStoreViewModel.getStringData(key = AppConstant.USER_ADDRESS).collectAsStateWithLifecycle(null)
-
-    val userID by dataStoreViewModel.getIntData(key = AppConstant.USER_ID).collectAsStateWithLifecycle(null)
-    val token by dataStoreViewModel.getStringData(key = AppConstant.ACCESS_TOKEN).collectAsStateWithLifecycle(null)
-
-    print("userID ${userID.toString()}")
-    print("token ${token.toString()}")
-
-    val parts = userName?.trim()?.split(" ")
-    val firstName = parts?.firstOrNull() ?: ""
-    val lastName = parts?.lastOrNull() ?: ""
-
+    val fullName = viewModel.userName.collectAsStateWithLifecycle("")
     val firstNameState = viewModel.firstNameState.collectAsStateWithLifecycle()
     val lastNameState = viewModel.lastNameState.collectAsStateWithLifecycle()
     val emailAddressState = viewModel.emailAddressState.collectAsStateWithLifecycle()
@@ -145,7 +132,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                     HeightGap(height = 20.dp)
                     AsyncImage(
                         contentDescription = null,
-                        model = userProfileImage,
+                        model = ImageRequest.Builder(context = LocalPlatformContext.current).size(100).data(userProfileImage.value).build(),
                         error = painterResource(Res.drawable.ic_placeholder),
                         placeholder = painterResource(Res.drawable.ic_placeholder),
                         modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable {
@@ -155,7 +142,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                     )
                     HeightGap(height = 20.dp)
                     Text(
-                        text = userName ?: "",
+                        text = fullName.value,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium.copy(
@@ -238,6 +225,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                     viewModel.updateEmailAddress(emailAddress = emailAddress)
                                 },
                                 isPasswordInput = false,
+                                readOnly = true,
                                 isVisiblePasswordChange = {},
                                 modifier = Modifier,
                                 isPasswordVisibility = true,
@@ -263,6 +251,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                 onValueChange = { phoneNumberInput ->
                                     viewModel.updatePhoneNumber(phoneNumber = phoneNumberInput)
                                 },
+                                isNumberType = true,
                                 isPasswordInput = false,
                                 isVisiblePasswordChange = {},
                                 modifier = Modifier,
@@ -292,6 +281,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                                     viewModel.updateSecondPhoneNumber(secondNumber = secondPhoneNumberInput)
                                 },
                                 isPasswordInput = false,
+                                isNumberType = true,
                                 isVisiblePasswordChange = {},
                                 modifier = Modifier,
                                 isPasswordVisibility = true,
@@ -405,7 +395,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                             onClickButton = {
                                 navBackStack.add(
                                     AppDestination.Dest.UpdatePassword(
-                                        emailAddress = userEmailAddress ?: "",
+                                        emailAddress = emailAddress.value
                                     )
                                 )
                             },
