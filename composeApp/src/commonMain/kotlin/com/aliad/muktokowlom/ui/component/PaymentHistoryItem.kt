@@ -45,7 +45,7 @@ fun PaymentHistoryItem(payment: Payment?, selectedBn : String) {
     Column(
         modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(10.dp))
             .background(color = MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.2f))
-            .padding(10.dp)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {

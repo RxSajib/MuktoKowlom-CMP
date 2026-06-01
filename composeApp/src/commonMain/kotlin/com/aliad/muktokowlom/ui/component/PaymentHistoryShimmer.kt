@@ -31,7 +31,7 @@ fun PaymentHistoryShimmer() {
 
 @Composable
 fun PaymentHistoryShimmerItem() {
-    Column(modifier = Modifier.fillMaxWidth().padding(15.dp)) {
+    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp)) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Box(
                 modifier = Modifier.size(45.dp).clip(shape = CircleShape).shimmer()
