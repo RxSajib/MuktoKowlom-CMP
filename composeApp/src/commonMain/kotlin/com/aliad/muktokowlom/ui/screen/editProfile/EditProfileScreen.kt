@@ -44,6 +44,7 @@ import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.MyCustomButton
+import com.aliad.muktokowlom.ui.component.MyCustomCameraButton
 import com.aliad.muktokowlom.ui.component.MyCustomInputFiled
 import com.aliad.muktokowlom.ui.component.WheelDatePickerDialog
 import com.aliad.muktokowlom.ui.component.WidthGap
@@ -226,18 +227,25 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                     ) {
 
                         HeightGap(height = 20.dp)
-                        AsyncImage(
-                            contentDescription = null,
-                            model = ImageRequest.Builder(context = LocalPlatformContext.current)
-                                .size(100).data(userProfileImage.value).build(),
-                            error = painterResource(Res.drawable.ic_placeholder),
-                            placeholder = painterResource(Res.drawable.ic_placeholder),
-                            modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable {
-                                viewModel.takeProfileImageFromGallery = true
-                                picker.launchCamera()
-                            },
-                            contentScale = ContentScale.Crop
-                        )
+                        Box(
+                            contentAlignment = Alignment.BottomEnd
+                        ){
+                            AsyncImage(
+                                contentDescription = null,
+                                model = ImageRequest.Builder(context = LocalPlatformContext.current)
+                                    .size(100).data(userProfileImage.value).build(),
+                                error = painterResource(Res.drawable.ic_placeholder),
+                                placeholder = painterResource(Res.drawable.ic_placeholder),
+                                modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable {
+                                    viewModel.takeProfileImageFromGallery = true
+                                    picker.launchCamera()
+                                },
+                                contentScale = ContentScale.Crop
+                            )
+
+                            MyCustomCameraButton()
+                        }
+
                         HeightGap(height = 20.dp)
                         Text(
                             text = fullName.value,
