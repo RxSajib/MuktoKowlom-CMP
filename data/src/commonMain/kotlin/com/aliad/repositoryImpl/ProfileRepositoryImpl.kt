@@ -2,15 +2,18 @@ package com.aliad.repositoryImpl
 
 import com.aliad.ApiResult
 import com.aliad.dataSource.RemoteDataSources
+import com.aliad.model.LoginDto
 import com.aliad.model.MyEarnHistory
 import com.aliad.model.PrivacyPolicy
 import com.aliad.model.PrivacyPolicyDto
 import com.aliad.model.Subscription
 import com.aliad.model.SubscriptionDto
+import com.aliad.model.User
 import com.aliad.model.earn_history.EarnHistoryDto
 import com.aliad.model.mapper.DataMapper.earningHistoryDtoToEarningHistory
 import com.aliad.model.mapper.DataMapper.toPrivacyPolicy
 import com.aliad.model.mapper.DataMapper.toSubscriptionPlanList
+import com.aliad.model.mapper.DataMapper.toUser
 import com.aliad.repository.ProfileRepository
 import com.aliad.utils.MyCustomLogger
 
@@ -57,6 +60,33 @@ class ProfileRepositoryImpl constructor(val dataSources: RemoteDataSources) : Pr
             }
             is ApiResult.Error -> {
                 MyCustomLogger.logInfo(tag = TAG, message = "error ${response.messageEn}")
+                return ApiResult.Error(messageBn = response.messageBn, messageEn = response.messageEn)
+            }
+        }
+    }
+
+    override suspend fun updateProfile(
+        userID: String,
+        name: String,
+        emailAddress: String,
+        phoneNumber: String,
+        phoneNumberTwo: String,
+        address: String,
+        bio: String
+    ): ApiResult<User> {
+        when(val response = dataSources.updateProfile(
+            userID = userID,
+            name = name,
+            emailAddress = emailAddress,
+            phoneNumber = phoneNumber,
+            phoneNumberTwo = phoneNumberTwo,
+            address = address,
+            bio = bio
+        )){
+            is ApiResult.Success -> {
+               return ApiResult.Success(data = toUser(loginDto = response.data.data?: LoginDto()))
+            }
+            is ApiResult.Error -> {
                 return ApiResult.Error(messageBn = response.messageBn, messageEn = response.messageEn)
             }
         }

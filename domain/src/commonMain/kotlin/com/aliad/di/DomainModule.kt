@@ -21,6 +21,7 @@ import com.aliad.usecase.StoryDetailsUseCase
 import com.aliad.usecase.StoryTypeUseCase
 import com.aliad.usecase.SubscriptionHistoryUseCase
 import com.aliad.usecase.UpdatePasswordUseCase
+import com.aliad.usecase.UpdateProfileUseCase
 import com.aliad.usecase.dataStore.DeleteBoolDataUseCase
 import com.aliad.usecase.dataStore.DeleteIntDataUseCase
 import com.aliad.usecase.dataStore.GetBoolData
@@ -178,5 +179,9 @@ val domainModule = module {
         EarningHistoryUseCase(
             profileRepository = get()
         )
+    }
+
+    factory {
+        UpdateProfileUseCase(profileRepository = get())
     }
 }

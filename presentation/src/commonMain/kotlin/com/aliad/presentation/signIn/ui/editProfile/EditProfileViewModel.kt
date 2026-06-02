@@ -6,24 +6,37 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aliad.ApiResult
+import com.aliad.model.GenericResponse
+import com.aliad.model.User
+import com.aliad.presentation.utils.MyCustomLogger
+import com.aliad.usecase.UpdateProfileUseCase
+import com.aliad.usecase.dataStore.GetIntData
 import com.aliad.usecase.dataStore.GetStringData
+import com.aliad.usecase.dataStore.SaveStringData
 import com.sajib.data.appConstant.AppConstant
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 
+private const val TAG = "EditProfileViewModel"
+
 class EditProfileViewModel constructor(
-    val getStringData: GetStringData
+    val getStringData: GetStringData,
+    val getIntData: GetIntData,
+    val saveStringData: SaveStringData,
+    val updateProfileUseCase: UpdateProfileUseCase
 ) : ViewModel() {
 
+    var data = MutableSharedFlow<GenericResponse<User>>()
+    var isLoading by mutableStateOf(false)
 
     var takeProfileImageFromGallery by mutableStateOf(false)
 
@@ -54,7 +67,14 @@ class EditProfileViewModel constructor(
     val addressState = addressMutableStateFlow.asStateFlow()
 
 
+    val selectedLan = flow {
+        emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+    }
+
     // get user info
+    val userID = flow {
+        emit(getIntData.getIntData(key = AppConstant.USER_ID).first())
+    }
     val emailAddress = flow {
         emit(getStringData.getStringData(key = AppConstant.USER_EMAIL_ADDRESS).first())
     }
@@ -196,6 +216,95 @@ class EditProfileViewModel constructor(
         phoneNumberState
     ) { firstName, lastName, emailAddress, phoneNumber ->
         firstName.isNotBlank() && lastName.isNotBlank() && emailAddress.isNotBlank() && phoneNumber.isNotBlank()
+    }
+
+
+    fun updateProfile() {
+        viewModelScope.launch {
+            userID.collect { userID ->
+                isLoading = true
+                val response = updateProfileUseCase.editProfileInfo(
+                    userID = userID.toString(),
+                    name = firstNameMutableStateFlow.value + " " + lastNameMutableStateFlow.value,
+                    emailAddress = emailAddressMutableStateFlow.value,
+                    phone = phoneNumberMutableStateFlow.value,
+                    phoneTwo = secondNumberMutableStateFlow.value,
+                    address = addressMutableStateFlow.value,
+                    bio = ""
+                )
+                isLoading = false
+
+                when (response) {
+                    is ApiResult.Success -> {
+                        MyCustomLogger.logInfo(tag = TAG, message = "success updating profile")
+                        data.emit(
+                            value = GenericResponse(
+                                success = true,
+                                data = response.data
+                            )
+                        )
+                        updateProfileInfo(user = response.data)
+                    }
+
+                    is ApiResult.Error -> {
+                        MyCustomLogger.logInfo(tag = TAG, message = "error updating profile")
+                        data.emit(
+                            value = GenericResponse(
+                                success = false,
+                                message_bn = response.messageBn,
+                                message_en = response.messageEn
+                            )
+                        )
+                    }
+                }
+            }
+
+        }
+    }
+
+    suspend fun updateProfileInfo(user: User) {
+        supervisorScope {
+            awaitAll(
+                async {
+                    saveStringData.saveStringData(AppConstant.USER_EMAIL_ADDRESS, user.email ?: "")
+                },
+                async {
+                    saveStringData.saveStringData(AppConstant.USER_NAME, user.name ?: "")
+                },
+                async {
+                    saveStringData.saveStringData(
+                        AppConstant.USER_PROFILE_IMAGE,
+                        user.profileImage ?: ""
+                    )
+                },
+
+                async {
+                    saveStringData.saveStringData(
+                        AppConstant.USER_REGISTER_DATE,
+                        user.createAtDate ?: ""
+                    )
+                },
+
+                async {
+                    saveStringData.saveStringData(
+                        key = AppConstant.USER_SECOND_NUMBER,
+                        value = user.phoneTwo?: ""
+                    )
+                },
+                async {
+                    saveStringData.saveStringData(AppConstant.USER_PHONE, user.phone ?: "")
+                },
+                async {
+                    saveStringData.saveStringData(AppConstant.USER_DATE_OF_BIRTH, dateOfBirthMutableStateFlow.value)
+                },
+                async {
+                    saveStringData.saveStringData(AppConstant.USER_AGE, ageMutableStateFlow.value)
+                },
+                async {
+                    saveStringData.saveStringData(AppConstant.USER_ADDRESS, addressMutableStateFlow.value)
+                }
+            )
+        }
     }
 
 }

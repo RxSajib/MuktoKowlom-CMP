@@ -4,6 +4,7 @@ import com.aliad.ApiResult
 import com.aliad.model.MyEarnHistory
 import com.aliad.model.PrivacyPolicy
 import com.aliad.model.Subscription
+import com.aliad.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
@@ -13,4 +14,7 @@ interface ProfileRepository {
     suspend fun getPrivacyPolicy() : Result<PrivacyPolicy>
 
     suspend fun getEarningHistory(userID : String) : ApiResult<List<MyEarnHistory>>
+
+    suspend fun updateProfile(userID : String, name : String, emailAddress : String, phoneNumber : String,
+                              phoneNumberTwo : String, address : String, bio : String) : ApiResult<User>
 }

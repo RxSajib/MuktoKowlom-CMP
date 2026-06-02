@@ -13,11 +13,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +38,8 @@ import androidx.navigation3.runtime.NavKey
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
+import com.aliad.helper.SnackBarEvent
+import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.navigation.AppDestination
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
@@ -66,6 +71,7 @@ import muktokowlomcmp.composeapp.generated.resources.ic_placeholder
 import muktokowlomcmp.composeapp.generated.resources.last_name
 import muktokowlomcmp.composeapp.generated.resources.password_update
 import muktokowlomcmp.composeapp.generated.resources.phone_number
+import muktokowlomcmp.composeapp.generated.resources.profile_update_success
 import muktokowlomcmp.composeapp.generated.resources.save
 import muktokowlomcmp.composeapp.generated.resources.second_number
 import org.jetbrains.compose.resources.painterResource
@@ -90,8 +96,41 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
     val dateOfBirthState = viewModel.dateOfBirthState.collectAsStateWithLifecycle()
     val ageState = viewModel.ageStateFlow.collectAsStateWithLifecycle()
     val addressState = viewModel.addressState.collectAsStateWithLifecycle()
+    val selectedLocal = viewModel.selectedLan.collectAsStateWithLifecycle("en")
 
     val isValidSaveButton = viewModel.isValidationSaveButton.collectAsStateWithLifecycle(false)
+
+
+
+    // handle error response
+    val successData = stringResource(Res.string.profile_update_success)
+    LaunchedEffect(Unit){
+        viewModel.data.collect { response ->
+            response.success?.let { isSuccess ->
+                if(isSuccess){
+                    rootBackStack.removeLastOrNull()
+                    SnackBarEvent.save(
+                        details = SnackBarDetails(
+                            isSuccess = true,
+                            details = successData,
+                            show = true,
+                            leftIcon = Icons.Default.LockOpen
+                        )
+                    )
+                } else {
+                    SnackBarEvent.save(
+                        details = SnackBarDetails(
+                            isSuccess = false,
+                            details = if(selectedLocal.value == "en") response.message_en else response.message_bn,
+                            show = true,
+                            leftIcon = Icons.Default.LockOpen
+                        )
+                    )
+                }
+            }
+
+        }
+    }
 
 
     Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
@@ -382,8 +421,9 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                         MyCustomButton(
                             title = stringResource(Res.string.save),
                             modifier = Modifier.weight(1f),
+                            showProgress = viewModel.isLoading,
                             onClickButton = {
-
+                                viewModel.updateProfile()
                             },
                             isEnable = isValidSaveButton.value
                         )

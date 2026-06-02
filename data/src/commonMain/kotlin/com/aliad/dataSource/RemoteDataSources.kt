@@ -29,6 +29,7 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
@@ -39,6 +40,7 @@ import io.ktor.http.isSuccess
 import kotlinx.serialization.json.Json
 
 private const val TAG = "RemoteDataSources"
+
 class RemoteDataSources constructor(val httpClient: HttpClient) {
 
     private val BASEURL = BuildKonfig.BASE_URL
@@ -65,17 +67,115 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val PENDING_STORY_LIST = "${BASEURL}pending-story-list"
     private val WRITER_DASHBOARD = "${BASEURL}user/writer-dashborad"
     private val LIVE_STORY_LIST = "${BASEURL}live-story-list"
-    private val STORY_EARN_HISTORY= "${BASEURL}user/story-earn-history"
+    private val STORY_EARN_HISTORY = "${BASEURL}user/story-earn-history"
+    private val UPDATE_PROFILE = "${BASEURL}update-profile-information"
 
-    suspend fun storyEarnHistory(userID : String) : ApiResult<GenericResponse<EarnHistoryDto>> {
+
+    suspend fun updateProfile(
+        userID: String,
+        name: String,
+        emailAddress: String,
+        phoneNumber: String,
+        phoneNumberTwo: String,
+        address: String,
+        bio: String,
+    ): ApiResult<GenericResponse<LoginDto>> {
+
+        return try {
+            val response = httpClient.post(urlString = UPDATE_PROFILE) {
+                parameter("id", userID)
+                setBody(
+                    FormDataContent(
+                        Parameters.build {
+                            append("name", name)
+                            append("email", emailAddress)
+                            append("phone", phoneNumber)
+                            append("phone_two", phoneNumberTwo)
+                            append("address", address)
+                            append("bio", bio)
+                        }
+                    )
+                )
+
+            }
+
+            if (response.status.isSuccess()) {
+                MyCustomLogger.logInfo(
+                    tag = "ProfileUpdate",
+                    message = "user name $name ${response.body<GenericResponse<LoginDto>>()}"
+                )
+                ApiResult.Success(response.body<GenericResponse<LoginDto>>())
+            } else {
+                MyCustomLogger.logInfo(tag = TAG, message = "earning history api error")
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+                )
+            }
+
+        } catch (e: ClientRequestException) {
+            MyCustomLogger.logInfo(
+                tag = TAG,
+                message = "earning history api ClientRequestException ${e.response.bodyAsText()}"
+            )
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+            MyCustomLogger.logInfo(
+                tag = TAG,
+                message = "earning history api ServerResponseException ${e.response.bodyAsText()}"
+            )
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+            MyCustomLogger.logInfo(
+                tag = TAG,
+                message = "earning history api Exception ${e.message}"
+            )
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+
+
+    }
+
+    suspend fun storyEarnHistory(userID: String): ApiResult<GenericResponse<EarnHistoryDto>> {
         return try {
             val response = httpClient.get(urlString = STORY_EARN_HISTORY) {
                 parameter("user_id", userID)
             }
 
             if (response.status.isSuccess()) {
-                MyCustomLogger.logInfo(tag = TAG, message = "earning history api code ${response.body< GenericResponse<EarnHistoryDto>>()}")
-               ApiResult.Success( response.body< GenericResponse<EarnHistoryDto>>())
+                MyCustomLogger.logInfo(
+                    tag = TAG,
+                    message = "earning history api code ${response.body<GenericResponse<EarnHistoryDto>>()}"
+                )
+                ApiResult.Success(response.body<GenericResponse<EarnHistoryDto>>())
             } else {
                 MyCustomLogger.logInfo(tag = TAG, message = "earning history api error")
                 val errorBody = response.bodyAsText()
@@ -95,7 +195,10 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
                 )
             }
         } catch (e: ClientRequestException) {
-            MyCustomLogger.logInfo(tag = TAG, message = "earning history api ClientRequestException ${e.response.bodyAsText()}")
+            MyCustomLogger.logInfo(
+                tag = TAG,
+                message = "earning history api ClientRequestException ${e.response.bodyAsText()}"
+            )
             val errorBody = e.response.bodyAsText()
 
             ApiResult.Error(
@@ -104,7 +207,10 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             )
 
         } catch (e: ServerResponseException) {
-            MyCustomLogger.logInfo(tag = TAG, message = "earning history api ServerResponseException ${e.response.bodyAsText()}")
+            MyCustomLogger.logInfo(
+                tag = TAG,
+                message = "earning history api ServerResponseException ${e.response.bodyAsText()}"
+            )
 
             val errorBody = e.response.bodyAsText()
 
@@ -114,7 +220,10 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             )
 
         } catch (e: Exception) {
-            MyCustomLogger.logInfo(tag = TAG, message = "earning history api Exception ${e.message}")
+            MyCustomLogger.logInfo(
+                tag = TAG,
+                message = "earning history api Exception ${e.message}"
+            )
 
             ApiResult.Error(
                 messageBn = e.message,
@@ -123,68 +232,68 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
     }
 
-    suspend fun getLiveStoryList(userID : String, page : Int) : LiveStoryDto {
-        val response = httpClient.get(urlString = LIVE_STORY_LIST){
+    suspend fun getLiveStoryList(userID: String, page: Int): LiveStoryDto {
+        val response = httpClient.get(urlString = LIVE_STORY_LIST) {
             parameter("user_id", userID)
             parameter("page", page)
         }
         return response.body<LiveStoryDto>()
     }
 
-    suspend fun getWriterDashboard(userID : String) : ApiResult<StoryCountDto>{
-     return try {
-         val response = httpClient.get(urlString = WRITER_DASHBOARD) {
-             parameter("user_id", userID)
-         }
-         if (response.status.isSuccess()) {
-             ApiResult.Success(response.body<StoryCountDto>())
-         } else {
-             val errorBody = response.bodyAsText()
-             val errorResponse = try {
-                 Json.decodeFromString<ErrorResponse>(errorBody)
-             } catch (e: Exception) {
-                 ErrorResponse(
-                     message_en = e.message ?: "Something went wrong",
-                     message_bn = e.message ?: "Something went wrong",
-                     success = false
-                 )
-             }
+    suspend fun getWriterDashboard(userID: String): ApiResult<StoryCountDto> {
+        return try {
+            val response = httpClient.get(urlString = WRITER_DASHBOARD) {
+                parameter("user_id", userID)
+            }
+            if (response.status.isSuccess()) {
+                ApiResult.Success(response.body<StoryCountDto>())
+            } else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
 
-             ApiResult.Error(
-                 messageBn = errorResponse.message_bn,
-                 messageEn = errorResponse.message_en
-             )
-         }
-     }catch (e: ClientRequestException) {
+                ApiResult.Error(
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+                )
+            }
+        } catch (e: ClientRequestException) {
 
-         val errorBody = e.response.bodyAsText()
+            val errorBody = e.response.bodyAsText()
 
-         ApiResult.Error(
-             messageBn = errorBody,
-             messageEn = errorBody
-         )
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
 
-     } catch (e: ServerResponseException) {
+        } catch (e: ServerResponseException) {
 
-         val errorBody = e.response.bodyAsText()
+            val errorBody = e.response.bodyAsText()
 
-         ApiResult.Error(
-             messageBn = errorBody,
-             messageEn = errorBody
-         )
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
 
-     } catch (e: Exception) {
+        } catch (e: Exception) {
 
-         ApiResult.Error(
-             messageBn = e.message,
-             messageEn = e.message
-         )
-     }
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
 
     }
 
-    suspend fun pendingStoryList(page : Int, userID : String) : PendingStoryDto{
-        val response = httpClient.get(urlString = PENDING_STORY_LIST){
+    suspend fun pendingStoryList(page: Int, userID: String): PendingStoryDto {
+        val response = httpClient.get(urlString = PENDING_STORY_LIST) {
             parameter("user_id", userID)
             parameter("page", page)
         }
@@ -769,7 +878,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
 
 
     suspend fun getSubscriptionPlans(): ApiResult<GenericResponse<List<SubscriptionDto>>> {
-       return try {
+        return try {
             val response = httpClient.get(urlString = SUBSCRIPTION_PLANS)
             if (response.status.isSuccess()) {
 
@@ -822,161 +931,161 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
         }
     }
 
-        suspend fun getPrivacyPolicy(): Result<GenericResponse<PrivacyPolicyDto>> {
-            try {
-                val response = httpClient.get(urlString = PRIVACY_POLICY)
-                if (response.status.isSuccess()) {
+    suspend fun getPrivacyPolicy(): Result<GenericResponse<PrivacyPolicyDto>> {
+        try {
+            val response = httpClient.get(urlString = PRIVACY_POLICY)
+            if (response.status.isSuccess()) {
 
-                    val data = response.body<GenericResponse<PrivacyPolicyDto>>()
-                    return Result.success(data)
-                } else {
-                    return Result.failure(Exception("error fetch privacy policy"))
-                }
-            } catch (e: ClientRequestException) {
-                return Result.failure(e)
-            } catch (e: ServerResponseException) {
-                return Result.failure(e)
-            } catch (e: Exception) {
-                return Result.failure(e)
+                val data = response.body<GenericResponse<PrivacyPolicyDto>>()
+                return Result.success(data)
+            } else {
+                return Result.failure(Exception("error fetch privacy policy"))
             }
+        } catch (e: ClientRequestException) {
+            return Result.failure(e)
+        } catch (e: ServerResponseException) {
+            return Result.failure(e)
+        } catch (e: Exception) {
+            return Result.failure(e)
         }
+    }
 
 
-        suspend fun getStoryDetails(storyID: String): ApiResult<GenericResponse<SearchStoryDto>> {
-            return try {
-                val response = httpClient.get(urlString = STORY_DETAILS) {
-                    this.parameter("story_id", storyID)
-                }
-                if (response.status.isSuccess()) {
-                    ApiResult.Success(
-                        response.body<GenericResponse<SearchStoryDto>>()
-                    )
-
-                } else {
-                    val errorBody = response.bodyAsText()
-                    val errorResponse = try {
-                        Json.decodeFromString<ErrorResponse>(errorBody)
-                    } catch (e: Exception) {
-                        ErrorResponse(
-                            message_en = e.message ?: "Something went wrong",
-                            message_bn = e.message ?: "Something went wrong",
-                            success = false
-                        )
-                    }
-
-                    ApiResult.Error(
-
-                        messageBn = errorResponse.message_bn,
-                        messageEn = errorResponse.message_en
-
-                    )
-                }
-            } catch (e: ClientRequestException) {
-
-                val errorBody = e.response.bodyAsText()
-
-                ApiResult.Error(
-                    messageBn = errorBody,
-                    messageEn = errorBody
+    suspend fun getStoryDetails(storyID: String): ApiResult<GenericResponse<SearchStoryDto>> {
+        return try {
+            val response = httpClient.get(urlString = STORY_DETAILS) {
+                this.parameter("story_id", storyID)
+            }
+            if (response.status.isSuccess()) {
+                ApiResult.Success(
+                    response.body<GenericResponse<SearchStoryDto>>()
                 )
 
-            } catch (e: ServerResponseException) {
-
-                val errorBody = e.response.bodyAsText()
-
-                ApiResult.Error(
-                    messageBn = errorBody,
-                    messageEn = errorBody
-                )
-
-            } catch (e: Exception) {
-
-                ApiResult.Error(
-                    messageBn = e.message,
-                    messageEn = e.message
-                )
-            }
-        }
-
-        suspend fun getPopularSearch(): ApiResult<PopularSearchDto> {
-           return try {
-                val response = httpClient.get(urlString = POPULAR_SEARCH)
-                if (response.status.isSuccess()) {
-                    val data = response.body<PopularSearchDto>()
-                    return ApiResult.Success(data = data)
-                } else {
-                    val errorBody = response.bodyAsText()
-                    val errorResponse = try {
-                        Json.decodeFromString<ErrorResponse>(errorBody)
-                    } catch (e: Exception) {
-                        ErrorResponse(
-                            message_en = e.message ?: "Something went wrong",
-                            message_bn = e.message ?: "Something went wrong",
-                            success = false
-                        )
-                    }
-
-                    ApiResult.Error(
-
-                        messageBn = errorResponse.message_bn,
-                        messageEn = errorResponse.message_en
-
+            } else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
                     )
                 }
-            } catch (e: ClientRequestException) {
 
-               val errorBody = e.response.bodyAsText()
+                ApiResult.Error(
 
-               ApiResult.Error(
-                   messageBn = errorBody,
-                   messageEn = errorBody
-               )
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
 
-           } catch (e: ServerResponseException) {
-
-               val errorBody = e.response.bodyAsText()
-
-               ApiResult.Error(
-                   messageBn = errorBody,
-                   messageEn = errorBody
-               )
-
-           } catch (e: Exception) {
-
-               ApiResult.Error(
-                   messageBn = e.message,
-                   messageEn = e.message
-               )
-           }
-        }
-
-        suspend fun getSubscriptionHistory(page: Int): GenericResponse<SubscriptionHistoryDto> {
-            val response = httpClient.get(urlString = SUBSCRIPTION_HISTORY) {
-                parameter("page", page)
+                )
             }
-            return response.body<GenericResponse<SubscriptionHistoryDto>>()
-        }
+        } catch (e: ClientRequestException) {
 
-        suspend fun getStoryBySearch(
-            searchKey: String,
-            page: Int
-        ): GenericResponse<SearchStoryDto> {
-            val response = httpClient.get(urlString = SEARCH_BOOK) {
-                parameter("page", page)
-                parameter("search", searchKey)
-            }
-            return response.body<GenericResponse<SearchStoryDto>>()
-        }
+            val errorBody = e.response.bodyAsText()
 
-        suspend fun getAllReleaseStory(
-            searchKey: String,
-            page: Int
-        ): GenericResponse<List<BookItem>> {
-            val response = httpClient.get(urlString = ALLSTORY) {
-                parameter("page", page)
-                parameter("search", searchKey)
-            }
-            return response.body<GenericResponse<List<BookItem>>>()
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
         }
+    }
+
+    suspend fun getPopularSearch(): ApiResult<PopularSearchDto> {
+        return try {
+            val response = httpClient.get(urlString = POPULAR_SEARCH)
+            if (response.status.isSuccess()) {
+                val data = response.body<PopularSearchDto>()
+                return ApiResult.Success(data = data)
+            } else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+
+                )
+            }
+        } catch (e: ClientRequestException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+    }
+
+    suspend fun getSubscriptionHistory(page: Int): GenericResponse<SubscriptionHistoryDto> {
+        val response = httpClient.get(urlString = SUBSCRIPTION_HISTORY) {
+            parameter("page", page)
+        }
+        return response.body<GenericResponse<SubscriptionHistoryDto>>()
+    }
+
+    suspend fun getStoryBySearch(
+        searchKey: String,
+        page: Int
+    ): GenericResponse<SearchStoryDto> {
+        val response = httpClient.get(urlString = SEARCH_BOOK) {
+            parameter("page", page)
+            parameter("search", searchKey)
+        }
+        return response.body<GenericResponse<SearchStoryDto>>()
+    }
+
+    suspend fun getAllReleaseStory(
+        searchKey: String,
+        page: Int
+    ): GenericResponse<List<BookItem>> {
+        val response = httpClient.get(urlString = ALLSTORY) {
+            parameter("page", page)
+            parameter("search", searchKey)
+        }
+        return response.body<GenericResponse<List<BookItem>>>()
+    }
 
 }

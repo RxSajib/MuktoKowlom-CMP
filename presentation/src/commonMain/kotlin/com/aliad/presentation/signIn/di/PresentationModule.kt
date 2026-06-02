@@ -104,7 +104,10 @@ val presentationModule = module {
     }
     viewModel {
         EditProfileViewModel(
-            getStringData = get()
+            getStringData = get(),
+            getIntData = get(),
+            saveStringData = get(),
+            updateProfileUseCase = get()
         )
     }
     viewModel {
