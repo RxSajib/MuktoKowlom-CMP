@@ -4,7 +4,7 @@ import com.aliad.repository.ProfileRepository
 
 class UpdateProfileUseCase constructor(val profileRepository: ProfileRepository) {
 
-    suspend fun editProfileInfo(userID : String, name : String, emailAddress : String, phone : String, phoneTwo : String, address : String,
+    suspend fun editProfileInfo(profileImage : ByteArray?, userID : String, name : String, emailAddress : String, phone : String, phoneTwo : String, address : String,
                         bio : String)  = profileRepository.updateProfile(
         userID = userID,
         name = name,
@@ -12,7 +12,8 @@ class UpdateProfileUseCase constructor(val profileRepository: ProfileRepository)
         phoneNumber = phone,
         phoneNumberTwo = phoneTwo,
         address = address,
-        bio = bio
+        bio = bio,
+                            profileImage = profileImage
     )
 
 }

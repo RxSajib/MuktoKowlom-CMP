@@ -29,15 +29,19 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
 import io.ktor.http.isSuccess
 import kotlinx.serialization.json.Json
+import kotlin.io.encoding.Base64
 
 private const val TAG = "RemoteDataSources"
 
@@ -72,6 +76,7 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
 
 
     suspend fun updateProfile(
+        profileImage : ByteArray?,
         userID: String,
         name: String,
         emailAddress: String,
@@ -85,14 +90,27 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             val response = httpClient.post(urlString = UPDATE_PROFILE) {
                 parameter("id", userID)
                 setBody(
-                    FormDataContent(
-                        Parameters.build {
+                    MultiPartFormDataContent(
+                        formData {
                             append("name", name)
                             append("email", emailAddress)
                             append("phone", phoneNumber)
                             append("phone_two", phoneNumberTwo)
                             append("address", address)
                             append("bio", bio)
+                            profileImage?.let {base64Image ->
+                                append(
+                                    key = "image",
+                                    value = base64Image,
+                                    headers = Headers.build {
+                                        append(HttpHeaders.ContentType, "image/jpeg")
+                                        append(
+                                            HttpHeaders.ContentDisposition,
+                                            "filename=profile.jpg"
+                                        )
+                                    }
+                                )
+                            }
                         }
                     )
                 )
@@ -100,17 +118,15 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
             }
 
             if (response.status.isSuccess()) {
-                MyCustomLogger.logInfo(
-                    tag = "ProfileUpdate",
-                    message = "user name $name ${response.body<GenericResponse<LoginDto>>()}"
-                )
+
                 ApiResult.Success(response.body<GenericResponse<LoginDto>>())
             } else {
-                MyCustomLogger.logInfo(tag = TAG, message = "earning history api error")
+
                 val errorBody = response.bodyAsText()
                 val errorResponse = try {
                     Json.decodeFromString<ErrorResponse>(errorBody)
                 } catch (e: Exception) {
+                    MyCustomLogger.logInfo(tag = TAG, message = "earning history api error ${e.message}")
                     ErrorResponse(
                         message_en = e.message ?: "Something went wrong",
                         message_bn = e.message ?: "Something went wrong",

@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.stability.analyzer)
 }
 
+
 kotlin {
     androidTarget {
         compilerOptions {
@@ -124,6 +125,12 @@ kotlin {
             // cmp chart
          //   implementation(libs.chart)
             implementation("io.github.thechance101:chart:1.1.0")
+
+            // image picker kmp
+            implementation(libs.imagepickerkmp)
+
+            //kotzilla
+            implementation("de.peilicke.sascha:kase64:1.3.1")
 
 
             implementation(project(":data"))

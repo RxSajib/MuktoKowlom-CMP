@@ -52,6 +52,22 @@ import com.aliad.muktokowlom.utils.MyCustomLogger
 import com.aliad.presentation.signIn.ui.datastore.DataStoreViewModel
 import com.aliad.presentation.signIn.ui.editProfile.EditProfileViewModel
 import com.sajib.data.appConstant.AppConstant
+import io.github.ismoy.imagepickerkmp.domain.config.CameraCaptureConfig
+import io.github.ismoy.imagepickerkmp.domain.config.CropConfig
+import io.github.ismoy.imagepickerkmp.domain.config.GalleryConfig
+import io.github.ismoy.imagepickerkmp.domain.config.ImagePickerConfig
+import io.github.ismoy.imagepickerkmp.domain.config.UiConfig
+import io.github.ismoy.imagepickerkmp.domain.extensions.loadBytes
+import io.github.ismoy.imagepickerkmp.features.imagepicker.config.ImagePickerKMPConfig
+import io.github.ismoy.imagepickerkmp.features.imagepicker.model.ImagePickerResult
+import io.github.ismoy.imagepickerkmp.features.imagepicker.ui.rememberImagePickerKMP
+import io.github.ismoy.imagepickerkmp.presentation.ui.components.GalleryPickerLauncher
+import io.github.ismoy.imagepickerkmp.presentation.ui.components.ImagePickerLauncher
+import io.ktor.utils.io.core.toByteArray
+import kotlinx.io.buffered
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
+import kotlinx.io.readByteArray
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.address
 import muktokowlomcmp.composeapp.generated.resources.age
@@ -77,15 +93,17 @@ import muktokowlomcmp.composeapp.generated.resources.second_number
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import saschpe.kase64.base64UrlEncoded
 import kotlin.collections.removeLastOrNull
 
 private const val TAG = "EditProfileScreen"
+
 @Composable
 fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
     val viewModel: EditProfileViewModel = koinViewModel()
     val emailAddress = viewModel.emailAddressState.collectAsStateWithLifecycle("")
-    val userProfileImage = viewModel.userProfileImage.collectAsStateWithLifecycle("")
+    val userProfileImage = viewModel.profilePhotoUri.collectAsStateWithLifecycle("")
 
     val fullName = viewModel.userName.collectAsStateWithLifecycle("")
     val firstNameState = viewModel.firstNameState.collectAsStateWithLifecycle()
@@ -100,14 +118,49 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
 
     val isValidSaveButton = viewModel.isValidationSaveButton.collectAsStateWithLifecycle(false)
 
+    val picker = rememberImagePickerKMP(
+        config = ImagePickerKMPConfig(
+            galleryConfig = GalleryConfig(
+                allowMultiple = false,
+            ),
+            cropConfig = CropConfig(enabled = true),
+            uiConfig = UiConfig()
+        )
+    )
+    val result = picker.result
 
+    LaunchedEffect(result) {
+
+        when (result) {
+            is ImagePickerResult.Success -> {
+                viewModel.updateProfileImage(result.first?.uri ?: "")
+                viewModel.imageByte = result.first?.loadBytes()
+            }
+
+            is ImagePickerResult.Error -> {
+
+            }
+
+            is ImagePickerResult.Loading -> {
+
+            }
+
+            is ImagePickerResult.Dismissed -> {
+
+            }
+
+            is ImagePickerResult.Idle -> {
+
+            }
+        }
+    }
 
     // handle error response
     val successData = stringResource(Res.string.profile_update_success)
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.data.collect { response ->
             response.success?.let { isSuccess ->
-                if(isSuccess){
+                if (isSuccess) {
                     rootBackStack.removeLastOrNull()
                     SnackBarEvent.save(
                         details = SnackBarDetails(
@@ -121,7 +174,7 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
                     SnackBarEvent.save(
                         details = SnackBarDetails(
                             isSuccess = false,
-                            details = if(selectedLocal.value == "en") response.message_en else response.message_bn,
+                            details = if (selectedLocal.value == "en") response.message_en else response.message_bn,
                             show = true,
                             leftIcon = Icons.Default.LockOpen
                         )
@@ -133,339 +186,343 @@ fun EditProfileScreen(navBackStack: NavBackStack<NavKey>, rootBackStack: NavBack
     }
 
 
-    Surface(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
+    Surface(
+        modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
+    ) {
 
-    Scaffold(
-        modifier = Modifier.fillMaxWidth(),
-        topBar = {
-            MyCustomAppBar(title = stringResource(Res.string.edit_profile), onBackPress = {
-                try {
-                    if (navBackStack.size > 1) {
-                        navBackStack.removeLastOrNull()
-                    }else {
-                        rootBackStack.removeLastOrNull()
+        Scaffold(
+            modifier = Modifier.fillMaxWidth(),
+            topBar = {
+                MyCustomAppBar(title = stringResource(Res.string.edit_profile), onBackPress = {
+                    try {
+                        if (navBackStack.size > 1) {
+                            navBackStack.removeLastOrNull()
+                        } else {
+                            rootBackStack.removeLastOrNull()
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
-                }catch (e : Exception){
-                    e.printStackTrace()
-                }
-            }, editProfile = {})
-        }) { innerPadding ->
+                }, editProfile = {})
+            }) { innerPadding ->
 
-        Box(
-            modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)
-                .padding(paddingValues = innerPadding)
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 16.dp)
-        ) {
-            Column(
-
-                modifier = Modifier.fillMaxWidth()
+            Box(
+                modifier = Modifier.fillMaxSize()
                     .background(color = MaterialTheme.colorScheme.surface)
-                    .imePadding()
+                    .padding(paddingValues = innerPadding)
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp)
             ) {
                 Column(
-                    modifier = Modifier.weight(1f).verticalScroll(state = rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+
+                    modifier = Modifier.fillMaxWidth()
+                        .background(color = MaterialTheme.colorScheme.surface)
+                        .imePadding()
                 ) {
-
-                    HeightGap(height = 20.dp)
-                    AsyncImage(
-                        contentDescription = null,
-                        model = ImageRequest.Builder(context = LocalPlatformContext.current).size(100).data(userProfileImage.value).build(),
-                        error = painterResource(Res.drawable.ic_placeholder),
-                        placeholder = painterResource(Res.drawable.ic_placeholder),
-                        modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable {
-                            viewModel.takeProfileImageFromGallery = true
-                        },
-                        contentScale = ContentScale.Crop
-                    )
-                    HeightGap(height = 20.dp)
-                    Text(
-                        text = fullName.value,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    )
-                    HeightGap(height = 20.dp)
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(Res.string.first_name),
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontSize = adjustedFontSize(10f),
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 4.dp)
-                            MyCustomInputFiled(
-                                placeHolderText = stringResource(Res.string.enter_first_name),
-                                text = firstNameState.value,
-                                onValueChange = { firstNameInput ->
-                                    viewModel.updateFirstName(firstNameInput)
-                                },
-                                isPasswordInput = false,
-                                isVisiblePasswordChange = {},
-                                modifier = Modifier,
-                                isPasswordVisibility = true,
-                            ) {}
-                        }
-                        WidthGap(width = 10.dp)
-
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(Res.string.last_name),
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontSize = adjustedFontSize(10f),
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 4.dp)
-                            MyCustomInputFiled(
-                                placeHolderText = stringResource(Res.string.enter_last_name),
-                                text = lastNameState.value,
-                                onValueChange = { lastNameInput ->
-                                    viewModel.updateLastName(lastName = lastNameInput)
-                                },
-                                isPasswordInput = false,
-                                isVisiblePasswordChange = {},
-                                modifier = Modifier,
-                                isPasswordVisibility = true,
-                            ) {}
-                        }
-                    }
-
-                    HeightGap(height = 10.dp)
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(Res.string.email),
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontSize = adjustedFontSize(10f),
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 4.dp)
-                            MyCustomInputFiled(
-                                placeHolderText = stringResource(Res.string.enter_email_address),
-                                text = emailAddressState.value,
-                                onValueChange = { emailAddress ->
-                                    viewModel.updateEmailAddress(emailAddress = emailAddress)
-                                },
-                                isPasswordInput = false,
-                                readOnly = true,
-                                isVisiblePasswordChange = {},
-                                modifier = Modifier,
-                                isPasswordVisibility = true,
-                            ) {}
-                        }
-                        WidthGap(width = 10.dp)
-
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(Res.string.phone_number),
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontSize = adjustedFontSize(10f),
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 4.dp)
-                            MyCustomInputFiled(
-                                placeHolderText = stringResource(Res.string.enter_phone_number),
-                                text = phoneNumberState.value,
-                                onValueChange = { phoneNumberInput ->
-                                    viewModel.updatePhoneNumber(phoneNumber = phoneNumberInput)
-                                },
-                                isNumberType = true,
-                                isPasswordInput = false,
-                                isVisiblePasswordChange = {},
-                                modifier = Modifier,
-                                isPasswordVisibility = true,
-                            ) {}
-                        }
-                    }
-
-                    HeightGap(height = 10.dp)
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(Res.string.second_number),
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontSize = adjustedFontSize(10f),
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 4.dp)
-                            MyCustomInputFiled(
-                                placeHolderText = stringResource(Res.string.enter_second_phone_number),
-                                text = secondNumberState.value,
-                                onValueChange = { secondPhoneNumberInput ->
-                                    viewModel.updateSecondPhoneNumber(secondNumber = secondPhoneNumberInput)
-                                },
-                                isPasswordInput = false,
-                                isNumberType = true,
-                                isVisiblePasswordChange = {},
-                                modifier = Modifier,
-                                isPasswordVisibility = true,
-                            ) {}
-                        }
-                        WidthGap(width = 10.dp)
-
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(Res.string.date_of_birth),
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontSize = adjustedFontSize(10f),
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 4.dp)
-                            MyCustomInputFiled(
-                                placeHolderText = stringResource(Res.string.enter_date_of_birth),
-                                text = dateOfBirthState.value,
-                                onValueChange = { dateOfBirthInput ->
-                                    viewModel.updateDateOfBirth(dateOfBirth = dateOfBirthInput)
-                                },
-                                isPasswordInput = false,
-                                isVisiblePasswordChange = {},
-                                isPasswordVisibility = true,
-                                modifier = Modifier,
-                                readOnly = true
-                            ) {
-                                print("click date of birth")
-                                viewModel.isOpenDatePicker = true
-                            }
-                        }
-                    }
-
-                    HeightGap(height = 10.dp)
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(Res.string.age),
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontSize = adjustedFontSize(10f),
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 4.dp)
-                            MyCustomInputFiled(
-                                placeHolderText = stringResource(Res.string.enter_age),
-                                text = ageState.value,
-                                onValueChange = { ageInput ->
-                                    viewModel.updateAge(age = ageInput)
-                                },
-                                isPasswordInput = false,
-                                isVisiblePasswordChange = {},
-                                isNumberType = true,
-                                modifier = Modifier,
-                                isPasswordVisibility = true,
-                            ) {}
-                        }
-                        WidthGap(width = 10.dp)
-
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(Res.string.address),
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontSize = adjustedFontSize(10f),
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                            HeightGap(height = 4.dp)
-                            MyCustomInputFiled(
-                                placeHolderText = stringResource(Res.string.enter_address),
-                                text = addressState.value,
-                                onValueChange = { addressInput ->
-                                    viewModel.updateAddress(address = addressInput)
-                                },
-                                isPasswordInput = false,
-                                isVisiblePasswordChange = {},
-                                modifier = Modifier,
-                                isPasswordVisibility = true,
-                            ) {}
-                        }
-                    }
-
-                    HeightGap(height = 20.dp)
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                    Column(
+                        modifier = Modifier.weight(1f)
+                            .verticalScroll(state = rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        MyCustomButton(
-                            title = stringResource(Res.string.save),
-                            modifier = Modifier.weight(1f),
-                            showProgress = viewModel.isLoading,
-                            onClickButton = {
-                                viewModel.updateProfile()
+
+                        HeightGap(height = 20.dp)
+                        AsyncImage(
+                            contentDescription = null,
+                            model = ImageRequest.Builder(context = LocalPlatformContext.current)
+                                .size(100).data(userProfileImage.value).build(),
+                            error = painterResource(Res.drawable.ic_placeholder),
+                            placeholder = painterResource(Res.drawable.ic_placeholder),
+                            modifier = Modifier.size(80.dp).clip(shape = CircleShape).clickable {
+                                viewModel.takeProfileImageFromGallery = true
+                                picker.launchCamera()
                             },
-                            isEnable = isValidSaveButton.value
+                            contentScale = ContentScale.Crop
                         )
-                        WidthGap(width = 10.dp)
-                        MyCustomButton(
-                            backgroundColor = Color.Red,
-                            title = stringResource(Res.string.password_update),
-                            modifier = Modifier.weight(1f),
-                            onClickButton = {
-                                navBackStack.add(
-                                    AppDestination.Dest.UpdatePassword(
-                                        emailAddress = emailAddress.value
+                        HeightGap(height = 20.dp)
+                        Text(
+                            text = fullName.value,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        )
+                        HeightGap(height = 20.dp)
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.first_name),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontSize = adjustedFontSize(10f),
+                                        color = MaterialTheme.colorScheme.primary
                                     )
                                 )
-                            },
-                            isEnable = true
-                        )
-                    }
-                }
+                                HeightGap(height = 4.dp)
+                                MyCustomInputFiled(
+                                    placeHolderText = stringResource(Res.string.enter_first_name),
+                                    text = firstNameState.value,
+                                    onValueChange = { firstNameInput ->
+                                        viewModel.updateFirstName(firstNameInput)
+                                    },
+                                    isPasswordInput = false,
+                                    isVisiblePasswordChange = {},
+                                    modifier = Modifier,
+                                    isPasswordVisibility = true,
+                                ) {}
+                            }
+                            WidthGap(width = 10.dp)
 
-            }
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.last_name),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontSize = adjustedFontSize(10f),
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                                HeightGap(height = 4.dp)
+                                MyCustomInputFiled(
+                                    placeHolderText = stringResource(Res.string.enter_last_name),
+                                    text = lastNameState.value,
+                                    onValueChange = { lastNameInput ->
+                                        viewModel.updateLastName(lastName = lastNameInput)
+                                    },
+                                    isPasswordInput = false,
+                                    isVisiblePasswordChange = {},
+                                    modifier = Modifier,
+                                    isPasswordVisibility = true,
+                                ) {}
+                            }
+                        }
+
+                        HeightGap(height = 10.dp)
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.email),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontSize = adjustedFontSize(10f),
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                                HeightGap(height = 4.dp)
+                                MyCustomInputFiled(
+                                    placeHolderText = stringResource(Res.string.enter_email_address),
+                                    text = emailAddressState.value,
+                                    onValueChange = { emailAddress ->
+                                        viewModel.updateEmailAddress(emailAddress = emailAddress)
+                                    },
+                                    isPasswordInput = false,
+                                    readOnly = true,
+                                    isVisiblePasswordChange = {},
+                                    modifier = Modifier,
+                                    isPasswordVisibility = true,
+                                ) {}
+                            }
+                            WidthGap(width = 10.dp)
+
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.phone_number),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontSize = adjustedFontSize(10f),
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                                HeightGap(height = 4.dp)
+                                MyCustomInputFiled(
+                                    placeHolderText = stringResource(Res.string.enter_phone_number),
+                                    text = phoneNumberState.value,
+                                    onValueChange = { phoneNumberInput ->
+                                        viewModel.updatePhoneNumber(phoneNumber = phoneNumberInput)
+                                    },
+                                    isNumberType = true,
+                                    isPasswordInput = false,
+                                    isVisiblePasswordChange = {},
+                                    modifier = Modifier,
+                                    isPasswordVisibility = true,
+                                ) {}
+                            }
+                        }
+
+                        HeightGap(height = 10.dp)
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.second_number),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontSize = adjustedFontSize(10f),
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                                HeightGap(height = 4.dp)
+                                MyCustomInputFiled(
+                                    placeHolderText = stringResource(Res.string.enter_second_phone_number),
+                                    text = secondNumberState.value,
+                                    onValueChange = { secondPhoneNumberInput ->
+                                        viewModel.updateSecondPhoneNumber(secondNumber = secondPhoneNumberInput)
+                                    },
+                                    isPasswordInput = false,
+                                    isNumberType = true,
+                                    isVisiblePasswordChange = {},
+                                    modifier = Modifier,
+                                    isPasswordVisibility = true,
+                                ) {}
+                            }
+                            WidthGap(width = 10.dp)
+
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.date_of_birth),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontSize = adjustedFontSize(10f),
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                                HeightGap(height = 4.dp)
+                                MyCustomInputFiled(
+                                    placeHolderText = stringResource(Res.string.enter_date_of_birth),
+                                    text = dateOfBirthState.value,
+                                    onValueChange = { dateOfBirthInput ->
+                                        viewModel.updateDateOfBirth(dateOfBirth = dateOfBirthInput)
+                                    },
+                                    isPasswordInput = false,
+                                    isVisiblePasswordChange = {},
+                                    isPasswordVisibility = true,
+                                    modifier = Modifier,
+                                    readOnly = true
+                                ) {
+                                    print("click date of birth")
+                                    viewModel.isOpenDatePicker = true
+                                }
+                            }
+                        }
+
+                        HeightGap(height = 10.dp)
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.age),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontSize = adjustedFontSize(10f),
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                                HeightGap(height = 4.dp)
+                                MyCustomInputFiled(
+                                    placeHolderText = stringResource(Res.string.enter_age),
+                                    text = ageState.value,
+                                    onValueChange = { ageInput ->
+                                        viewModel.updateAge(age = ageInput)
+                                    },
+                                    isPasswordInput = false,
+                                    isVisiblePasswordChange = {},
+                                    isNumberType = true,
+                                    modifier = Modifier,
+                                    isPasswordVisibility = true,
+                                ) {}
+                            }
+                            WidthGap(width = 10.dp)
+
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.address),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontSize = adjustedFontSize(10f),
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                                HeightGap(height = 4.dp)
+                                MyCustomInputFiled(
+                                    placeHolderText = stringResource(Res.string.enter_address),
+                                    text = addressState.value,
+                                    onValueChange = { addressInput ->
+                                        viewModel.updateAddress(address = addressInput)
+                                    },
+                                    isPasswordInput = false,
+                                    isVisiblePasswordChange = {},
+                                    modifier = Modifier,
+                                    isPasswordVisibility = true,
+                                ) {}
+                            }
+                        }
+
+                        HeightGap(height = 20.dp)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            MyCustomButton(
+                                title = stringResource(Res.string.save),
+                                modifier = Modifier.weight(1f),
+                                showProgress = viewModel.isLoading,
+                                onClickButton = {
+                                    viewModel.updateProfile()
+                                },
+                                isEnable = isValidSaveButton.value
+                            )
+                            WidthGap(width = 10.dp)
+                            MyCustomButton(
+                                backgroundColor = Color.Red,
+                                title = stringResource(Res.string.password_update),
+                                modifier = Modifier.weight(1f),
+                                onClickButton = {
+                                    navBackStack.add(
+                                        AppDestination.Dest.UpdatePassword(
+                                            emailAddress = emailAddress.value
+                                        )
+                                    )
+                                },
+                                isEnable = true
+                            )
+                        }
+                    }
+
+                }
             }
         }
 
-        
-        if(viewModel.isOpenDatePicker){
+
+        if (viewModel.isOpenDatePicker) {
             WheelDatePickerDialog(
                 onDismissRequest = {
                     viewModel.isOpenDatePicker = false
                 },
-                onDateSelected = {localDate ->
+                onDateSelected = { localDate ->
                     viewModel.isOpenDatePicker = false
                     viewModel.updateDateOfBirth(dateOfBirth = localDate.toString())
+                    MyCustomLogger.logInfo(tag = TAG, message = localDate.toString())
                 }
             )
         }
-
-
-
-
-        // show gallery
     }
 }
+
+
 
 

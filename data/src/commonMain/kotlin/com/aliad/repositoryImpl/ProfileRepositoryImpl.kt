@@ -66,6 +66,7 @@ class ProfileRepositoryImpl constructor(val dataSources: RemoteDataSources) : Pr
     }
 
     override suspend fun updateProfile(
+        profileImage : ByteArray?,
         userID: String,
         name: String,
         emailAddress: String,
@@ -75,6 +76,7 @@ class ProfileRepositoryImpl constructor(val dataSources: RemoteDataSources) : Pr
         bio: String
     ): ApiResult<User> {
         when(val response = dataSources.updateProfile(
+            profileImage = profileImage,
             userID = userID,
             name = name,
             emailAddress = emailAddress,

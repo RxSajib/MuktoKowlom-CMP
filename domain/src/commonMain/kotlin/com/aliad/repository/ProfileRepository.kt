@@ -15,6 +15,6 @@ interface ProfileRepository {
 
     suspend fun getEarningHistory(userID : String) : ApiResult<List<MyEarnHistory>>
 
-    suspend fun updateProfile(userID : String, name : String, emailAddress : String, phoneNumber : String,
+    suspend fun updateProfile(profileImage : ByteArray?, userID : String, name : String, emailAddress : String, phoneNumber : String,
                               phoneNumberTwo : String, address : String, bio : String) : ApiResult<User>
 }

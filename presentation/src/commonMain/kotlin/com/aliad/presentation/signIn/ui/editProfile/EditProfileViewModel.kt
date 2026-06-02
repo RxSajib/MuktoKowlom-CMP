@@ -35,12 +35,17 @@ class EditProfileViewModel constructor(
     val updateProfileUseCase: UpdateProfileUseCase
 ) : ViewModel() {
 
+
+    var imageByte : ByteArray?= null
     var data = MutableSharedFlow<GenericResponse<User>>()
     var isLoading by mutableStateOf(false)
 
     var takeProfileImageFromGallery by mutableStateOf(false)
 
     var isOpenDatePicker by mutableStateOf(false)
+
+    private var profilePhotoDataMutableStateFlow = MutableStateFlow<String>("")
+    val profilePhotoUri = profilePhotoDataMutableStateFlow.asStateFlow()
 
     private var firstNameMutableStateFlow = MutableStateFlow<String>("")
     val firstNameState = firstNameMutableStateFlow.asStateFlow()
@@ -113,6 +118,11 @@ class EditProfileViewModel constructor(
             supervisorScope {
                 awaitAll(
                     async {
+                      userProfileImage.collect {
+                          profilePhotoDataMutableStateFlow.emit(it)
+                      }
+                    },
+                    async {
                         emailAddress.collect { emailAddress ->
                             emailAddressMutableStateFlow.emit(emailAddress)
                         }
@@ -159,6 +169,11 @@ class EditProfileViewModel constructor(
         }
     }
 
+    fun updateProfileImage(uri : String){
+        viewModelScope.launch {
+            profilePhotoDataMutableStateFlow.emit(uri)
+        }
+    }
 
     fun updateFirstName(firstName: String) {
         viewModelScope.launch {
@@ -230,7 +245,8 @@ class EditProfileViewModel constructor(
                     phone = phoneNumberMutableStateFlow.value,
                     phoneTwo = secondNumberMutableStateFlow.value,
                     address = addressMutableStateFlow.value,
-                    bio = ""
+                    bio = "",
+                    profileImage = imageByte
                 )
                 isLoading = false
 
