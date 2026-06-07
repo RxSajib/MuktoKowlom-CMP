@@ -198,7 +198,11 @@ val presentationModule = module {
     }
 
     viewModel {
-        UploadStoriesViewModel(categoryUseCase = get())
+        UploadStoriesViewModel(
+            categoryUseCase = get(),
+            uploadStoryUseCase = get(),
+            getStringData = get()
+        )
     }
 
     viewModel {

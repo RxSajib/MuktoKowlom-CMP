@@ -19,6 +19,7 @@ import com.aliad.model.PendingStoryDto
 import com.aliad.model.SearchStoryDto
 import com.aliad.model.StoryCountDto
 import com.aliad.model.LiveStoryDto
+import com.aliad.model.UploadStoryDto
 import com.aliad.model.earn_history.EarnHistoryDto
 import com.aliad.model.subscription_history.SubscriptionHistoryDto
 import com.aliad.muktokowlom.BuildKonfig
@@ -73,6 +74,106 @@ class RemoteDataSources constructor(val httpClient: HttpClient) {
     private val LIVE_STORY_LIST = "${BASEURL}live-story-list"
     private val STORY_EARN_HISTORY = "${BASEURL}user/story-earn-history"
     private val UPDATE_PROFILE = "${BASEURL}update-profile-information"
+    private val UPLOAD_STORY = "${BASEURL}user/upload-story"
+
+    suspend fun uploadStory(titleBn : String, categoryID : String, tagsBn : List<String>, publishedDate : String,
+                            summaryBn : String, imageFile : ByteArray, storyFileBn : ByteArray?, isPayable : String,
+                            storyBn : String) : ApiResult<GenericResponse<UploadStoryDto>> {
+
+        return  try {
+            val response = httpClient.post(UPLOAD_STORY){
+                setBody(
+                    MultiPartFormDataContent(
+                        formData {
+                            append(key = "title_bn", value = titleBn)
+                            append(key = "category_id", value = categoryID)
+                            append(key = "publish_date", value = publishedDate)
+                            append(key = "summary_bn", value = summaryBn)
+                            append(key = "image", value = imageFile,
+                                Headers.build {
+                                    append(
+                                        HttpHeaders.ContentDisposition,
+                                        "form-data; name=\"image\"; filename=\"image.jpg\""
+                                    )
+                                    append(HttpHeaders.ContentType, "image/jpeg")
+                                })
+                            append(key = "is_payable", value = isPayable)
+                            append(key = "story_bn", value = storyBn)
+                            storyFileBn?.let { storyFile ->
+                                append(key = "story_file_bn", value =  storyFile,
+                                    Headers.build {
+                                        append(
+                                            HttpHeaders.ContentDisposition,
+                                            "form-data; name=\"story_file_bn\"; filename=\"story.pdf\""
+                                        )
+                                        append(HttpHeaders.ContentType, "application/pdf")
+                                    })
+                            }
+                        }
+                    )
+                )
+            }
+
+            if (response.status.isSuccess()) {
+
+                ApiResult.Success(response.body<GenericResponse<UploadStoryDto>>())
+            } else {
+                val errorBody = response.bodyAsText()
+                val errorResponse = try {
+                    Json.decodeFromString<ErrorResponse>(errorBody)
+                } catch (e: Exception) {
+                    MyCustomLogger.logInfo(tag = TAG, message = "earning history api error ${e.message}")
+                    ErrorResponse(
+                        message_en = e.message ?: "Something went wrong",
+                        message_bn = e.message ?: "Something went wrong",
+                        success = false
+                    )
+                }
+
+                ApiResult.Error(
+                    messageBn = errorResponse.message_bn,
+                    messageEn = errorResponse.message_en
+                )
+            }
+        }catch (e: ClientRequestException) {
+            MyCustomLogger.logInfo(
+                tag = TAG,
+                message = "earning history api ClientRequestException ${e.response.bodyAsText()}"
+            )
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: ServerResponseException) {
+            MyCustomLogger.logInfo(
+                tag = TAG,
+                message = "earning history api ServerResponseException ${e.response.bodyAsText()}"
+            )
+
+            val errorBody = e.response.bodyAsText()
+
+            ApiResult.Error(
+                messageBn = errorBody,
+                messageEn = errorBody
+            )
+
+        } catch (e: Exception) {
+            MyCustomLogger.logInfo(
+                tag = TAG,
+                message = "earning history api Exception ${e.message}"
+            )
+
+            ApiResult.Error(
+                messageBn = e.message,
+                messageEn = e.message
+            )
+        }
+
+
+    }
 
 
     suspend fun updateProfile(

@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -41,6 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
+import com.aliad.helper.SnackBarEvent
+import com.aliad.model.SnackBarDetails
 import com.aliad.muktokowlom.ui.component.HeightGap
 import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.MyCustomButton
@@ -97,6 +101,7 @@ import muktokowlomcmp.composeapp.generated.resources.share_your_story
 import muktokowlomcmp.composeapp.generated.resources.start_writing_your_story
 import muktokowlomcmp.composeapp.generated.resources.story_summary_max_word
 import muktokowlomcmp.composeapp.generated.resources.story_title
+import muktokowlomcmp.composeapp.generated.resources.story_upload_success
 import muktokowlomcmp.composeapp.generated.resources.tags
 import muktokowlomcmp.composeapp.generated.resources.title
 import muktokowlomcmp.composeapp.generated.resources.upload_file
@@ -129,6 +134,37 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
     val pdfFileName = viewModel.storyFileNameFlow.collectAsStateWithLifecycle()
     val tags = viewModel.tagsFlow.collectAsStateWithLifecycle(emptyList())
     val isEnableUploadButton = viewModel.isEnableButton.collectAsStateWithLifecycle(false)
+    val selectedLocal = viewModel.selectedLocal.collectAsStateWithLifecycle("en")
+
+    val successData = stringResource(Res.string.story_upload_success)
+    LaunchedEffect(Unit) {
+        viewModel.data.collect { response ->
+            response.success?.let { isSuccess ->
+                if (isSuccess) {
+                    rootBackStack.removeLastOrNull()
+                    SnackBarEvent.save(
+                        details = SnackBarDetails(
+                            isSuccess = true,
+                            details = successData,
+                            show = true,
+                            leftIcon = Icons.Default.LockOpen
+                        )
+                    )
+                } else {
+                    SnackBarEvent.save(
+                        details = SnackBarDetails(
+                            isSuccess = false,
+                            details = if (selectedLocal.value == "en") response.message_en else response.message_bn,
+                            show = true,
+                            leftIcon = Icons.Default.LockOpen
+                        )
+                    )
+                }
+            }
+
+        }
+    }
+
 
 
     val imagePicker = rememberImagePickerKMP(
@@ -160,6 +196,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                 viewModel.apply {
                     saveStoryFileName(fileName = imageFileName)
                     saveStorySize(fileSize = imageSize)
+                    storyPdfFile = (pdfPicker.result as ImagePickerResult.Success).first?.loadBytes()
                 }
             }
 
@@ -192,6 +229,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                 viewModel.apply {
                     saveStoryImage(imageName = imageFileName)
                     saveStorySize(fileSize = imageSize)
+                    storyCoverImage = (imagePicker.result as ImagePickerResult.Success).first?.loadBytes()
                 }
             }
 
@@ -507,12 +545,13 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                 HeightGap(height = 15.dp)
 
                 MyCustomButton(
+                    showProgress = viewModel.isLoading,
                     isEnable = isEnableUploadButton.value,
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(Res.string.upload_stories),
                     leftIcon = painterResource(Res.drawable.icon_send),
                     onClickButton = {
-
+                        viewModel.uploadStory()
                     })
                 HeightGap(height = 10.dp)
 
@@ -560,8 +599,11 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                 viewModel.showCategoryDialog = false
 
             }, onSelected = { myCategory ->
-                viewModel.saveCategory = myCategory
-                viewModel.showCategoryDialog = false
+                viewModel.apply {
+                    saveCategory = myCategory
+                    showCategoryDialog = false
+                    categoryID = myCategory.id.toString()
+                }
             }, value = categoryData.value, viewModel = viewModel)
         }
     }

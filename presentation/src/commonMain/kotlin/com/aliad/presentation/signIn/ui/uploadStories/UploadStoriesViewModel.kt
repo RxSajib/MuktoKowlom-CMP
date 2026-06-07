@@ -8,22 +8,43 @@ import androidx.compose.ui.text.style.TextDecoration.Companion.combine
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliad.ApiResult
+import com.aliad.model.GenericResponse
 import com.aliad.model.MyCategory
+import com.aliad.model.UploadStory
+import com.aliad.model.User
 import com.aliad.presentation.utils.MyCustomLogger
 import com.aliad.usecase.CategoryUseCase
+import com.aliad.usecase.UploadStoryUseCase
+import com.aliad.usecase.dataStore.GetStringData
+import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 private const val TAG = "UploadStoriesViewModel"
 
 class UploadStoriesViewModel constructor(
-    val categoryUseCase: CategoryUseCase
+    val categoryUseCase: CategoryUseCase,
+    val uploadStoryUseCase: UploadStoryUseCase,
+    val getStringData: GetStringData
 ) : ViewModel() {
 
+   val selectedLocal = flow {
+       emit(getStringData.getStringData(key = AppConstant.SELECT_LOCAL).first())
+   }
+
+    var data = MutableSharedFlow<GenericResponse<UploadStory>>()
+    var isLoading by mutableStateOf(false)
+    var storyCoverImage : ByteArray?= null
+    var storyPdfFile : ByteArray?= null
+
     val tagsList: ArrayList<String> = ArrayList()
+    var categoryID by mutableStateOf("")
 
     var selectedCategory by mutableStateOf(MyCategory())
     var saveCategory by mutableStateOf(MyCategory())
@@ -180,6 +201,40 @@ class UploadStoriesViewModel constructor(
     }
 
 
+    fun uploadStory(){
+        viewModelScope.launch {
+            isLoading = true
+         val response =   uploadStoryUseCase.uploadStory(
+                titleBn = storyTitleMutableStateFlow.value,
+                categoryID = categoryID,
+                tagsBn = tagsList,
+                publishedDate = publishedDateMutableStateFlow.value,
+                summaryBn = storySummaryMutableStateFlow.value,
+                imageFile = storyCoverImage!!,
+                storyFileBn = storyPdfFile, // 0 means free
+                isPayable = "0",
+                storyBn = fullStoryMutableStateFlow.value
+            )
+            isLoading = false
 
+            when(response){
+                is ApiResult.Success -> {
+                    MyCustomLogger.logInfo(tag = TAG, message = "success upload story")
+                    data.emit(GenericResponse(
+                        success = true,
+                        data = response.data
+                    ))
+                }
+                is ApiResult.Error -> {
+                    MyCustomLogger.logInfo(tag = TAG, message = "error upload story ${response.messageEn}")
+                    data.emit(GenericResponse(
+                        success = false,
+                        message_bn = response.messageBn,
+                        message_en = response.messageEn
+                    ))
+                }
+            }
+        }
+    }
 
 }

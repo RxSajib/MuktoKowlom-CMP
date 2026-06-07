@@ -22,6 +22,7 @@ import com.aliad.usecase.StoryTypeUseCase
 import com.aliad.usecase.SubscriptionHistoryUseCase
 import com.aliad.usecase.UpdatePasswordUseCase
 import com.aliad.usecase.UpdateProfileUseCase
+import com.aliad.usecase.UploadStoryUseCase
 import com.aliad.usecase.dataStore.DeleteBoolDataUseCase
 import com.aliad.usecase.dataStore.DeleteIntDataUseCase
 import com.aliad.usecase.dataStore.GetBoolData
@@ -183,5 +184,11 @@ val domainModule = module {
 
     factory {
         UpdateProfileUseCase(profileRepository = get())
+    }
+    
+    factory {
+        UploadStoryUseCase(
+            storyManagementRepo = get()
+        )
     }
 }

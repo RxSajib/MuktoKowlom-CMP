@@ -5,6 +5,8 @@ import com.aliad.dataSource.RemoteDataSources
 import com.aliad.model.Comment
 import com.aliad.model.MyCommentData
 import com.aliad.model.CommentDto
+import com.aliad.model.UploadStory
+import com.aliad.model.UploadStoryDto
 import com.aliad.model.mapper.DataMapper
 import com.aliad.repository.StoryManagementRepo
 
@@ -19,5 +21,36 @@ class StoryManagementImpl constructor(val remoteDataSources: RemoteDataSources) 
                 return ApiResult.Error(messageBn = response.messageBn, messageEn = response.messageEn)
             }
         }
+    }
+
+    override suspend fun uploadStory(
+        titleBn: String,
+        categoryID: String,
+        tagsBn: List<String>,
+        publishedDate: String,
+        summaryBn: String,
+        imageFile: ByteArray,
+        storyFileBn: ByteArray?,
+        isPayable: String,
+        storyBn: String
+    ): ApiResult<UploadStory> {
+       when(val response = remoteDataSources.uploadStory(
+           titleBn = titleBn,
+           categoryID = categoryID,
+           tagsBn = tagsBn,
+           publishedDate = publishedDate,
+           summaryBn = summaryBn,
+           imageFile = imageFile,
+           storyFileBn = storyFileBn,
+           isPayable = isPayable,
+           storyBn = storyBn
+       )){
+           is ApiResult.Success -> {
+                return ApiResult.Success(data = DataMapper.storyUploadDtoToStoryUpload(storyDto = response.data.data?: UploadStoryDto()))
+           }
+           is ApiResult.Error -> {
+               return ApiResult.Error(messageBn = response.messageBn, messageEn = response.messageEn)
+           }
+       }
     }
 }

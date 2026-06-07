@@ -2,6 +2,7 @@
 
 <resources>
 
+    <string name="story_upload_success">Story upload success</string>
     <string name="profile_update_success">Profile update success</string>
     <string name="end">End:</string>
     <string name="paid">Paid</string>

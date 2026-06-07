@@ -24,11 +24,20 @@ import com.aliad.model.ResetPasswordResponse
 import com.aliad.model.SearchStoryDto
 import com.aliad.model.StoryCount
 import com.aliad.model.StoryCountDto
+import com.aliad.model.UploadStory
+import com.aliad.model.UploadStoryDto
 import com.aliad.model.earn_history.EarnHistory
 import com.aliad.model.earn_history.EarnHistoryDto
 import com.aliad.model.subscription_history.Payment
 
 object DataMapper {
+
+    fun storyUploadDtoToStoryUpload(storyDto: UploadStoryDto) : UploadStory{
+        return UploadStory(
+            userID = storyDto.user_id?: 0,
+            id = storyDto.id?: 0
+        )
+    }
 
     fun earningHistoryDtoToEarningHistory(earnHistoryDto: EarnHistoryDto) : List<MyEarnHistory>{
         val earningHistoryList  = ArrayList<MyEarnHistory>()
