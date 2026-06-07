@@ -60,7 +60,10 @@ import com.aliad.utils.MyCustomLogger
 import io.github.ismoy.imagepickerkmp.domain.config.CropConfig
 import io.github.ismoy.imagepickerkmp.domain.config.GalleryConfig
 import io.github.ismoy.imagepickerkmp.domain.config.UiConfig
+import io.github.ismoy.imagepickerkmp.domain.extensions.loadBytes
+import io.github.ismoy.imagepickerkmp.domain.models.MimeType
 import io.github.ismoy.imagepickerkmp.features.imagepicker.config.ImagePickerKMPConfig
+import io.github.ismoy.imagepickerkmp.features.imagepicker.model.ImagePickerResult
 import io.github.ismoy.imagepickerkmp.features.imagepicker.ui.rememberImagePickerKMP
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.add_tags
@@ -111,6 +114,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 private const val TAG = "UploadStoriesScreen"
+
 @Composable
 fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
@@ -121,21 +125,97 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
     val storySummary = viewModel.storySummaryFlow.collectAsStateWithLifecycle()
     val fullStory = viewModel.fullStoryFlow.collectAsStateWithLifecycle()
     val categoryData = viewModel.categoryData.collectAsStateWithLifecycle()
+    val imageFileName = viewModel.storyImageNameFlow.collectAsStateWithLifecycle()
+    val pdfFileName = viewModel.storyFileNameFlow.collectAsStateWithLifecycle()
     val tags = viewModel.tagsFlow.collectAsStateWithLifecycle(emptyList())
+    val isEnableUploadButton = viewModel.isEnableButton.collectAsStateWithLifecycle(false)
 
 
-    val picker = rememberImagePickerKMP(
+    val imagePicker = rememberImagePickerKMP(
         config = ImagePickerKMPConfig(
             galleryConfig = GalleryConfig(
                 allowMultiple = false,
             ),
-            cropConfig = CropConfig(enabled = true),
+            cropConfig = CropConfig(enabled = true, circularCrop = false),
             uiConfig = UiConfig()
         )
     )
 
-    LaunchedEffect(viewModel.saveCategory){
-        if(viewModel.saveCategory.name.isNotBlank()){
+    val pdfPicker = rememberImagePickerKMP(
+        config = ImagePickerKMPConfig(
+            galleryConfig = GalleryConfig(
+                allowMultiple = false,
+            ),
+            uiConfig = UiConfig()
+        )
+    )
+
+    LaunchedEffect(pdfPicker.result) {
+        when (pdfPicker.result) {
+            is ImagePickerResult.Success -> {
+                val imageFileName =
+                    (pdfPicker.result as ImagePickerResult.Success).first?.fileName ?: ""
+                val imageSize = (pdfPicker.result as ImagePickerResult.Success).first?.fileSize ?: 0
+
+                viewModel.apply {
+                    saveStoryFileName(fileName = imageFileName)
+                    saveStorySize(fileSize = imageSize)
+                }
+            }
+
+            is ImagePickerResult.Error -> {
+
+            }
+
+            is ImagePickerResult.Loading -> {
+
+            }
+
+            is ImagePickerResult.Dismissed -> {
+
+            }
+
+            is ImagePickerResult.Idle -> {
+
+            }
+        }
+    }
+
+    LaunchedEffect(imagePicker.result) {
+        when (imagePicker.result) {
+            is ImagePickerResult.Success -> {
+                val imageFileName =
+                    (imagePicker.result as ImagePickerResult.Success).first?.fileName ?: ""
+                val imageSize =
+                    (imagePicker.result as ImagePickerResult.Success).first?.fileSize ?: 0
+
+                viewModel.apply {
+                    saveStoryImage(imageName = imageFileName)
+                    saveStorySize(fileSize = imageSize)
+                }
+            }
+
+            is ImagePickerResult.Error -> {
+
+            }
+
+            is ImagePickerResult.Loading -> {
+
+            }
+
+            is ImagePickerResult.Dismissed -> {
+
+            }
+
+            is ImagePickerResult.Idle -> {
+
+            }
+        }
+    }
+
+
+    LaunchedEffect(viewModel.saveCategory) {
+        if (viewModel.saveCategory.name.isNotBlank()) {
             viewModel.inputCategory(category = viewModel.saveCategory.name)
         }
     }
@@ -253,16 +333,19 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
 
                     HeightGap(height = 10.dp)
 
-                    key(tags.value){
-                        Column(modifier = Modifier.fillMaxWidth().border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.4f),
-                            shape = RoundedCornerShape(size = 5.dp)
-                        )){
+                    key(tags.value) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth().border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.4f),
+                                shape = RoundedCornerShape(size = 5.dp)
+                            )
+                        ) {
                             MyTagInputField(
                                 tags = tags.value,
-                                onTagAdded = {tag ->
-                                    viewModel.inputTags(tag) },
+                                onTagAdded = { tag ->
+                                    viewModel.inputTags(tag)
+                                },
                                 onTagRemoved = { tag ->
                                     viewModel.removeTag(tag = tag)
                                 }
@@ -357,8 +440,14 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                             fileType = stringResource(Res.string.upload_story_file_type),
                             fileIcon = painterResource(Res.drawable.icon_file),
                             fileButtonBgColor = onPrimaryLight,
-                            modifier = Modifier.weight(1f)
-                        )
+                            modifier = Modifier.weight(1f),
+                            fileName = pdfFileName.value,
+                            onClickRemove = {
+                                viewModel.removeStoryFileName()
+                            }
+                        ) {
+                            pdfPicker.launchGallery(mimeTypes = listOf(MimeType.APPLICATION_PDF))
+                        }
 
                         WidthGap(width = 10.dp)
 
@@ -367,8 +456,14 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                             fileType = stringResource(Res.string.upload_story_cover_type),
                             fileIcon = painterResource(Res.drawable.icon_gallery),
                             fileButtonBgColor = green,
-                            modifier = Modifier.weight(1f)
-                        )
+                            fileName = imageFileName.value,
+                            modifier = Modifier.weight(1f),
+                            onClickRemove = {
+                                viewModel.removeStoryCoverImageName()
+                            }
+                        ) {
+                            imagePicker.launchGallery(mimeTypes = listOf(MimeType.IMAGE_JPEG))
+                        }
                     }
 
                     HeightGap(height = 10.dp)
@@ -412,7 +507,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                 HeightGap(height = 15.dp)
 
                 MyCustomButton(
-                    isEnable = true,
+                    isEnable = isEnableUploadButton.value,
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(Res.string.upload_stories),
                     leftIcon = painterResource(Res.drawable.icon_send),
@@ -464,7 +559,7 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
             CategoryDialog(onDismissRequest = {
                 viewModel.showCategoryDialog = false
 
-            }, onSelected = {myCategory ->
+            }, onSelected = { myCategory ->
                 viewModel.saveCategory = myCategory
                 viewModel.showCategoryDialog = false
             }, value = categoryData.value, viewModel = viewModel)
