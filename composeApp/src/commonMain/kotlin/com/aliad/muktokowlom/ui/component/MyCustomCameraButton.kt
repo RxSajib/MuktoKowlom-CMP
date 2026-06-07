@@ -24,7 +24,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MyCustomCameraButton(){
-    Box(modifier = Modifier.size(25.dp).clip(shape = CircleShape).background(color = onPrimaryLight).border(width = 2.dp, color = MaterialTheme.colorScheme.surface, shape = CircleShape), contentAlignment = Alignment.Center){
+    Box(modifier = Modifier.size(25.dp).clip(shape = CircleShape).background(color = onPrimaryLight)
+        .border(width = 2.dp, color = MaterialTheme.colorScheme.surface, shape = CircleShape),
+        contentAlignment = Alignment.Center){
         Image(
             painter = painterResource(Res.drawable.camera_svgrepo_com),
             contentDescription = null,

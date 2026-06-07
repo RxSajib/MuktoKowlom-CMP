@@ -36,6 +36,7 @@ import androidx.navigation3.runtime.NavKey
 import coil3.compose.LocalPlatformContext
 import com.aliad.helper.SnackBarEvent
 import com.aliad.model.SnackBarDetails
+import com.aliad.muktokowlom.di.initKoin
 import com.aliad.muktokowlom.ui.bottomSheet.DeleteAccountBottomSheet
 import com.aliad.muktokowlom.ui.bottomSheet.LogoutBottomSheet
 import com.aliad.muktokowlom.ui.navigation.AppDestination
@@ -59,6 +60,8 @@ import com.aliad.presentation.signIn.ui.profile.ProfileViewModel
 import com.aliad.presentation.signIn.ui.sharedViewModel.SharedViewModel
 import com.aliad.utils.MyCustomLogger
 import com.sajib.data.appConstant.AppConstant
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.basic_info
 import muktokowlomcmp.composeapp.generated.resources.calender_svgrepo_com
@@ -111,8 +114,9 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
     val contextCoil = LocalPlatformContext.current
     val liveStoryCount = viewModel.liveStoryCount.collectAsStateWithLifecycle(0)
     val pendingStoryCount = viewModel.pendingStoryCount.collectAsStateWithLifecycle(0)
-
     val lifecycle = LocalLifecycleOwner.current
+
+
 
 
 
@@ -265,41 +269,41 @@ fun ProfileScreen(backStack: NavBackStack<NavKey>, sharedViewModel: SharedViewMo
                     )
                 }
                 HeightGap(height = 10.dp)
-            }
 
-
-
-            MyCustomMenu(
-                modifier = Modifier,
-                title = stringResource(Res.string.premium),
-                details = stringResource(Res.string.premium_details),
-                painter = painterResource(Res.drawable.premium_svgrepo_com),
-                color = purpleBlue
-            ) {
-                backStack.add(
-                    AppDestination.Dest(
-                        firstDestName = AppDestination.Dest.Premium::class.simpleName ?: ""
+                MyCustomMenu(
+                    modifier = Modifier,
+                    title = stringResource(Res.string.premium),
+                    details = stringResource(Res.string.premium_details),
+                    painter = painterResource(Res.drawable.premium_svgrepo_com),
+                    color = purpleBlue
+                ) {
+                    backStack.add(
+                        AppDestination.Dest(
+                            firstDestName = AppDestination.Dest.Premium::class.simpleName ?: ""
+                        )
                     )
-                )
-            }
+                }
 
-            HeightGap(height = 10.dp)
+                HeightGap(height = 10.dp)
 
-            MyCustomMenu(
-                modifier = Modifier,
-                title = stringResource(Res.string.subscription_history),
-                details = stringResource(Res.string.subscription_history_details),
-                painter = painterResource(Res.drawable.ticket),
-                color = pink
-            ) {
-                backStack.add(
-                    AppDestination.Dest(
-                        AppDestination.Dest.SubscriptionHistory::class.simpleName ?: ""
+
+                MyCustomMenu(
+                    modifier = Modifier,
+                    title = stringResource(Res.string.subscription_history),
+                    details = stringResource(Res.string.subscription_history_details),
+                    painter = painterResource(Res.drawable.ticket),
+                    color = pink
+                ) {
+                    backStack.add(
+                        AppDestination.Dest(
+                            AppDestination.Dest.SubscriptionHistory::class.simpleName ?: ""
+                        )
                     )
-                )
+                }
+
+                HeightGap(height = 10.dp)
             }
 
-            HeightGap(height = 10.dp)
 
             if (!token.value.isEmpty()) {
 

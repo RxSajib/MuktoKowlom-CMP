@@ -26,12 +26,14 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlin.toString
@@ -44,6 +46,10 @@ class ProfileViewModel constructor(val deleteAccountUseCase: DeleteAccountUseCas
     val saveIntData: SaveIntData,
     val saveStringData: SaveStringData
     ) : ViewModel() {
+
+
+        val accessToken = getStringData.getStringData(key = AppConstant.ACCESS_TOKEN)
+            .stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(), "")
 
         init {
             getStoryCount()
@@ -99,9 +105,9 @@ class ProfileViewModel constructor(val deleteAccountUseCase: DeleteAccountUseCas
     val userRegisterData = flow {
         emit(getStringData.getStringData(key = AppConstant.USER_REGISTER_DATE).first())
     }
-    val accessToken = flow {
+  /*  val accessToken = flow {
         emit(getStringData.getStringData(key = AppConstant.ACCESS_TOKEN).first())
-    }
+    }*/
 
     val liveStoryCount = flow {
         emit(getIntData.getIntData(key = AppConstant.ACTIVE_STORY_COUNT).first())

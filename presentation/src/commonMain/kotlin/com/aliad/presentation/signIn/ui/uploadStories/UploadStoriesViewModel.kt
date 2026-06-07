@@ -7,14 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliad.ApiResult
 import com.aliad.model.MyCategory
+import com.aliad.presentation.utils.MyCustomLogger
 import com.aliad.usecase.CategoryUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+private const val TAG = "UploadStoriesViewModel"
 class UploadStoriesViewModel constructor(
     val categoryUseCase: CategoryUseCase
 ) : ViewModel() {
+
+    val tagsList : ArrayList<String> = ArrayList()
 
     var selectedCategory by mutableStateOf(MyCategory())
     var saveCategory by mutableStateOf(MyCategory())
@@ -33,7 +37,7 @@ class UploadStoriesViewModel constructor(
     private var publishedDateMutableStateFlow = MutableStateFlow<String>("")
     val publishedDateFlow = publishedDateMutableStateFlow.asStateFlow()
 
-    private var tagsMutableStateFlow = MutableStateFlow<String>("")
+    private var tagsMutableStateFlow = MutableStateFlow<List<String>>(emptyList())
     val tagsFlow = tagsMutableStateFlow.asStateFlow()
 
     private var storySummaryMutableStateFlow = MutableStateFlow<String>("")
@@ -66,6 +70,20 @@ class UploadStoriesViewModel constructor(
     fun inputFullStoryDetails(fullStoryDetails : String){
         viewModelScope.launch {
             fullStoryMutableStateFlow.emit(fullStoryDetails)
+        }
+    }
+
+    fun inputTags(tags : String){
+        viewModelScope.launch {
+            tagsList.add(tags)
+            tagsMutableStateFlow.emit(tagsList)
+        }
+    }
+
+    fun removeTag(tag : String){
+        viewModelScope.launch {
+            tagsList.remove(tag)
+            MyCustomLogger.logInfo(tag = TAG, message = "tag remove $tag ${tagsList.toString()}")
         }
     }
 

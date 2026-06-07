@@ -2,6 +2,7 @@ package com.aliad.muktokowlom.ui.upload_stories
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +23,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +46,7 @@ import com.aliad.muktokowlom.ui.component.MyCustomAppBar
 import com.aliad.muktokowlom.ui.component.MyCustomButton
 import com.aliad.muktokowlom.ui.component.MySecondaryCustomInputFiled
 import com.aliad.muktokowlom.ui.component.MySubscriptionButton
+import com.aliad.muktokowlom.ui.component.MyTagInputField
 import com.aliad.muktokowlom.ui.component.StoryFileUploadCustomButton
 import com.aliad.muktokowlom.ui.component.StoryUploadCustomHeader
 import com.aliad.muktokowlom.ui.component.WheelDatePickerDialog
@@ -48,6 +56,12 @@ import com.aliad.muktokowlom.ui.theme.adjustedFontSize
 import com.aliad.muktokowlom.ui.theme.green
 import com.aliad.muktokowlom.ui.theme.onPrimaryLight
 import com.aliad.presentation.signIn.ui.uploadStories.UploadStoriesViewModel
+import com.aliad.utils.MyCustomLogger
+import io.github.ismoy.imagepickerkmp.domain.config.CropConfig
+import io.github.ismoy.imagepickerkmp.domain.config.GalleryConfig
+import io.github.ismoy.imagepickerkmp.domain.config.UiConfig
+import io.github.ismoy.imagepickerkmp.features.imagepicker.config.ImagePickerKMPConfig
+import io.github.ismoy.imagepickerkmp.features.imagepicker.ui.rememberImagePickerKMP
 import muktokowlomcmp.composeapp.generated.resources.Res
 import muktokowlomcmp.composeapp.generated.resources.add_tags
 import muktokowlomcmp.composeapp.generated.resources.below
@@ -96,6 +110,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
+private const val TAG = "UploadStoriesScreen"
 @Composable
 fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackStack<NavKey>) {
 
@@ -106,6 +121,18 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
     val storySummary = viewModel.storySummaryFlow.collectAsStateWithLifecycle()
     val fullStory = viewModel.fullStoryFlow.collectAsStateWithLifecycle()
     val categoryData = viewModel.categoryData.collectAsStateWithLifecycle()
+    val tags = viewModel.tagsFlow.collectAsStateWithLifecycle(emptyList())
+
+
+    val picker = rememberImagePickerKMP(
+        config = ImagePickerKMPConfig(
+            galleryConfig = GalleryConfig(
+                allowMultiple = false,
+            ),
+            cropConfig = CropConfig(enabled = true),
+            uiConfig = UiConfig()
+        )
+    )
 
     LaunchedEffect(viewModel.saveCategory){
         if(viewModel.saveCategory.name.isNotBlank()){
@@ -225,12 +252,27 @@ fun UploadStoriesScreen(backStack: NavBackStack<NavKey>, rootBackStack: NavBackS
                     )
 
                     HeightGap(height = 10.dp)
-                    MySecondaryCustomInputFiled(
-                        placeholder = stringResource(Res.string.add_tags),
-                        modifier = Modifier,
-                        inputData = "",
-                        onValueChanged = {}
-                    )
+
+                    key(tags.value){
+                        Column(modifier = Modifier.fillMaxWidth().border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.4f),
+                            shape = RoundedCornerShape(size = 5.dp)
+                        )){
+                            MyTagInputField(
+                                tags = tags.value,
+                                onTagAdded = {tag ->
+                                    viewModel.inputTags(tag) },
+                                onTagRemoved = { tag ->
+                                    viewModel.removeTag(tag = tag)
+                                }
+                            )
+
+                        }
+
+                    }
+
+
                     HeightGap(height = 15.dp)
                     StoryUploadCustomHeader(
                         icon = painterResource(Res.drawable.icon_file),
